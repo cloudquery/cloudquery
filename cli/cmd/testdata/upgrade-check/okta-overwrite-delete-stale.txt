@@ -1,4 +1,4 @@
-okta v6.8.2 → v7.0.0 | postgresql (local@<postgresql>)
+okta v6.8.2 → v7.0.0 | postgresql (cloudquery/postgresql@<version>)
 write_mode: overwrite-delete-stale | pk_mode: default
 REVIEW REQUIRED — okta_policy_rules
 

@@ -1,4 +1,4 @@
-datadog v5.19.10 → v6.0.0 | postgresql (local@<postgresql>)
+datadog v5.19.10 → v6.0.0 | postgresql (cloudquery/postgresql@<version>)
 write_mode: overwrite-delete-stale | pk_mode: default
 REVIEW REQUIRED — 6 tables / 7 columns
 

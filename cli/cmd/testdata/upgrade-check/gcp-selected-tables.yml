@@ -1,21 +1,22 @@
-kind: source
+kind: "source"
 spec:
-  name: gcp
-  path: cloudquery/gcp
-  registry: cloudquery
-  version: v22.1.2
+  name: "gcp"
+  path: "cloudquery/gcp"
+  registry: "cloudquery"
+  version: "v22.1.2"
   tables:
-    - gcp_aiplatform_specialist_pools
-    - gcp_aiplatform_specialistpool_locations
-  destinations: [postgresql]
+    - "gcp_aiplatform_specialist_pools"
+    - "gcp_aiplatform_specialistpool_locations"
+  destinations: ["postgresql"]
   spec:
-    project_ids: [placeholder]
+    project_ids: ["placeholder"]
 ---
-kind: destination
+kind: "destination"
 spec:
-  name: postgresql
-  path: ${UPGRADE_CHECK_POSTGRESQL_PATH}
-  registry: local
-  write_mode: overwrite-delete-stale
+  name: "postgresql"
+  path: "cloudquery/postgresql"
+  registry: "cloudquery"
+  version: "v8.16.0" # latest version of postgresql plugin
+  write_mode: "overwrite-delete-stale"
   spec:
-    connection_string: postgres://localhost:1/unreachable
+    connection_string: "postgres://localhost:1/unreachable"

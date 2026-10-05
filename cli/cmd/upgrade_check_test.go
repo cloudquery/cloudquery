@@ -3,16 +3,12 @@ package cmd
 import (
 	"bytes"
 	"context"
-	"encoding/json"
 	"errors"
 	"flag"
-	"maps"
 	"os"
-	"os/exec"
 	"path"
 	"path/filepath"
 	"runtime"
-	"slices"
 	"strings"
 	"testing"
 
@@ -373,14 +369,11 @@ func TestUpgradeCheck(t *testing.T) {
 	require.Contains(t, report, "test_some_table: "+destinationNoAssessmentReason)
 }
 
-var updateUpgradeCheckFixtures = flag.Bool("update-upgrade-check-fixtures", false, "record source tables from the real plugins and rewrite the expected reports (requires cloudquery login)")
-
-const upgradeCheckFixturesDir = "testdata/upgrade-check"
+var updateUpgradeCheckGolden = flag.Bool("update-upgrade-check-golden", false, "rewrite the expected upgrade check reports")
 
 func TestUpgradeCheckRFCCases(t *testing.T) {
 	setColorOutput(t, false)
-	postgresqlPath := buildUpgradeCheckPostgreSQL(t)
-	t.Setenv("UPGRADE_CHECK_POSTGRESQL_PATH", postgresqlPath)
+	cqDir := t.TempDir()
 
 	cases := []struct {
 		name        string
@@ -394,109 +387,31 @@ func TestUpgradeCheckRFCCases(t *testing.T) {
 	}
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
-			specReader, err := specs.NewSpecReader([]string{filepath.Join(upgradeCheckFixturesDir, tc.name+".yml")})
+			configPath := filepath.Join("testdata", "upgrade-check", tc.name+".yml")
+			specReader, err := specs.NewSpecReader([]string{configPath})
 			require.NoError(t, err)
-			sourceSpec := *specReader.Sources[0]
-			if *updateUpgradeCheckFixtures {
-				recordUpgradeCheckSourceTables(t, sourceSpec, tc.toVersion)
-			}
-			from := readUpgradeCheckSourceTables(t, sourceSpec.Name, sourceSpec.Version)
-			to := readUpgradeCheckSourceTables(t, sourceSpec.Name, tc.toVersion)
+			t.Cleanup(CloseLogFile)
 
+			cmd := NewCmdRoot()
 			var out bytes.Buffer
-			err = runUpgradeCheck(t.Context(), &out, sourceSpec, specReader.Destinations, nil, false, from, to,
-				managedplugin.WithLogger(log.Logger),
-				managedplugin.WithDirectory(t.TempDir()),
-				managedplugin.WithNoSentry(),
-			)
-			require.NoError(t, err)
+			cmd.SetOut(&out)
+			cmd.SetArgs([]string{
+				"upgrade", "check", configPath, "--source", specReader.Sources[0].Name, "--to", tc.toVersion,
+				"--cq-dir", cqDir, "--log-file-name", filepath.Join(t.TempDir(), "cloudquery.log"),
+			})
+			require.NoError(t, cmd.Execute())
 
-			report := strings.ReplaceAll(out.String(), postgresqlPath, "<postgresql>")
+			report := strings.ReplaceAll(out.String(), specReader.Destinations[0].Version, "<version>")
 			require.Contains(t, report, "\n"+tc.wantVerdict+"\n")
 			requireUpgradeCheckGolden(t, tc.name+".txt", report)
 		})
 	}
 }
 
-func buildUpgradeCheckPostgreSQL(t *testing.T) string {
-	t.Helper()
-	moduleDir := t.TempDir()
-	for from, to := range map[string]string{"postgresql.mod": "go.mod", "postgresql.sum": "go.sum"} {
-		b, err := os.ReadFile(filepath.Join(upgradeCheckFixturesDir, from))
-		require.NoError(t, err)
-		require.NoError(t, os.WriteFile(filepath.Join(moduleDir, to), b, 0o644))
-	}
-	binary := filepath.Join(t.TempDir(), "postgresql")
-	if runtime.GOOS == "windows" {
-		binary += ".exe"
-	}
-	build := exec.Command("go", "build", "-mod=readonly", "-o", binary, "github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8")
-	build.Dir = moduleDir
-	build.Env = append(os.Environ(), "GOWORK=off")
-	out, err := build.CombinedOutput()
-	require.NoError(t, err, string(out))
-	return binary
-}
-
-func recordUpgradeCheckSourceTables(t *testing.T, sourceSpec specs.Source, toVersion string) {
-	t.Helper()
-	ctx := t.Context()
-	authToken, err := auth.GetAuthTokenIfNeeded(log.Logger, []*specs.Source{&sourceSpec}, nil, nil)
-	require.NoError(t, err)
-	teamName, err := auth.GetTeamForToken(ctx, authToken)
-	require.NoError(t, err)
-
-	from, to, err := loadUpgradeSourceTables(ctx, sourceSpec, toVersion,
-		managedplugin.WithLogger(log.Logger),
-		managedplugin.WithAuthToken(authToken.Value),
-		managedplugin.WithTeamName(teamName),
-		managedplugin.WithDirectory(t.TempDir()),
-	)
-	require.NoError(t, err)
-	for _, version := range []upgradeSourceTables{from, to} {
-		require.Empty(t, version.UnknownReason)
-		require.False(t, version.Connected)
-		selected, err := selectSourceTables(sourceSpec, version.Tables)
-		require.NoError(t, err)
-		schemas, err := pluginPb.SchemasToBytes(selected.ToArrowSchemas())
-		require.NoError(t, err)
-		byName := make(map[string][]byte, len(selected))
-		for i, table := range selected {
-			byName[table.Name] = schemas[i]
-		}
-		b, err := json.MarshalIndent(byName, "", "  ")
-		require.NoError(t, err)
-		require.NoError(t, os.WriteFile(upgradeCheckSourceTablesPath(sourceSpec.Name, version.Version), append(b, '\n'), 0o644))
-	}
-}
-
-func readUpgradeCheckSourceTables(t *testing.T, sourceName, version string) upgradeSourceTables {
-	t.Helper()
-	require.NoError(t, registerOnce())
-	b, err := os.ReadFile(upgradeCheckSourceTablesPath(sourceName, version))
-	require.NoError(t, err)
-	var byName map[string][]byte
-	require.NoError(t, json.Unmarshal(b, &byName))
-	names := slices.Sorted(maps.Keys(byName))
-	schemas := make([][]byte, len(names))
-	for i, name := range names {
-		schemas[i] = byName[name]
-	}
-	arrowSchemas, err := pluginPb.NewSchemasFromBytes(schemas)
-	require.NoError(t, err)
-	tables, err := schema.NewTablesFromArrowSchemas(arrowSchemas)
-	require.NoError(t, err)
-	return upgradeSourceTables{Version: version, Tables: tables}
-}
-
-func upgradeCheckSourceTablesPath(sourceName, version string) string {
-	return filepath.Join(upgradeCheckFixturesDir, "tables", sourceName+"-"+version+".json")
-}
-
 func requireUpgradeCheckGolden(t *testing.T, name, got string) {
 	t.Helper()
-	goldenPath := filepath.Join(upgradeCheckFixturesDir, name)
-	if *updateUpgradeCheckFixtures {
+	goldenPath := filepath.Join("testdata", "upgrade-check", name)
+	if *updateUpgradeCheckGolden {
 		require.NoError(t, os.WriteFile(goldenPath, []byte(got), 0o644))
 	}
 	want, err := os.ReadFile(goldenPath)
