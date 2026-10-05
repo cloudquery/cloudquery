@@ -1,6 +1,6 @@
 | File | Function | Coverage |
 | --- | --- | --- |
-| github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/client/client.go:42: | New | 50.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/client/client.go:42: | New | 51.5% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/client/delete.go:16: | DeleteStale | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/client/delete.go:34: | generateDeleteForDeleteStale | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/client/delete.go:46: | DeleteRecord | 0.0% |
@@ -59,7 +59,7 @@
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/queries/tables.go:17: | SortKeys | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/queries/tables.go:34: | IsCompoundType | 40.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/queries/tables.go:53: | WithTTL | 0.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/queries/tables.go:60: | CreateTable | 94.9% |
+| github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/queries/tables.go:60: | CreateTable | 95.1% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/queries/tables.go:116: | DropTable | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/queries/tables.go:120: | ResolvePartitionBy | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/queries/tables.go:141: | ResolveOrderBy | 100.0% |
@@ -69,7 +69,7 @@
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/arrow/types/array.go:8: | arrayType | 88.9% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/arrow/types/clickhouse.go:28: | params | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/arrow/types/clickhouse.go:42: | tupleFieldSpec | 71.4% |
-| github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/arrow/types/clickhouse.go:60: | parseTupleType | 92.3% |
+| github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/arrow/types/clickhouse.go:60: | parseTupleType | 94.1% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/arrow/types/datetime.go:13: | dateTimeType | 75.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/arrow/types/datetime.go:22: | dateTime64Type | 82.4% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/arrow/types/datetime.go:56: | getTimeZone | 85.7% |
@@ -99,10 +99,10 @@
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/arrow/values/time.go:33: | timeToTimestamp | 83.3% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/arrow/values/time.go:45: | buildTime32Values | 61.5% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/arrow/values/time.go:70: | buildTime64Values | 61.5% |
-| github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/arrow/values/unwrap.go:7: | unwrap | 58.3% |
+| github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/arrow/values/unwrap.go:7: | unwrap | 66.7% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/arrow/values/values.go:9: | buildValue | 78.4% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/ch/types/column_type.go:9: | ColumnType | 96.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/ch/types/decimal.go:11: | decimalType | 60.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/ch/types/decimal.go:11: | decimalType | 71.4% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/ch/types/definitions.go:8: | FieldType | 83.3% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/ch/types/definitions.go:21: | FieldDefinition | 75.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/ch/types/extension.go:8: | extensionType | 80.0% |
@@ -110,17 +110,17 @@
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/ch/types/map.go:11: | mapType | 75.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/ch/types/nullable.go:10: | CanBeNullable | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/ch/types/struct.go:10: | structType | 75.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/ch/types/struct.go:19: | definitions | 85.7% |
+| github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/ch/types/struct.go:19: | definitions | 90.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/ch/types/timestamp.go:12: | timestampType | 83.3% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/ch/types/timestamp.go:26: | timeType | 90.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/ch/values/batch.go:12: | BatchAddRecords | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/ch/values/date.go:11: | dateValue | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/ch/values/decimal.go:14: | decimalValue | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/ch/values/extension.go:8: | extensionValue | 50.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/ch/values/list.go:12: | listValue | 83.3% |
+| github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/ch/values/list.go:12: | listValue | 88.5% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/ch/values/map.go:14: | mapValue | 75.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/ch/values/map.go:39: | makeMapSlice | 87.5% |
-| github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/ch/values/map.go:53: | makeMap | 88.9% |
+| github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/ch/values/map.go:53: | makeMap | 94.1% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/ch/values/map.go:75: | mapItemValue | 57.1% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/ch/values/nested.go:12: | sanitizeNested | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/ch/values/primitive.go:12: | primitiveValue | 100.0% |
@@ -128,7 +128,7 @@
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/ch/values/special.go:10: | valueStrData | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/ch/values/special.go:20: | float16Value | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/ch/values/special.go:30: | byteArrValue | 0.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/ch/values/struct.go:11: | structValue | 88.2% |
+| github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/ch/values/struct.go:11: | structValue | 90.5% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/ch/values/struct.go:40: | toSlice | 88.9% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/ch/values/time.go:10: | timestampValue | 88.9% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/ch/values/time.go:31: | timeValue | 100.0% |
@@ -140,4 +140,4 @@
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/util/sanitize.go:7: | UnquoteID | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/util/sanitize.go:11: | SanitizeID | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/util/sanitize.go:15: | Sanitized | 0.0% |
-| total: | (statements) | 48.5% |
+| total: | (statements) | 48.1% |

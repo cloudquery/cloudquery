@@ -1,9 +1,9 @@
 | File | Function | Coverage |
 | --- | --- | --- |
-| github.com/cloudquery/cloudquery/plugins/destination/sqlite/v2/client/client.go:27: | New | 76.9% |
+| github.com/cloudquery/cloudquery/plugins/destination/sqlite/v2/client/client.go:27: | New | 80.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/sqlite/v2/client/client.go:50: | Close | 0.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/sqlite/v2/client/delete.go:12: | DeleteRecord | 75.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/sqlite/v2/client/delete.go:28: | generateDelete | 76.2% |
+| github.com/cloudquery/cloudquery/plugins/destination/sqlite/v2/client/delete.go:12: | DeleteRecord | 81.8% |
+| github.com/cloudquery/cloudquery/plugins/destination/sqlite/v2/client/delete.go:28: | generateDelete | 80.8% |
 | github.com/cloudquery/cloudquery/plugins/destination/sqlite/v2/client/delete.go:61: | extractPredicateValues | 93.3% |
 | github.com/cloudquery/cloudquery/plugins/destination/sqlite/v2/client/delete.go:83: | unpackArray | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/sqlite/v2/client/deletestale.go:11: | DeleteStale | 92.3% |
@@ -18,7 +18,7 @@
 | github.com/cloudquery/cloudquery/plugins/destination/sqlite/v2/client/migrate.go:132: | MigrateTables | 77.4% |
 | github.com/cloudquery/cloudquery/plugins/destination/sqlite/v2/client/migrate.go:183: | recreateTable | 75.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/sqlite/v2/client/migrate.go:191: | addColumn | 75.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/sqlite/v2/client/migrate.go:199: | createTableIfNotExist | 90.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/sqlite/v2/client/migrate.go:199: | createTableIfNotExist | 93.2% |
 | github.com/cloudquery/cloudquery/plugins/destination/sqlite/v2/client/migrate.go:243: | getTableInfo | 81.2% |
 | github.com/cloudquery/cloudquery/plugins/destination/sqlite/v2/client/read.go:19: | createResultsArray | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/sqlite/v2/client/read.go:43: | reverseTransform | 98.3% |
@@ -42,4 +42,4 @@
 | github.com/cloudquery/cloudquery/plugins/destination/sqlite/v2/typeconv/special.go:18: | float16Value | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/sqlite/v2/typeconv/special.go:28: | byteArrValue | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/sqlite/v2/typeconv/values.go:8: | FromArray | 11.1% |
-| total: | (statements) | 80.2% |
+| total: | (statements) | 81.1% |
