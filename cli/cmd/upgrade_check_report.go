@@ -33,207 +33,501 @@ type upgradeReport struct {
 	Findings      []*pluginPb.AssessTables_TableFinding
 }
 
-type upgradeCategoryText struct {
-	verdict string
-	action  string
-	color   color.Attribute
+type upgradeChangeKind string
+
+const (
+	upgradeColumnAdded   upgradeChangeKind = "added"
+	upgradeColumnRemoved upgradeChangeKind = "removed"
+	upgradeColumnChanged upgradeChangeKind = "changed"
+)
+
+type upgradeColumnChange struct {
+	Kind    upgradeChangeKind `json:"kind"`
+	Column  string            `json:"column"`
+	OldType string            `json:"old_type,omitempty"`
+	NewType string            `json:"new_type,omitempty"`
+	Reason  string            `json:"reason,omitempty"`
 }
 
-type upgradeBehaviorColors struct {
-	safeMode   *color.Color
-	forcedMode *color.Color
+type upgradeOutcomeResult string
+
+const (
+	upgradeOutcomeApplied  upgradeOutcomeResult = "applied"
+	upgradeOutcomeFails    upgradeOutcomeResult = "fails"
+	upgradeOutcomeDataLoss upgradeOutcomeResult = "data_loss"
+)
+
+type upgradeOutcome struct {
+	Result upgradeOutcomeResult `json:"result"`
+	Text   string               `json:"text"`
 }
 
-var upgradeBehaviorColorsByCategory = map[pluginPb.AssessTables_Category]upgradeBehaviorColors{
-	pluginPb.AssessTables_CATEGORY_MANUAL_MIGRATION_REQUIRED: {upgradeRed, upgradeRed},
-	pluginPb.AssessTables_CATEGORY_AUTOMATICALLY_MIGRATABLE:  {upgradeGreen, upgradeYellow},
+type upgradeTableImpact struct {
+	Name     string                         `json:"name"`
+	Category pluginPb.AssessTables_Category `json:"-"`
+	NewTable bool                           `json:"new_table,omitempty"`
+	Changes  []upgradeColumnChange          `json:"changes,omitempty"`
+	Outcomes map[string]upgradeOutcome      `json:"outcomes,omitempty"`
 }
 
-var upgradeCategoriesBySeverity = []pluginPb.AssessTables_Category{
-	pluginPb.AssessTables_CATEGORY_MANUAL_MIGRATION_REQUIRED,
-	pluginPb.AssessTables_CATEGORY_TABLE_REMOVED,
-	pluginPb.AssessTables_CATEGORY_FILE_SCHEMA_CHANGED,
-	pluginPb.AssessTables_CATEGORY_UNKNOWN,
-	pluginPb.AssessTables_CATEGORY_AUTOMATICALLY_MIGRATABLE,
-}
+var upgradeMigrateModes = []specs.MigrateMode{specs.MigrateModeSafe, specs.MigrateModeForced}
 
-var upgradeCategoryTexts = map[pluginPb.AssessTables_Category]upgradeCategoryText{
-	pluginPb.AssessTables_CATEGORY_MANUAL_MIGRATION_REQUIRED: {"REVIEW REQUIRED", "plan a manual migration or rebuild.", color.FgRed},
-	pluginPb.AssessTables_CATEGORY_TABLE_REMOVED:             {"SELECTED TABLES REMOVED", "remove explicit selections and update dependent consumers.", color.FgYellow},
-	pluginPb.AssessTables_CATEGORY_FILE_SCHEMA_CHANGED:       {"FILE SCHEMA CHANGED", "review readers that combine old and new files.", color.FgYellow},
-	pluginPb.AssessTables_CATEGORY_UNKNOWN:                   {"UNKNOWN", "review the source changelog for what this check could not assess.", color.FgYellow},
-	pluginPb.AssessTables_CATEGORY_AUTOMATICALLY_MIGRATABLE:  {"AUTOMATICALLY MIGRATABLE", "use safe migration.", color.FgYellow},
-}
+const (
+	upgradeNoChangesText    = "No schema changes affect your selected tables."
+	upgradeNoOutputDiffText = "NO OUTPUT DIFFERENCE DETECTED for equivalent test values"
+	upgradeNotAssessedText  = "Actual source values and behavior were not assessed."
+	upgradePreviewOnlyText  = "This check only previews the changes. It does not migrate, write, delete or upload anything."
+	upgradeRemovedTableText = "removed table, the new source version no longer provides it"
+	upgradeDataLossText     = "dropped and recreated, existing rows deleted"
+	upgradeSafeModeFallback = "safe mode cannot apply these changes"
+)
 
 func renderUpgradeReport(w io.Writer, r upgradeReport) error {
+	r = sortUpgradeReport(r)
+	impacts := upgradeTableImpacts(r)
+	comparisons := upgradeOutputComparisons(r.Findings)
+	gaps := upgradeCoverageGaps(r)
+	migrateMode := specs.MigrateModeSafe
+	if r.Destination != nil {
+		migrateMode = r.Destination.MigrateMode
+	}
+
 	var b strings.Builder
 	header := fmt.Sprintf("%s %s → %s", r.SourceName, r.FromVersion, r.ToVersion)
 	if r.Destination == nil {
 		b.WriteString(bold.Sprint(header) + "\n")
 	} else {
 		b.WriteString(bold.Sprint(header+" | ") + upgradeDestination.Sprint(r.Destination.VersionString()) + "\n")
-		b.WriteString(upgradeFaint.Sprintf("write_mode: %s | pk_mode: %s", r.Destination.WriteMode, r.Destination.PKMode) + "\n")
+		b.WriteString(upgradeFaint.Sprintf("write_mode: %s | pk_mode: %s | migrate_mode: %s", r.Destination.WriteMode, r.Destination.PKMode, r.Destination.MigrateMode) + "\n")
 	}
 
-	findings := slices.Clone(r.Findings)
-	slices.SortFunc(findings, func(a, b *pluginPb.AssessTables_TableFinding) int {
-		return strings.Compare(a.TableName, b.TableName)
-	})
-	findingsByCategory := make(map[pluginPb.AssessTables_Category][]*pluginPb.AssessTables_TableFinding)
-	gaps := slices.Clone(r.SourceGaps)
-	for _, finding := range findings {
-		findingsByCategory[finding.Category] = append(findingsByCategory[finding.Category], finding)
-		if finding.CoverageIncomplete {
-			gaps = append(gaps, fmt.Sprintf("%s: %s", finding.TableName, cmp.Or(finding.CoverageIncompleteReason, "coverage incomplete")))
-		}
-	}
-
-	var categories []pluginPb.AssessTables_Category
-	for _, category := range upgradeCategoriesBySeverity {
-		removed := category == pluginPb.AssessTables_CATEGORY_TABLE_REMOVED && len(r.RemovedTables) > 0
-		unknownSource := category == pluginPb.AssessTables_CATEGORY_UNKNOWN && r.SourceUnknown
-		if removed || unknownSource || len(findingsByCategory[category]) > 0 {
-			categories = append(categories, category)
-		}
-	}
-
-	if len(categories) == 0 {
-		b.WriteString(upgradeGreen.Sprint("No schema changes affect your selected tables.") + "\n")
+	verdict, verdictColor := upgradeVerdict(r, impacts, comparisons, migrateMode)
+	if verdict == "" {
+		b.WriteString(upgradeGreen.Sprint(upgradeNoChangesText) + "\n")
 		writeUpgradeCoverageGaps(&b, gaps)
 		b.WriteString("\n")
 		_, err := io.WriteString(w, b.String())
 		return err
 	}
-
-	for i, category := range categories {
-		if i > 0 {
-			b.WriteString("\n")
-		}
-		categoryFindings := findingsByCategory[category]
-		if category == pluginPb.AssessTables_CATEGORY_TABLE_REMOVED {
-			writeUpgradeHeading(&b, category, r.RemovedTables, 0)
-			b.WriteString("\n")
-			for _, table := range r.RemovedTables {
-				b.WriteString(bold.Sprint(table) + "\n")
-			}
-			b.WriteString("The new source version no longer provides these tables.\n")
-			continue
-		}
-		tableNames := make([]string, len(categoryFindings))
-		changedColumns := 0
-		for i, finding := range categoryFindings {
-			tableNames[i] = finding.TableName
-			changedColumns += len(changedColumnFindings(finding))
-		}
-		writeUpgradeHeading(&b, category, tableNames, changedColumns)
-		if category == pluginPb.AssessTables_CATEGORY_UNKNOWN {
-			continue
-		}
-		for _, finding := range categoryFindings {
-			writeUpgradeTableFinding(&b, r.Destination.Name, finding, r.Tables[finding.TableName])
-		}
+	if summary := upgradeSummary(r, impacts, migrateMode); summary != "" {
+		verdict += " — " + summary
 	}
+	b.WriteString(verdictColor.Sprint(verdict) + "\n")
+
+	writeUpgradeChanges(&b, impacts, r.RemovedTables)
+	writeUpgradeOutputComparisons(&b, comparisons)
+	writeUpgradeNextSync(&b, impacts, migrateMode)
 	writeUpgradeCoverageGaps(&b, gaps)
 
-	b.WriteString("\n")
-	for _, category := range categories {
-		text := upgradeCategoryTexts[category]
-		b.WriteString(color.New(color.Bold, text.color).Sprint("Action: "+text.action) + "\n")
-	}
-	b.WriteString(upgradeFaint.Sprint("This check only previews the changes. It does not migrate, write, delete or upload anything.") + "\n\n")
+	action, actionColor := upgradeAction(r, impacts, comparisons, migrateMode)
+	b.WriteString("\n" + color.New(color.Bold, actionColor).Sprint("Action: "+action) + "\n")
+	b.WriteString(upgradeFaint.Sprint(upgradePreviewOnlyText) + "\n\n")
 	_, err := io.WriteString(w, b.String())
 	return err
 }
 
-func writeUpgradeHeading(b *strings.Builder, category pluginPb.AssessTables_Category, tableNames []string, changedColumns int) {
-	text := upgradeCategoryTexts[category]
-	heading := text.verdict
-	switch {
-	case len(tableNames) == 1:
-		heading += " — " + tableNames[0]
-	case len(tableNames) > 1 && changedColumns > 0:
-		heading += fmt.Sprintf(" — %d tables / %d columns", len(tableNames), changedColumns)
-	case len(tableNames) > 1:
-		heading += fmt.Sprintf(" — %d tables", len(tableNames))
-	}
-	b.WriteString(color.New(text.color).Sprint(heading) + "\n")
-}
-
-func writeUpgradeTableFinding(b *strings.Builder, destinationName string, finding *pluginPb.AssessTables_TableFinding, table upgradeTablePair) {
-	columns := changedColumnFindings(finding)
-	for _, column := range columns {
-		fmt.Fprintf(b, "\n%s\n", bold.Sprintf("%s.%s", finding.TableName, column.ColumnName))
-		writeUpgradeLine(b, "Source", upgradeTypeChange(sourceColumnType(table.From, column.ColumnName), sourceColumnType(table.To, column.ColumnName)), nil)
-		writeUpgradeLine(b, destinationName, upgradeTypeChange(column.OldType, column.NewType), nil)
-		writeUpgradeBehavior(b, column.Category, column.SafeModeBehavior, column.ForcedModeBehavior, column.Evidence)
-	}
-	safeMode, forcedMode := finding.SafeModeBehavior, finding.ForcedModeBehavior
-	columnsShowTableBehavior := len(columns) > 0 && !slices.ContainsFunc(columns, func(column *pluginPb.AssessTables_ColumnFinding) bool {
-		return column.SafeModeBehavior != safeMode || column.ForcedModeBehavior != forcedMode
+func sortUpgradeReport(r upgradeReport) upgradeReport {
+	r.RemovedTables = slices.Sorted(slices.Values(r.RemovedTables))
+	r.Findings = slices.SortedFunc(slices.Values(r.Findings), func(a, b *pluginPb.AssessTables_TableFinding) int {
+		return strings.Compare(a.TableName, b.TableName)
 	})
-	if columnsShowTableBehavior {
-		safeMode, forcedMode = "", ""
-	}
-	if len(columns) > 0 && safeMode == "" && forcedMode == "" && len(finding.Evidence) == 0 {
-		return
-	}
-	fmt.Fprintf(b, "\n%s\n", bold.Sprint(finding.TableName))
-	writeUpgradeBehavior(b, finding.Category, safeMode, forcedMode, finding.Evidence)
+	return r
 }
 
-func writeUpgradeBehavior(b *strings.Builder, category pluginPb.AssessTables_Category, safeMode, forcedMode string, evidence []*pluginPb.AssessTables_Evidence) {
-	colors := upgradeBehaviorColorsByCategory[category]
-	writeUpgradeLine(b, "Safe mode", safeMode, colors.safeMode)
-	writeUpgradeLine(b, "Forced mode", forcedMode, colors.forcedMode)
+func upgradeTableImpacts(r upgradeReport) []upgradeTableImpact {
+	hasMigrateModes := slices.ContainsFunc(r.Findings, func(finding *pluginPb.AssessTables_TableFinding) bool {
+		return finding.Category == pluginPb.AssessTables_CATEGORY_MANUAL_MIGRATION_REQUIRED ||
+			finding.Category == pluginPb.AssessTables_CATEGORY_AUTOMATICALLY_MIGRATABLE ||
+			finding.SafeModeBehavior != "" || finding.ForcedModeBehavior != ""
+	})
+	var impacts []upgradeTableImpact
+	for _, finding := range r.Findings {
+		if finding.Category == pluginPb.AssessTables_CATEGORY_NO_CHANGE || finding.Category == pluginPb.AssessTables_CATEGORY_UNKNOWN {
+			continue
+		}
+		table := r.Tables[finding.TableName]
+		impact := upgradeTableImpact{
+			Name:     finding.TableName,
+			Category: finding.Category,
+			NewTable: table.From == nil && table.To != nil,
+			Changes:  upgradeColumnChanges(finding, table),
+		}
+		if hasMigrateModes {
+			impact.Outcomes = upgradeOutcomes(impact, finding)
+		}
+		impacts = append(impacts, impact)
+	}
+	return impacts
+}
+
+func upgradeColumnChanges(finding *pluginPb.AssessTables_TableFinding, table upgradeTablePair) []upgradeColumnChange {
+	var changes []upgradeColumnChange
+	for _, column := range finding.Columns {
+		if column.Category == pluginPb.AssessTables_CATEGORY_NO_CHANGE {
+			continue
+		}
+		change := upgradeColumnChange{
+			Kind:    upgradeColumnChanged,
+			Column:  column.ColumnName,
+			OldType: column.OldType,
+			NewType: column.NewType,
+			Reason:  upgradeColumnChangeReason(upgradeTableColumn(table.From, column.ColumnName), upgradeTableColumn(table.To, column.ColumnName)),
+		}
+		switch {
+		case column.OldType == "":
+			change.Kind = upgradeColumnAdded
+		case column.NewType == "":
+			change.Kind = upgradeColumnRemoved
+		}
+		changes = append(changes, change)
+	}
+	return changes
+}
+
+func upgradeTableColumn(table *schema.Table, columnName string) *schema.Column {
+	if table == nil {
+		return nil
+	}
+	return table.Columns.Get(columnName)
+}
+
+func upgradeColumnChangeReason(oldColumn, newColumn *schema.Column) string {
+	switch {
+	case oldColumn == nil && newColumn != nil && newColumn.PrimaryKey:
+		return "part of the primary key"
+	case oldColumn != nil && newColumn == nil && oldColumn.PrimaryKey:
+		return "was part of the primary key"
+	case oldColumn == nil || newColumn == nil:
+		return ""
+	case !oldColumn.PrimaryKey && newColumn.PrimaryKey:
+		return "now part of the primary key"
+	case oldColumn.PrimaryKey && !newColumn.PrimaryKey:
+		return "primary key removed"
+	case !oldColumn.NotNull && newColumn.NotNull:
+		return "now NOT NULL"
+	}
+	return ""
+}
+
+func upgradeOutcomes(impact upgradeTableImpact, finding *pluginPb.AssessTables_TableFinding) map[string]upgradeOutcome {
+	switch impact.Category {
+	case pluginPb.AssessTables_CATEGORY_MANUAL_MIGRATION_REQUIRED:
+		return map[string]upgradeOutcome{
+			specs.MigrateModeSafe.String():   {upgradeOutcomeFails, "fails: " + upgradeSafeModeFailure(impact.Changes, finding)},
+			specs.MigrateModeForced.String(): {upgradeOutcomeDataLoss, upgradeDataLossText},
+		}
+	case pluginPb.AssessTables_CATEGORY_AUTOMATICALLY_MIGRATABLE:
+		applied := upgradeOutcome{upgradeOutcomeApplied, "migrated in place"}
+		if impact.NewTable {
+			applied.Text = "created"
+		}
+		return map[string]upgradeOutcome{specs.MigrateModeSafe.String(): applied, specs.MigrateModeForced.String(): applied}
+	}
+	return nil
+}
+
+func upgradeSafeModeFailure(changes []upgradeColumnChange, finding *pluginPb.AssessTables_TableFinding) string {
+	switch {
+	case slices.ContainsFunc(changes, func(change upgradeColumnChange) bool { return strings.Contains(change.Reason, "primary key") }):
+		return "safe mode cannot change a primary key"
+	case slices.ContainsFunc(changes, func(change upgradeColumnChange) bool {
+		return change.Kind == upgradeColumnChanged && change.OldType != change.NewType
+	}):
+		return "safe mode cannot change a column type"
+	case slices.ContainsFunc(changes, func(change upgradeColumnChange) bool { return change.Reason == "now NOT NULL" }):
+		return "safe mode cannot make a column NOT NULL"
+	}
+	return cmp.Or(finding.SafeModeBehavior, upgradeSafeModeFallback)
+}
+
+func upgradeOutputComparisons(findings []*pluginPb.AssessTables_TableFinding) []*pluginPb.AssessTables_TableFinding {
+	var comparisons []*pluginPb.AssessTables_TableFinding
+	for _, finding := range findings {
+		hasEvidence := len(finding.Evidence) > 0 || slices.ContainsFunc(finding.Columns, func(column *pluginPb.AssessTables_ColumnFinding) bool {
+			return len(column.Evidence) > 0
+		})
+		if finding.Category == pluginPb.AssessTables_CATEGORY_NO_CHANGE && hasEvidence {
+			comparisons = append(comparisons, finding)
+		}
+	}
+	return comparisons
+}
+
+func upgradeCoverageGaps(r upgradeReport) []string {
+	gaps := slices.Clone(r.SourceGaps)
+	for _, finding := range r.Findings {
+		if finding.CoverageIncomplete {
+			gaps = append(gaps, fmt.Sprintf("%s: %s", finding.TableName, cmp.Or(finding.CoverageIncompleteReason, "coverage incomplete")))
+		}
+	}
+	return gaps
+}
+
+func upgradeImpactsWithOutcome(impacts []upgradeTableImpact, migrateMode specs.MigrateMode, result upgradeOutcomeResult) []upgradeTableImpact {
+	return slices.DeleteFunc(slices.Clone(impacts), func(impact upgradeTableImpact) bool {
+		return impact.Outcomes[migrateMode.String()].Result != result
+	})
+}
+
+func upgradeHasCategory(impacts []upgradeTableImpact, category pluginPb.AssessTables_Category) bool {
+	return slices.ContainsFunc(impacts, func(impact upgradeTableImpact) bool { return impact.Category == category })
+}
+
+func upgradeUnknownTables(r upgradeReport) int {
+	unknown := 0
+	for _, finding := range r.Findings {
+		if finding.Category == pluginPb.AssessTables_CATEGORY_UNKNOWN {
+			unknown++
+		}
+	}
+	return unknown
+}
+
+func upgradeVerdict(r upgradeReport, impacts []upgradeTableImpact, comparisons []*pluginPb.AssessTables_TableFinding, migrateMode specs.MigrateMode) (string, *color.Color) {
+	needsReview := len(upgradeImpactsWithOutcome(impacts, migrateMode, upgradeOutcomeFails)) > 0 ||
+		len(upgradeImpactsWithOutcome(impacts, migrateMode, upgradeOutcomeDataLoss)) > 0
+	switch {
+	case needsReview:
+		return "REVIEW REQUIRED", upgradeRed
+	case len(r.RemovedTables) > 0:
+		return "SELECTED TABLES REMOVED", upgradeYellow
+	case upgradeHasCategory(impacts, pluginPb.AssessTables_CATEGORY_FILE_SCHEMA_CHANGED):
+		return "FILE SCHEMA CHANGED", upgradeYellow
+	case r.SourceUnknown || upgradeUnknownTables(r) > 0:
+		return "UNKNOWN", upgradeYellow
+	case len(impacts) > 0:
+		return "AUTOMATICALLY MIGRATABLE", upgradeYellow
+	case len(comparisons) > 0:
+		return upgradeNoOutputDiffText, upgradeGreen
+	}
+	return "", nil
+}
+
+func upgradeSummary(r upgradeReport, impacts []upgradeTableImpact, migrateMode specs.MigrateMode) string {
+	var failing, lossy, changed, added int
+	for _, impact := range impacts {
+		switch {
+		case impact.Outcomes[migrateMode.String()].Result == upgradeOutcomeFails:
+			failing++
+		case impact.Outcomes[migrateMode.String()].Result == upgradeOutcomeDataLoss:
+			lossy++
+		case impact.NewTable:
+			added++
+		default:
+			changed++
+		}
+	}
+	var parts []string
+	for _, part := range []struct {
+		count            int
+		singular, plural string
+	}{
+		{failing, "table needs a manual migration", "tables need a manual migration"},
+		{lossy, "table will be recreated, deleting existing rows", "tables will be recreated, deleting existing rows"},
+		{changed, "changed table", "changed tables"},
+		{added, "new table", "new tables"},
+		{len(r.RemovedTables), "removed table", "removed tables"},
+		{upgradeUnknownTables(r), "table not assessed", "tables not assessed"},
+	} {
+		switch {
+		case part.count == 1:
+			parts = append(parts, "1 "+part.singular)
+		case part.count > 1:
+			parts = append(parts, fmt.Sprintf("%d %s", part.count, part.plural))
+		}
+	}
+	return strings.Join(parts, ", ")
+}
+
+func upgradeAction(r upgradeReport, impacts []upgradeTableImpact, comparisons []*pluginPb.AssessTables_TableFinding, migrateMode specs.MigrateMode) (string, color.Attribute) {
+	if failing := upgradeImpactsWithOutcome(impacts, migrateMode, upgradeOutcomeFails); len(failing) > 0 {
+		possessive := "its"
+		if len(failing) > 1 {
+			possessive = "their"
+		}
+		return fmt.Sprintf("migrate %s manually before upgrading, or switch to migrate_mode: forced and accept losing %s rows.", upgradeTableList(failing), possessive), color.FgRed
+	}
+	if lossy := upgradeImpactsWithOutcome(impacts, migrateMode, upgradeOutcomeDataLoss); len(lossy) > 0 {
+		return fmt.Sprintf("the next sync drops and recreates %s and deletes existing rows; back up any data you need before upgrading.", upgradeTableList(lossy)), color.FgRed
+	}
+	switch {
+	case len(r.RemovedTables) > 0:
+		return "remove explicit selections and update dependent consumers.", color.FgYellow
+	case upgradeHasCategory(impacts, pluginPb.AssessTables_CATEGORY_FILE_SCHEMA_CHANGED):
+		return "review readers that combine old and new files.", color.FgYellow
+	case r.SourceUnknown || upgradeUnknownTables(r) > 0:
+		return "review the source changelog for what this check could not assess.", color.FgYellow
+	case len(impacts) > 0 && migrateMode == specs.MigrateModeForced:
+		return "no action needed; the next sync applies these changes.", color.FgGreen
+	case len(impacts) > 0:
+		return "use safe migration.", color.FgGreen
+	case len(comparisons) > 0:
+		return "no action needed; the output is the same for equivalent values.", color.FgGreen
+	}
+	return "no action needed.", color.FgGreen
+}
+
+func upgradeTableList(impacts []upgradeTableImpact) string {
+	if len(impacts) > 3 {
+		return fmt.Sprintf("these %d tables", len(impacts))
+	}
+	names := make([]string, len(impacts))
+	for i, impact := range impacts {
+		names[i] = impact.Name
+	}
+	return strings.Join(names, ", ")
+}
+
+func writeUpgradeChanges(b *strings.Builder, impacts []upgradeTableImpact, removedTables []string) {
+	if len(impacts) == 0 && len(removedTables) == 0 {
+		return
+	}
+	tableWidth := 0
+	for _, impact := range impacts {
+		tableWidth = max(tableWidth, len(impact.Name))
+	}
+	for _, table := range removedTables {
+		tableWidth = max(tableWidth, len(table))
+	}
+
+	b.WriteString("\nChanges\n")
+	for _, impact := range impacts {
+		if impact.NewTable {
+			fmt.Fprintf(b, "  %s%s%s\n", bold.Sprint(impact.Name), strings.Repeat(" ", tableWidth-len(impact.Name)+3), upgradeGreen.Sprint("new table"))
+			continue
+		}
+		b.WriteString("  " + bold.Sprint(impact.Name) + "\n")
+		writeUpgradeColumnChanges(b, impact.Changes)
+	}
+	for _, table := range removedTables {
+		fmt.Fprintf(b, "  %s%s%s\n", bold.Sprint(table), strings.Repeat(" ", tableWidth-len(table)+3), upgradeRed.Sprint(upgradeRemovedTableText))
+	}
+}
+
+func writeUpgradeColumnChanges(b *strings.Builder, changes []upgradeColumnChange) {
+	columnWidth, typeWidth := 0, 0
+	for _, change := range changes {
+		columnWidth = max(columnWidth, len(change.Column))
+		typeWidth = max(typeWidth, len([]rune(upgradeChangeType(change))))
+	}
+	for _, change := range changes {
+		marker, description, lineColor := "~", cmp.Or(change.Reason, "type changed"), upgradeYellow
+		switch change.Kind {
+		case upgradeColumnAdded:
+			marker, description, lineColor = "+", upgradeJoinNonEmpty("new column", change.Reason), upgradeGreen
+		case upgradeColumnRemoved:
+			marker, description, lineColor = "-", upgradeJoinNonEmpty("column removed", change.Reason), upgradeRed
+		}
+		changeType := upgradeChangeType(change)
+		line := fmt.Sprintf("%s %-*s   %s%s   %s", marker, columnWidth, change.Column, changeType, strings.Repeat(" ", typeWidth-len([]rune(changeType))), description)
+		b.WriteString("    " + lineColor.Sprint(line) + "\n")
+	}
+}
+
+func upgradeChangeType(change upgradeColumnChange) string {
+	if change.OldType == "" || change.NewType == "" || change.OldType == change.NewType {
+		return cmp.Or(change.NewType, change.OldType)
+	}
+	return change.OldType + " → " + change.NewType
+}
+
+func upgradeJoinNonEmpty(parts ...string) string {
+	return strings.Join(slices.DeleteFunc(parts, func(part string) bool { return part == "" }), ", ")
+}
+
+func writeUpgradeOutputComparisons(b *strings.Builder, comparisons []*pluginPb.AssessTables_TableFinding) {
+	if len(comparisons) == 0 {
+		return
+	}
+	b.WriteString("\nOutput comparison\n")
+	for _, finding := range comparisons {
+		for _, column := range finding.Columns {
+			if len(column.Evidence) == 0 {
+				continue
+			}
+			typeChange := upgradeChangeType(upgradeColumnChange{OldType: column.OldType, NewType: column.NewType})
+			fmt.Fprintf(b, "  %s   %s\n", bold.Sprintf("%s.%s", finding.TableName, column.ColumnName), typeChange)
+			writeUpgradeEvidence(b, column.Evidence)
+		}
+		if len(finding.Evidence) > 0 {
+			b.WriteString("  " + bold.Sprint(finding.TableName) + "\n")
+			writeUpgradeEvidence(b, finding.Evidence)
+		}
+	}
+	b.WriteString("  " + upgradeGreen.Sprint(upgradeNoOutputDiffText) + "\n")
+	b.WriteString("  " + upgradeNotAssessedText + "\n")
+}
+
+func writeUpgradeEvidence(b *strings.Builder, evidence []*pluginPb.AssessTables_Evidence) {
 	for _, e := range evidence {
-		writeUpgradeLine(b, "Synthetic value", e.SyntheticValue, nil)
-		writeUpgradeLine(b, "Before", e.Before, nil)
-		writeUpgradeLine(b, "After", e.After, nil)
+		writeUpgradeEvidenceLine(b, "Synthetic value", e.SyntheticValue)
+		writeUpgradeEvidenceLine(b, "Before", e.Before)
+		writeUpgradeEvidenceLine(b, "After", e.After)
 	}
 }
 
-func writeUpgradeLine(b *strings.Builder, label, value string, valueColor *color.Color) {
-	if value == "" {
+func writeUpgradeEvidenceLine(b *strings.Builder, label, value string) {
+	if value != "" {
+		fmt.Fprintf(b, "    %s %s\n", upgradeFaint.Sprintf("%-16s", label+":"), value)
+	}
+}
+
+func writeUpgradeNextSync(b *strings.Builder, impacts []upgradeTableImpact, configured specs.MigrateMode) {
+	withOutcomes := slices.DeleteFunc(slices.Clone(impacts), func(impact upgradeTableImpact) bool { return impact.Outcomes == nil })
+	if len(withOutcomes) == 0 {
 		return
 	}
-	if valueColor != nil {
-		value = valueColor.Sprint(value)
+	tableWidth := 0
+	for _, impact := range withOutcomes {
+		tableWidth = max(tableWidth, len(impact.Name))
 	}
-	fmt.Fprintf(b, "  %s %s\n", upgradeFaint.Sprintf("%-12s", label+":"), value)
+
+	modes := []specs.MigrateMode{configured}
+	for _, mode := range upgradeMigrateModes {
+		if mode != configured {
+			modes = append(modes, mode)
+		}
+	}
+
+	b.WriteString("\nNext sync\n")
+	for _, mode := range modes {
+		if mode != configured && upgradeOutcomesMatch(withOutcomes, mode, configured) {
+			fmt.Fprintf(b, "  %s\n", bold.Sprintf("migrate_mode: %s — same as %s", mode, configured))
+			continue
+		}
+		label := "migrate_mode: " + mode.String()
+		if mode == configured {
+			label += " (your config)"
+		}
+		b.WriteString("  " + bold.Sprint(label) + "\n")
+		for _, impact := range withOutcomes {
+			outcome := impact.Outcomes[mode.String()]
+			marker, lineColor := "✓", upgradeGreen
+			switch outcome.Result {
+			case upgradeOutcomeFails:
+				marker, lineColor = "✗", upgradeRed
+			case upgradeOutcomeDataLoss:
+				marker, lineColor = "!", upgradeYellow
+			}
+			b.WriteString("    " + lineColor.Sprintf("%s %-*s   %s", marker, tableWidth, impact.Name, outcome.Text) + "\n")
+		}
+	}
+}
+
+func upgradeOutcomesMatch(impacts []upgradeTableImpact, a, b specs.MigrateMode) bool {
+	return !slices.ContainsFunc(impacts, func(impact upgradeTableImpact) bool {
+		return impact.Outcomes[a.String()] != impact.Outcomes[b.String()]
+	})
 }
 
 func writeUpgradeCoverageGaps(b *strings.Builder, gaps []string) {
 	if len(gaps) == 0 {
 		return
 	}
-	b.WriteString("\nCoverage gaps:\n")
+	b.WriteString("\nCoverage gaps\n")
 	for _, gap := range gaps {
 		b.WriteString("  " + upgradeYellow.Sprint(gap) + "\n")
 	}
-}
-
-func changedColumnFindings(finding *pluginPb.AssessTables_TableFinding) []*pluginPb.AssessTables_ColumnFinding {
-	return slices.DeleteFunc(slices.Clone(finding.Columns), func(column *pluginPb.AssessTables_ColumnFinding) bool {
-		return column.Category == pluginPb.AssessTables_CATEGORY_NO_CHANGE
-	})
-}
-
-func upgradeTypeChange(oldType, newType string) string {
-	if oldType == "" && newType == "" {
-		return ""
-	}
-	return fmt.Sprintf("%s → %s", upgradeRed.Sprint(cmp.Or(oldType, "none")), upgradeGreen.Sprint(cmp.Or(newType, "none")))
-}
-
-func sourceColumnType(table *schema.Table, columnName string) string {
-	if table == nil {
-		return ""
-	}
-	column := table.Columns.Get(columnName)
-	if column == nil {
-		return ""
-	}
-	return column.Type.String()
 }
 
 func upgradeTablesByName(tables []upgradeTableSchemas) (map[string]upgradeTablePair, error) {

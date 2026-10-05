@@ -361,6 +361,6 @@ func TestUpgradeCheck(t *testing.T) {
 	require.NoError(t, cmd.Execute())
 
 	report := out.String()
-	require.Contains(t, report, "test v4.5.1 → v4.7.0 | test (cloudquery/test@v2.5.1)\nwrite_mode: overwrite-delete-stale | pk_mode: default\nUNKNOWN — ")
+	require.Contains(t, report, "test v4.5.1 → v4.7.0 | test (cloudquery/test@v2.5.1)\nwrite_mode: overwrite-delete-stale | pk_mode: default | migrate_mode: safe\nUNKNOWN — ")
 	require.Contains(t, report, "test_some_table: "+destinationNoAssessmentReason)
 }
