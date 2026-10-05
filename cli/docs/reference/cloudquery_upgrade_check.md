@@ -26,6 +26,7 @@ cloudquery upgrade check ./config.yml --source datadog --to v6.0.0
 ```
   -h, --help             help for check
       --license string   set offline license file
+      --output string    Output format. One of: text, json (default "text")
       --source string    Name of the source to upgrade, as set in the configuration
       --to string        Source plugin version to upgrade to
 ```

@@ -390,20 +390,23 @@ func TestUpgradeCheckRFCCases(t *testing.T) {
 			configPath := filepath.Join("testdata", "upgrade-check", tc.name+".yml")
 			specReader, err := specs.NewSpecReader([]string{configPath})
 			require.NoError(t, err)
-			defer CloseLogFile()
+			runCheck := func(output string) string {
+				defer CloseLogFile()
+				cmd := NewCmdRoot()
+				var out bytes.Buffer
+				cmd.SetOut(&out)
+				cmd.SetArgs([]string{
+					"upgrade", "check", configPath, "--source", specReader.Sources[0].Name, "--to", tc.toVersion, "--output", output,
+					"--cq-dir", cqDir, "--log-file-name", filepath.Join(t.TempDir(), "cloudquery.log"),
+				})
+				require.NoError(t, cmd.Execute())
+				return strings.ReplaceAll(out.String(), specReader.Destinations[0].Version, "<version>")
+			}
 
-			cmd := NewCmdRoot()
-			var out bytes.Buffer
-			cmd.SetOut(&out)
-			cmd.SetArgs([]string{
-				"upgrade", "check", configPath, "--source", specReader.Sources[0].Name, "--to", tc.toVersion,
-				"--cq-dir", cqDir, "--log-file-name", filepath.Join(t.TempDir(), "cloudquery.log"),
-			})
-			require.NoError(t, cmd.Execute())
-
-			report := strings.ReplaceAll(out.String(), specReader.Destinations[0].Version, "<version>")
-			require.Contains(t, report, "\n"+tc.wantVerdict+"\n")
-			requireUpgradeCheckGolden(t, tc.name+".txt", report)
+			text := runCheck(upgradeOutputText)
+			require.Contains(t, text, "\n"+tc.wantVerdict+"\n")
+			requireUpgradeCheckGolden(t, tc.name+".txt", text)
+			requireUpgradeCheckGolden(t, tc.name+".json", runCheck(upgradeOutputJSON))
 		})
 	}
 }
