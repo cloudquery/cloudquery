@@ -3,7 +3,6 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"io"
 	"slices"
 	"strings"
 	"time"
@@ -141,16 +140,13 @@ func upgradeCheck(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return err
 	}
-	return runUpgradeCheck(ctx, cmd.OutOrStdout(), *sourceSpec, destinationSpecs, transformersForDestination, cqColumnsNotNull, from, to, opts...)
-}
-
-func runUpgradeCheck(ctx context.Context, out io.Writer, sourceSpec specs.Source, destinationSpecs []*specs.Destination, transformersForDestination map[string][]*specs.Transformer, cqColumnsNotNull bool, from, to upgradeSourceTables, opts ...managedplugin.Option) error {
 	report := upgradeReport{
 		SourceName:  sourceSpec.Name,
 		FromVersion: from.Version,
 		ToVersion:   to.Version,
 		SourceGaps:  upgradeSourceGaps(sourceSpec.Name, from, to),
 	}
+	out := cmd.OutOrStdout()
 	if from.UnknownReason != "" || to.UnknownReason != "" {
 		report.SourceUnknown = true
 		if err := renderUpgradeReport(out, report); err != nil {
@@ -159,14 +155,14 @@ func runUpgradeCheck(ctx context.Context, out io.Writer, sourceSpec specs.Source
 		return upgradeExitError(cmd, upgradeExitCode(report))
 	}
 
-	selection, err := selectUpgradeTables(sourceSpec, from.Tables, to.Tables)
+	selection, err := selectUpgradeTables(*sourceSpec, from.Tables, to.Tables)
 	if err != nil {
 		return err
 	}
 	report.RemovedTables = selection.RemovedTables
 	exitCode := 0
 	for _, destinationSpec := range destinationSpecs {
-		tables, findings, err := assessDestination(ctx, sourceSpec, *destinationSpec, transformersForDestination[destinationSpec.Name], cqColumnsNotNull, selection.Pairs, opts...)
+		tables, findings, err := assessDestination(ctx, *sourceSpec, *destinationSpec, transformersForDestination[destinationSpec.Name], cqColumnsNotNull, selection.Pairs, opts...)
 		if err != nil {
 			return err
 		}

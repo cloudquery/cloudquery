@@ -1,20 +1,21 @@
-kind: source
+kind: "source"
 spec:
-  name: okta
-  path: cloudquery/okta
-  registry: cloudquery
-  version: v6.8.2
+  name: "okta"
+  path: "cloudquery/okta"
+  registry: "cloudquery"
+  version: "v6.8.2"
   tables: ["*"]
-  destinations: [postgresql]
+  destinations: ["postgresql"]
   spec:
-    domain: https://placeholder.okta.com
-    token: placeholder
+    domain: "https://placeholder.okta.com"
+    token: "placeholder"
 ---
-kind: destination
+kind: "destination"
 spec:
-  name: postgresql
-  path: ${UPGRADE_CHECK_POSTGRESQL_PATH}
-  registry: local
-  write_mode: append
+  name: "postgresql"
+  path: "cloudquery/postgresql"
+  registry: "cloudquery"
+  version: "v8.16.0" # latest version of postgresql plugin
+  write_mode: "append"
   spec:
-    connection_string: postgres://localhost:1/unreachable
+    connection_string: "postgres://localhost:1/unreachable"
