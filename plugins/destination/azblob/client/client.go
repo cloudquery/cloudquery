@@ -78,5 +78,8 @@ func New(ctx context.Context, logger zerolog.Logger, s []byte, opts plugin.NewCl
 }
 
 func (c *Client) Close(ctx context.Context) error {
+	if c.writer == nil {
+		return nil
+	}
 	return c.writer.Close(ctx)
 }

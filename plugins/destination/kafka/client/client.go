@@ -114,5 +114,8 @@ func New(_ context.Context, logger zerolog.Logger, s []byte, opts plugin.NewClie
 }
 
 func (c *Client) Close(_ context.Context) error {
+	if c.producer == nil {
+		return nil
+	}
 	return c.producer.Close()
 }
