@@ -35,7 +35,7 @@ func datadogTagsReport(destination *specs.Destination) upgradeReport {
 	tagsTable := func(name string, tagsType arrow.DataType) *schema.Table {
 		return &schema.Table{Name: name, Columns: schema.ColumnList{{Name: "tags", Type: tagsType}}}
 	}
-	tagsFinding := func(table string) *pluginPb.AssessTables_TableFinding {
+	tagsFinding := func(table, column string) *pluginPb.AssessTables_TableFinding {
 		return &pluginPb.AssessTables_TableFinding{
 			TableName:          table,
 			Category:           pluginPb.AssessTables_CATEGORY_MANUAL_MIGRATION_REQUIRED,
@@ -43,7 +43,7 @@ func datadogTagsReport(destination *specs.Destination) upgradeReport {
 			ForcedModeBehavior: "drops and recreates the table, deleting existing rows",
 			Columns: []*pluginPb.AssessTables_ColumnFinding{
 				{ColumnName: "id", Category: pluginPb.AssessTables_CATEGORY_NO_CHANGE, OldType: "text", NewType: "text"},
-				{ColumnName: "tags", Category: pluginPb.AssessTables_CATEGORY_MANUAL_MIGRATION_REQUIRED, OldType: "text[]", NewType: "jsonb"},
+				{ColumnName: column, Category: pluginPb.AssessTables_CATEGORY_MANUAL_MIGRATION_REQUIRED, OldType: "text[]", NewType: "jsonb"},
 			},
 		}
 	}
@@ -57,8 +57,8 @@ func datadogTagsReport(destination *specs.Destination) upgradeReport {
 			"datadog_dashboards": {From: tagsTable("datadog_dashboards", arrow.ListOf(arrow.BinaryTypes.String)), To: tagsTable("datadog_dashboards", types.ExtensionTypes.JSON)},
 		},
 		Findings: []*pluginPb.AssessTables_TableFinding{
-			tagsFinding("datadog_monitors"),
-			tagsFinding("datadog_dashboards"),
+			tagsFinding("datadog_monitors", "tags"),
+			tagsFinding("datadog_dashboards", "monitor_tags"),
 			{TableName: "datadog_users", Category: pluginPb.AssessTables_CATEGORY_NO_CHANGE},
 		},
 	}
@@ -102,6 +102,25 @@ func oktaReport(destination *specs.Destination, policyRulesCategory pluginPb.Ass
 }
 
 func s3JSONReport() upgradeReport {
+	tagsFinding := func(table, column string) *pluginPb.AssessTables_TableFinding {
+		return &pluginPb.AssessTables_TableFinding{
+			TableName: table,
+			Category:  pluginPb.AssessTables_CATEGORY_NO_CHANGE,
+			Columns: []*pluginPb.AssessTables_ColumnFinding{
+				{ColumnName: "id", Category: pluginPb.AssessTables_CATEGORY_NO_CHANGE},
+				{
+					ColumnName: column,
+					Category:   pluginPb.AssessTables_CATEGORY_NO_CHANGE,
+					OldType:    "list<item: utf8, nullable>",
+					NewType:    "json",
+					Evidence: []*pluginPb.AssessTables_Evidence{
+						{SyntheticValue: `["env:prod"]`, Before: `{"` + column + `":["env:prod"]}`, After: `{"` + column + `":["env:prod"]}`},
+						{SyntheticValue: `null`, Before: `{"` + column + `":null}`, After: `{"` + column + `":null}`},
+					},
+				},
+			},
+		}
+	}
 	return upgradeReport{
 		SourceName:  "datadog",
 		FromVersion: "v5.19.10",
@@ -109,20 +128,10 @@ func s3JSONReport() upgradeReport {
 		Destination: s3DestinationSpec(),
 		Findings: []*pluginPb.AssessTables_TableFinding{
 			{TableName: "datadog_users", Category: pluginPb.AssessTables_CATEGORY_NO_CHANGE},
-			{
-				TableName: "datadog_monitors",
-				Category:  pluginPb.AssessTables_CATEGORY_NO_CHANGE,
-				Columns: []*pluginPb.AssessTables_ColumnFinding{
-					{ColumnName: "id", Category: pluginPb.AssessTables_CATEGORY_NO_CHANGE},
-					{
-						ColumnName: "tags",
-						Category:   pluginPb.AssessTables_CATEGORY_NO_CHANGE,
-						OldType:    "list<item: utf8, nullable>",
-						NewType:    "json",
-						Evidence:   []*pluginPb.AssessTables_Evidence{{SyntheticValue: `["env:prod"]`, Before: `{"tags":["env:prod"]}`, After: `{"tags":["env:prod"]}`}},
-					},
-				},
-			},
+			tagsFinding("datadog_monitors", "tags"),
+			tagsFinding("datadog_downtimes", "monitor_tags"),
+			tagsFinding("datadog_slos", "tags"),
+			tagsFinding("datadog_synthetics", "tags"),
 		},
 	}
 }
@@ -142,9 +151,9 @@ REVIEW REQUIRED — 2 tables need a manual migration
 
 Changes
   datadog_dashboards
-    ~ tags   text[] → jsonb   type changed
+    ~ monitor_tags   text[] → jsonb   type changed
   datadog_monitors
-    ~ tags   text[] → jsonb   type changed
+    ~ tags           text[] → jsonb   type changed
 
 Next sync
   migrate_mode: safe (your config)
@@ -168,9 +177,9 @@ REVIEW REQUIRED — 2 tables will be recreated, deleting existing rows
 
 Changes
   datadog_dashboards
-    ~ tags   text[] → jsonb   type changed
+    ~ monitor_tags   text[] → jsonb   type changed
   datadog_monitors
-    ~ tags   text[] → jsonb   type changed
+    ~ tags           text[] → jsonb   type changed
 
 Next sync
   migrate_mode: forced (your config)
@@ -252,7 +261,7 @@ This check only previews the changes. It does not migrate, write, delete or uplo
 				},
 			},
 			want: `gcp v22.1.2 → v23.0.0 | postgresql (cloudquery/postgresql@v8.14.0)
-write_mode: overwrite-delete-stale | pk_mode: default | migrate_mode: safe
+write_mode: overwrite-delete-stale | pk_mode: default
 SELECTED TABLES REMOVED — 2 removed tables, 2 tables not assessed
 
 Changes
@@ -286,7 +295,7 @@ This check only previews the changes. It does not migrate, write, delete or uplo
 				}},
 			},
 			want: `cloudflare v11.4.0 → v12.0.0 | s3 (cloudquery/s3@v7.0.0)
-write_mode: overwrite-delete-stale | pk_mode: default | migrate_mode: safe
+write_mode: overwrite-delete-stale | pk_mode: default
 FILE SCHEMA CHANGED — 1 changed table
 
 Changes
@@ -303,14 +312,57 @@ This check only previews the changes. It does not migrate, write, delete or uplo
 			name:   "file output unchanged for equivalent test values",
 			report: s3JSONReport(),
 			want: `datadog v5.19.10 → v6.0.0 | s3 (cloudquery/s3@v7.0.0)
-write_mode: overwrite-delete-stale | pk_mode: default | migrate_mode: safe
+write_mode: overwrite-delete-stale | pk_mode: default
 NO OUTPUT DIFFERENCE DETECTED for equivalent test values
 
 Output comparison
-  datadog_monitors.tags   list<item: utf8, nullable> → json
+  list<item: utf8, nullable> → json   4 columns: datadog_downtimes.monitor_tags, datadog_monitors.tags, datadog_slos.tags, …
+    Synthetic value: ["env:prod"]
+    Before:          {"monitor_tags":["env:prod"]}
+    After:           {"monitor_tags":["env:prod"]}
+    2 equivalent test values: identical output
+  NO OUTPUT DIFFERENCE DETECTED for equivalent test values
+  Actual source values and behavior were not assessed.
+
+Action: no action needed; the output is the same for equivalent values.
+This check only previews the changes. It does not migrate, write, delete or upload anything.
+
+`,
+		},
+		{
+			name: "output that differs is listed in full",
+			report: upgradeReport{
+				SourceName:  "datadog",
+				FromVersion: "v5.19.10",
+				ToVersion:   "v6.0.0",
+				Destination: s3DestinationSpec(),
+				Findings: []*pluginPb.AssessTables_TableFinding{{
+					TableName: "datadog_monitors",
+					Category:  pluginPb.AssessTables_CATEGORY_NO_CHANGE,
+					Columns: []*pluginPb.AssessTables_ColumnFinding{{
+						ColumnName: "tags",
+						Category:   pluginPb.AssessTables_CATEGORY_NO_CHANGE,
+						OldType:    "list<item: utf8, nullable>",
+						NewType:    "json",
+						Evidence: []*pluginPb.AssessTables_Evidence{
+							{SyntheticValue: `["env:prod"]`, Before: `{"tags":["env:prod"]}`, After: `{"tags":["env:prod"]}`},
+							{SyntheticValue: `[]`, Before: `{"tags":[]}`, After: `{"tags":null}`},
+						},
+					}},
+				}},
+			},
+			want: `datadog v5.19.10 → v6.0.0 | s3 (cloudquery/s3@v7.0.0)
+write_mode: overwrite-delete-stale | pk_mode: default
+NO OUTPUT DIFFERENCE DETECTED for equivalent test values
+
+Output comparison
+  list<item: utf8, nullable> → json   datadog_monitors.tags
     Synthetic value: ["env:prod"]
     Before:          {"tags":["env:prod"]}
     After:           {"tags":["env:prod"]}
+    Synthetic value: []
+    Before:          {"tags":[]}
+    After:           {"tags":null}
   NO OUTPUT DIFFERENCE DETECTED for equivalent test values
   Actual source values and behavior were not assessed.
 
@@ -329,7 +381,7 @@ This check only previews the changes. It does not migrate, write, delete or uplo
 				Findings:    []*pluginPb.AssessTables_TableFinding{{TableName: "datadog_users", Category: pluginPb.AssessTables_CATEGORY_NO_CHANGE}},
 			},
 			want: `datadog v5.19.10 → v6.0.0 | postgresql (cloudquery/postgresql@v8.14.0)
-write_mode: overwrite-delete-stale | pk_mode: default | migrate_mode: safe
+write_mode: overwrite-delete-stale | pk_mode: default
 No schema changes affect your selected tables.
 
 `,
@@ -393,7 +445,7 @@ func TestRenderUpgradeReportWithColor(t *testing.T) {
 		{
 			name:     "type change",
 			report:   datadogTagsReport(postgresqlDestinationSpec(specs.WriteModeOverwriteDeleteStale, specs.MigrateModeSafe)),
-			contains: []string{"    \x1b[33m~ tags   text[] → jsonb   type changed\x1b[0m\n"},
+			contains: []string{"    \x1b[33m~ tags           text[] → jsonb   type changed\x1b[0m\n"},
 		},
 		{
 			name: "removed tables, coverage gaps and file changes",
@@ -420,7 +472,7 @@ func TestRenderUpgradeReportWithColor(t *testing.T) {
 			report: s3JSONReport(),
 			contains: []string{
 				"\x1b[32mNO OUTPUT DIFFERENCE DETECTED for equivalent test values\x1b[0m\n",
-				"  \x1b[1mdatadog_monitors.tags\x1b[22m   list<item: utf8, nullable> → json\n",
+				"  list<item: utf8, nullable> → json   \x1b[1m4 columns: datadog_downtimes.monitor_tags, datadog_monitors.tags, datadog_slos.tags, …\x1b[22m\n",
 				"    \x1b[2mSynthetic value:\x1b[22m [\"env:prod\"]\n",
 				"\x1b[1;32mAction: no action needed; the output is the same for equivalent values.\x1b[22;0m\n",
 			},
