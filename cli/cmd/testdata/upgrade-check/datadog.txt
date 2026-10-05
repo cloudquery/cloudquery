@@ -1,49 +1,38 @@
 datadog v5.19.10 → v6.0.0 | postgresql (cloudquery/postgresql@<version>)
-write_mode: overwrite-delete-stale | pk_mode: default
-REVIEW REQUIRED — 6 tables / 7 columns
+write_mode: overwrite-delete-stale | pk_mode: default | migrate_mode: safe
+REVIEW REQUIRED — 6 tables need a manual migration
 
-datadog_downtimes.monitor_tags
-  Source:      list<item: utf8, nullable> → json
-  postgresql:  text[] → jsonb
-  Safe mode:   rejects the changes
-  Forced mode: drops and recreates the table, deleting existing rows
+Changes
+  datadog_downtimes
+    ~ monitor_tags   text[] → jsonb   type changed
+  datadog_global_variables
+    ~ tags   text[] → jsonb   type changed
+  datadog_monitor_downtimes
+    ~ monitor_tags   text[] → jsonb   type changed
+  datadog_monitors
+    ~ tags   text[] → jsonb   type changed
+  datadog_slos
+    ~ monitor_tags   text[] → jsonb   type changed
+    ~ tags           text[] → jsonb   type changed
+  datadog_synthetics
+    ~ tags   text[] → jsonb   type changed
 
-datadog_global_variables.tags
-  Source:      list<item: utf8, nullable> → json
-  postgresql:  text[] → jsonb
-  Safe mode:   rejects the changes
-  Forced mode: drops and recreates the table, deleting existing rows
+Next sync
+  migrate_mode: safe (your config)
+    ✗ datadog_downtimes           fails: safe mode cannot change a column type
+    ✗ datadog_global_variables    fails: safe mode cannot change a column type
+    ✗ datadog_monitor_downtimes   fails: safe mode cannot change a column type
+    ✗ datadog_monitors            fails: safe mode cannot change a column type
+    ✗ datadog_slos                fails: safe mode cannot change a column type
+    ✗ datadog_synthetics          fails: safe mode cannot change a column type
+  migrate_mode: forced
+    ! datadog_downtimes           dropped and recreated, existing rows deleted
+    ! datadog_global_variables    dropped and recreated, existing rows deleted
+    ! datadog_monitor_downtimes   dropped and recreated, existing rows deleted
+    ! datadog_monitors            dropped and recreated, existing rows deleted
+    ! datadog_slos                dropped and recreated, existing rows deleted
+    ! datadog_synthetics          dropped and recreated, existing rows deleted
 
-datadog_monitor_downtimes.monitor_tags
-  Source:      list<item: utf8, nullable> → json
-  postgresql:  text[] → jsonb
-  Safe mode:   rejects the changes
-  Forced mode: drops and recreates the table, deleting existing rows
-
-datadog_monitors.tags
-  Source:      list<item: utf8, nullable> → json
-  postgresql:  text[] → jsonb
-  Safe mode:   rejects the changes
-  Forced mode: drops and recreates the table, deleting existing rows
-
-datadog_slos.monitor_tags
-  Source:      list<item: utf8, nullable> → json
-  postgresql:  text[] → jsonb
-  Safe mode:   rejects the changes
-  Forced mode: drops and recreates the table, deleting existing rows
-
-datadog_slos.tags
-  Source:      list<item: utf8, nullable> → json
-  postgresql:  text[] → jsonb
-  Safe mode:   rejects the changes
-  Forced mode: drops and recreates the table, deleting existing rows
-
-datadog_synthetics.tags
-  Source:      list<item: utf8, nullable> → json
-  postgresql:  text[] → jsonb
-  Safe mode:   rejects the changes
-  Forced mode: drops and recreates the table, deleting existing rows
-
-Action: plan a manual migration or rebuild.
+Action: migrate these 6 tables manually before upgrading, or switch to migrate_mode: forced and accept losing their rows.
 This check only previews the changes. It does not migrate, write, delete or upload anything.
 

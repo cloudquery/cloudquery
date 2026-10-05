@@ -380,10 +380,10 @@ func TestUpgradeCheckRFCCases(t *testing.T) {
 		toVersion   string
 		wantVerdict string
 	}{
-		{name: "datadog", toVersion: "v6.0.0", wantVerdict: "REVIEW REQUIRED — 6 tables / 7 columns"},
-		{name: "okta-overwrite-delete-stale", toVersion: "v7.0.0", wantVerdict: "REVIEW REQUIRED — okta_policy_rules"},
-		{name: "okta-append", toVersion: "v7.0.0", wantVerdict: "AUTOMATICALLY MIGRATABLE — 2 tables / 3 columns"},
-		{name: "gcp-selected-tables", toVersion: "v23.0.0", wantVerdict: "SELECTED TABLES REMOVED — 2 tables"},
+		{name: "datadog", toVersion: "v6.0.0", wantVerdict: "REVIEW REQUIRED — 6 tables need a manual migration"},
+		{name: "okta-overwrite-delete-stale", toVersion: "v7.0.0", wantVerdict: "REVIEW REQUIRED — 1 table needs a manual migration, 1 new table"},
+		{name: "okta-append", toVersion: "v7.0.0", wantVerdict: "AUTOMATICALLY MIGRATABLE — 1 changed table, 1 new table"},
+		{name: "gcp-selected-tables", toVersion: "v23.0.0", wantVerdict: "SELECTED TABLES REMOVED — 2 removed tables"},
 	}
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
