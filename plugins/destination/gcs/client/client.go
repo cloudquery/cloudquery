@@ -38,6 +38,9 @@ func New(ctx context.Context, logger zerolog.Logger, s []byte, newClientOpts plu
 		logger: logger.With().Str("module", "gcs").Logger(),
 		syncID: newClientOpts.InvocationID,
 	}
+	if newClientOpts.NoConnection {
+		return c, nil
+	}
 
 	if err := json.Unmarshal(s, &c.spec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal gcs spec: %w", err)
@@ -85,5 +88,8 @@ func New(ctx context.Context, logger zerolog.Logger, s []byte, newClientOpts plu
 }
 
 func (c *Client) Close(ctx context.Context) error {
+	if c.writer == nil {
+		return nil
+	}
 	return c.writer.Close(ctx)
 }
