@@ -14,9 +14,11 @@ import (
 )
 
 var (
-	upgradeRed    = color.New(color.FgRed)
-	upgradeYellow = color.New(color.FgYellow)
-	upgradeGreen  = color.New(color.FgGreen)
+	upgradeRed         = color.New(color.FgRed)
+	upgradeYellow      = color.New(color.FgYellow)
+	upgradeGreen       = color.New(color.FgGreen)
+	upgradeFaint       = color.New(color.Faint)
+	upgradeDestination = color.New(color.Bold, color.FgCyan)
 )
 
 type upgradeReport struct {
@@ -34,7 +36,17 @@ type upgradeReport struct {
 type upgradeCategoryText struct {
 	verdict string
 	action  string
-	color   *color.Color
+	color   color.Attribute
+}
+
+type upgradeBehaviorColors struct {
+	safeMode   *color.Color
+	forcedMode *color.Color
+}
+
+var upgradeBehaviorColorsByCategory = map[pluginPb.AssessTables_Category]upgradeBehaviorColors{
+	pluginPb.AssessTables_CATEGORY_MANUAL_MIGRATION_REQUIRED: {upgradeRed, upgradeRed},
+	pluginPb.AssessTables_CATEGORY_AUTOMATICALLY_MIGRATABLE:  {upgradeGreen, upgradeYellow},
 }
 
 var upgradeCategoriesBySeverity = []pluginPb.AssessTables_Category{
@@ -46,22 +58,21 @@ var upgradeCategoriesBySeverity = []pluginPb.AssessTables_Category{
 }
 
 var upgradeCategoryTexts = map[pluginPb.AssessTables_Category]upgradeCategoryText{
-	pluginPb.AssessTables_CATEGORY_MANUAL_MIGRATION_REQUIRED: {"REVIEW REQUIRED", "plan a manual migration or rebuild.", upgradeRed},
-	pluginPb.AssessTables_CATEGORY_TABLE_REMOVED:             {"SELECTED TABLES REMOVED", "remove explicit selections and update dependent consumers.", upgradeYellow},
-	pluginPb.AssessTables_CATEGORY_FILE_SCHEMA_CHANGED:       {"FILE SCHEMA CHANGED", "review readers that combine old and new files.", upgradeYellow},
-	pluginPb.AssessTables_CATEGORY_UNKNOWN:                   {"UNKNOWN", "review the source changelog for what this check could not assess.", upgradeYellow},
-	pluginPb.AssessTables_CATEGORY_AUTOMATICALLY_MIGRATABLE:  {"AUTOMATICALLY MIGRATABLE", "use safe migration.", upgradeYellow},
+	pluginPb.AssessTables_CATEGORY_MANUAL_MIGRATION_REQUIRED: {"REVIEW REQUIRED", "plan a manual migration or rebuild.", color.FgRed},
+	pluginPb.AssessTables_CATEGORY_TABLE_REMOVED:             {"SELECTED TABLES REMOVED", "remove explicit selections and update dependent consumers.", color.FgYellow},
+	pluginPb.AssessTables_CATEGORY_FILE_SCHEMA_CHANGED:       {"FILE SCHEMA CHANGED", "review readers that combine old and new files.", color.FgYellow},
+	pluginPb.AssessTables_CATEGORY_UNKNOWN:                   {"UNKNOWN", "review the source changelog for what this check could not assess.", color.FgYellow},
+	pluginPb.AssessTables_CATEGORY_AUTOMATICALLY_MIGRATABLE:  {"AUTOMATICALLY MIGRATABLE", "use safe migration.", color.FgYellow},
 }
 
 func renderUpgradeReport(w io.Writer, r upgradeReport) error {
 	var b strings.Builder
 	header := fmt.Sprintf("%s %s → %s", r.SourceName, r.FromVersion, r.ToVersion)
-	if r.Destination != nil {
-		header += " | " + r.Destination.VersionString()
-	}
-	b.WriteString(header + "\n")
-	if r.Destination != nil {
-		fmt.Fprintf(&b, "write_mode: %s | pk_mode: %s\n", r.Destination.WriteMode, r.Destination.PKMode)
+	if r.Destination == nil {
+		b.WriteString(bold.Sprint(header) + "\n")
+	} else {
+		b.WriteString(bold.Sprint(header+" | ") + upgradeDestination.Sprint(r.Destination.VersionString()) + "\n")
+		b.WriteString(upgradeFaint.Sprintf("write_mode: %s | pk_mode: %s", r.Destination.WriteMode, r.Destination.PKMode) + "\n")
 	}
 
 	findings := slices.Clone(r.Findings)
@@ -126,9 +137,10 @@ func renderUpgradeReport(w io.Writer, r upgradeReport) error {
 
 	b.WriteString("\n")
 	for _, category := range categories {
-		fmt.Fprintf(&b, "Action: %s\n", upgradeCategoryTexts[category].action)
+		text := upgradeCategoryTexts[category]
+		b.WriteString(color.New(color.Bold, text.color).Sprint("Action: "+text.action) + "\n")
 	}
-	b.WriteString("This check only previews the changes. It does not migrate, write, delete or upload anything.\n\n")
+	b.WriteString(upgradeFaint.Sprint("This check only previews the changes. It does not migrate, write, delete or upload anything.") + "\n\n")
 	_, err := io.WriteString(w, b.String())
 	return err
 }
@@ -144,16 +156,16 @@ func writeUpgradeHeading(b *strings.Builder, category pluginPb.AssessTables_Cate
 	case len(tableNames) > 1:
 		heading += fmt.Sprintf(" — %d tables", len(tableNames))
 	}
-	b.WriteString(text.color.Sprint(heading) + "\n")
+	b.WriteString(color.New(text.color).Sprint(heading) + "\n")
 }
 
 func writeUpgradeTableFinding(b *strings.Builder, destinationName string, finding *pluginPb.AssessTables_TableFinding, table upgradeTablePair) {
 	columns := changedColumnFindings(finding)
 	for _, column := range columns {
 		fmt.Fprintf(b, "\n%s\n", bold.Sprintf("%s.%s", finding.TableName, column.ColumnName))
-		writeUpgradeLine(b, "Source", upgradeTypeChange(sourceColumnType(table.From, column.ColumnName), sourceColumnType(table.To, column.ColumnName)))
-		writeUpgradeLine(b, destinationName, upgradeTypeChange(column.OldType, column.NewType))
-		writeUpgradeBehavior(b, column.SafeModeBehavior, column.ForcedModeBehavior, column.Evidence)
+		writeUpgradeLine(b, "Source", upgradeTypeChange(sourceColumnType(table.From, column.ColumnName), sourceColumnType(table.To, column.ColumnName)), nil)
+		writeUpgradeLine(b, destinationName, upgradeTypeChange(column.OldType, column.NewType), nil)
+		writeUpgradeBehavior(b, column.Category, column.SafeModeBehavior, column.ForcedModeBehavior, column.Evidence)
 	}
 	safeMode, forcedMode := finding.SafeModeBehavior, finding.ForcedModeBehavior
 	columnsShowTableBehavior := len(columns) > 0 && !slices.ContainsFunc(columns, func(column *pluginPb.AssessTables_ColumnFinding) bool {
@@ -166,23 +178,28 @@ func writeUpgradeTableFinding(b *strings.Builder, destinationName string, findin
 		return
 	}
 	fmt.Fprintf(b, "\n%s\n", bold.Sprint(finding.TableName))
-	writeUpgradeBehavior(b, safeMode, forcedMode, finding.Evidence)
+	writeUpgradeBehavior(b, finding.Category, safeMode, forcedMode, finding.Evidence)
 }
 
-func writeUpgradeBehavior(b *strings.Builder, safeMode, forcedMode string, evidence []*pluginPb.AssessTables_Evidence) {
-	writeUpgradeLine(b, "Safe mode", safeMode)
-	writeUpgradeLine(b, "Forced mode", forcedMode)
+func writeUpgradeBehavior(b *strings.Builder, category pluginPb.AssessTables_Category, safeMode, forcedMode string, evidence []*pluginPb.AssessTables_Evidence) {
+	colors := upgradeBehaviorColorsByCategory[category]
+	writeUpgradeLine(b, "Safe mode", safeMode, colors.safeMode)
+	writeUpgradeLine(b, "Forced mode", forcedMode, colors.forcedMode)
 	for _, e := range evidence {
-		writeUpgradeLine(b, "Synthetic value", e.SyntheticValue)
-		writeUpgradeLine(b, "Before", e.Before)
-		writeUpgradeLine(b, "After", e.After)
+		writeUpgradeLine(b, "Synthetic value", e.SyntheticValue, nil)
+		writeUpgradeLine(b, "Before", e.Before, nil)
+		writeUpgradeLine(b, "After", e.After, nil)
 	}
 }
 
-func writeUpgradeLine(b *strings.Builder, label, value string) {
-	if value != "" {
-		fmt.Fprintf(b, "  %-12s %s\n", label+":", value)
+func writeUpgradeLine(b *strings.Builder, label, value string, valueColor *color.Color) {
+	if value == "" {
+		return
 	}
+	if valueColor != nil {
+		value = valueColor.Sprint(value)
+	}
+	fmt.Fprintf(b, "  %s %s\n", upgradeFaint.Sprintf("%-12s", label+":"), value)
 }
 
 func writeUpgradeCoverageGaps(b *strings.Builder, gaps []string) {
@@ -191,7 +208,7 @@ func writeUpgradeCoverageGaps(b *strings.Builder, gaps []string) {
 	}
 	b.WriteString("\nCoverage gaps:\n")
 	for _, gap := range gaps {
-		b.WriteString("  " + gap + "\n")
+		b.WriteString("  " + upgradeYellow.Sprint(gap) + "\n")
 	}
 }
 
