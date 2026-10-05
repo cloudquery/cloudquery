@@ -223,20 +223,34 @@ func TestRenderUpgradeReportWithColor(t *testing.T) {
 			report: upgradeReport{
 				SourceName: "datadog", FromVersion: "v5.19.10", ToVersion: "v6.0.0", Destination: destination,
 				RemovedTables: []string{"datadog_removed"},
+				SourceGaps:    []string{"datadog v6.0.0: tables were listed with a connection (metadata only, no rows read)"},
 				Findings: []*pluginPb.AssessTables_TableFinding{{
 					TableName: "datadog_monitors",
 					Category:  pluginPb.AssessTables_CATEGORY_MANUAL_MIGRATION_REQUIRED,
-					Columns: []*pluginPb.AssessTables_ColumnFinding{
-						{ColumnName: "tags", Category: pluginPb.AssessTables_CATEGORY_MANUAL_MIGRATION_REQUIRED, OldType: "text[]", NewType: "jsonb"},
-					},
+					Columns: []*pluginPb.AssessTables_ColumnFinding{{
+						ColumnName:         "tags",
+						Category:           pluginPb.AssessTables_CATEGORY_MANUAL_MIGRATION_REQUIRED,
+						OldType:            "text[]",
+						NewType:            "jsonb",
+						SafeModeBehavior:   "rejects the changes",
+						ForcedModeBehavior: "drops and recreates the table",
+					}},
 				}},
 			},
 			contains: []string{
+				"\x1b[1mdatadog v5.19.10 → v6.0.0 | \x1b[22m\x1b[1;36mpostgresql (cloudquery/postgresql@v8.14.0)\x1b[22;0m\n",
+				"\x1b[2mwrite_mode: overwrite-delete-stale | pk_mode: default\x1b[22m\n",
 				"\x1b[31mREVIEW REQUIRED — datadog_monitors\x1b[0m\n",
 				"\x1b[33mSELECTED TABLES REMOVED — datadog_removed\x1b[0m\n",
 				"\n\x1b[1mdatadog_removed\x1b[22m\n",
 				"\n\x1b[1mdatadog_monitors.tags\x1b[22m\n",
-				"  postgresql:  \x1b[31mtext[]\x1b[0m → \x1b[32mjsonb\x1b[0m\n",
+				"  \x1b[2mpostgresql: \x1b[22m \x1b[31mtext[]\x1b[0m → \x1b[32mjsonb\x1b[0m\n",
+				"  \x1b[2mSafe mode:  \x1b[22m \x1b[31mrejects the changes\x1b[0m\n",
+				"  \x1b[2mForced mode:\x1b[22m \x1b[31mdrops and recreates the table\x1b[0m\n",
+				"  \x1b[33mdatadog v6.0.0: tables were listed with a connection (metadata only, no rows read)\x1b[0m\n",
+				"\x1b[1;31mAction: plan a manual migration or rebuild.\x1b[22;0m\n",
+				"\x1b[1;33mAction: remove explicit selections and update dependent consumers.\x1b[22;0m\n",
+				"\x1b[2mThis check only previews the changes. It does not migrate, write, delete or upload anything.\x1b[22m\n",
 			},
 		},
 		{
@@ -244,7 +258,12 @@ func TestRenderUpgradeReportWithColor(t *testing.T) {
 			report: upgradeReport{
 				SourceName: "okta", FromVersion: "v6.8.2", ToVersion: "v7.0.0", Destination: destination,
 				Findings: []*pluginPb.AssessTables_TableFinding{
-					{TableName: "okta_policy_rules", Category: pluginPb.AssessTables_CATEGORY_AUTOMATICALLY_MIGRATABLE},
+					{
+						TableName:          "okta_policy_rules",
+						Category:           pluginPb.AssessTables_CATEGORY_AUTOMATICALLY_MIGRATABLE,
+						SafeModeBehavior:   "adds the columns",
+						ForcedModeBehavior: "adds the columns",
+					},
 					{TableName: "okta_users", Category: pluginPb.AssessTables_CATEGORY_UNKNOWN},
 				},
 			},
@@ -252,6 +271,9 @@ func TestRenderUpgradeReportWithColor(t *testing.T) {
 				"\x1b[33mUNKNOWN — okta_users\x1b[0m\n",
 				"\x1b[33mAUTOMATICALLY MIGRATABLE — okta_policy_rules\x1b[0m\n",
 				"\n\x1b[1mokta_policy_rules\x1b[22m\n",
+				"  \x1b[2mSafe mode:  \x1b[22m \x1b[32madds the columns\x1b[0m\n",
+				"  \x1b[2mForced mode:\x1b[22m \x1b[33madds the columns\x1b[0m\n",
+				"\x1b[1;33mAction: use safe migration.\x1b[22;0m\n",
 			},
 		},
 		{
