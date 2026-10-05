@@ -1,0 +1,160 @@
+{
+  "reports": [
+    {
+      "source": {
+        "name": "datadog",
+        "from_version": "v5.19.10",
+        "to_version": "v6.0.0"
+      },
+      "destination": {
+        "name": "postgresql",
+        "registry": "cloudquery",
+        "path": "cloudquery/postgresql",
+        "version": "<version>",
+        "write_mode": "overwrite-delete-stale",
+        "pk_mode": "default",
+        "migrate_mode": "safe"
+      },
+      "verdict": "REVIEW REQUIRED",
+      "summary": "6 tables need a manual migration",
+      "tables": [
+        {
+          "name": "datadog_downtimes",
+          "changes": [
+            {
+              "kind": "changed",
+              "column": "monitor_tags",
+              "old_type": "text[]",
+              "new_type": "jsonb"
+            }
+          ],
+          "outcomes": {
+            "forced": {
+              "result": "data_loss",
+              "text": "dropped and recreated, existing rows deleted"
+            },
+            "safe": {
+              "result": "fails",
+              "text": "fails: safe mode cannot change a column type"
+            }
+          }
+        },
+        {
+          "name": "datadog_global_variables",
+          "changes": [
+            {
+              "kind": "changed",
+              "column": "tags",
+              "old_type": "text[]",
+              "new_type": "jsonb"
+            }
+          ],
+          "outcomes": {
+            "forced": {
+              "result": "data_loss",
+              "text": "dropped and recreated, existing rows deleted"
+            },
+            "safe": {
+              "result": "fails",
+              "text": "fails: safe mode cannot change a column type"
+            }
+          }
+        },
+        {
+          "name": "datadog_monitor_downtimes",
+          "changes": [
+            {
+              "kind": "changed",
+              "column": "monitor_tags",
+              "old_type": "text[]",
+              "new_type": "jsonb"
+            }
+          ],
+          "outcomes": {
+            "forced": {
+              "result": "data_loss",
+              "text": "dropped and recreated, existing rows deleted"
+            },
+            "safe": {
+              "result": "fails",
+              "text": "fails: safe mode cannot change a column type"
+            }
+          }
+        },
+        {
+          "name": "datadog_monitors",
+          "changes": [
+            {
+              "kind": "changed",
+              "column": "tags",
+              "old_type": "text[]",
+              "new_type": "jsonb"
+            }
+          ],
+          "outcomes": {
+            "forced": {
+              "result": "data_loss",
+              "text": "dropped and recreated, existing rows deleted"
+            },
+            "safe": {
+              "result": "fails",
+              "text": "fails: safe mode cannot change a column type"
+            }
+          }
+        },
+        {
+          "name": "datadog_slos",
+          "changes": [
+            {
+              "kind": "changed",
+              "column": "monitor_tags",
+              "old_type": "text[]",
+              "new_type": "jsonb"
+            },
+            {
+              "kind": "changed",
+              "column": "tags",
+              "old_type": "text[]",
+              "new_type": "jsonb"
+            }
+          ],
+          "outcomes": {
+            "forced": {
+              "result": "data_loss",
+              "text": "dropped and recreated, existing rows deleted"
+            },
+            "safe": {
+              "result": "fails",
+              "text": "fails: safe mode cannot change a column type"
+            }
+          }
+        },
+        {
+          "name": "datadog_synthetics",
+          "changes": [
+            {
+              "kind": "changed",
+              "column": "tags",
+              "old_type": "text[]",
+              "new_type": "jsonb"
+            }
+          ],
+          "outcomes": {
+            "forced": {
+              "result": "data_loss",
+              "text": "dropped and recreated, existing rows deleted"
+            },
+            "safe": {
+              "result": "fails",
+              "text": "fails: safe mode cannot change a column type"
+            }
+          }
+        }
+      ],
+      "removed_tables": [],
+      "output_comparisons": [],
+      "coverage_gaps": [],
+      "action": "migrate these 6 tables manually before upgrading, or switch to migrate_mode: forced and accept losing their rows."
+    }
+  ]
+}

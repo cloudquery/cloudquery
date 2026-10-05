@@ -1,0 +1,72 @@
+{
+  "reports": [
+    {
+      "source": {
+        "name": "okta",
+        "from_version": "v6.8.2",
+        "to_version": "v7.0.0"
+      },
+      "destination": {
+        "name": "postgresql",
+        "registry": "cloudquery",
+        "path": "cloudquery/postgresql",
+        "version": "<version>",
+        "write_mode": "append",
+        "pk_mode": "default",
+        "migrate_mode": "safe"
+      },
+      "verdict": "AUTOMATICALLY MIGRATABLE",
+      "summary": "1 changed table, 1 new table",
+      "tables": [
+        {
+          "name": "okta_policy_mappings",
+          "new_table": true,
+          "outcomes": {
+            "forced": {
+              "result": "applied",
+              "text": "created"
+            },
+            "safe": {
+              "result": "applied",
+              "text": "created"
+            }
+          }
+        },
+        {
+          "name": "okta_policy_rules",
+          "changes": [
+            {
+              "kind": "added",
+              "column": "policy_id",
+              "new_type": "text"
+            },
+            {
+              "kind": "added",
+              "column": "actions",
+              "new_type": "jsonb"
+            },
+            {
+              "kind": "added",
+              "column": "conditions",
+              "new_type": "jsonb"
+            }
+          ],
+          "outcomes": {
+            "forced": {
+              "result": "applied",
+              "text": "migrated in place"
+            },
+            "safe": {
+              "result": "applied",
+              "text": "migrated in place"
+            }
+          }
+        }
+      ],
+      "removed_tables": [],
+      "output_comparisons": [],
+      "coverage_gaps": [],
+      "action": "use safe migration."
+    }
+  ]
+}
