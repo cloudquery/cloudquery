@@ -1,6 +1,7 @@
 package client
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -29,7 +30,7 @@ func New(_ context.Context, logger zerolog.Logger, s []byte, opts plugin.NewClie
 	c := &Client{
 		logger: logger.With().Str("module", "file").Logger(),
 	}
-	if opts.NoConnection {
+	if opts.NoConnection && isEmptySpec(s) {
 		return c, nil
 	}
 
@@ -47,6 +48,10 @@ func New(_ context.Context, logger zerolog.Logger, s []byte, opts plugin.NewClie
 	}
 	c.Client = filetypesClient
 
+	if opts.NoConnection {
+		return c, nil
+	}
+
 	c.writer, err = streamingbatchwriter.New(c,
 		streamingbatchwriter.WithBatchSizeRows(*c.spec.BatchSize),
 		streamingbatchwriter.WithBatchSizeBytes(*c.spec.BatchSizeBytes),
@@ -58,6 +63,11 @@ func New(_ context.Context, logger zerolog.Logger, s []byte, opts plugin.NewClie
 	}
 
 	return c, nil
+}
+
+func isEmptySpec(s []byte) bool {
+	trimmed := bytes.TrimSpace(s)
+	return len(trimmed) == 0 || bytes.Equal(trimmed, []byte("null"))
 }
 
 func (c *Client) Close(ctx context.Context) error {

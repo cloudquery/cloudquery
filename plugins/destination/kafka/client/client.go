@@ -1,6 +1,7 @@
 package client
 
 import (
+	"bytes"
 	"context"
 	"crypto/tls"
 	"crypto/x509"
@@ -56,7 +57,7 @@ func New(_ context.Context, logger zerolog.Logger, s []byte, opts plugin.NewClie
 	c := &Client{
 		logger: logger.With().Str("module", "dest-kafka").Logger(),
 	}
-	if opts.NoConnection {
+	if opts.NoConnection && isEmptySpec(s) {
 		return c, nil
 	}
 
@@ -67,6 +68,16 @@ func New(_ context.Context, logger zerolog.Logger, s []byte, opts plugin.NewClie
 		return nil, err
 	}
 	c.spec.SetDefaults()
+
+	filetypesClient, err := filetypes.NewClient(&c.spec.FileSpec)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create filetypes client: %w", err)
+	}
+	c.Client = filetypesClient
+
+	if opts.NoConnection {
+		return c, nil
+	}
 
 	if c.spec.Verbose {
 		sarama.Logger = NewSaramaLoggerAdapter(logger)
@@ -82,7 +93,6 @@ func New(_ context.Context, logger zerolog.Logger, s []byte, opts plugin.NewClie
 	c.conf.Metadata.Full = true
 	c.conf.ClientID = `cwc|1c04a227-aef8-47a9-9353-e20bbb6a9616|cq-destination-kafka|` + internalPlugin.Version
 	var tlsConfig *tls.Config
-	var err error
 	if c.spec.TlsDetails.IsEnabled() {
 		tlsConfig, err = createTLSConfiguration(c.spec)
 		if err != nil {
@@ -104,13 +114,12 @@ func New(_ context.Context, logger zerolog.Logger, s []byte, opts plugin.NewClie
 		return nil, err
 	}
 
-	filetypesClient, err := filetypes.NewClient(&c.spec.FileSpec)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create filetypes client: %w", err)
-	}
-	c.Client = filetypesClient
-
 	return c, nil
+}
+
+func isEmptySpec(s []byte) bool {
+	trimmed := bytes.TrimSpace(s)
+	return len(trimmed) == 0 || bytes.Equal(trimmed, []byte("null"))
 }
 
 func (c *Client) Close(_ context.Context) error {

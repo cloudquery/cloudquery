@@ -1,6 +1,7 @@
 package client
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -38,7 +39,7 @@ func New(ctx context.Context, logger zerolog.Logger, s []byte, newClientOpts plu
 		logger: logger.With().Str("module", "gcs").Logger(),
 		syncID: newClientOpts.InvocationID,
 	}
-	if newClientOpts.NoConnection {
+	if newClientOpts.NoConnection && isEmptySpec(s) {
 		return c, nil
 	}
 
@@ -55,6 +56,10 @@ func New(ctx context.Context, logger zerolog.Logger, s []byte, newClientOpts plu
 		return nil, fmt.Errorf("failed to create filetypes client: %w", err)
 	}
 	c.Client = filetypesClient
+
+	if newClientOpts.NoConnection {
+		return c, nil
+	}
 
 	opts := []option.ClientOption{}
 	if len(c.spec.ServiceAccountKeyJSON) != 0 {
@@ -85,6 +90,11 @@ func New(ctx context.Context, logger zerolog.Logger, s []byte, newClientOpts plu
 	}
 
 	return c, nil
+}
+
+func isEmptySpec(s []byte) bool {
+	trimmed := bytes.TrimSpace(s)
+	return len(trimmed) == 0 || bytes.Equal(trimmed, []byte("null"))
 }
 
 func (c *Client) Close(ctx context.Context) error {
