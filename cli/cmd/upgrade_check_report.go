@@ -98,7 +98,11 @@ func renderUpgradeReport(w io.Writer, r upgradeReport) error {
 		b.WriteString(bold.Sprint(header) + "\n")
 	} else {
 		b.WriteString(bold.Sprint(header+" | ") + upgradeDestination.Sprint(r.Destination.VersionString()) + "\n")
-		b.WriteString(upgradeFaint.Sprintf("write_mode: %s | pk_mode: %s | migrate_mode: %s", r.Destination.WriteMode, r.Destination.PKMode, r.Destination.MigrateMode) + "\n")
+		settings := fmt.Sprintf("write_mode: %s | pk_mode: %s", r.Destination.WriteMode, r.Destination.PKMode)
+		if upgradeHasMigrateModes(r.Findings) {
+			settings += " | migrate_mode: " + r.Destination.MigrateMode.String()
+		}
+		b.WriteString(upgradeFaint.Sprint(settings) + "\n")
 	}
 
 	verdict, verdictColor := upgradeVerdict(r, impacts, comparisons, migrateMode)
@@ -134,12 +138,16 @@ func sortUpgradeReport(r upgradeReport) upgradeReport {
 	return r
 }
 
-func upgradeTableImpacts(r upgradeReport) []upgradeTableImpact {
-	hasMigrateModes := slices.ContainsFunc(r.Findings, func(finding *pluginPb.AssessTables_TableFinding) bool {
+func upgradeHasMigrateModes(findings []*pluginPb.AssessTables_TableFinding) bool {
+	return slices.ContainsFunc(findings, func(finding *pluginPb.AssessTables_TableFinding) bool {
 		return finding.Category == pluginPb.AssessTables_CATEGORY_MANUAL_MIGRATION_REQUIRED ||
 			finding.Category == pluginPb.AssessTables_CATEGORY_AUTOMATICALLY_MIGRATABLE ||
 			finding.SafeModeBehavior != "" || finding.ForcedModeBehavior != ""
 	})
+}
+
+func upgradeTableImpacts(r upgradeReport) []upgradeTableImpact {
+	hasMigrateModes := upgradeHasMigrateModes(r.Findings)
 	var impacts []upgradeTableImpact
 	for _, finding := range r.Findings {
 		if finding.Category == pluginPb.AssessTables_CATEGORY_NO_CHANGE || finding.Category == pluginPb.AssessTables_CATEGORY_UNKNOWN {
@@ -382,9 +390,13 @@ func writeUpgradeChanges(b *strings.Builder, impacts []upgradeTableImpact, remov
 	if len(impacts) == 0 && len(removedTables) == 0 {
 		return
 	}
-	tableWidth := 0
+	tableWidth, columnWidth, typeWidth := 0, 0, 0
 	for _, impact := range impacts {
 		tableWidth = max(tableWidth, len(impact.Name))
+		for _, change := range impact.Changes {
+			columnWidth = max(columnWidth, len(change.Column))
+			typeWidth = max(typeWidth, len([]rune(upgradeChangeType(change))))
+		}
 	}
 	for _, table := range removedTables {
 		tableWidth = max(tableWidth, len(table))
@@ -397,19 +409,14 @@ func writeUpgradeChanges(b *strings.Builder, impacts []upgradeTableImpact, remov
 			continue
 		}
 		b.WriteString("  " + bold.Sprint(impact.Name) + "\n")
-		writeUpgradeColumnChanges(b, impact.Changes)
+		writeUpgradeColumnChanges(b, impact.Changes, columnWidth, typeWidth)
 	}
 	for _, table := range removedTables {
 		fmt.Fprintf(b, "  %s%s%s\n", bold.Sprint(table), strings.Repeat(" ", tableWidth-len(table)+3), upgradeRed.Sprint(upgradeRemovedTableText))
 	}
 }
 
-func writeUpgradeColumnChanges(b *strings.Builder, changes []upgradeColumnChange) {
-	columnWidth, typeWidth := 0, 0
-	for _, change := range changes {
-		columnWidth = max(columnWidth, len(change.Column))
-		typeWidth = max(typeWidth, len([]rune(upgradeChangeType(change))))
-	}
+func writeUpgradeColumnChanges(b *strings.Builder, changes []upgradeColumnChange, columnWidth, typeWidth int) {
 	for _, change := range changes {
 		marker, description, lineColor := "~", cmp.Or(change.Reason, "type changed"), upgradeYellow
 		switch change.Kind {
@@ -435,27 +442,79 @@ func upgradeJoinNonEmpty(parts ...string) string {
 	return strings.Join(slices.DeleteFunc(parts, func(part string) bool { return part == "" }), ", ")
 }
 
+type upgradeOutputComparisonGroup struct {
+	typeChange string
+	names      []string
+	evidence   []*pluginPb.AssessTables_Evidence
+}
+
+func groupUpgradeOutputComparisons(comparisons []*pluginPb.AssessTables_TableFinding) []*upgradeOutputComparisonGroup {
+	var groups []*upgradeOutputComparisonGroup
+	add := func(typeChange, name string, evidence []*pluginPb.AssessTables_Evidence) {
+		i := slices.IndexFunc(groups, func(group *upgradeOutputComparisonGroup) bool { return group.typeChange == typeChange })
+		if i < 0 {
+			groups = append(groups, &upgradeOutputComparisonGroup{typeChange: typeChange})
+			i = len(groups) - 1
+		}
+		groups[i].names = append(groups[i].names, name)
+		groups[i].evidence = append(groups[i].evidence, evidence...)
+	}
+	for _, finding := range comparisons {
+		for _, column := range finding.Columns {
+			if len(column.Evidence) > 0 {
+				add(upgradeChangeType(upgradeColumnChange{OldType: column.OldType, NewType: column.NewType}), finding.TableName+"."+column.ColumnName, column.Evidence)
+			}
+		}
+		if len(finding.Evidence) > 0 {
+			add("", finding.TableName, finding.Evidence)
+		}
+	}
+	return groups
+}
+
 func writeUpgradeOutputComparisons(b *strings.Builder, comparisons []*pluginPb.AssessTables_TableFinding) {
 	if len(comparisons) == 0 {
 		return
 	}
 	b.WriteString("\nOutput comparison\n")
-	for _, finding := range comparisons {
-		for _, column := range finding.Columns {
-			if len(column.Evidence) == 0 {
+	for _, group := range groupUpgradeOutputComparisons(comparisons) {
+		heading := bold.Sprint(upgradeNameList(group.names))
+		if group.typeChange != "" {
+			heading = group.typeChange + "   " + heading
+		}
+		b.WriteString("  " + heading + "\n")
+		identical := 0
+		var identicalValues []string
+		for _, e := range group.evidence {
+			if e.Before != e.After {
+				writeUpgradeEvidence(b, []*pluginPb.AssessTables_Evidence{e})
 				continue
 			}
-			typeChange := upgradeChangeType(upgradeColumnChange{OldType: column.OldType, NewType: column.NewType})
-			fmt.Fprintf(b, "  %s   %s\n", bold.Sprintf("%s.%s", finding.TableName, column.ColumnName), typeChange)
-			writeUpgradeEvidence(b, column.Evidence)
+			if !slices.Contains(identicalValues, e.SyntheticValue) {
+				identicalValues = append(identicalValues, e.SyntheticValue)
+			}
+			if identical++; identical == 1 {
+				writeUpgradeEvidence(b, []*pluginPb.AssessTables_Evidence{e})
+			}
 		}
-		if len(finding.Evidence) > 0 {
-			b.WriteString("  " + bold.Sprint(finding.TableName) + "\n")
-			writeUpgradeEvidence(b, finding.Evidence)
+		if len(identicalValues) > 1 {
+			fmt.Fprintf(b, "    %d equivalent test values: identical output\n", len(identicalValues))
 		}
 	}
 	b.WriteString("  " + upgradeGreen.Sprint(upgradeNoOutputDiffText) + "\n")
 	b.WriteString("  " + upgradeNotAssessedText + "\n")
+}
+
+func upgradeNameList(names []string) string {
+	if len(names) == 1 {
+		return names[0]
+	}
+	shown := names
+	suffix := ""
+	if len(names) > 3 {
+		shown, suffix = names[:3], ", …"
+	}
+	return fmt.Sprintf("%d columns: %s%s", len(names), strings.Join(shown, ", "), suffix)
 }
 
 func writeUpgradeEvidence(b *strings.Builder, evidence []*pluginPb.AssessTables_Evidence) {
