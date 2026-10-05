@@ -19,14 +19,19 @@ func setColorOutput(t *testing.T, enabled bool) {
 	t.Cleanup(func() { color.NoColor = noColor })
 }
 
-func postgresqlDestinationSpec(writeMode specs.WriteMode) *specs.Destination {
+func postgresqlDestinationSpec(writeMode specs.WriteMode, migrateMode specs.MigrateMode) *specs.Destination {
 	return &specs.Destination{
-		Metadata:  specs.Metadata{Name: "postgresql", Path: "cloudquery/postgresql", Version: "v8.14.0", Registry: specs.RegistryCloudQuery},
-		WriteMode: writeMode,
+		Metadata:    specs.Metadata{Name: "postgresql", Path: "cloudquery/postgresql", Version: "v8.14.0", Registry: specs.RegistryCloudQuery},
+		WriteMode:   writeMode,
+		MigrateMode: migrateMode,
 	}
 }
 
-func TestRenderUpgradeReport(t *testing.T) {
+func s3DestinationSpec() *specs.Destination {
+	return &specs.Destination{Metadata: specs.Metadata{Name: "s3", Path: "cloudquery/s3", Version: "v7.0.0", Registry: specs.RegistryCloudQuery}}
+}
+
+func datadogTagsReport(destination *specs.Destination) upgradeReport {
 	tagsTable := func(name string, tagsType arrow.DataType) *schema.Table {
 		return &schema.Table{Name: name, Columns: schema.ColumnList{{Name: "tags", Type: tagsType}}}
 	}
@@ -34,97 +39,282 @@ func TestRenderUpgradeReport(t *testing.T) {
 		return &pluginPb.AssessTables_TableFinding{
 			TableName:          table,
 			Category:           pluginPb.AssessTables_CATEGORY_MANUAL_MIGRATION_REQUIRED,
-			SafeModeBehavior:   "rejects this change",
-			ForcedModeBehavior: "drops and recreates the affected table",
+			SafeModeBehavior:   "rejects the changes",
+			ForcedModeBehavior: "drops and recreates the table, deleting existing rows",
 			Columns: []*pluginPb.AssessTables_ColumnFinding{
 				{ColumnName: "id", Category: pluginPb.AssessTables_CATEGORY_NO_CHANGE, OldType: "text", NewType: "text"},
-				{
-					ColumnName:         "tags",
-					Category:           pluginPb.AssessTables_CATEGORY_MANUAL_MIGRATION_REQUIRED,
-					OldType:            "text[]",
-					NewType:            "jsonb",
-					SafeModeBehavior:   "rejects this change",
-					ForcedModeBehavior: "drops and recreates the affected table",
-				},
+				{ColumnName: "tags", Category: pluginPb.AssessTables_CATEGORY_MANUAL_MIGRATION_REQUIRED, OldType: "text[]", NewType: "jsonb"},
 			},
 		}
 	}
+	return upgradeReport{
+		SourceName:  "datadog",
+		FromVersion: "v5.19.10",
+		ToVersion:   "v6.0.0",
+		Destination: destination,
+		Tables: map[string]upgradeTablePair{
+			"datadog_monitors":   {From: tagsTable("datadog_monitors", arrow.ListOf(arrow.BinaryTypes.String)), To: tagsTable("datadog_monitors", types.ExtensionTypes.JSON)},
+			"datadog_dashboards": {From: tagsTable("datadog_dashboards", arrow.ListOf(arrow.BinaryTypes.String)), To: tagsTable("datadog_dashboards", types.ExtensionTypes.JSON)},
+		},
+		Findings: []*pluginPb.AssessTables_TableFinding{
+			tagsFinding("datadog_monitors"),
+			tagsFinding("datadog_dashboards"),
+			{TableName: "datadog_users", Category: pluginPb.AssessTables_CATEGORY_NO_CHANGE},
+		},
+	}
+}
 
+func oktaReport(destination *specs.Destination, policyRulesCategory pluginPb.AssessTables_Category, policyIDIsPrimaryKey bool) upgradeReport {
+	id := schema.Column{Name: "id", Type: arrow.BinaryTypes.String, PrimaryKey: policyIDIsPrimaryKey}
+	newColumn := func(name string, category pluginPb.AssessTables_Category, newType string) *pluginPb.AssessTables_ColumnFinding {
+		return &pluginPb.AssessTables_ColumnFinding{ColumnName: name, Category: category, NewType: newType}
+	}
+	return upgradeReport{
+		SourceName:  "okta",
+		FromVersion: "v6.8.2",
+		ToVersion:   "v7.0.0",
+		Destination: destination,
+		Tables: map[string]upgradeTablePair{
+			"okta_policy_rules": {
+				From: &schema.Table{Name: "okta_policy_rules", Columns: schema.ColumnList{id}},
+				To: &schema.Table{Name: "okta_policy_rules", Columns: schema.ColumnList{
+					id,
+					{Name: "policy_id", Type: arrow.BinaryTypes.String, PrimaryKey: policyIDIsPrimaryKey},
+					{Name: "actions", Type: types.ExtensionTypes.JSON},
+					{Name: "conditions", Type: types.ExtensionTypes.JSON},
+				}},
+			},
+			"okta_policy_mappings": {To: &schema.Table{Name: "okta_policy_mappings", Columns: schema.ColumnList{id}}},
+		},
+		Findings: []*pluginPb.AssessTables_TableFinding{
+			{
+				TableName: "okta_policy_rules",
+				Category:  policyRulesCategory,
+				Columns: []*pluginPb.AssessTables_ColumnFinding{
+					newColumn("policy_id", policyRulesCategory, "text"),
+					newColumn("actions", pluginPb.AssessTables_CATEGORY_AUTOMATICALLY_MIGRATABLE, "jsonb"),
+					newColumn("conditions", pluginPb.AssessTables_CATEGORY_AUTOMATICALLY_MIGRATABLE, "jsonb"),
+				},
+			},
+			{TableName: "okta_policy_mappings", Category: pluginPb.AssessTables_CATEGORY_AUTOMATICALLY_MIGRATABLE},
+		},
+	}
+}
+
+func s3JSONReport() upgradeReport {
+	return upgradeReport{
+		SourceName:  "datadog",
+		FromVersion: "v5.19.10",
+		ToVersion:   "v6.0.0",
+		Destination: s3DestinationSpec(),
+		Findings: []*pluginPb.AssessTables_TableFinding{
+			{TableName: "datadog_users", Category: pluginPb.AssessTables_CATEGORY_NO_CHANGE},
+			{
+				TableName: "datadog_monitors",
+				Category:  pluginPb.AssessTables_CATEGORY_NO_CHANGE,
+				Columns: []*pluginPb.AssessTables_ColumnFinding{
+					{ColumnName: "id", Category: pluginPb.AssessTables_CATEGORY_NO_CHANGE},
+					{
+						ColumnName: "tags",
+						Category:   pluginPb.AssessTables_CATEGORY_NO_CHANGE,
+						OldType:    "list<item: utf8, nullable>",
+						NewType:    "json",
+						Evidence:   []*pluginPb.AssessTables_Evidence{{SyntheticValue: `["env:prod"]`, Before: `{"tags":["env:prod"]}`, After: `{"tags":["env:prod"]}`}},
+					},
+				},
+			},
+		},
+	}
+}
+
+func TestRenderUpgradeReport(t *testing.T) {
 	cases := []struct {
 		name   string
 		report upgradeReport
 		want   string
 	}{
 		{
-			name: "type change requiring migration",
-			report: upgradeReport{
-				SourceName:  "datadog",
-				FromVersion: "v5.19.10",
-				ToVersion:   "v6.0.0",
-				Destination: postgresqlDestinationSpec(specs.WriteModeOverwriteDeleteStale),
-				Tables: map[string]upgradeTablePair{
-					"datadog_monitors": {
-						From: tagsTable("datadog_monitors", arrow.ListOf(arrow.BinaryTypes.String)),
-						To:   tagsTable("datadog_monitors", types.ExtensionTypes.JSON),
-					},
-				},
-				Findings: []*pluginPb.AssessTables_TableFinding{
-					tagsFinding("datadog_monitors"),
-					tagsFinding("datadog_dashboards"),
-					{TableName: "datadog_users", Category: pluginPb.AssessTables_CATEGORY_NO_CHANGE},
-				},
-			},
+			name:   "type change fails in safe mode",
+			report: datadogTagsReport(postgresqlDestinationSpec(specs.WriteModeOverwriteDeleteStale, specs.MigrateModeSafe)),
 			want: `datadog v5.19.10 → v6.0.0 | postgresql (cloudquery/postgresql@v8.14.0)
-write_mode: overwrite-delete-stale | pk_mode: default
-REVIEW REQUIRED — 2 tables / 2 columns
+write_mode: overwrite-delete-stale | pk_mode: default | migrate_mode: safe
+REVIEW REQUIRED — 2 tables need a manual migration
 
-datadog_dashboards.tags
-  postgresql:  text[] → jsonb
-  Safe mode:   rejects this change
-  Forced mode: drops and recreates the affected table
+Changes
+  datadog_dashboards
+    ~ tags   text[] → jsonb   type changed
+  datadog_monitors
+    ~ tags   text[] → jsonb   type changed
 
-datadog_monitors.tags
-  Source:      list<item: utf8, nullable> → json
-  postgresql:  text[] → jsonb
-  Safe mode:   rejects this change
-  Forced mode: drops and recreates the affected table
+Next sync
+  migrate_mode: safe (your config)
+    ✗ datadog_dashboards   fails: safe mode cannot change a column type
+    ✗ datadog_monitors     fails: safe mode cannot change a column type
+  migrate_mode: forced
+    ! datadog_dashboards   dropped and recreated, existing rows deleted
+    ! datadog_monitors     dropped and recreated, existing rows deleted
 
-Action: plan a manual migration or rebuild.
+Action: migrate datadog_dashboards, datadog_monitors manually before upgrading, or switch to migrate_mode: forced and accept losing their rows.
 This check only previews the changes. It does not migrate, write, delete or upload anything.
 
 `,
 		},
 		{
-			name: "automatically migratable with table level behavior",
+			name:   "type change deletes rows in forced mode",
+			report: datadogTagsReport(postgresqlDestinationSpec(specs.WriteModeOverwriteDeleteStale, specs.MigrateModeForced)),
+			want: `datadog v5.19.10 → v6.0.0 | postgresql (cloudquery/postgresql@v8.14.0)
+write_mode: overwrite-delete-stale | pk_mode: default | migrate_mode: forced
+REVIEW REQUIRED — 2 tables will be recreated, deleting existing rows
+
+Changes
+  datadog_dashboards
+    ~ tags   text[] → jsonb   type changed
+  datadog_monitors
+    ~ tags   text[] → jsonb   type changed
+
+Next sync
+  migrate_mode: forced (your config)
+    ! datadog_dashboards   dropped and recreated, existing rows deleted
+    ! datadog_monitors     dropped and recreated, existing rows deleted
+  migrate_mode: safe
+    ✗ datadog_dashboards   fails: safe mode cannot change a column type
+    ✗ datadog_monitors     fails: safe mode cannot change a column type
+
+Action: the next sync drops and recreates datadog_dashboards, datadog_monitors and deletes existing rows; back up any data you need before upgrading.
+This check only previews the changes. It does not migrate, write, delete or upload anything.
+
+`,
+		},
+		{
+			name:   "primary key addition with a new table",
+			report: oktaReport(postgresqlDestinationSpec(specs.WriteModeOverwriteDeleteStale, specs.MigrateModeSafe), pluginPb.AssessTables_CATEGORY_MANUAL_MIGRATION_REQUIRED, true),
+			want: `okta v6.8.2 → v7.0.0 | postgresql (cloudquery/postgresql@v8.14.0)
+write_mode: overwrite-delete-stale | pk_mode: default | migrate_mode: safe
+REVIEW REQUIRED — 1 table needs a manual migration, 1 new table
+
+Changes
+  okta_policy_mappings   new table
+  okta_policy_rules
+    + policy_id    text    new column, part of the primary key
+    + actions      jsonb   new column
+    + conditions   jsonb   new column
+
+Next sync
+  migrate_mode: safe (your config)
+    ✓ okta_policy_mappings   created
+    ✗ okta_policy_rules      fails: safe mode cannot change a primary key
+  migrate_mode: forced
+    ✓ okta_policy_mappings   created
+    ! okta_policy_rules      dropped and recreated, existing rows deleted
+
+Action: migrate okta_policy_rules manually before upgrading, or switch to migrate_mode: forced and accept losing its rows.
+This check only previews the changes. It does not migrate, write, delete or upload anything.
+
+`,
+		},
+		{
+			name:   "append mode applies every change in both modes",
+			report: oktaReport(postgresqlDestinationSpec(specs.WriteModeAppend, specs.MigrateModeSafe), pluginPb.AssessTables_CATEGORY_AUTOMATICALLY_MIGRATABLE, false),
+			want: `okta v6.8.2 → v7.0.0 | postgresql (cloudquery/postgresql@v8.14.0)
+write_mode: append | pk_mode: default | migrate_mode: safe
+AUTOMATICALLY MIGRATABLE — 1 changed table, 1 new table
+
+Changes
+  okta_policy_mappings   new table
+  okta_policy_rules
+    + policy_id    text    new column
+    + actions      jsonb   new column
+    + conditions   jsonb   new column
+
+Next sync
+  migrate_mode: safe (your config)
+    ✓ okta_policy_mappings   created
+    ✓ okta_policy_rules      migrated in place
+  migrate_mode: forced — same as safe
+
+Action: use safe migration.
+This check only previews the changes. It does not migrate, write, delete or upload anything.
+
+`,
+		},
+		{
+			name: "removed tables are sorted, with unknown tables and a source listed with a connection",
 			report: upgradeReport{
-				SourceName:  "okta",
-				FromVersion: "v6.8.2",
-				ToVersion:   "v7.0.0",
-				Destination: postgresqlDestinationSpec(specs.WriteModeAppend),
+				SourceName:    "gcp",
+				FromVersion:   "v22.1.2",
+				ToVersion:     "v23.0.0",
+				SourceGaps:    []string{"gcp v23.0.0: tables were listed with a connection (metadata only, no rows read)"},
+				RemovedTables: []string{"gcp_aiplatform_specialistpool_locations", "gcp_aiplatform_specialist_pools"},
+				Destination:   postgresqlDestinationSpec(specs.WriteModeOverwriteDeleteStale, specs.MigrateModeSafe),
+				Findings: []*pluginPb.AssessTables_TableFinding{
+					{TableName: "gcp_storage_buckets", Category: pluginPb.AssessTables_CATEGORY_UNKNOWN, CoverageIncomplete: true},
+					{TableName: "gcp_compute_instances", Category: pluginPb.AssessTables_CATEGORY_UNKNOWN, CoverageIncomplete: true, CoverageIncompleteReason: destinationNoAssessmentReason},
+				},
+			},
+			want: `gcp v22.1.2 → v23.0.0 | postgresql (cloudquery/postgresql@v8.14.0)
+write_mode: overwrite-delete-stale | pk_mode: default | migrate_mode: safe
+SELECTED TABLES REMOVED — 2 removed tables, 2 tables not assessed
+
+Changes
+  gcp_aiplatform_specialist_pools           removed table, the new source version no longer provides it
+  gcp_aiplatform_specialistpool_locations   removed table, the new source version no longer provides it
+
+Coverage gaps
+  gcp v23.0.0: tables were listed with a connection (metadata only, no rows read)
+  gcp_compute_instances: destination version does not support assessment
+  gcp_storage_buckets: coverage incomplete
+
+Action: remove explicit selections and update dependent consumers.
+This check only previews the changes. It does not migrate, write, delete or upload anything.
+
+`,
+		},
+		{
+			name: "file schema changed",
+			report: upgradeReport{
+				SourceName:  "cloudflare",
+				FromVersion: "v11.4.0",
+				ToVersion:   "v12.0.0",
+				Destination: s3DestinationSpec(),
 				Findings: []*pluginPb.AssessTables_TableFinding{{
-					TableName:        "okta_policy_rules",
-					Category:         pluginPb.AssessTables_CATEGORY_AUTOMATICALLY_MIGRATABLE,
-					SafeModeBehavior: "adds the columns; no table recreation required",
+					TableName: "cloudflare_certificate_packs",
+					Category:  pluginPb.AssessTables_CATEGORY_FILE_SCHEMA_CHANGED,
 					Columns: []*pluginPb.AssessTables_ColumnFinding{
-						{ColumnName: "policy_id", Category: pluginPb.AssessTables_CATEGORY_AUTOMATICALLY_MIGRATABLE, NewType: "text"},
-						{ColumnName: "actions", Category: pluginPb.AssessTables_CATEGORY_AUTOMATICALLY_MIGRATABLE, NewType: "jsonb"},
+						{ColumnName: "created_on", Category: pluginPb.AssessTables_CATEGORY_FILE_SCHEMA_CHANGED, OldType: "TIMESTAMP(MICROS)"},
+						{ColumnName: "validation_records", Category: pluginPb.AssessTables_CATEGORY_FILE_SCHEMA_CHANGED, NewType: "BYTE_ARRAY (JSON)"},
 					},
 				}},
 			},
-			want: `okta v6.8.2 → v7.0.0 | postgresql (cloudquery/postgresql@v8.14.0)
-write_mode: append | pk_mode: default
-AUTOMATICALLY MIGRATABLE — okta_policy_rules
+			want: `cloudflare v11.4.0 → v12.0.0 | s3 (cloudquery/s3@v7.0.0)
+write_mode: overwrite-delete-stale | pk_mode: default | migrate_mode: safe
+FILE SCHEMA CHANGED — 1 changed table
 
-okta_policy_rules.policy_id
-  postgresql:  none → text
+Changes
+  cloudflare_certificate_packs
+    - created_on           TIMESTAMP(MICROS)   column removed
+    + validation_records   BYTE_ARRAY (JSON)   new column
 
-okta_policy_rules.actions
-  postgresql:  none → jsonb
+Action: review readers that combine old and new files.
+This check only previews the changes. It does not migrate, write, delete or upload anything.
 
-okta_policy_rules
-  Safe mode:   adds the columns; no table recreation required
+`,
+		},
+		{
+			name:   "file output unchanged for equivalent test values",
+			report: s3JSONReport(),
+			want: `datadog v5.19.10 → v6.0.0 | s3 (cloudquery/s3@v7.0.0)
+write_mode: overwrite-delete-stale | pk_mode: default | migrate_mode: safe
+NO OUTPUT DIFFERENCE DETECTED for equivalent test values
 
-Action: use safe migration.
+Output comparison
+  datadog_monitors.tags   list<item: utf8, nullable> → json
+    Synthetic value: ["env:prod"]
+    Before:          {"tags":["env:prod"]}
+    After:           {"tags":["env:prod"]}
+  NO OUTPUT DIFFERENCE DETECTED for equivalent test values
+  Actual source values and behavior were not assessed.
+
+Action: no action needed; the output is the same for equivalent values.
 This check only previews the changes. It does not migrate, write, delete or upload anything.
 
 `,
@@ -135,47 +325,12 @@ This check only previews the changes. It does not migrate, write, delete or uplo
 				SourceName:  "datadog",
 				FromVersion: "v5.19.10",
 				ToVersion:   "v6.0.0",
-				Destination: postgresqlDestinationSpec(specs.WriteModeOverwriteDeleteStale),
+				Destination: postgresqlDestinationSpec(specs.WriteModeOverwriteDeleteStale, specs.MigrateModeSafe),
 				Findings:    []*pluginPb.AssessTables_TableFinding{{TableName: "datadog_users", Category: pluginPb.AssessTables_CATEGORY_NO_CHANGE}},
 			},
 			want: `datadog v5.19.10 → v6.0.0 | postgresql (cloudquery/postgresql@v8.14.0)
-write_mode: overwrite-delete-stale | pk_mode: default
+write_mode: overwrite-delete-stale | pk_mode: default | migrate_mode: safe
 No schema changes affect your selected tables.
-
-`,
-		},
-		{
-			name: "removed tables, unknown tables and a source listed with a connection",
-			report: upgradeReport{
-				SourceName:    "gcp",
-				FromVersion:   "v22.1.2",
-				ToVersion:     "v23.0.0",
-				SourceGaps:    []string{"gcp v23.0.0: tables were listed with a connection (metadata only, no rows read)"},
-				RemovedTables: []string{"gcp_aiplatform_specialist_pools", "gcp_aiplatform_specialistpool_locations"},
-				Destination:   postgresqlDestinationSpec(specs.WriteModeOverwriteDeleteStale),
-				Findings: []*pluginPb.AssessTables_TableFinding{
-					{TableName: "gcp_compute_instances", Category: pluginPb.AssessTables_CATEGORY_UNKNOWN, CoverageIncomplete: true, CoverageIncompleteReason: destinationNoAssessmentReason},
-					{TableName: "gcp_storage_buckets", Category: pluginPb.AssessTables_CATEGORY_UNKNOWN, CoverageIncomplete: true},
-				},
-			},
-			want: `gcp v22.1.2 → v23.0.0 | postgresql (cloudquery/postgresql@v8.14.0)
-write_mode: overwrite-delete-stale | pk_mode: default
-SELECTED TABLES REMOVED — 2 tables
-
-gcp_aiplatform_specialist_pools
-gcp_aiplatform_specialistpool_locations
-The new source version no longer provides these tables.
-
-UNKNOWN — 2 tables
-
-Coverage gaps:
-  gcp v23.0.0: tables were listed with a connection (metadata only, no rows read)
-  gcp_compute_instances: destination version does not support assessment
-  gcp_storage_buckets: coverage incomplete
-
-Action: remove explicit selections and update dependent consumers.
-Action: review the source changelog for what this check could not assess.
-This check only previews the changes. It does not migrate, write, delete or upload anything.
 
 `,
 		},
@@ -191,7 +346,7 @@ This check only previews the changes. It does not migrate, write, delete or uplo
 			want: `s3 v1.0.0 → v2.0.0
 UNKNOWN
 
-Coverage gaps:
+Coverage gaps
   s3 v1.0.0: tables could not be listed: source returned no tables with or without a connection
 
 Action: review the source changelog for what this check could not assess.
@@ -212,74 +367,68 @@ This check only previews the changes. It does not migrate, write, delete or uplo
 
 func TestRenderUpgradeReportWithColor(t *testing.T) {
 	setColorOutput(t, true)
-	destination := postgresqlDestinationSpec(specs.WriteModeOverwriteDeleteStale)
 	cases := []struct {
 		name     string
 		report   upgradeReport
 		contains []string
 	}{
 		{
-			name: "manual migration",
-			report: upgradeReport{
-				SourceName: "datadog", FromVersion: "v5.19.10", ToVersion: "v6.0.0", Destination: destination,
-				RemovedTables: []string{"datadog_removed"},
-				SourceGaps:    []string{"datadog v6.0.0: tables were listed with a connection (metadata only, no rows read)"},
-				Findings: []*pluginPb.AssessTables_TableFinding{{
-					TableName: "datadog_monitors",
-					Category:  pluginPb.AssessTables_CATEGORY_MANUAL_MIGRATION_REQUIRED,
-					Columns: []*pluginPb.AssessTables_ColumnFinding{{
-						ColumnName:         "tags",
-						Category:           pluginPb.AssessTables_CATEGORY_MANUAL_MIGRATION_REQUIRED,
-						OldType:            "text[]",
-						NewType:            "jsonb",
-						SafeModeBehavior:   "rejects the changes",
-						ForcedModeBehavior: "drops and recreates the table",
-					}},
-				}},
-			},
+			name:   "manual migration",
+			report: oktaReport(postgresqlDestinationSpec(specs.WriteModeOverwriteDeleteStale, specs.MigrateModeSafe), pluginPb.AssessTables_CATEGORY_MANUAL_MIGRATION_REQUIRED, true),
 			contains: []string{
-				"\x1b[1mdatadog v5.19.10 → v6.0.0 | \x1b[22m\x1b[1;36mpostgresql (cloudquery/postgresql@v8.14.0)\x1b[22;0m\n",
-				"\x1b[2mwrite_mode: overwrite-delete-stale | pk_mode: default\x1b[22m\n",
-				"\x1b[31mREVIEW REQUIRED — datadog_monitors\x1b[0m\n",
-				"\x1b[33mSELECTED TABLES REMOVED — datadog_removed\x1b[0m\n",
-				"\n\x1b[1mdatadog_removed\x1b[22m\n",
-				"\n\x1b[1mdatadog_monitors.tags\x1b[22m\n",
-				"  \x1b[2mpostgresql: \x1b[22m \x1b[31mtext[]\x1b[0m → \x1b[32mjsonb\x1b[0m\n",
-				"  \x1b[2mSafe mode:  \x1b[22m \x1b[31mrejects the changes\x1b[0m\n",
-				"  \x1b[2mForced mode:\x1b[22m \x1b[31mdrops and recreates the table\x1b[0m\n",
-				"  \x1b[33mdatadog v6.0.0: tables were listed with a connection (metadata only, no rows read)\x1b[0m\n",
-				"\x1b[1;31mAction: plan a manual migration or rebuild.\x1b[22;0m\n",
-				"\x1b[1;33mAction: remove explicit selections and update dependent consumers.\x1b[22;0m\n",
+				"\x1b[1mokta v6.8.2 → v7.0.0 | \x1b[22m\x1b[1;36mpostgresql (cloudquery/postgresql@v8.14.0)\x1b[22;0m\n",
+				"\x1b[2mwrite_mode: overwrite-delete-stale | pk_mode: default | migrate_mode: safe\x1b[22m\n",
+				"\x1b[31mREVIEW REQUIRED — 1 table needs a manual migration, 1 new table\x1b[0m\n",
+				"  \x1b[1mokta_policy_mappings\x1b[22m   \x1b[32mnew table\x1b[0m\n",
+				"  \x1b[1mokta_policy_rules\x1b[22m\n",
+				"    \x1b[32m+ policy_id    text    new column, part of the primary key\x1b[0m\n",
+				"  \x1b[1mmigrate_mode: safe (your config)\x1b[22m\n",
+				"    \x1b[32m✓ okta_policy_mappings   created\x1b[0m\n",
+				"    \x1b[31m✗ okta_policy_rules      fails: safe mode cannot change a primary key\x1b[0m\n",
+				"    \x1b[33m! okta_policy_rules      dropped and recreated, existing rows deleted\x1b[0m\n",
+				"\x1b[1;31mAction: migrate okta_policy_rules manually before upgrading, or switch to migrate_mode: forced and accept losing its rows.\x1b[22;0m\n",
 				"\x1b[2mThis check only previews the changes. It does not migrate, write, delete or upload anything.\x1b[22m\n",
 			},
 		},
 		{
-			name: "automatically migratable and unknown",
+			name:     "type change",
+			report:   datadogTagsReport(postgresqlDestinationSpec(specs.WriteModeOverwriteDeleteStale, specs.MigrateModeSafe)),
+			contains: []string{"    \x1b[33m~ tags   text[] → jsonb   type changed\x1b[0m\n"},
+		},
+		{
+			name: "removed tables, coverage gaps and file changes",
 			report: upgradeReport{
-				SourceName: "okta", FromVersion: "v6.8.2", ToVersion: "v7.0.0", Destination: destination,
-				Findings: []*pluginPb.AssessTables_TableFinding{
-					{
-						TableName:          "okta_policy_rules",
-						Category:           pluginPb.AssessTables_CATEGORY_AUTOMATICALLY_MIGRATABLE,
-						SafeModeBehavior:   "adds the columns",
-						ForcedModeBehavior: "adds the columns",
-					},
-					{TableName: "okta_users", Category: pluginPb.AssessTables_CATEGORY_UNKNOWN},
-				},
+				SourceName: "gcp", FromVersion: "v22.1.2", ToVersion: "v23.0.0", Destination: s3DestinationSpec(),
+				RemovedTables: []string{"gcp_removed"},
+				SourceGaps:    []string{"gcp v23.0.0: tables were listed with a connection (metadata only, no rows read)"},
+				Findings: []*pluginPb.AssessTables_TableFinding{{
+					TableName: "gcp_buckets",
+					Category:  pluginPb.AssessTables_CATEGORY_FILE_SCHEMA_CHANGED,
+					Columns:   []*pluginPb.AssessTables_ColumnFinding{{ColumnName: "created_on", Category: pluginPb.AssessTables_CATEGORY_FILE_SCHEMA_CHANGED, OldType: "INT64"}},
+				}},
 			},
 			contains: []string{
-				"\x1b[33mUNKNOWN — okta_users\x1b[0m\n",
-				"\x1b[33mAUTOMATICALLY MIGRATABLE — okta_policy_rules\x1b[0m\n",
-				"\n\x1b[1mokta_policy_rules\x1b[22m\n",
-				"  \x1b[2mSafe mode:  \x1b[22m \x1b[32madds the columns\x1b[0m\n",
-				"  \x1b[2mForced mode:\x1b[22m \x1b[33madds the columns\x1b[0m\n",
-				"\x1b[1;33mAction: use safe migration.\x1b[22;0m\n",
+				"\x1b[33mSELECTED TABLES REMOVED — 1 changed table, 1 removed table\x1b[0m\n",
+				"    \x1b[31m- created_on   INT64   column removed\x1b[0m\n",
+				"  \x1b[1mgcp_removed\x1b[22m   \x1b[31mremoved table, the new source version no longer provides it\x1b[0m\n",
+				"  \x1b[33mgcp v23.0.0: tables were listed with a connection (metadata only, no rows read)\x1b[0m\n",
+				"\x1b[1;33mAction: remove explicit selections and update dependent consumers.\x1b[22;0m\n",
+			},
+		},
+		{
+			name:   "output comparison",
+			report: s3JSONReport(),
+			contains: []string{
+				"\x1b[32mNO OUTPUT DIFFERENCE DETECTED for equivalent test values\x1b[0m\n",
+				"  \x1b[1mdatadog_monitors.tags\x1b[22m   list<item: utf8, nullable> → json\n",
+				"    \x1b[2mSynthetic value:\x1b[22m [\"env:prod\"]\n",
+				"\x1b[1;32mAction: no action needed; the output is the same for equivalent values.\x1b[22;0m\n",
 			},
 		},
 		{
 			name: "no changes",
 			report: upgradeReport{
-				SourceName: "datadog", FromVersion: "v5.19.10", ToVersion: "v6.0.0", Destination: destination,
+				SourceName: "datadog", FromVersion: "v5.19.10", ToVersion: "v6.0.0", Destination: s3DestinationSpec(),
 				Findings: []*pluginPb.AssessTables_TableFinding{{TableName: "datadog_users", Category: pluginPb.AssessTables_CATEGORY_NO_CHANGE}},
 			},
 			contains: []string{"\x1b[32mNo schema changes affect your selected tables.\x1b[0m\n"},
