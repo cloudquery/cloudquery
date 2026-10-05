@@ -433,7 +433,8 @@ func TestRenderUpgradeReportWithColor(t *testing.T) {
 				"\x1b[31mREVIEW REQUIRED — 1 table needs a manual migration, 1 new table\x1b[0m\n",
 				"  \x1b[1mokta_policy_mappings\x1b[22m   \x1b[32mnew table\x1b[0m\n",
 				"  \x1b[1mokta_policy_rules\x1b[22m\n",
-				"    \x1b[32m+ policy_id    text    new column, part of the primary key\x1b[0m\n",
+				"    \x1b[31m+ policy_id    text    new column, part of the primary key\x1b[0m\n",
+				"    \x1b[32m+ actions      jsonb   new column\x1b[0m\n",
 				"  \x1b[1mmigrate_mode: safe (your config)\x1b[22m\n",
 				"    \x1b[32m✓ okta_policy_mappings   created\x1b[0m\n",
 				"    \x1b[31m✗ okta_policy_rules      fails: safe mode cannot change a primary key\x1b[0m\n",
@@ -443,9 +444,29 @@ func TestRenderUpgradeReportWithColor(t *testing.T) {
 			},
 		},
 		{
+			name:   "append mode applies every change",
+			report: oktaReport(postgresqlDestinationSpec(specs.WriteModeAppend, specs.MigrateModeSafe), pluginPb.AssessTables_CATEGORY_AUTOMATICALLY_MIGRATABLE, false),
+			contains: []string{
+				"    \x1b[32m+ policy_id    text    new column\x1b[0m\n",
+				"  \x1b[1mokta_policy_mappings\x1b[22m   \x1b[32mnew table\x1b[0m\n",
+			},
+		},
+		{
+			name: "removed column on a database destination",
+			report: upgradeReport{
+				SourceName: "okta", FromVersion: "v6.8.2", ToVersion: "v7.0.0", Destination: postgresqlDestinationSpec(specs.WriteModeOverwriteDeleteStale, specs.MigrateModeSafe),
+				Findings: []*pluginPb.AssessTables_TableFinding{{
+					TableName: "okta_users",
+					Category:  pluginPb.AssessTables_CATEGORY_AUTOMATICALLY_MIGRATABLE,
+					Columns:   []*pluginPb.AssessTables_ColumnFinding{{ColumnName: "legacy", Category: pluginPb.AssessTables_CATEGORY_AUTOMATICALLY_MIGRATABLE, OldType: "text"}},
+				}},
+			},
+			contains: []string{"    \x1b[33m- legacy   text   column removed\x1b[0m\n"},
+		},
+		{
 			name:     "type change",
 			report:   datadogTagsReport(postgresqlDestinationSpec(specs.WriteModeOverwriteDeleteStale, specs.MigrateModeSafe)),
-			contains: []string{"    \x1b[33m~ tags           text[] → jsonb   type changed\x1b[0m\n"},
+			contains: []string{"    \x1b[31m~ tags           text[] → jsonb   type changed\x1b[0m\n"},
 		},
 		{
 			name: "removed tables, coverage gaps and file changes",
@@ -461,7 +482,7 @@ func TestRenderUpgradeReportWithColor(t *testing.T) {
 			},
 			contains: []string{
 				"\x1b[33mSELECTED TABLES REMOVED — 1 changed table, 1 removed table\x1b[0m\n",
-				"    \x1b[31m- created_on   INT64   column removed\x1b[0m\n",
+				"    \x1b[33m- created_on   INT64   column removed\x1b[0m\n",
 				"  \x1b[1mgcp_removed\x1b[22m   \x1b[31mremoved table, the new source version no longer provides it\x1b[0m\n",
 				"  \x1b[33mgcp v23.0.0: tables were listed with a connection (metadata only, no rows read)\x1b[0m\n",
 				"\x1b[1;33mAction: remove explicit selections and update dependent consumers.\x1b[22;0m\n",

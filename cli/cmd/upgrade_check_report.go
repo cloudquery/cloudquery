@@ -234,16 +234,29 @@ func upgradeOutcomes(impact upgradeTableImpact, finding *pluginPb.AssessTables_T
 	return nil
 }
 
-func upgradeSafeModeFailure(changes []upgradeColumnChange, finding *pluginPb.AssessTables_TableFinding) string {
+const (
+	upgradeSafeModePrimaryKey = "safe mode cannot change a primary key"
+	upgradeSafeModeColumnType = "safe mode cannot change a column type"
+	upgradeSafeModeNotNull    = "safe mode cannot make a column NOT NULL"
+)
+
+func upgradeSafeModeBlocker(change upgradeColumnChange) string {
 	switch {
-	case slices.ContainsFunc(changes, func(change upgradeColumnChange) bool { return strings.Contains(change.Reason, "primary key") }):
-		return "safe mode cannot change a primary key"
-	case slices.ContainsFunc(changes, func(change upgradeColumnChange) bool {
-		return change.Kind == upgradeColumnChanged && change.OldType != change.NewType
-	}):
-		return "safe mode cannot change a column type"
-	case slices.ContainsFunc(changes, func(change upgradeColumnChange) bool { return change.Reason == "now NOT NULL" }):
-		return "safe mode cannot make a column NOT NULL"
+	case strings.Contains(change.Reason, "primary key"):
+		return upgradeSafeModePrimaryKey
+	case change.Kind == upgradeColumnChanged && change.OldType != change.NewType:
+		return upgradeSafeModeColumnType
+	case change.Reason == "now NOT NULL":
+		return upgradeSafeModeNotNull
+	}
+	return ""
+}
+
+func upgradeSafeModeFailure(changes []upgradeColumnChange, finding *pluginPb.AssessTables_TableFinding) string {
+	for _, blocker := range []string{upgradeSafeModePrimaryKey, upgradeSafeModeColumnType, upgradeSafeModeNotNull} {
+		if slices.ContainsFunc(changes, func(change upgradeColumnChange) bool { return upgradeSafeModeBlocker(change) == blocker }) {
+			return blocker
+		}
 	}
 	return cmp.Or(finding.SafeModeBehavior, upgradeSafeModeFallback)
 }
@@ -409,26 +422,39 @@ func writeUpgradeChanges(b *strings.Builder, impacts []upgradeTableImpact, remov
 			continue
 		}
 		b.WriteString("  " + bold.Sprint(impact.Name) + "\n")
-		writeUpgradeColumnChanges(b, impact.Changes, columnWidth, typeWidth)
+		writeUpgradeColumnChanges(b, impact, columnWidth, typeWidth)
 	}
 	for _, table := range removedTables {
 		fmt.Fprintf(b, "  %s%s%s\n", bold.Sprint(table), strings.Repeat(" ", tableWidth-len(table)+3), upgradeRed.Sprint(upgradeRemovedTableText))
 	}
 }
 
-func writeUpgradeColumnChanges(b *strings.Builder, changes []upgradeColumnChange, columnWidth, typeWidth int) {
-	for _, change := range changes {
-		marker, description, lineColor := "~", cmp.Or(change.Reason, "type changed"), upgradeYellow
+func writeUpgradeColumnChanges(b *strings.Builder, impact upgradeTableImpact, columnWidth, typeWidth int) {
+	for _, change := range impact.Changes {
+		marker, description := "~", cmp.Or(change.Reason, "type changed")
 		switch change.Kind {
 		case upgradeColumnAdded:
-			marker, description, lineColor = "+", upgradeJoinNonEmpty("new column", change.Reason), upgradeGreen
+			marker, description = "+", upgradeJoinNonEmpty("new column", change.Reason)
 		case upgradeColumnRemoved:
-			marker, description, lineColor = "-", upgradeJoinNonEmpty("column removed", change.Reason), upgradeRed
+			marker, description = "-", upgradeJoinNonEmpty("column removed", change.Reason)
 		}
+		lineColor := upgradeChangeColor(impact, change)
 		changeType := upgradeChangeType(change)
 		line := fmt.Sprintf("%s %-*s   %s%s   %s", marker, columnWidth, change.Column, changeType, strings.Repeat(" ", typeWidth-len([]rune(changeType))), description)
 		b.WriteString("    " + lineColor.Sprint(line) + "\n")
 	}
+}
+
+func upgradeChangeColor(impact upgradeTableImpact, change upgradeColumnChange) *color.Color {
+	switch {
+	case impact.Outcomes == nil:
+		return upgradeYellow
+	case impact.Category == pluginPb.AssessTables_CATEGORY_MANUAL_MIGRATION_REQUIRED && upgradeSafeModeBlocker(change) != "":
+		return upgradeRed
+	case change.Kind == upgradeColumnRemoved:
+		return upgradeYellow
+	}
+	return upgradeGreen
 }
 
 func upgradeChangeType(change upgradeColumnChange) string {
