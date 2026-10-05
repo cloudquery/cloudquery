@@ -249,25 +249,10 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 	syncGroupId := make([]string, len(destinationsClients))
 	for i := range destinationsClients {
 		destinationsPbClients[i] = plugin.NewPluginClient(destinationsClients[i].Conn)
-		opts := []transformer.RecordTransformerOption{
-			transformer.WithSourceNameColumn(sourceName),
-			transformer.WithSyncTimeColumn(syncTime),
-		}
-		if cqColumnsNotNull {
-			opts = append(opts, transformer.WithCQColumnsNotNull())
-		}
 		if destinationSpecs[i].SyncGroupId != "" {
 			syncGroupId[i] = destinationSpecs[i].RenderedSyncGroupId(syncTime, uid)
-			opts = append(opts, transformer.WithSyncGroupIdColumn(syncGroupId[i]))
 		}
-		if destinationSpecs[i].WriteMode == specs.WriteModeAppend {
-			opts = append(opts, transformer.WithRemovePKs())
-			opts = append(opts, transformer.WithRemoveUniqueConstraints())
-		} else if destinationSpecs[i].PKMode == specs.PKModeCQID {
-			opts = append(opts, transformer.WithRemovePKs())
-			opts = append(opts, transformer.WithCQIDPrimaryKey())
-		}
-		destinationTransformers[i] = transformer.NewRecordTransformer(opts...)
+		destinationTransformers[i] = newDestinationRecordTransformer(destinationSpecs[i], sourceName, syncTime, syncGroupId[i], cqColumnsNotNull)
 		connection := destinationsClients[i].ConnectionString()
 		variables.Plugins[destinationSpecs[i].Name] = specs.PluginVariables{
 			Connection: connection,
@@ -511,18 +496,9 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 					originalSchema := createTableNameSchema(m.DeleteRecord.TableName)
 
 					// Apply the same transformation pipeline as MigrateTable
-					transformedSchema := destinationTransformers[i].TransformSchema(originalSchema)
-					transformedSchemaBytes, err := plugin.SchemaToBytes(transformedSchema)
+					transformedSchemaBytes, err := transformSchemaForDestination(ctx, destinationTransformers[i], transformerPbClientsByDestination[destinationName], originalSchema)
 					if err != nil {
 						return err
-					}
-
-					for _, transformerPbClient := range transformerPbClientsByDestination[destinationName] {
-						resp, err := transformerPbClient.TransformSchema(ctx, &plugin.TransformSchema_Request{Schema: transformedSchemaBytes})
-						if err != nil {
-							return err
-						}
-						transformedSchemaBytes = resp.Schema
 					}
 
 					tableName, err := getTransformedTableNameFromSchema(transformedSchemaBytes)
@@ -566,18 +542,9 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 				}
 				for i := range destinationsPbClients {
 					destinationName := destinationSpecs[i].Name
-					transformedSchema := destinationTransformers[i].TransformSchema(sc)
-					transformedSchemaBytes, err := plugin.SchemaToBytes(transformedSchema)
+					transformedSchemaBytes, err := transformSchemaForDestination(ctx, destinationTransformers[i], transformerPbClientsByDestination[destinationName], sc)
 					if err != nil {
 						return err
-					}
-					// Sequentially apply schema transformations from transformers
-					for _, transformerPbClient := range transformerPbClientsByDestination[destinationName] {
-						resp, err := transformerPbClient.TransformSchema(ctx, &plugin.TransformSchema_Request{Schema: transformedSchemaBytes})
-						if err != nil {
-							return err
-						}
-						transformedSchemaBytes = resp.Schema
 					}
 
 					// Table name might have changed due to a transformation.

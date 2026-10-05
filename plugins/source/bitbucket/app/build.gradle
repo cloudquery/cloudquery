@@ -8,8 +8,8 @@
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     id 'application'
-    id "io.freefair.lombok" version "9.5.0"
-    id "com.diffplug.spotless" version "8.10.0"
+    id "io.freefair.lombok" version "9.7.0"
+    id "com.diffplug.spotless" version "8.10.2"
 }
 
 repositories {
@@ -31,9 +31,9 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
     // This dependency is used by the application.
-    implementation 'com.fasterxml.jackson.core:jackson-core:2.22.2'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.22.3'
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.22'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.22.2'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.22.3'
     implementation 'com.google.guava:guava:33.7.1-jre'
     implementation 'com.konghq:unirest-java:3.14.5'
 
