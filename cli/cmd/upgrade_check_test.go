@@ -394,7 +394,7 @@ func TestUpgradeCheckRFCCases(t *testing.T) {
 			configPath := filepath.Join("testdata", "upgrade-check", tc.name+".yml")
 			specReader, err := specs.NewSpecReader([]string{configPath})
 			require.NoError(t, err)
-			t.Cleanup(CloseLogFile)
+			defer CloseLogFile()
 
 			cmd := NewCmdRoot()
 			var out bytes.Buffer
