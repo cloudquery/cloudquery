@@ -80,9 +80,10 @@ const (
 	upgradeRemovedTableText = "removed table, the new source version no longer provides it"
 	upgradeDataLossText     = "dropped and recreated, existing rows deleted"
 	upgradeSafeModeFallback = "safe mode cannot apply these changes"
+	upgradeFailsPrefix      = "fails: "
 )
 
-func renderUpgradeReport(w io.Writer, r upgradeReport) error {
+func renderUpgradeReport(w io.Writer, r upgradeReport, aiPrompt bool) error {
 	r = sortUpgradeReport(r)
 	impacts := upgradeTableImpacts(r)
 	comparisons := upgradeOutputComparisons(r.Findings)
@@ -125,6 +126,9 @@ func renderUpgradeReport(w io.Writer, r upgradeReport) error {
 
 	action, actionColor := upgradeAction(r, impacts, comparisons, migrateMode)
 	b.WriteString("\n" + color.New(color.Bold, actionColor).Sprint("Action: "+action) + "\n")
+	if !aiPrompt && upgradeHasCategory(impacts, pluginPb.AssessTables_CATEGORY_MANUAL_MIGRATION_REQUIRED) {
+		b.WriteString(upgradeAIPromptHintText + "\n")
+	}
 	b.WriteString(upgradeFaint.Sprint(upgradePreviewOnlyText) + "\n\n")
 	_, err := io.WriteString(w, b.String())
 	return err
@@ -221,7 +225,7 @@ func upgradeOutcomes(impact upgradeTableImpact, finding *pluginPb.AssessTables_T
 	switch impact.Category {
 	case pluginPb.AssessTables_CATEGORY_MANUAL_MIGRATION_REQUIRED:
 		return map[string]upgradeOutcome{
-			specs.MigrateModeSafe.String():   {upgradeOutcomeFails, "fails: " + upgradeSafeModeFailure(impact.Changes, finding)},
+			specs.MigrateModeSafe.String():   {upgradeOutcomeFails, upgradeFailsPrefix + upgradeSafeModeFailure(impact.Changes, finding)},
 			specs.MigrateModeForced.String(): {upgradeOutcomeDataLoss, upgradeDataLossText},
 		}
 	case pluginPb.AssessTables_CATEGORY_AUTOMATICALLY_MIGRATABLE:

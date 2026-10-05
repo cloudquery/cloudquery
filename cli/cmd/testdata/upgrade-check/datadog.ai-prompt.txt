@@ -1,0 +1,147 @@
+datadog v5.19.10 → v6.0.0 | postgresql (cloudquery/postgresql@<version>)
+write_mode: overwrite-delete-stale | pk_mode: default | migrate_mode: safe
+REVIEW REQUIRED — 6 tables need a manual migration
+
+Changes
+  datadog_downtimes
+    ~ monitor_tags   text[] → jsonb   type changed
+  datadog_global_variables
+    ~ tags           text[] → jsonb   type changed
+  datadog_monitor_downtimes
+    ~ monitor_tags   text[] → jsonb   type changed
+  datadog_monitors
+    ~ tags           text[] → jsonb   type changed
+  datadog_slos
+    ~ monitor_tags   text[] → jsonb   type changed
+    ~ tags           text[] → jsonb   type changed
+  datadog_synthetics
+    ~ tags           text[] → jsonb   type changed
+
+Next sync
+  migrate_mode: safe (your config)
+    ✗ datadog_downtimes           fails: safe mode cannot change a column type
+    ✗ datadog_global_variables    fails: safe mode cannot change a column type
+    ✗ datadog_monitor_downtimes   fails: safe mode cannot change a column type
+    ✗ datadog_monitors            fails: safe mode cannot change a column type
+    ✗ datadog_slos                fails: safe mode cannot change a column type
+    ✗ datadog_synthetics          fails: safe mode cannot change a column type
+  migrate_mode: forced
+    ! datadog_downtimes           dropped and recreated, existing rows deleted
+    ! datadog_global_variables    dropped and recreated, existing rows deleted
+    ! datadog_monitor_downtimes   dropped and recreated, existing rows deleted
+    ! datadog_monitors            dropped and recreated, existing rows deleted
+    ! datadog_slos                dropped and recreated, existing rows deleted
+    ! datadog_synthetics          dropped and recreated, existing rows deleted
+
+Action: migrate these 6 tables manually before upgrading, or switch to migrate_mode: forced and accept losing their rows.
+This check only previews the changes. It does not migrate, write, delete or upload anything.
+
+--- AI migration prompt for postgresql (prompt_version 1) ---
+You are helping me migrate tables in my PostgreSQL database before I upgrade a CloudQuery source plugin.
+
+## Goal
+
+Change the tables listed below so that version v6.0.0 of the datadog source plugin can sync into them with `migrate_mode: safe`, and keep their existing rows. Work in small steps that I can reverse. Before you run any statement that writes data or changes the schema, show it to me and wait for my approval.
+
+## Environment
+
+- Source plugin: datadog, upgrade from v5.19.10 to v6.0.0
+- Destination plugin: postgresql (cloudquery/postgresql@<version>)
+- Database: PostgreSQL
+- write_mode: overwrite-delete-stale, pk_mode: default, migrate_mode: safe
+
+## Tables to migrate
+
+### datadog_downtimes
+
+- Primary key: `account_name`, `id` (unchanged)
+- Changes:
+  - `monitor_tags`: `text[]` → `jsonb`
+- Why `migrate_mode: safe` rejects it: safe mode cannot change a column type
+
+### datadog_global_variables
+
+- Primary key: `account_name`, `id` (unchanged)
+- Changes:
+  - `tags`: `text[]` → `jsonb`
+- Why `migrate_mode: safe` rejects it: safe mode cannot change a column type
+
+### datadog_monitor_downtimes
+
+- Primary key: `account_name`, `monitor_id`, `id` (unchanged)
+- Changes:
+  - `monitor_tags`: `text[]` → `jsonb`
+- Why `migrate_mode: safe` rejects it: safe mode cannot change a column type
+
+### datadog_monitors
+
+- Primary key: `account_name`, `id` (unchanged)
+- Changes:
+  - `tags`: `text[]` → `jsonb`
+- Why `migrate_mode: safe` rejects it: safe mode cannot change a column type
+
+### datadog_slos
+
+- Primary key: `account_name`, `id` (unchanged)
+- Changes:
+  - `monitor_tags`: `text[]` → `jsonb`
+  - `tags`: `text[]` → `jsonb`
+- Why `migrate_mode: safe` rejects it: safe mode cannot change a column type
+
+### datadog_synthetics
+
+- Primary key: `account_name`, `public_id` (unchanged)
+- Changes:
+  - `tags`: `text[]` → `jsonb`
+- Why `migrate_mode: safe` rejects it: safe mode cannot change a column type
+
+## CloudQuery rules you must respect
+
+- Change only the tables listed above. CloudQuery migrates any other tables of this upgrade on the next sync.
+- CloudQuery adds the internal columns `_cq_id`, `_cq_parent_id` (on child tables), `_cq_source_name` and `_cq_sync_time`. Keep these columns and their values.
+- With `write_mode: overwrite-delete-stale`, each sync upserts rows by primary key, then deletes the rows of the same `_cq_source_name` that have an older `_cq_sync_time`. The next complete sync replaces or deletes the rows that you keep now.
+- The final schema of each table must match exactly what version v6.0.0 creates: column names, types, nullability and primary key. If it does not match, the next sync with `migrate_mode: safe` fails again. If you are not sure about a target definition, ask me to run `cloudquery migrate` with version v6.0.0 against an empty scratch database, and compare with the tables it creates.
+- Pause all syncs that write to these tables until the migration is complete.
+- Change the source plugin version to v6.0.0 in the CloudQuery configuration only after the migration is complete and verified.
+
+## Step 1: Inspect the database (read-only)
+
+Before you propose changes, run only read-only queries (no statement that writes data or changes the schema) and tell me, for each table:
+
+- The row count, and the size of the table and its indexes.
+- The columns, indexes and constraints, compared with the changes above.
+- Views, functions or triggers that depend on the table.
+- Foreign keys to or from the table.
+- Replication, change data capture or other consumers that read the table.
+- Current locks, long-running transactions, and when the table has the most and the least traffic.
+- The free disk space.
+
+## Step 2: Propose a plan
+
+Propose a plan before you run anything. Prefer gradual steps that keep the data. The plan must include:
+
+- Type conversions: an explicit conversion expression for each changed column, what it does with NULL and empty values, and a check that the result matches what the new plugin version writes.
+- Performance: table rewrites, lock levels and how long each lock is held, batch sizes, when to run each step (off-peak), index builds that do not block writes, free disk space for rewrites, and replication lag.
+- Verification: queries to run after each step, for example row counts before and after, a sample of converted values compared with the original values, and a schema diff of each table against the target schema.
+- Rollback: how to undo each step.
+- Trade-offs: if a gradual migration is not possible or not worth it, say why. For example, `migrate_mode: forced` and a full sync can be simpler for small tables, or when the next sync replaces all rows anyway, but the tables are empty until that sync completes.
+
+## Step 3: Run the plan
+
+- Run one step at a time. Before each statement that writes data or changes the schema, show me the exact statement and wait for my approval.
+- Never run `DROP`, `TRUNCATE`, `DELETE` or any other statement that removes data or schema objects without my explicit approval of that exact statement.
+- Back up the affected tables before the first write, and make sure that I can restore the backup.
+- After each step, run the verification queries. Stop and tell me if a check fails.
+- When all tables match the target schema, tell me to change the source plugin version to v6.0.0, resume the syncs, and check that the first sync completes without migration errors.
+- Never print, log or ask me to paste passwords, tokens or connection strings.
+
+## PostgreSQL guidance
+
+- `ALTER TABLE` takes an ACCESS EXCLUSIVE lock that blocks all reads and writes on the table. Set `lock_timeout` (for example `SET lock_timeout = '5s'`) so that a waiting `ALTER TABLE` does not block the queries behind it, and retry off-peak.
+- A table rewrite needs free disk space for a full copy of the table and its indexes, and writes WAL that can increase replication lag. Check sizes with `pg_total_relation_size` and lag with `pg_stat_replication`.
+- Views that depend on a column block `ALTER COLUMN ... TYPE`. Find them in `pg_depend` and recreate them in the same transaction.
+- CloudQuery names the primary-key constraint `<table>_cqpk`. Keep this name.
+- `ALTER TABLE t ALTER COLUMN c TYPE jsonb USING to_jsonb(c)` converts `text[]` to `jsonb` in one statement, but rewrites the table while it holds the ACCESS EXCLUSIVE lock. Use a single statement like this only for small tables.
+- For large tables, add a new column with the target type, backfill it in batches (for example 1,000 to 10,000 rows per transaction, by primary-key ranges) with the conversion expression, then drop the old column and rename the new one in one short transaction. Run `VACUUM (ANALYZE)` after the backfill.
+--- end ---
+

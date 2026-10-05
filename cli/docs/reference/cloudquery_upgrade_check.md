@@ -24,6 +24,7 @@ cloudquery upgrade check ./config.yml --source datadog --to v6.0.0
 ## Options
 
 ```
+      --ai-prompt        Print a prompt for an AI agent that guides a manual migration without data loss. JSON output always includes it
   -h, --help             help for check
       --license string   set offline license file
       --output string    Output format. One of: text, json (default "text")

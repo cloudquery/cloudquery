@@ -1,0 +1,22 @@
+okta v6.8.2 → v7.0.0 | postgresql (cloudquery/postgresql@<version>)
+write_mode: append | pk_mode: default | migrate_mode: safe
+AUTOMATICALLY MIGRATABLE — 1 changed table, 1 new table
+
+Changes
+  okta_policy_mappings   new table
+  okta_policy_rules
+    + policy_id    text    new column
+    + actions      jsonb   new column
+    + conditions   jsonb   new column
+
+Next sync
+  migrate_mode: safe (your config)
+    ✓ okta_policy_mappings   created
+    ✓ okta_policy_rules      migrated in place
+  migrate_mode: forced — same as safe
+
+Action: use safe migration.
+This check only previews the changes. It does not migrate, write, delete or upload anything.
+
+No manual migration needed.
+

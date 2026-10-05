@@ -34,5 +34,6 @@ Next sync
     ! datadog_synthetics          dropped and recreated, existing rows deleted
 
 Action: migrate these 6 tables manually before upgrading, or switch to migrate_mode: forced and accept losing their rows.
+Run again with --ai-prompt to get a prompt for an AI agent that guides a gradual migration without data loss.
 This check only previews the changes. It does not migrate, write, delete or upload anything.
 

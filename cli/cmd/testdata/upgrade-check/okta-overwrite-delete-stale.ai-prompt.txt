@@ -1,0 +1,98 @@
+okta v6.8.2 → v7.0.0 | postgresql (cloudquery/postgresql@<version>)
+write_mode: overwrite-delete-stale | pk_mode: default | migrate_mode: safe
+REVIEW REQUIRED — 1 table needs a manual migration, 1 new table
+
+Changes
+  okta_policy_mappings   new table
+  okta_policy_rules
+    + policy_id    text    new column, part of the primary key
+    + actions      jsonb   new column
+    + conditions   jsonb   new column
+
+Next sync
+  migrate_mode: safe (your config)
+    ✓ okta_policy_mappings   created
+    ✗ okta_policy_rules      fails: safe mode cannot change a primary key
+  migrate_mode: forced
+    ✓ okta_policy_mappings   created
+    ! okta_policy_rules      dropped and recreated, existing rows deleted
+
+Action: migrate okta_policy_rules manually before upgrading, or switch to migrate_mode: forced and accept losing its rows.
+This check only previews the changes. It does not migrate, write, delete or upload anything.
+
+--- AI migration prompt for postgresql (prompt_version 1) ---
+You are helping me migrate tables in my PostgreSQL database before I upgrade a CloudQuery source plugin.
+
+## Goal
+
+Change the tables listed below so that version v7.0.0 of the okta source plugin can sync into them with `migrate_mode: safe`, and keep their existing rows. Work in small steps that I can reverse. Before you run any statement that writes data or changes the schema, show it to me and wait for my approval.
+
+## Environment
+
+- Source plugin: okta, upgrade from v6.8.2 to v7.0.0
+- Destination plugin: postgresql (cloudquery/postgresql@<version>)
+- Database: PostgreSQL
+- write_mode: overwrite-delete-stale, pk_mode: default, migrate_mode: safe
+
+## Tables to migrate
+
+### okta_policy_rules
+
+- Primary key now: `id`
+- Primary key after the upgrade: `policy_id`, `id`
+- Changes:
+  - `policy_id`: new `text` column, NOT NULL, part of the primary key
+  - `actions`: new `jsonb` column
+  - `conditions`: new `jsonb` column
+- Why `migrate_mode: safe` rejects it: safe mode cannot change a primary key
+
+## CloudQuery rules you must respect
+
+- Change only the tables listed above. CloudQuery migrates any other tables of this upgrade on the next sync.
+- CloudQuery adds the internal columns `_cq_id`, `_cq_parent_id` (on child tables), `_cq_source_name` and `_cq_sync_time`. Keep these columns and their values.
+- With `write_mode: overwrite-delete-stale`, each sync upserts rows by primary key, then deletes the rows of the same `_cq_source_name` that have an older `_cq_sync_time`. The next complete sync replaces or deletes the rows that you keep now.
+- The final schema of each table must match exactly what version v7.0.0 creates: column names, types, nullability and primary key. If it does not match, the next sync with `migrate_mode: safe` fails again. If you are not sure about a target definition, ask me to run `cloudquery migrate` with version v7.0.0 against an empty scratch database, and compare with the tables it creates.
+- Pause all syncs that write to these tables until the migration is complete.
+- Change the source plugin version to v7.0.0 in the CloudQuery configuration only after the migration is complete and verified.
+
+## Step 1: Inspect the database (read-only)
+
+Before you propose changes, run only read-only queries (no statement that writes data or changes the schema) and tell me, for each table:
+
+- The row count, and the size of the table and its indexes.
+- The columns, indexes and constraints, compared with the changes above.
+- Views, functions or triggers that depend on the table.
+- Foreign keys to or from the table.
+- Replication, change data capture or other consumers that read the table.
+- Current locks, long-running transactions, and when the table has the most and the least traffic.
+- The free disk space.
+
+## Step 2: Propose a plan
+
+Propose a plan before you run anything. Prefer gradual steps that keep the data. The plan must include:
+
+- Primary-key changes: how to fill new key columns for existing rows, a unique index built without blocking writes, and a short swap of the constraint. Existing rows can have no value for a new key column. Do not invent values. Explain the options and how my write_mode affects them, for example a placeholder value that the next sync replaces.
+- Performance: table rewrites, lock levels and how long each lock is held, batch sizes, when to run each step (off-peak), index builds that do not block writes, free disk space for rewrites, and replication lag.
+- Verification: queries to run after each step, for example row counts before and after, a sample of converted values compared with the original values, and a schema diff of each table against the target schema.
+- Rollback: how to undo each step.
+- Trade-offs: if a gradual migration is not possible or not worth it, say why. For example, `migrate_mode: forced` and a full sync can be simpler for small tables, or when the next sync replaces all rows anyway, but the tables are empty until that sync completes.
+
+## Step 3: Run the plan
+
+- Run one step at a time. Before each statement that writes data or changes the schema, show me the exact statement and wait for my approval.
+- Never run `DROP`, `TRUNCATE`, `DELETE` or any other statement that removes data or schema objects without my explicit approval of that exact statement.
+- Back up the affected tables before the first write, and make sure that I can restore the backup.
+- After each step, run the verification queries. Stop and tell me if a check fails.
+- When all tables match the target schema, tell me to change the source plugin version to v7.0.0, resume the syncs, and check that the first sync completes without migration errors.
+- Never print, log or ask me to paste passwords, tokens or connection strings.
+
+## PostgreSQL guidance
+
+- `ALTER TABLE` takes an ACCESS EXCLUSIVE lock that blocks all reads and writes on the table. Set `lock_timeout` (for example `SET lock_timeout = '5s'`) so that a waiting `ALTER TABLE` does not block the queries behind it, and retry off-peak.
+- A table rewrite needs free disk space for a full copy of the table and its indexes, and writes WAL that can increase replication lag. Check sizes with `pg_total_relation_size` and lag with `pg_stat_replication`.
+- Views that depend on a column block `ALTER COLUMN ... TYPE`. Find them in `pg_depend` and recreate them in the same transaction.
+- CloudQuery names the primary-key constraint `<table>_cqpk`. Keep this name.
+- Add new key columns as nullable, backfill them in batches, then add `CHECK (col IS NOT NULL) NOT VALID`, run `VALIDATE CONSTRAINT`, and then `SET NOT NULL` (PostgreSQL 12 and later skip the full table scan when a validated check constraint exists).
+- Build the new key with `CREATE UNIQUE INDEX CONCURRENTLY` (it cannot run in a transaction), then swap in one short transaction: `ALTER TABLE t DROP CONSTRAINT t_cqpk, ADD CONSTRAINT t_cqpk PRIMARY KEY USING INDEX <new_index>`.
+--- end ---
+

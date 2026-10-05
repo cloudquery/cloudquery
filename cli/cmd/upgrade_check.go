@@ -56,6 +56,7 @@ func newCmdUpgradeCheck() *cobra.Command {
 	_ = cmd.MarkFlagRequired("source")
 	_ = cmd.MarkFlagRequired("to")
 	cmd.Flags().String("output", upgradeOutputText, "Output format. One of: text, json")
+	cmd.Flags().Bool("ai-prompt", false, "Print a prompt for an AI agent that guides a manual migration without data loss. JSON output always includes it")
 	cmd.Flags().String("license", "", "set offline license file")
 	cmd.Flags().Bool("cq-columns-not-null", false, "Force CloudQuery internal columns to be NOT NULL. This feature is in Preview. Please provide feedback to help us improve it.")
 	_ = cmd.Flags().MarkHidden("cq-columns-not-null")
@@ -81,6 +82,10 @@ func upgradeCheck(cmd *cobra.Command, args []string) error {
 	}
 	if output != upgradeOutputText && output != upgradeOutputJSON {
 		return fmt.Errorf("invalid output format %q. One of: %s, %s", output, upgradeOutputText, upgradeOutputJSON)
+	}
+	aiPrompt, err := cmd.Flags().GetBool("ai-prompt")
+	if err != nil {
+		return err
 	}
 	licenseFile, err := cmd.Flags().GetString("license")
 	if err != nil {
@@ -156,15 +161,21 @@ func upgradeCheck(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return err
 	}
-	return renderUpgradeReports(out, output, reports)
+	return renderUpgradeReports(out, output, aiPrompt, reports)
 }
 
-func renderUpgradeReports(w io.Writer, output string, reports []upgradeReport) error {
+func renderUpgradeReports(w io.Writer, output string, aiPrompt bool, reports []upgradeReport) error {
 	if output == upgradeOutputJSON {
 		return renderUpgradeReportsJSON(w, reports)
 	}
 	for _, report := range reports {
-		if err := renderUpgradeReport(w, report); err != nil {
+		if err := renderUpgradeReport(w, report, aiPrompt); err != nil {
+			return err
+		}
+		if !aiPrompt {
+			continue
+		}
+		if err := renderUpgradeAIPrompt(w, report); err != nil {
 			return err
 		}
 	}

@@ -22,6 +22,8 @@ type upgradeReportJSON struct {
 	OutputComparisons []upgradeOutputComparisonJSON `json:"output_comparisons"`
 	CoverageGaps      []string                      `json:"coverage_gaps"`
 	Action            string                        `json:"action"`
+	AIPrompt          string                        `json:"ai_prompt,omitempty"`
+	PromptVersion     string                        `json:"prompt_version,omitempty"`
 }
 
 type upgradeSourceJSON struct {
@@ -84,6 +86,10 @@ func upgradeReportToJSON(r upgradeReport) upgradeReportJSON {
 		OutputComparisons: upgradeOutputComparisonsToJSON(comparisons),
 		CoverageGaps:      append([]string{}, upgradeCoverageGaps(r)...),
 		Action:            action,
+		AIPrompt:          upgradeAIPrompt(r),
+	}
+	if out.AIPrompt != "" {
+		out.PromptVersion = upgradeAIPromptVersion
 	}
 	if verdict == "" {
 		out.Verdict = upgradeNoChangesText

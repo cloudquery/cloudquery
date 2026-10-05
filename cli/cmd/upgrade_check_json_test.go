@@ -58,7 +58,7 @@ func TestRenderUpgradeReportsJSONMatchesText(t *testing.T) {
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
 			var text bytes.Buffer
-			require.NoError(t, renderUpgradeReport(&text, tc.report))
+			require.NoError(t, renderUpgradeReport(&text, tc.report, false))
 			got := renderUpgradeReportJSON(t, tc.report)
 
 			lines := strings.Split(text.String(), "\n")

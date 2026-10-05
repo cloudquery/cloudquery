@@ -1,0 +1,13 @@
+gcp v22.1.2 → v23.0.0 | postgresql (cloudquery/postgresql@<version>)
+write_mode: overwrite-delete-stale | pk_mode: default
+SELECTED TABLES REMOVED — 2 removed tables
+
+Changes
+  gcp_aiplatform_specialist_pools           removed table, the new source version no longer provides it
+  gcp_aiplatform_specialistpool_locations   removed table, the new source version no longer provides it
+
+Action: remove explicit selections and update dependent consumers.
+This check only previews the changes. It does not migrate, write, delete or upload anything.
+
+No manual migration needed.
+

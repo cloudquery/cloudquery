@@ -18,5 +18,6 @@ Next sync
     ! okta_policy_rules      dropped and recreated, existing rows deleted
 
 Action: migrate okta_policy_rules manually before upgrading, or switch to migrate_mode: forced and accept losing its rows.
+Run again with --ai-prompt to get a prompt for an AI agent that guides a gradual migration without data loss.
 This check only previews the changes. It does not migrate, write, delete or upload anything.
 

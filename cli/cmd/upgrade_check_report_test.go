@@ -164,6 +164,7 @@ Next sync
     ! datadog_monitors     dropped and recreated, existing rows deleted
 
 Action: migrate datadog_dashboards, datadog_monitors manually before upgrading, or switch to migrate_mode: forced and accept losing their rows.
+Run again with --ai-prompt to get a prompt for an AI agent that guides a gradual migration without data loss.
 This check only previews the changes. It does not migrate, write, delete or upload anything.
 
 `,
@@ -190,6 +191,7 @@ Next sync
     ✗ datadog_monitors     fails: safe mode cannot change a column type
 
 Action: the next sync drops and recreates datadog_dashboards, datadog_monitors and deletes existing rows; back up any data you need before upgrading.
+Run again with --ai-prompt to get a prompt for an AI agent that guides a gradual migration without data loss.
 This check only previews the changes. It does not migrate, write, delete or upload anything.
 
 `,
@@ -217,6 +219,7 @@ Next sync
     ! okta_policy_rules      dropped and recreated, existing rows deleted
 
 Action: migrate okta_policy_rules manually before upgrading, or switch to migrate_mode: forced and accept losing its rows.
+Run again with --ai-prompt to get a prompt for an AI agent that guides a gradual migration without data loss.
 This check only previews the changes. It does not migrate, write, delete or upload anything.
 
 `,
@@ -411,7 +414,7 @@ This check only previews the changes. It does not migrate, write, delete or uplo
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
 			var out bytes.Buffer
-			require.NoError(t, renderUpgradeReport(&out, tc.report))
+			require.NoError(t, renderUpgradeReport(&out, tc.report, false))
 			require.Equal(t, tc.want, out.String())
 		})
 	}
@@ -489,7 +492,7 @@ func TestRenderUpgradeReportWithColor(t *testing.T) {
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
 			var out bytes.Buffer
-			require.NoError(t, renderUpgradeReport(&out, tc.report))
+			require.NoError(t, renderUpgradeReport(&out, tc.report, false))
 			for _, want := range tc.contains {
 				require.Contains(t, out.String(), want)
 			}
