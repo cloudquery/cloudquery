@@ -134,15 +134,23 @@ func TestAssessTablesWithoutSpec(t *testing.T) {
 	}
 }
 
-func TestAssessTablesJSONSameOutput(t *testing.T) {
+func TestAssessTablesJSONSameOutputKeepsTypeChangeEvidence(t *testing.T) {
 	finding := assessTable(t, filetypes.FormatTypeJSON, datadogMonitorTags())
 
 	require.Equal(t, plugin.AssessCategoryNoChange, finding.Category)
 	require.Len(t, finding.Columns, 1)
-	require.Equal(t, "tags", finding.Columns[0].ColumnName)
+	column := finding.Columns[0]
+	require.Equal(t, "tags", column.ColumnName)
+	require.Equal(t, plugin.AssessCategoryNoChange, column.Category)
+	require.Equal(t, "list<item: utf8, nullable>", column.OldType)
+	require.Equal(t, "json", column.NewType)
+	require.NotEmpty(t, column.Evidence)
 	require.Equal(t, plugin.Evidence{
 		SyntheticValue: `["env:prod"]`,
 		Before:         `{"tags":["env:prod"]}`,
 		After:          `{"tags":["env:prod"]}`,
-	}, finding.Columns[0].Evidence[0])
+	}, column.Evidence[0])
+	for _, evidence := range column.Evidence {
+		require.Equal(t, evidence.Before, evidence.After)
+	}
 }
