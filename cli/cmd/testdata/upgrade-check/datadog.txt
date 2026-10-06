@@ -4,18 +4,18 @@ REVIEW REQUIRED — 6 tables need a manual migration
 
 Changes
   datadog_downtimes
-    ~ monitor_tags   text[] → jsonb   type changed
+    ~ monitor_tags   text[] → jsonb   type changed (list<string> → json)
   datadog_global_variables
-    ~ tags           text[] → jsonb   type changed
+    ~ tags           text[] → jsonb   type changed (list<string> → json)
   datadog_monitor_downtimes
-    ~ monitor_tags   text[] → jsonb   type changed
+    ~ monitor_tags   text[] → jsonb   type changed (list<string> → json)
   datadog_monitors
-    ~ tags           text[] → jsonb   type changed
+    ~ tags           text[] → jsonb   type changed (list<string> → json)
   datadog_slos
-    ~ monitor_tags   text[] → jsonb   type changed
-    ~ tags           text[] → jsonb   type changed
+    ~ monitor_tags   text[] → jsonb   type changed (list<string> → json)
+    ~ tags           text[] → jsonb   type changed (list<string> → json)
   datadog_synthetics
-    ~ tags           text[] → jsonb   type changed
+    ~ tags           text[] → jsonb   type changed (list<string> → json)
 
 Next sync
   migrate_mode: safe (your config)

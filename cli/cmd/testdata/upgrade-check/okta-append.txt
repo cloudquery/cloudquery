@@ -5,9 +5,9 @@ AUTOMATICALLY MIGRATABLE — 1 changed table, 1 new table
 Changes
   okta_policy_mappings   new table
   okta_policy_rules
-    + policy_id    text    new column
-    + actions      jsonb   new column
-    + conditions   jsonb   new column
+    + policy_id    text    new column (string)
+    + actions      jsonb   new column (json)
+    + conditions   jsonb   new column (json)
 
 Next sync
   migrate_mode: safe (your config)

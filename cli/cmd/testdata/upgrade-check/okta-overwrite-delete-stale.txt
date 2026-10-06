@@ -5,9 +5,9 @@ REVIEW REQUIRED — 1 table needs a manual migration, 1 new table
 Changes
   okta_policy_mappings   new table
   okta_policy_rules
-    + policy_id    text    new column, part of the primary key
-    + actions      jsonb   new column
-    + conditions   jsonb   new column
+    + policy_id    text    new column, part of the primary key (string)
+    + actions      jsonb   new column (json)
+    + conditions   jsonb   new column (json)
 
 Next sync
   migrate_mode: safe (your config)
