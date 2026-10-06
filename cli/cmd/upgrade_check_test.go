@@ -380,14 +380,15 @@ func TestUpgradeCheckRFCCases(t *testing.T) {
 	cqDir := t.TempDir()
 
 	cases := []struct {
-		name        string
-		toVersion   string
-		wantVerdict string
+		name         string
+		toVersion    string
+		wantVerdict  string
+		wantExitCode int
 	}{
-		{name: "datadog", toVersion: "v6.0.0", wantVerdict: "REVIEW REQUIRED — 6 tables need a manual migration"},
-		{name: "okta-overwrite-delete-stale", toVersion: "v7.0.0", wantVerdict: "REVIEW REQUIRED — 1 table needs a manual migration, 1 new table"},
-		{name: "okta-append", toVersion: "v7.0.0", wantVerdict: "AUTOMATICALLY MIGRATABLE — 1 changed table, 1 new table"},
-		{name: "gcp-selected-tables", toVersion: "v23.0.0", wantVerdict: "SELECTED TABLES REMOVED — 2 removed tables"},
+		{name: "datadog", toVersion: "v6.0.0", wantVerdict: "REVIEW REQUIRED — 6 tables need a manual migration", wantExitCode: 3},
+		{name: "okta-overwrite-delete-stale", toVersion: "v7.0.0", wantVerdict: "REVIEW REQUIRED — 1 table needs a manual migration, 1 new table", wantExitCode: 3},
+		{name: "okta-append", toVersion: "v7.0.0", wantVerdict: "AUTOMATICALLY MIGRATABLE — 1 changed table, 1 new table", wantExitCode: 0},
+		{name: "gcp-selected-tables", toVersion: "v23.0.0", wantVerdict: "SELECTED TABLES REMOVED — 2 removed tables", wantExitCode: 3},
 	}
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
@@ -403,13 +404,25 @@ func TestUpgradeCheckRFCCases(t *testing.T) {
 				"upgrade", "check", configPath, "--source", specReader.Sources[0].Name, "--to", tc.toVersion,
 				"--cq-dir", cqDir, "--log-file-name", filepath.Join(t.TempDir(), "cloudquery.log"),
 			})
-			require.NoError(t, cmd.Execute())
+			err = cmd.Execute()
 
 			report := strings.ReplaceAll(out.String(), specReader.Destinations[0].Version, "<version>")
 			require.Contains(t, report, "\n"+tc.wantVerdict+"\n")
 			requireUpgradeCheckGolden(t, tc.name+".txt", report)
+			requireUpgradeCheckExitCode(t, err, tc.wantExitCode)
 		})
 	}
+}
+
+func requireUpgradeCheckExitCode(t *testing.T, err error, want int) {
+	t.Helper()
+	if want == 0 {
+		require.NoError(t, err)
+		return
+	}
+	var exitErr *ExitCodeError
+	require.ErrorAs(t, err, &exitErr)
+	require.Equal(t, want, exitErr.Code)
 }
 
 func requireUpgradeCheckGolden(t *testing.T, name, got string) {
