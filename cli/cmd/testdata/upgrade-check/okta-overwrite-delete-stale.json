@@ -39,17 +39,20 @@
               "kind": "added",
               "column": "policy_id",
               "new_type": "text",
+              "new_source_type": "string",
               "reason": "part of the primary key"
             },
             {
               "kind": "added",
               "column": "actions",
-              "new_type": "jsonb"
+              "new_type": "jsonb",
+              "new_source_type": "json"
             },
             {
               "kind": "added",
               "column": "conditions",
-              "new_type": "jsonb"
+              "new_type": "jsonb",
+              "new_source_type": "json"
             }
           ],
           "outcomes": {

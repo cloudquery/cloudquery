@@ -25,7 +25,9 @@
               "kind": "changed",
               "column": "monitor_tags",
               "old_type": "text[]",
-              "new_type": "jsonb"
+              "new_type": "jsonb",
+              "old_source_type": "list<string>",
+              "new_source_type": "json"
             }
           ],
           "outcomes": {
@@ -46,7 +48,9 @@
               "kind": "changed",
               "column": "tags",
               "old_type": "text[]",
-              "new_type": "jsonb"
+              "new_type": "jsonb",
+              "old_source_type": "list<string>",
+              "new_source_type": "json"
             }
           ],
           "outcomes": {
@@ -67,7 +71,9 @@
               "kind": "changed",
               "column": "monitor_tags",
               "old_type": "text[]",
-              "new_type": "jsonb"
+              "new_type": "jsonb",
+              "old_source_type": "list<string>",
+              "new_source_type": "json"
             }
           ],
           "outcomes": {
@@ -88,7 +94,9 @@
               "kind": "changed",
               "column": "tags",
               "old_type": "text[]",
-              "new_type": "jsonb"
+              "new_type": "jsonb",
+              "old_source_type": "list<string>",
+              "new_source_type": "json"
             }
           ],
           "outcomes": {
@@ -109,13 +117,17 @@
               "kind": "changed",
               "column": "monitor_tags",
               "old_type": "text[]",
-              "new_type": "jsonb"
+              "new_type": "jsonb",
+              "old_source_type": "list<string>",
+              "new_source_type": "json"
             },
             {
               "kind": "changed",
               "column": "tags",
               "old_type": "text[]",
-              "new_type": "jsonb"
+              "new_type": "jsonb",
+              "old_source_type": "list<string>",
+              "new_source_type": "json"
             }
           ],
           "outcomes": {
@@ -136,7 +148,9 @@
               "kind": "changed",
               "column": "tags",
               "old_type": "text[]",
-              "new_type": "jsonb"
+              "new_type": "jsonb",
+              "old_source_type": "list<string>",
+              "new_source_type": "json"
             }
           ],
           "outcomes": {
