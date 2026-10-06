@@ -121,11 +121,19 @@ func s3JSONReport() upgradeReport {
 			},
 		}
 	}
+	tables := map[string]upgradeTablePair{}
+	for table, column := range map[string]string{"datadog_monitors": "tags", "datadog_downtimes": "monitor_tags", "datadog_slos": "tags", "datadog_synthetics": "tags"} {
+		tables[table] = upgradeTablePair{
+			From: &schema.Table{Name: table, Columns: schema.ColumnList{{Name: column, Type: arrow.ListOf(arrow.BinaryTypes.String)}}},
+			To:   &schema.Table{Name: table, Columns: schema.ColumnList{{Name: column, Type: types.ExtensionTypes.JSON}}},
+		}
+	}
 	return upgradeReport{
 		SourceName:  "datadog",
 		FromVersion: "v5.19.10",
 		ToVersion:   "v6.0.0",
 		Destination: s3DestinationSpec(),
+		Tables:      tables,
 		Findings: []*pluginPb.AssessTables_TableFinding{
 			{TableName: "datadog_users", Category: pluginPb.AssessTables_CATEGORY_NO_CHANGE},
 			tagsFinding("datadog_monitors", "tags"),
@@ -153,7 +161,7 @@ Changes
   datadog_dashboards
     ~ monitor_tags   text[] → jsonb   type changed
   datadog_monitors
-    ~ tags           text[] → jsonb   type changed
+    ~ tags           text[] → jsonb   type changed (list<string> → json)
 
 Next sync
   migrate_mode: safe (your config)
@@ -179,7 +187,7 @@ Changes
   datadog_dashboards
     ~ monitor_tags   text[] → jsonb   type changed
   datadog_monitors
-    ~ tags           text[] → jsonb   type changed
+    ~ tags           text[] → jsonb   type changed (list<string> → json)
 
 Next sync
   migrate_mode: forced (your config)
@@ -204,9 +212,9 @@ REVIEW REQUIRED — 1 table needs a manual migration, 1 new table
 Changes
   okta_policy_mappings   new table
   okta_policy_rules
-    + policy_id    text    new column, part of the primary key
-    + actions      jsonb   new column
-    + conditions   jsonb   new column
+    + policy_id    text    new column, part of the primary key (string)
+    + actions      jsonb   new column (json)
+    + conditions   jsonb   new column (json)
 
 Next sync
   migrate_mode: safe (your config)
@@ -231,9 +239,9 @@ AUTOMATICALLY MIGRATABLE — 1 changed table, 1 new table
 Changes
   okta_policy_mappings   new table
   okta_policy_rules
-    + policy_id    text    new column
-    + actions      jsonb   new column
-    + conditions   jsonb   new column
+    + policy_id    text    new column (string)
+    + actions      jsonb   new column (json)
+    + conditions   jsonb   new column (json)
 
 Next sync
   migrate_mode: safe (your config)
@@ -316,7 +324,7 @@ write_mode: overwrite-delete-stale | pk_mode: default
 NO OUTPUT DIFFERENCE DETECTED for equivalent test values
 
 Output comparison
-  list<item: utf8, nullable> → json   4 columns: datadog_downtimes.monitor_tags, datadog_monitors.tags, datadog_slos.tags, …
+  list<string> → json   4 columns: datadog_downtimes.monitor_tags, datadog_monitors.tags, datadog_slos.tags, …
     Synthetic value: ["env:prod"]
     Before:          {"monitor_tags":["env:prod"]}
     After:           {"monitor_tags":["env:prod"]}
@@ -433,8 +441,8 @@ func TestRenderUpgradeReportWithColor(t *testing.T) {
 				"\x1b[31mREVIEW REQUIRED — 1 table needs a manual migration, 1 new table\x1b[0m\n",
 				"  \x1b[1mokta_policy_mappings\x1b[22m   \x1b[32mnew table\x1b[0m\n",
 				"  \x1b[1mokta_policy_rules\x1b[22m\n",
-				"    \x1b[31m+ policy_id    text    new column, part of the primary key\x1b[0m\n",
-				"    \x1b[32m+ actions      jsonb   new column\x1b[0m\n",
+				"    \x1b[31m+ policy_id    text    new column, part of the primary key (string)\x1b[0m\n",
+				"    \x1b[32m+ actions      jsonb   new column (json)\x1b[0m\n",
 				"  \x1b[1mmigrate_mode: safe (your config)\x1b[22m\n",
 				"    \x1b[32m✓ okta_policy_mappings   created\x1b[0m\n",
 				"    \x1b[31m✗ okta_policy_rules      fails: safe mode cannot change a primary key\x1b[0m\n",
@@ -447,7 +455,7 @@ func TestRenderUpgradeReportWithColor(t *testing.T) {
 			name:   "append mode applies every change",
 			report: oktaReport(postgresqlDestinationSpec(specs.WriteModeAppend, specs.MigrateModeSafe), pluginPb.AssessTables_CATEGORY_AUTOMATICALLY_MIGRATABLE, false),
 			contains: []string{
-				"    \x1b[32m+ policy_id    text    new column\x1b[0m\n",
+				"    \x1b[32m+ policy_id    text    new column (string)\x1b[0m\n",
 				"  \x1b[1mokta_policy_mappings\x1b[22m   \x1b[32mnew table\x1b[0m\n",
 			},
 		},
@@ -466,7 +474,7 @@ func TestRenderUpgradeReportWithColor(t *testing.T) {
 		{
 			name:     "type change",
 			report:   datadogTagsReport(postgresqlDestinationSpec(specs.WriteModeOverwriteDeleteStale, specs.MigrateModeSafe)),
-			contains: []string{"    \x1b[31m~ tags           text[] → jsonb   type changed\x1b[0m\n"},
+			contains: []string{"    \x1b[31m~ tags           text[] → jsonb   type changed (list<string> → json)\x1b[0m\n"},
 		},
 		{
 			name: "removed tables, coverage gaps and file changes",
@@ -493,7 +501,7 @@ func TestRenderUpgradeReportWithColor(t *testing.T) {
 			report: s3JSONReport(),
 			contains: []string{
 				"\x1b[32mNO OUTPUT DIFFERENCE DETECTED for equivalent test values\x1b[0m\n",
-				"  list<item: utf8, nullable> → json   \x1b[1m4 columns: datadog_downtimes.monitor_tags, datadog_monitors.tags, datadog_slos.tags, …\x1b[22m\n",
+				"  list<string> → json   \x1b[1m4 columns: datadog_downtimes.monitor_tags, datadog_monitors.tags, datadog_slos.tags, …\x1b[22m\n",
 				"    \x1b[2mSynthetic value:\x1b[22m [\"env:prod\"]\n",
 				"\x1b[1;32mAction: no action needed; the output is the same for equivalent values.\x1b[22;0m\n",
 			},
@@ -534,4 +542,19 @@ func TestUpgradeTablesByName(t *testing.T) {
 	require.Equal(t, "renamed_test_kept", byName["renamed_test_kept"].To.Name)
 	require.Nil(t, byName["renamed_test_added"].From)
 	require.Equal(t, "renamed_test_added", byName["renamed_test_added"].To.Name)
+}
+
+func TestUpgradeArrowTypeName(t *testing.T) {
+	cases := map[arrow.DataType]string{
+		arrow.BinaryTypes.String:                                          "string",
+		arrow.BinaryTypes.LargeString:                                     "string",
+		arrow.ListOf(arrow.BinaryTypes.String):                            "list<string>",
+		arrow.LargeListOf(arrow.ListOf(arrow.BinaryTypes.String)):         "list<list<string>>",
+		types.ExtensionTypes.JSON:                                         "json",
+		arrow.PrimitiveTypes.Int64:                                        "int64",
+		arrow.MapOf(arrow.BinaryTypes.String, arrow.PrimitiveTypes.Int64): arrow.MapOf(arrow.BinaryTypes.String, arrow.PrimitiveTypes.Int64).String(),
+	}
+	for dataType, want := range cases {
+		require.Equal(t, want, upgradeArrowTypeName(dataType))
+	}
 }

@@ -7,6 +7,7 @@ import (
 	"slices"
 	"strings"
 
+	"github.com/apache/arrow-go/v18/arrow"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0"
 	pluginPb "github.com/cloudquery/plugin-pb-go/pb/plugin/v3"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
@@ -42,11 +43,13 @@ const (
 )
 
 type upgradeColumnChange struct {
-	Kind    upgradeChangeKind `json:"kind"`
-	Column  string            `json:"column"`
-	OldType string            `json:"old_type,omitempty"`
-	NewType string            `json:"new_type,omitempty"`
-	Reason  string            `json:"reason,omitempty"`
+	Kind          upgradeChangeKind `json:"kind"`
+	Column        string            `json:"column"`
+	OldType       string            `json:"old_type,omitempty"`
+	NewType       string            `json:"new_type,omitempty"`
+	OldSourceType string            `json:"old_source_type,omitempty"`
+	NewSourceType string            `json:"new_source_type,omitempty"`
+	Reason        string            `json:"reason,omitempty"`
 }
 
 type upgradeOutcomeResult string
@@ -119,7 +122,7 @@ func renderUpgradeReport(w io.Writer, r upgradeReport) error {
 	b.WriteString(verdictColor.Sprint(verdict) + "\n")
 
 	writeUpgradeChanges(&b, impacts, r.RemovedTables)
-	writeUpgradeOutputComparisons(&b, comparisons)
+	writeUpgradeOutputComparisons(&b, comparisons, r.Tables)
 	writeUpgradeNextSync(&b, impacts, migrateMode)
 	writeUpgradeCoverageGaps(&b, gaps)
 
@@ -174,12 +177,15 @@ func upgradeColumnChanges(finding *pluginPb.AssessTables_TableFinding, table upg
 		if column.Category == pluginPb.AssessTables_CATEGORY_NO_CHANGE {
 			continue
 		}
+		oldColumn, newColumn := upgradeTableColumn(table.From, column.ColumnName), upgradeTableColumn(table.To, column.ColumnName)
 		change := upgradeColumnChange{
-			Kind:    upgradeColumnChanged,
-			Column:  column.ColumnName,
-			OldType: column.OldType,
-			NewType: column.NewType,
-			Reason:  upgradeColumnChangeReason(upgradeTableColumn(table.From, column.ColumnName), upgradeTableColumn(table.To, column.ColumnName)),
+			Kind:          upgradeColumnChanged,
+			Column:        column.ColumnName,
+			OldType:       column.OldType,
+			NewType:       column.NewType,
+			OldSourceType: upgradeSourceTypeName(oldColumn),
+			NewSourceType: upgradeSourceTypeName(newColumn),
+			Reason:        upgradeColumnChangeReason(oldColumn, newColumn),
 		}
 		switch {
 		case column.OldType == "":
@@ -197,6 +203,25 @@ func upgradeTableColumn(table *schema.Table, columnName string) *schema.Column {
 		return nil
 	}
 	return table.Columns.Get(columnName)
+}
+
+func upgradeSourceTypeName(column *schema.Column) string {
+	if column == nil {
+		return ""
+	}
+	return upgradeArrowTypeName(column.Type)
+}
+
+func upgradeArrowTypeName(dataType arrow.DataType) string {
+	switch dataType := dataType.(type) {
+	case *arrow.MapType:
+		return dataType.String()
+	case *arrow.StringType, *arrow.LargeStringType, *arrow.StringViewType:
+		return "string"
+	case arrow.ListLikeType:
+		return "list<" + upgradeArrowTypeName(dataType.Elem()) + ">"
+	}
+	return dataType.String()
 }
 
 func upgradeColumnChangeReason(oldColumn, newColumn *schema.Column) string {
@@ -438,6 +463,9 @@ func writeUpgradeColumnChanges(b *strings.Builder, impact upgradeTableImpact, co
 		case upgradeColumnRemoved:
 			marker, description = "-", upgradeJoinNonEmpty("column removed", change.Reason)
 		}
+		if sourceType := upgradeChangeType(upgradeColumnChange{OldType: change.OldSourceType, NewType: change.NewSourceType}); sourceType != "" {
+			description += " (" + sourceType + ")"
+		}
 		lineColor := upgradeChangeColor(impact, change)
 		changeType := upgradeChangeType(change)
 		line := fmt.Sprintf("%s %-*s   %s%s   %s", marker, columnWidth, change.Column, changeType, strings.Repeat(" ", typeWidth-len([]rune(changeType))), description)
@@ -474,7 +502,7 @@ type upgradeOutputComparisonGroup struct {
 	evidence   []*pluginPb.AssessTables_Evidence
 }
 
-func groupUpgradeOutputComparisons(comparisons []*pluginPb.AssessTables_TableFinding) []*upgradeOutputComparisonGroup {
+func groupUpgradeOutputComparisons(comparisons []*pluginPb.AssessTables_TableFinding, tables map[string]upgradeTablePair) []*upgradeOutputComparisonGroup {
 	var groups []*upgradeOutputComparisonGroup
 	add := func(typeChange, name string, evidence []*pluginPb.AssessTables_Evidence) {
 		i := slices.IndexFunc(groups, func(group *upgradeOutputComparisonGroup) bool { return group.typeChange == typeChange })
@@ -488,7 +516,10 @@ func groupUpgradeOutputComparisons(comparisons []*pluginPb.AssessTables_TableFin
 	for _, finding := range comparisons {
 		for _, column := range finding.Columns {
 			if len(column.Evidence) > 0 {
-				add(upgradeChangeType(upgradeColumnChange{OldType: column.OldType, NewType: column.NewType}), finding.TableName+"."+column.ColumnName, column.Evidence)
+				table := tables[finding.TableName]
+				oldType := cmp.Or(upgradeSourceTypeName(upgradeTableColumn(table.From, column.ColumnName)), column.OldType)
+				newType := cmp.Or(upgradeSourceTypeName(upgradeTableColumn(table.To, column.ColumnName)), column.NewType)
+				add(upgradeChangeType(upgradeColumnChange{OldType: oldType, NewType: newType}), finding.TableName+"."+column.ColumnName, column.Evidence)
 			}
 		}
 		if len(finding.Evidence) > 0 {
@@ -498,12 +529,12 @@ func groupUpgradeOutputComparisons(comparisons []*pluginPb.AssessTables_TableFin
 	return groups
 }
 
-func writeUpgradeOutputComparisons(b *strings.Builder, comparisons []*pluginPb.AssessTables_TableFinding) {
+func writeUpgradeOutputComparisons(b *strings.Builder, comparisons []*pluginPb.AssessTables_TableFinding, tables map[string]upgradeTablePair) {
 	if len(comparisons) == 0 {
 		return
 	}
 	b.WriteString("\nOutput comparison\n")
-	for _, group := range groupUpgradeOutputComparisons(comparisons) {
+	for _, group := range groupUpgradeOutputComparisons(comparisons, tables) {
 		heading := bold.Sprint(upgradeNameList(group.names))
 		if group.typeChange != "" {
 			heading = group.typeChange + "   " + heading
