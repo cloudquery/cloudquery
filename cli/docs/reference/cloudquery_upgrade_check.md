@@ -9,6 +9,14 @@ Preview how upgrading a source plugin affects your destinations, without migrati
 
 Preview how upgrading a source plugin affects your destinations, without migrating or writing anything
 
+Exit codes:
+  0  no action needed: no schema change, automatically migratable changes, or no output difference
+  3  action needed: manual migration or rebuild, selected tables removed, or file schema or output changed
+  4  unknown: a destination or source could not be assessed, or coverage is incomplete
+  1  the check failed with an error
+
+With several destinations, the highest of 0, 3 and 4 is used. The report is always printed first.
+
 ```
 cloudquery upgrade check [files or directories] [flags]
 ```

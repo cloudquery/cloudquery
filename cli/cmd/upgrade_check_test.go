@@ -354,11 +354,15 @@ func TestUpgradeCheck(t *testing.T) {
 	_, filename, _, _ := runtime.Caller(0)
 	testConfig := path.Join(path.Dir(filename), "testdata", "transformation.yml")
 	cmd := NewCmdRoot()
-	var out bytes.Buffer
+	var out, errOut bytes.Buffer
 	cmd.SetOut(&out)
+	cmd.SetErr(&errOut)
 	cmd.SetArgs(append([]string{"upgrade", "check", testConfig, "--source", "test", "--to", "v4.7.0"}, testCommandArgs(t)...))
 
-	require.NoError(t, cmd.Execute())
+	var exitCodeErr *ExitCodeError
+	require.ErrorAs(t, cmd.Execute(), &exitCodeErr)
+	require.Equal(t, upgradeExitUnknown, exitCodeErr.Code)
+	require.Empty(t, errOut.String())
 
 	report := out.String()
 	require.Contains(t, report, "test v4.5.1 → v4.7.0 | test (cloudquery/test@v2.5.1)\nwrite_mode: overwrite-delete-stale | pk_mode: default\nUNKNOWN — ")

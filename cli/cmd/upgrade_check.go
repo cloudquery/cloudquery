@@ -20,7 +20,16 @@ import (
 )
 
 const (
-	upgradeCheckShort   = "Preview how upgrading a source plugin affects your destinations, without migrating or writing anything"
+	upgradeCheckShort = "Preview how upgrading a source plugin affects your destinations, without migrating or writing anything"
+	upgradeCheckLong  = upgradeCheckShort + `
+
+Exit codes:
+  0  no action needed: no schema change, automatically migratable changes, or no output difference
+  3  action needed: manual migration or rebuild, selected tables removed, or file schema or output changed
+  4  unknown: a destination or source could not be assessed, or coverage is incomplete
+  1  the check failed with an error
+
+With several destinations, the highest of 0, 3 and 4 is used. The report is always printed first.`
 	upgradeCheckExample = `# Check how upgrading the datadog source to v6.0.0 affects the destinations in config.yml
 cloudquery upgrade check ./config.yml --source datadog --to v6.0.0
 `
@@ -41,7 +50,7 @@ func newCmdUpgradeCheck() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "check [files or directories]",
 		Short:   upgradeCheckShort,
-		Long:    upgradeCheckShort,
+		Long:    upgradeCheckLong,
 		Example: upgradeCheckExample,
 		Args:    cobra.MinimumNArgs(1),
 		RunE:    upgradeCheck,
@@ -140,7 +149,10 @@ func upgradeCheck(cmd *cobra.Command, args []string) error {
 	out := cmd.OutOrStdout()
 	if from.UnknownReason != "" || to.UnknownReason != "" {
 		report.SourceUnknown = true
-		return renderUpgradeReport(out, report)
+		if err := renderUpgradeReport(out, report); err != nil {
+			return err
+		}
+		return upgradeExitError(cmd, upgradeExitCode(report))
 	}
 
 	selection, err := selectUpgradeTables(*sourceSpec, from.Tables, to.Tables)
@@ -148,6 +160,7 @@ func upgradeCheck(cmd *cobra.Command, args []string) error {
 		return err
 	}
 	report.RemovedTables = selection.RemovedTables
+	exitCode := 0
 	for _, destinationSpec := range destinationSpecs {
 		tables, findings, err := assessDestination(ctx, *sourceSpec, *destinationSpec, transformersForDestination[destinationSpec.Name], cqColumnsNotNull, selection.Pairs, opts...)
 		if err != nil {
@@ -161,8 +174,17 @@ func upgradeCheck(cmd *cobra.Command, args []string) error {
 		if err := renderUpgradeReport(out, report); err != nil {
 			return err
 		}
+		exitCode = max(exitCode, upgradeExitCode(report))
 	}
-	return nil
+	return upgradeExitError(cmd, exitCode)
+}
+
+func upgradeExitError(cmd *cobra.Command, exitCode int) error {
+	if exitCode == 0 {
+		return nil
+	}
+	cmd.SilenceErrors = true
+	return &ExitCodeError{Code: exitCode}
 }
 
 func upgradeSourceGaps(sourceName string, versions ...upgradeSourceTables) []string {

@@ -133,6 +133,28 @@ func renderUpgradeReport(w io.Writer, r upgradeReport) error {
 	return err
 }
 
+const (
+	upgradeExitNoAction     = 0
+	upgradeExitActionNeeded = 3
+	upgradeExitUnknown      = 4
+)
+
+func upgradeExitCode(r upgradeReport) int {
+	unknown := r.SourceUnknown || slices.ContainsFunc(r.Findings, func(finding *pluginPb.AssessTables_TableFinding) bool {
+		return finding.Category == pluginPb.AssessTables_CATEGORY_UNKNOWN || finding.CoverageIncomplete
+	})
+	actionNeeded := len(r.RemovedTables) > 0 || slices.ContainsFunc(r.Findings, func(finding *pluginPb.AssessTables_TableFinding) bool {
+		return finding.Category == pluginPb.AssessTables_CATEGORY_MANUAL_MIGRATION_REQUIRED || finding.Category == pluginPb.AssessTables_CATEGORY_FILE_SCHEMA_CHANGED
+	})
+	switch {
+	case unknown:
+		return upgradeExitUnknown
+	case actionNeeded:
+		return upgradeExitActionNeeded
+	}
+	return upgradeExitNoAction
+}
+
 func sortUpgradeReport(r upgradeReport) upgradeReport {
 	r.RemovedTables = slices.Sorted(slices.Values(r.RemovedTables))
 	r.Findings = slices.SortedFunc(slices.Values(r.Findings), func(a, b *pluginPb.AssessTables_TableFinding) int {

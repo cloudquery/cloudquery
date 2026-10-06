@@ -558,3 +558,30 @@ func TestUpgradeArrowTypeName(t *testing.T) {
 		require.Equal(t, want, upgradeArrowTypeName(dataType))
 	}
 }
+
+func TestUpgradeExitCode(t *testing.T) {
+	postgresql := postgresqlDestinationSpec(specs.WriteModeOverwriteDeleteStale, specs.MigrateModeSafe)
+	cases := []struct {
+		name   string
+		report upgradeReport
+		want   int
+	}{
+		{name: "no change", report: upgradeReport{Destination: postgresql, Findings: []*pluginPb.AssessTables_TableFinding{{TableName: "t", Category: pluginPb.AssessTables_CATEGORY_NO_CHANGE}}}, want: 0},
+		{name: "automatically migratable", report: oktaReport(postgresqlDestinationSpec(specs.WriteModeAppend, specs.MigrateModeSafe), pluginPb.AssessTables_CATEGORY_AUTOMATICALLY_MIGRATABLE, false), want: 0},
+		{name: "no output difference", report: s3JSONReport(), want: 0},
+		{name: "source listed with a connection", report: upgradeReport{Destination: postgresql, SourceGaps: []string{"listed with a connection"}}, want: 0},
+		{name: "manual migration", report: datadogTagsReport(postgresql), want: 3},
+		{name: "manual migration in forced mode", report: datadogTagsReport(postgresqlDestinationSpec(specs.WriteModeOverwriteDeleteStale, specs.MigrateModeForced)), want: 3},
+		{name: "selected tables removed", report: upgradeReport{Destination: postgresql, RemovedTables: []string{"t"}}, want: 3},
+		{name: "file schema changed", report: upgradeReport{Destination: s3DestinationSpec(), Findings: []*pluginPb.AssessTables_TableFinding{{TableName: "t", Category: pluginPb.AssessTables_CATEGORY_FILE_SCHEMA_CHANGED}}}, want: 3},
+		{name: "unknown destination", report: upgradeReport{Destination: postgresql, Findings: []*pluginPb.AssessTables_TableFinding{{TableName: "t", Category: pluginPb.AssessTables_CATEGORY_UNKNOWN}}}, want: 4},
+		{name: "incomplete coverage", report: upgradeReport{Destination: postgresql, Findings: []*pluginPb.AssessTables_TableFinding{{TableName: "t", Category: pluginPb.AssessTables_CATEGORY_AUTOMATICALLY_MIGRATABLE, CoverageIncomplete: true}}}, want: 4},
+		{name: "unknown wins over action needed", report: upgradeReport{Destination: postgresql, RemovedTables: []string{"t"}, Findings: []*pluginPb.AssessTables_TableFinding{{TableName: "u", Category: pluginPb.AssessTables_CATEGORY_UNKNOWN}}}, want: 4},
+		{name: "source tables could not be listed", report: upgradeReport{SourceUnknown: true}, want: 4},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			require.Equal(t, tc.want, upgradeExitCode(tc.report))
+		})
+	}
+}
