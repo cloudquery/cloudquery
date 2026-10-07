@@ -1,6 +1,6 @@
 | File | Function | Coverage |
 | --- | --- | --- |
-| github.com/cloudquery/cloudquery/plugins/destination/duckdb/v5/client/client.go:36: | New | 72.7% |
+| github.com/cloudquery/cloudquery/plugins/destination/duckdb/v5/client/client.go:36: | New | 78.6% |
 | github.com/cloudquery/cloudquery/plugins/destination/duckdb/v5/client/client.go:75: | Close | 75.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/duckdb/v5/client/client.go:90: | TestConnection | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/duckdb/v5/client/client.go:113: | exec | 87.5% |
@@ -16,7 +16,7 @@
 | github.com/cloudquery/cloudquery/plugins/destination/duckdb/v5/client/migrate.go:182: | createTableIfNotExist | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/duckdb/v5/client/migrate.go:221: | isColumnUnique | 76.9% |
 | github.com/cloudquery/cloudquery/plugins/destination/duckdb/v5/client/migrate.go:243: | getTableInfo | 79.2% |
-| github.com/cloudquery/cloudquery/plugins/destination/duckdb/v5/client/read.go:19: | Read | 77.8% |
+| github.com/cloudquery/cloudquery/plugins/destination/duckdb/v5/client/read.go:19: | Read | 80.5% |
 | github.com/cloudquery/cloudquery/plugins/destination/duckdb/v5/client/read.go:79: | slice | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/duckdb/v5/client/read.go:87: | reverseTransformRecord | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/duckdb/v5/client/read.go:97: | reverseTransformArray | 69.6% |
@@ -59,8 +59,8 @@
 | github.com/cloudquery/cloudquery/plugins/destination/duckdb/v5/client/write.go:106: | deleteByPK | 88.9% |
 | github.com/cloudquery/cloudquery/plugins/destination/duckdb/v5/client/write.go:121: | copyFromFile | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/duckdb/v5/client/write.go:127: | Write | 60.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/duckdb/v5/client/write.go:137: | WriteTableBatch | 84.6% |
-| github.com/cloudquery/cloudquery/plugins/destination/duckdb/v5/client/write.go:188: | writeTMPFile | 78.6% |
-| github.com/cloudquery/cloudquery/plugins/destination/duckdb/v5/client/write.go:224: | deleteInsert | 93.3% |
+| github.com/cloudquery/cloudquery/plugins/destination/duckdb/v5/client/write.go:137: | WriteTableBatch | 88.6% |
+| github.com/cloudquery/cloudquery/plugins/destination/duckdb/v5/client/write.go:188: | writeTMPFile | 87.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/duckdb/v5/client/write.go:224: | deleteInsert | 96.2% |
 | github.com/cloudquery/cloudquery/plugins/destination/duckdb/v5/main.go:17: | main | 0.0% |
-| total: | (statements) | 79.9% |
+| total: | (statements) | 78.6% |

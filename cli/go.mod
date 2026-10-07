@@ -9,8 +9,8 @@ require (
 	github.com/cenkalti/backoff/v7 v7.0.0
 	github.com/cloudquery/cloudquery-api-go v1.14.13
 	github.com/cloudquery/codegen v0.4.1
-	github.com/cloudquery/plugin-pb-go v1.27.23
-	github.com/cloudquery/plugin-sdk/v4 v4.96.6
+	github.com/cloudquery/plugin-pb-go v1.27.24
+	github.com/cloudquery/plugin-sdk/v4 v4.98.0
 	github.com/distribution/reference v0.6.0
 	github.com/docker/distribution v2.8.3+incompatible
 	github.com/docker/docker v28.5.2+incompatible
@@ -34,7 +34,7 @@ require (
 	github.com/spf13/cobra v1.10.2
 	github.com/stretchr/testify v1.12.1
 	github.com/thoas/go-funk v0.9.3
-	github.com/yuin/goldmark v1.8.6
+	github.com/yuin/goldmark/v2 v2.1.5
 	go.opentelemetry.io/collector/component v1.67.0
 	go.opentelemetry.io/collector/config/configgrpc v1.67.0
 	go.opentelemetry.io/collector/config/confighttp v0.161.0

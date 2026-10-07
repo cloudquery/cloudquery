@@ -337,8 +337,8 @@ func TestMigrateWithTTL(t *testing.T) {
 	err = p.Init(ctx, b, plugin.NewClientOptions{})
 	require.NoError(t, err)
 
-	timeNow := time.Now().UnixNano()
-	tableName := fmt.Sprintf("cq_test_migrate_with_ttl_%d", timeNow)
+	timeNowNano := time.Now().UnixNano()
+	tableName := fmt.Sprintf("cq_test_migrate_with_ttl_%d", timeNowNano)
 	table := &schema.Table{
 		Name: tableName,
 		Columns: []schema.Column{
