@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/apache/arrow-go/v18/arrow"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/jackc/pgx/v5"
@@ -56,7 +57,7 @@ func (c *Client) MigrateTableBatch(ctx context.Context, messages message.WriteMi
 			}
 		} else {
 			changes := table.GetChanges(pgTable)
-			if c.canAutoMigrate(changes) {
+			if canAutoMigrate(changes) {
 				c.logger.Info().Str("table", tableName).Msg("Table exists, auto-migrating")
 				if err := c.autoMigrateTable(ctx, table, changes); err != nil {
 					return err
@@ -89,11 +90,20 @@ func (c *Client) MigrateTableBatch(ctx context.Context, messages message.WriteMi
 }
 
 func (c *Client) normalizeTable(table *schema.Table) *schema.Table {
+	normalizedTable := c.pgType.normalizeTable(table)
+	// pgTablesToPKConstraints is populated when handling migrate messages
+	if entry := c.pgTablesToPKConstraints[table.Name]; entry != nil {
+		normalizedTable.PkConstraintName = entry.name
+	}
+	return normalizedTable
+}
+
+func (p pgType) normalizeTable(table *schema.Table) *schema.Table {
 	normalizedTable := schema.Table{
 		Name: table.Name,
 	}
 	for _, col := range table.Columns {
-		if c.pgType == pgTypeCrateDB {
+		if p == pgTypeCrateDB {
 			// CrateDB doesn't allow columns that start with an underscore,
 			// so we trim the leading underscore from the column name
 			col.Name = strings.TrimLeft(col.Name, "_")
@@ -111,13 +121,9 @@ func (c *Client) normalizeTable(table *schema.Table) *schema.Table {
 		if col.PrimaryKey {
 			col.NotNull = true
 		}
-		col.Type = c.PgToSchemaType(c.SchemaTypeToPg(col.Type))
+		col.Type = p.pgToSchemaType(p.schemaTypeToPg(col.Type))
 
 		normalizedTable.Columns = append(normalizedTable.Columns, col)
-		// pgTablesToPKConstraints is populated when handling migrate messages
-		if entry := c.pgTablesToPKConstraints[table.Name]; entry != nil {
-			normalizedTable.PkConstraintName = entry.name
-		}
 	}
 
 	return &normalizedTable
@@ -149,7 +155,7 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table, chan
 	return nil
 }
 
-func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
+func canAutoMigrate(changes []schema.TableColumnChange) bool {
 	// The SDK can detect more granular changes than we can handle
 	// We know that when the `TableColumnChangeTypeMoveToCQOnly` is present there will be other changes that were found as well
 	// As long as the only change is to remove PK from columns and add it to _cq_id, we can skip handling the changes
@@ -195,7 +201,7 @@ func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
 				return false
 			}
 		case schema.TableColumnChangeTypeUpdate:
-			if cqMigration && ((len(columnsAddingPK) == 1 && columnsAddingPK[0] == schema.CqIDColumn.Name) || funk.Contains(columnsRemovingPK, change.ColumnName)) {
+			if cqMigration && arrow.TypeEqual(change.Current.Type, change.Previous.Type) && ((len(columnsAddingPK) == 1 && columnsAddingPK[0] == schema.CqIDColumn.Name) || funk.Contains(columnsRemovingPK, change.ColumnName)) {
 				// We don't need to handle these changes as they are a part of the CQID migration
 				continue
 			}
@@ -216,7 +222,7 @@ func (c *Client) normalizeTables(tables schema.Tables) schema.Tables {
 	return result
 }
 
-func (c *Client) nonAutoMigratableTables(tables schema.Tables, pgTables schema.Tables, safeTables map[string]bool) map[string][]schema.TableColumnChange {
+func (*Client) nonAutoMigratableTables(tables schema.Tables, pgTables schema.Tables, safeTables map[string]bool) map[string][]schema.TableColumnChange {
 	result := make(map[string][]schema.TableColumnChange)
 	for _, t := range tables {
 		pgTable := pgTables.Get(t.Name)
@@ -224,7 +230,7 @@ func (c *Client) nonAutoMigratableTables(tables schema.Tables, pgTables schema.T
 			continue
 		}
 		changes := t.GetChanges(pgTable)
-		if safeTables[t.Name] && !c.canAutoMigrate(changes) {
+		if safeTables[t.Name] && !canAutoMigrate(changes) {
 			result[t.Name] = changes
 		}
 	}
