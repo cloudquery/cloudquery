@@ -10,8 +10,8 @@
 | github.com/cloudquery/cloudquery/plugins/destination/gcs/v5/client/spec/spec.go:127: | PathContainsUUID | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/gcs/v5/client/spec/spec.go:131: | isValidJson | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/gcs/v5/client/spec/spec.go:140: | int64ptr | 0.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/gcs/v5/client/spec/spec.go:144: | ReplacePathVariables | 81.2% |
+| github.com/cloudquery/cloudquery/plugins/destination/gcs/v5/client/spec/spec.go:144: | ReplacePathVariables | 87.5% |
 | github.com/cloudquery/cloudquery/plugins/destination/gcs/v5/client/write.go:14: | WriteTable | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/gcs/v5/client/write.go:45: | Write | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/gcs/v5/main.go:18: | main | 0.0% |
-| total: | (statements) | 15.1% |
+| total: | (statements) | 19.3% |
