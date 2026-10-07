@@ -3,6 +3,7 @@ package cmd
 import (
 	"bytes"
 	"encoding/json"
+	"os"
 	"strings"
 	"testing"
 
@@ -206,4 +207,48 @@ func TestUpgradeCheckInvalidOutput(t *testing.T) {
 	cmd.SetArgs(append([]string{"upgrade", "check", "testdata/transformation.yml", "--source", "test", "--to", "v4.7.0", "--output", "yaml"}, testCommandArgs(t)...))
 
 	require.ErrorContains(t, cmd.Execute(), `invalid output format "yaml". One of: text, json`)
+}
+
+func TestUpgradeCheckPrintsCompletedReportsBeforeADestinationFails(t *testing.T) {
+	cmd := NewCmdRoot()
+	var out bytes.Buffer
+	cmd.SetOut(&out)
+	cmd.SetArgs(append([]string{"upgrade", "check", "testdata/upgrade-check-second-destination-fails.yml", "--source", "test", "--to", "v4.7.0"}, testCommandArgs(t)...))
+
+	require.ErrorContains(t, cmd.Execute(), "failed to start destination broken")
+	require.Contains(t, out.String(), "test v4.5.1 → v4.7.0 | test (cloudquery/test@v2.5.1)\n")
+}
+
+func TestUpgradeCheckJSONKeepsDownloadMessagesOffStdout(t *testing.T) {
+	stdout := redirectStdFile(t, &os.Stdout)
+	stderr := redirectStdFile(t, &os.Stderr)
+	cmd := NewCmdRoot()
+	var out bytes.Buffer
+	cmd.SetOut(&out)
+	cmd.SetArgs(append([]string{"upgrade", "check", "testdata/transformation.yml", "--source", "test", "--to", "v4.7.0", "--output", "json"}, testCommandArgs(t)...))
+
+	requireUpgradeCheckExitCode(t, cmd.Execute(), 4)
+	require.True(t, json.Valid(out.Bytes()), out.String())
+	require.Empty(t, readStdFile(t, stdout))
+	require.Contains(t, readStdFile(t, stderr), "Downloading ")
+}
+
+func redirectStdFile(t *testing.T, target **os.File) *os.File {
+	t.Helper()
+	file, err := os.CreateTemp(t.TempDir(), "std")
+	require.NoError(t, err)
+	original := *target
+	*target = file
+	t.Cleanup(func() {
+		*target = original
+		_ = file.Close()
+	})
+	return file
+}
+
+func readStdFile(t *testing.T, file *os.File) string {
+	t.Helper()
+	b, err := os.ReadFile(file.Name())
+	require.NoError(t, err)
+	return string(b)
 }
