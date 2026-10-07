@@ -176,14 +176,14 @@ func TestAssessTablesIndexNameChange(t *testing.T) {
 		TableName:          "test_table",
 		Category:           plugin.AssessCategoryManualMigrationRequired,
 		SafeModeBehavior:   behaviorWriteToNewIndices,
-		ForcedModeBehavior: behaviorWriteToNewIndices,
+		ForcedModeBehavior: behaviorDeleteNewIndices,
 		Columns: []plugin.ColumnFinding{{
 			ColumnName:         "id",
 			Category:           plugin.AssessCategoryNoChange,
 			OldType:            `{"type":"text"}`,
 			NewType:            `{"type":"text"}`,
 			SafeModeBehavior:   behaviorWriteToNewIndices,
-			ForcedModeBehavior: behaviorWriteToNewIndices,
+			ForcedModeBehavior: behaviorDeleteNewIndices,
 		}},
 	}
 
@@ -233,7 +233,7 @@ func TestAssessTablesWholeTable(t *testing.T) {
 		{
 			name:     "added table",
 			pair:     plugin.TablePair{New: table},
-			expected: plugin.TableFinding{TableName: "test_table", Category: plugin.AssessCategoryAutomaticallyMigratable, SafeModeBehavior: behaviorCreateTemplate, ForcedModeBehavior: behaviorCreateTemplate},
+			expected: plugin.TableFinding{TableName: "test_table", Category: plugin.AssessCategoryAutomaticallyMigratable, SafeModeBehavior: behaviorCreateTemplate, ForcedModeBehavior: behaviorReplaceIndices},
 		},
 		{
 			name:     "removed table",

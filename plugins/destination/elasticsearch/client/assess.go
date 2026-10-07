@@ -12,6 +12,7 @@ import (
 const (
 	behaviorNoChange          = "makes no changes"
 	behaviorCreateTemplate    = "creates the index template"
+	behaviorReplaceIndices    = "deletes existing indices that match the index name and creates the index template, deleting their documents"
 	behaviorKeepIndices       = "keeps the existing indices"
 	behaviorUpdateTemplate    = "updates the index template"
 	behaviorAddField          = "adds the field to the index template"
@@ -19,6 +20,7 @@ const (
 	behaviorKeepOldMapping    = "updates the index template, existing indices keep the old mapping"
 	behaviorDeleteIndices     = "deletes the existing indices and replaces the index template, deleting existing documents"
 	behaviorWriteToNewIndices = "updates the index template and writes to new indices, existing indices are kept"
+	behaviorDeleteNewIndices  = "deletes existing indices that match the new index name, keeps indices with the old name, updates the index template and writes to new indices"
 )
 
 var _ plugin.Assessor = (*Client)(nil)
@@ -37,7 +39,7 @@ func (c *Client) AssessTables(_ context.Context, tables []plugin.TablePair, _ pl
 
 func (c *Client) assessTable(pair plugin.TablePair) (plugin.TableFinding, error) {
 	if pair.Old == nil {
-		return tableFinding(pair.New.Name, plugin.AssessCategoryAutomaticallyMigratable, behaviorCreateTemplate, behaviorCreateTemplate), nil
+		return tableFinding(pair.New.Name, plugin.AssessCategoryAutomaticallyMigratable, behaviorCreateTemplate, behaviorReplaceIndices), nil
 	}
 	if pair.New == nil {
 		return tableFinding(pair.Old.Name, plugin.AssessCategoryTableRemoved, behaviorKeepIndices, behaviorKeepIndices), nil
@@ -53,7 +55,7 @@ func (c *Client) assessTable(pair plugin.TablePair) (plugin.TableFinding, error)
 	case indexChanged:
 		finding.Category = plugin.AssessCategoryManualMigrationRequired
 		finding.SafeModeBehavior = behaviorWriteToNewIndices
-		finding.ForcedModeBehavior = behaviorWriteToNewIndices
+		finding.ForcedModeBehavior = behaviorDeleteNewIndices
 	case finding.Category == plugin.AssessCategoryNoChange:
 		finding.SafeModeBehavior = behaviorNoChange
 	case finding.Category == plugin.AssessCategoryAutomaticallyMigratable:
