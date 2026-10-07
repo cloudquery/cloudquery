@@ -53,10 +53,7 @@ func assessTable(pair plugin.TablePair) plugin.TableFinding {
 	}
 
 	finding.Category = tableCategory(finding.Columns)
-	if len(unknownReasons) > 0 {
-		finding.CoverageIncomplete = true
-		finding.CoverageIncompleteReason = strings.Join(unknownReasons, "; ")
-	}
+	finding.IncompleteCoverageReason = strings.Join(unknownReasons, "; ")
 	return finding
 }
 

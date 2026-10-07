@@ -83,8 +83,7 @@ func TestAssessTablesUnableToCompare(t *testing.T) {
 		TableName:                "numbers",
 		Category:                 plugin.AssessCategoryUnknown,
 		Columns:                  []plugin.ColumnFinding{{ColumnName: "tags", Category: plugin.AssessCategoryUnknown}},
-		CoverageIncomplete:       true,
-		CoverageIncompleteReason: "column tags: unable to compare: no equivalent value for int64 and utf8",
+		IncompleteCoverageReason: "column tags: unable to compare: no equivalent value for int64 and utf8",
 	}}, findings)
 }
 
