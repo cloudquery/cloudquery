@@ -41,6 +41,20 @@ func TestRenderUpgradeReportsJSONMatchesText(t *testing.T) {
 			},
 		},
 		{
+			name: "file output differs for equivalent values",
+			report: upgradeReport{
+				SourceName: "datadog", FromVersion: "v5.19.10", ToVersion: "v6.0.0", Destination: destination,
+				Findings: []*pluginPb.AssessTables_TableFinding{{
+					TableName: "datadog_monitors",
+					Category:  pluginPb.AssessTables_CATEGORY_NO_CHANGE,
+					Columns: []*pluginPb.AssessTables_ColumnFinding{{
+						ColumnName: "tags", Category: pluginPb.AssessTables_CATEGORY_NO_CHANGE, OldType: "list<string>", NewType: "json",
+						Evidence: []*pluginPb.AssessTables_Evidence{{SyntheticValue: `["env:prod"]`, Before: `{"tags":["env:prod"]}`, After: `{"tags":"[\"env:prod\"]"}`}},
+					}},
+				}},
+			},
+		},
+		{
 			name: "manual migration and removed tables",
 			report: upgradeReport{
 				SourceName: "datadog", FromVersion: "v5.19.10", ToVersion: "v6.0.0", Destination: destination,
