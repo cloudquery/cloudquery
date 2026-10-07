@@ -78,6 +78,7 @@ var upgradeMigrateModes = []specs.MigrateMode{specs.MigrateModeSafe, specs.Migra
 const (
 	upgradeNoChangesText    = "No schema changes affect your selected tables."
 	upgradeNoOutputDiffText = "NO OUTPUT DIFFERENCE DETECTED for equivalent test values"
+	upgradeOutputDiffText   = "OUTPUT DIFFERENCE DETECTED for some test values"
 	upgradeNotAssessedText  = "Actual source values and behavior were not assessed."
 	upgradePreviewOnlyText  = "This check only previews the changes. It does not migrate, write, delete or upload anything."
 	upgradeRemovedTableText = "removed table, the new source version no longer provides it"
@@ -140,14 +141,12 @@ const (
 )
 
 func upgradeExitCode(r upgradeReport) int {
-	unknown := r.SourceUnknown || slices.ContainsFunc(r.Findings, func(finding *pluginPb.AssessTables_TableFinding) bool {
-		return finding.Category == pluginPb.AssessTables_CATEGORY_UNKNOWN || finding.IncompleteCoverageReason != ""
-	})
-	actionNeeded := len(r.RemovedTables) > 0 || slices.ContainsFunc(r.Findings, func(finding *pluginPb.AssessTables_TableFinding) bool {
-		return finding.Category == pluginPb.AssessTables_CATEGORY_MANUAL_MIGRATION_REQUIRED || finding.Category == pluginPb.AssessTables_CATEGORY_FILE_SCHEMA_CHANGED
-	})
+	actionNeeded := len(r.RemovedTables) > 0 || upgradeOutputDiffers(upgradeOutputComparisons(r.Findings)) ||
+		slices.ContainsFunc(r.Findings, func(finding *pluginPb.AssessTables_TableFinding) bool {
+			return finding.Category == pluginPb.AssessTables_CATEGORY_MANUAL_MIGRATION_REQUIRED || finding.Category == pluginPb.AssessTables_CATEGORY_FILE_SCHEMA_CHANGED
+		})
 	switch {
-	case unknown:
+	case r.SourceUnknown || upgradeNotFullyAssessedTables(r) > 0:
 		return upgradeExitUnknown
 	case actionNeeded:
 		return upgradeExitActionNeeded
@@ -341,14 +340,23 @@ func upgradeHasCategory(impacts []upgradeTableImpact, category pluginPb.AssessTa
 	return slices.ContainsFunc(impacts, func(impact upgradeTableImpact) bool { return impact.Category == category })
 }
 
-func upgradeUnknownTables(r upgradeReport) int {
-	unknown := 0
+func upgradeNotFullyAssessedTables(r upgradeReport) int {
+	notAssessed := 0
 	for _, finding := range r.Findings {
-		if finding.Category == pluginPb.AssessTables_CATEGORY_UNKNOWN {
-			unknown++
+		if finding.Category == pluginPb.AssessTables_CATEGORY_UNKNOWN || finding.IncompleteCoverageReason != "" {
+			notAssessed++
 		}
 	}
-	return unknown
+	return notAssessed
+}
+
+func upgradeOutputDiffers(comparisons []*pluginPb.AssessTables_TableFinding) bool {
+	differs := func(e *pluginPb.AssessTables_Evidence) bool { return e.Before != e.After }
+	return slices.ContainsFunc(comparisons, func(finding *pluginPb.AssessTables_TableFinding) bool {
+		return slices.ContainsFunc(finding.Evidence, differs) || slices.ContainsFunc(finding.Columns, func(column *pluginPb.AssessTables_ColumnFinding) bool {
+			return slices.ContainsFunc(column.Evidence, differs)
+		})
+	})
 }
 
 func upgradeVerdict(r upgradeReport, impacts []upgradeTableImpact, comparisons []*pluginPb.AssessTables_TableFinding, migrateMode specs.MigrateMode) (string, *color.Color) {
@@ -361,7 +369,9 @@ func upgradeVerdict(r upgradeReport, impacts []upgradeTableImpact, comparisons [
 		return "SELECTED TABLES REMOVED", upgradeYellow
 	case upgradeHasCategory(impacts, pluginPb.AssessTables_CATEGORY_FILE_SCHEMA_CHANGED):
 		return "FILE SCHEMA CHANGED", upgradeYellow
-	case r.SourceUnknown || upgradeUnknownTables(r) > 0:
+	case upgradeOutputDiffers(comparisons):
+		return "FILE OUTPUT CHANGED", upgradeYellow
+	case r.SourceUnknown || upgradeNotFullyAssessedTables(r) > 0:
 		return "UNKNOWN", upgradeYellow
 	case len(impacts) > 0:
 		return "AUTOMATICALLY MIGRATABLE", upgradeYellow
@@ -395,7 +405,7 @@ func upgradeSummary(r upgradeReport, impacts []upgradeTableImpact, migrateMode s
 		{changed, "changed table", "changed tables"},
 		{added, "new table", "new tables"},
 		{len(r.RemovedTables), "removed table", "removed tables"},
-		{upgradeUnknownTables(r), "table not assessed", "tables not assessed"},
+		{upgradeNotFullyAssessedTables(r), "table not fully assessed", "tables not fully assessed"},
 	} {
 		switch {
 		case part.count == 1:
@@ -421,9 +431,9 @@ func upgradeAction(r upgradeReport, impacts []upgradeTableImpact, comparisons []
 	switch {
 	case len(r.RemovedTables) > 0:
 		return "remove explicit selections and update dependent consumers.", color.FgYellow
-	case upgradeHasCategory(impacts, pluginPb.AssessTables_CATEGORY_FILE_SCHEMA_CHANGED):
+	case upgradeHasCategory(impacts, pluginPb.AssessTables_CATEGORY_FILE_SCHEMA_CHANGED), upgradeOutputDiffers(comparisons):
 		return "review readers that combine old and new files.", color.FgYellow
-	case r.SourceUnknown || upgradeUnknownTables(r) > 0:
+	case r.SourceUnknown || upgradeNotFullyAssessedTables(r) > 0:
 		return "review the source changelog for what this check could not assess.", color.FgYellow
 	case len(impacts) > 0 && migrateMode == specs.MigrateModeForced:
 		return "no action needed; the next sync applies these changes.", color.FgGreen
@@ -580,7 +590,11 @@ func writeUpgradeOutputComparisons(b *strings.Builder, comparisons []*pluginPb.A
 			fmt.Fprintf(b, "    %d equivalent test values: identical output\n", len(identicalValues))
 		}
 	}
-	b.WriteString("  " + upgradeGreen.Sprint(upgradeNoOutputDiffText) + "\n")
+	if upgradeOutputDiffers(comparisons) {
+		b.WriteString("  " + upgradeYellow.Sprint(upgradeOutputDiffText) + "\n")
+	} else {
+		b.WriteString("  " + upgradeGreen.Sprint(upgradeNoOutputDiffText) + "\n")
+	}
 	b.WriteString("  " + upgradeNotAssessedText + "\n")
 }
 
