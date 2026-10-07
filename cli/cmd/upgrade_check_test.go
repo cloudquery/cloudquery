@@ -18,9 +18,12 @@ import (
 
 type fakeSourceClient struct {
 	pluginPb.PluginClient
-	tablesWithoutConnection schema.Tables
-	tablesWithConnection    schema.Tables
-	errWithConnection       error
+	tablesWithoutConnection  schema.Tables
+	tablesWithConnection     schema.Tables
+	initErrWithoutConnection error
+	initErrWithConnection    error
+	errWithoutConnection     error
+	errWithConnection        error
 
 	noConnection bool
 	initCalls    []bool
@@ -30,6 +33,12 @@ type fakeSourceClient struct {
 func (f *fakeSourceClient) Init(_ context.Context, req *pluginPb.Init_Request, _ ...grpc.CallOption) (*pluginPb.Init_Response, error) {
 	f.noConnection = req.NoConnection
 	f.initCalls = append(f.initCalls, req.NoConnection)
+	if req.NoConnection && f.initErrWithoutConnection != nil {
+		return nil, f.initErrWithoutConnection
+	}
+	if !req.NoConnection && f.initErrWithConnection != nil {
+		return nil, f.initErrWithConnection
+	}
 	return &pluginPb.Init_Response{}, nil
 }
 
@@ -38,6 +47,9 @@ func (f *fakeSourceClient) GetTables(_ context.Context, req *pluginPb.GetTables_
 		return nil, errors.New("expected all tables to be requested")
 	}
 	tables := f.tablesWithoutConnection
+	if f.noConnection && f.errWithoutConnection != nil {
+		return nil, f.errWithoutConnection
+	}
 	if !f.noConnection {
 		if f.errWithConnection != nil {
 			return nil, f.errWithConnection
@@ -96,6 +108,25 @@ func TestListSourceTables(t *testing.T) {
 			wantUnknown:   "failed to get tables: tables only discovered during sync",
 			wantInitCalls: []bool{true, false},
 		},
+		{
+			name:          "init error without a connection is unknown and does not connect",
+			source:        &fakeSourceClient{initErrWithoutConnection: errors.New("invalid spec")},
+			wantUnknown:   "failed to init source: invalid spec",
+			wantInitCalls: []bool{true},
+		},
+		{
+			name:          "get tables error without a connection is unknown and does not connect",
+			source:        &fakeSourceClient{errWithoutConnection: errors.New("listing failed")},
+			wantUnknown:   "failed to get tables: listing failed",
+			wantInitCalls: []bool{true},
+		},
+		{
+			name:          "init error with a connection is unknown with the reason",
+			source:        &fakeSourceClient{initErrWithConnection: errors.New("connection refused")},
+			wantConnected: true,
+			wantUnknown:   "failed to init source: connection refused",
+			wantInitCalls: []bool{true, false},
+		},
 	}
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
@@ -143,6 +174,18 @@ func TestLoadUpgradeSourceTables(t *testing.T) {
 	}
 	require.Equal(t, "v4.5.1", from.Version)
 	require.Equal(t, "v4.7.0", to.Version)
+}
+
+func TestLoadUpgradeSourceTablesRejectsFixedPathRegistries(t *testing.T) {
+	for _, registry := range []specs.Registry{specs.RegistryLocal, specs.RegistryGRPC, specs.RegistryDocker} {
+		t.Run(registry.String(), func(t *testing.T) {
+			sourceSpec := specs.Source{Metadata: specs.Metadata{Name: "test", Path: "/plugins/test", Version: "v1.0.0", Registry: registry}}
+
+			_, _, err := loadUpgradeSourceTables(context.Background(), sourceSpec, "v2.0.0")
+
+			require.ErrorContains(t, err, "upgrade check supports only sources from the cloudquery or github registry")
+		})
+	}
 }
 
 func tableNames(tables schema.Tables) []string {
