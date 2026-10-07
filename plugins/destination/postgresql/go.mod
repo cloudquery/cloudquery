@@ -11,7 +11,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/feature/rds/auth v1.7.3
 	github.com/aws/aws-sdk-go-v2/service/sts v1.51.0
 	github.com/cloudquery/codegen v0.4.1
-	github.com/cloudquery/plugin-sdk/v4 v4.97.0
+	github.com/cloudquery/plugin-sdk/v4 v4.98.0
 	github.com/databricks/databricks-sdk-go v0.182.0
 	github.com/goccy/go-json v0.10.6
 	github.com/google/go-cmp v0.7.0
