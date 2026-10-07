@@ -120,8 +120,7 @@ func TestAssessTablesWithoutSpec(t *testing.T) {
 		require.Equal(t, []plugin.TableFinding{{
 			TableName:                "cloudflare_certificate_packs",
 			Category:                 plugin.AssessCategoryUnknown,
-			CoverageIncomplete:       true,
-			CoverageIncompleteReason: noSpecReason,
+			IncompleteCoverageReason: noSpecReason,
 		}}, findings)
 		require.NoError(t, c.Close(context.Background()))
 	}

@@ -28,8 +28,7 @@ func (c *Client) assessTable(pair plugin.TablePair) (plugin.TableFinding, error)
 		return plugin.TableFinding{
 			TableName:                pair.TableName(),
 			Category:                 plugin.AssessCategoryUnknown,
-			CoverageIncomplete:       true,
-			CoverageIncompleteReason: noSpecReason,
+			IncompleteCoverageReason: noSpecReason,
 		}, nil
 	}
 	return c.AssessTable(pair)
