@@ -12,6 +12,7 @@ const (
 	behaviorNoFixedSchema = "makes no changes, properties have no fixed schema"
 	behaviorCreateIndex   = "creates the primary key index"
 	behaviorKeepIndex     = "keeps the index on the old primary key, new rows are merged on the new primary key"
+	behaviorKeepIndexNoPK = "keeps the index on the old primary key, new rows are created as new nodes, which can duplicate existing ones"
 	behaviorKeepNodes     = "keeps the existing nodes"
 )
 
@@ -48,11 +49,14 @@ func assessTable(pair plugin.TablePair) plugin.TableFinding {
 // indexMigration mirrors MigrateTables: CREATE INDEX ... IF NOT EXISTS is a no-op when an index with the same name exists,
 // so a changed primary key never errors and the old index is kept in both safe and forced modes.
 func indexMigration(oldTable, newTable *schema.Table) (plugin.AssessCategory, string) {
-	switch createIndexQuery(oldTable) {
-	case createIndexQuery(newTable):
+	oldQuery, newQuery := createIndexQuery(oldTable), createIndexQuery(newTable)
+	switch {
+	case oldQuery == newQuery:
 		return plugin.AssessCategoryNoChange, behaviorNoChange
-	case "":
+	case oldQuery == "":
 		return plugin.AssessCategoryAutomaticallyMigratable, behaviorCreateIndex
+	case newQuery == "":
+		return plugin.AssessCategoryManualMigrationRequired, behaviorKeepIndexNoPK
 	default:
 		return plugin.AssessCategoryManualMigrationRequired, behaviorKeepIndex
 	}

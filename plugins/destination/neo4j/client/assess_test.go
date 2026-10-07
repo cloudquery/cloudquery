@@ -121,8 +121,8 @@ func TestAssessTablesPrimaryKeyRemoved(t *testing.T) {
 	require.Equal(t, []plugin.ColumnFinding{{
 		ColumnName:         "id",
 		Category:           plugin.AssessCategoryManualMigrationRequired,
-		SafeModeBehavior:   behaviorKeepIndex,
-		ForcedModeBehavior: behaviorKeepIndex,
+		SafeModeBehavior:   behaviorKeepIndexNoPK,
+		ForcedModeBehavior: behaviorKeepIndexNoPK,
 	}}, finding.Columns)
 }
 
@@ -222,6 +222,15 @@ func indexedProperties(t *testing.T, c *Client, table *schema.Table) []string {
 	return names
 }
 
+func dropIndex(t *testing.T, c *Client, table *schema.Table) {
+	t.Helper()
+	ctx := context.Background()
+	sess := c.Session(ctx, neo4j.SessionConfig{AccessMode: neo4j.AccessModeWrite})
+	defer sess.Close(ctx)
+	_, err := sess.Run(ctx, `DROP INDEX `+indexName(table)+` IF EXISTS;`, map[string]any{})
+	require.NoError(t, err)
+}
+
 func renamed(pair plugin.TablePair, name string) plugin.TablePair {
 	oldTable, newTable := pair.Old.Copy(nil), pair.New.Copy(nil)
 	oldTable.Name, newTable.Name = name, name
@@ -247,6 +256,7 @@ func TestAssessTablesMatchesMigrate(t *testing.T) {
 		for _, force := range []bool{false, true} {
 			t.Run(fmt.Sprintf("%s force=%t", tc.name, force), func(t *testing.T) {
 				pair := renamed(tc.pair, fmt.Sprintf("assess_%d", time.Now().UnixNano()))
+				t.Cleanup(func() { dropIndex(t, c, pair.New) })
 				finding := assessPair(t, pair)
 				require.Equal(t, tc.category, finding.Category)
 
