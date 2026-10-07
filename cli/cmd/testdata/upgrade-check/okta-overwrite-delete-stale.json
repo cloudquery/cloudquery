@@ -1,0 +1,76 @@
+{
+  "reports": [
+    {
+      "source": {
+        "name": "okta",
+        "from_version": "v6.8.2",
+        "to_version": "v7.0.0"
+      },
+      "destination": {
+        "name": "postgresql",
+        "registry": "cloudquery",
+        "path": "cloudquery/postgresql",
+        "version": "<version>",
+        "write_mode": "overwrite-delete-stale",
+        "pk_mode": "default",
+        "migrate_mode": "safe"
+      },
+      "verdict": "REVIEW REQUIRED",
+      "summary": "1 table needs a manual migration, 1 new table",
+      "tables": [
+        {
+          "name": "okta_policy_mappings",
+          "new_table": true,
+          "outcomes": {
+            "forced": {
+              "result": "applied",
+              "text": "created"
+            },
+            "safe": {
+              "result": "applied",
+              "text": "created"
+            }
+          }
+        },
+        {
+          "name": "okta_policy_rules",
+          "changes": [
+            {
+              "kind": "added",
+              "column": "policy_id",
+              "new_type": "text",
+              "new_source_type": "string",
+              "reason": "part of the primary key"
+            },
+            {
+              "kind": "added",
+              "column": "actions",
+              "new_type": "jsonb",
+              "new_source_type": "json"
+            },
+            {
+              "kind": "added",
+              "column": "conditions",
+              "new_type": "jsonb",
+              "new_source_type": "json"
+            }
+          ],
+          "outcomes": {
+            "forced": {
+              "result": "data_loss",
+              "text": "dropped and recreated, existing rows deleted"
+            },
+            "safe": {
+              "result": "fails",
+              "text": "fails: safe mode cannot change a primary key"
+            }
+          }
+        }
+      ],
+      "removed_tables": [],
+      "output_comparisons": [],
+      "coverage_gaps": [],
+      "action": "migrate okta_policy_rules manually before upgrading, or switch to migrate_mode: forced and accept losing its rows."
+    }
+  ]
+}

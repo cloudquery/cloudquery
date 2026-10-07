@@ -3,6 +3,7 @@ package cmd
 import (
 	"context"
 	"fmt"
+	"os"
 	"slices"
 	"strings"
 	"time"
@@ -35,6 +36,9 @@ cloudquery upgrade check ./config.yml --source datadog --to v6.0.0
 `
 	destinationNoProtocolV3Reason = "destination does not support plugin protocol v3"
 	destinationNoAssessmentReason = "destination version does not support assessment"
+
+	upgradeOutputText = "text"
+	upgradeOutputJSON = "json"
 )
 
 func newCmdUpgrade() *cobra.Command {
@@ -59,6 +63,7 @@ func newCmdUpgradeCheck() *cobra.Command {
 	cmd.Flags().String("to", "", "Source plugin version to upgrade to")
 	_ = cmd.MarkFlagRequired("source")
 	_ = cmd.MarkFlagRequired("to")
+	cmd.Flags().String("output", upgradeOutputText, "Output format. One of: text, json")
 	cmd.Flags().String("license", "", "set offline license file")
 	cmd.Flags().Bool("cq-columns-not-null", false, "Force CloudQuery internal columns to be NOT NULL. This feature is in Preview. Please provide feedback to help us improve it.")
 	_ = cmd.Flags().MarkHidden("cq-columns-not-null")
@@ -78,6 +83,13 @@ func upgradeCheck(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return err
 	}
+	output, err := cmd.Flags().GetString("output")
+	if err != nil {
+		return err
+	}
+	if output != upgradeOutputText && output != upgradeOutputJSON {
+		return fmt.Errorf("invalid output format %q. One of: %s, %s", output, upgradeOutputText, upgradeOutputJSON)
+	}
 	licenseFile, err := cmd.Flags().GetString("license")
 	if err != nil {
 		return err
@@ -85,6 +97,14 @@ func upgradeCheck(cmd *cobra.Command, args []string) error {
 	cqColumnsNotNull, err := cmd.Flags().GetBool("cq-columns-not-null")
 	if err != nil {
 		return err
+	}
+
+	out := cmd.OutOrStdout()
+	if output == upgradeOutputJSON {
+		// Plugin downloads print progress to os.Stdout, which would corrupt the JSON report.
+		stdout := os.Stdout
+		os.Stdout = os.Stderr
+		defer func() { os.Stdout = stdout }()
 	}
 
 	ctx := cmd.Context()
@@ -115,29 +135,46 @@ func upgradeCheck(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return err
 	}
+	var reports []upgradeReport
+	exitCode := 0
+	err = upgradeReports(ctx, *sourceSpec, destinationSpecs, transformersForDestination, cqColumnsNotNull, from, to, func(report upgradeReport) error {
+		reports = append(reports, report)
+		exitCode = max(exitCode, upgradeExitCode(report))
+		if output == upgradeOutputText {
+			return renderUpgradeReport(out, report)
+		}
+		return nil
+	}, opts...)
+	if err != nil {
+		return err
+	}
+	if output == upgradeOutputJSON {
+		if err := renderUpgradeReportsJSON(out, reports); err != nil {
+			return err
+		}
+	}
+	return upgradeExitError(cmd, exitCode)
+}
+
+func upgradeReports(ctx context.Context, sourceSpec specs.Source, destinationSpecs []*specs.Destination, transformersForDestination map[string][]*specs.Transformer, cqColumnsNotNull bool, from, to upgradeSourceTables, emit func(upgradeReport) error, opts ...managedplugin.Option) error {
 	report := upgradeReport{
 		SourceName:  sourceSpec.Name,
 		FromVersion: from.Version,
 		ToVersion:   to.Version,
 		SourceGaps:  upgradeSourceGaps(sourceSpec.Name, from, to),
 	}
-	out := cmd.OutOrStdout()
 	if from.UnknownReason != "" || to.UnknownReason != "" {
 		report.SourceUnknown = true
-		if err := renderUpgradeReport(out, report); err != nil {
-			return err
-		}
-		return upgradeExitError(cmd, upgradeExitCode(report))
+		return emit(report)
 	}
 
-	selection, err := selectUpgradeTables(*sourceSpec, from.Tables, to.Tables)
+	selection, err := selectUpgradeTables(sourceSpec, from.Tables, to.Tables)
 	if err != nil {
 		return err
 	}
 	report.RemovedTables = selection.RemovedTables
-	exitCode := 0
 	for _, destinationSpec := range destinationSpecs {
-		tables, findings, err := assessDestination(ctx, *sourceSpec, *destinationSpec, transformersForDestination[destinationSpec.Name], cqColumnsNotNull, selection.Pairs, opts...)
+		tables, findings, err := assessDestination(ctx, sourceSpec, *destinationSpec, transformersForDestination[destinationSpec.Name], cqColumnsNotNull, selection.Pairs, opts...)
 		if err != nil {
 			return err
 		}
@@ -146,12 +183,11 @@ func upgradeCheck(cmd *cobra.Command, args []string) error {
 		if report.Tables, err = upgradeTablesByName(tables); err != nil {
 			return err
 		}
-		if err := renderUpgradeReport(out, report); err != nil {
+		if err := emit(report); err != nil {
 			return err
 		}
-		exitCode = max(exitCode, upgradeExitCode(report))
 	}
-	return upgradeExitError(cmd, exitCode)
+	return nil
 }
 
 func upgradeExitError(cmd *cobra.Command, exitCode int) error {
