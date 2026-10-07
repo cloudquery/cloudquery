@@ -52,16 +52,51 @@ func TestSafeMigrateMatchesAssessment(t *testing.T) {
 	oktaNew := oktaOld.Copy(nil)
 	oktaNew.Columns = append(oktaNew.Columns, schema.Column{Name: "policy_id", Type: arrow.BinaryTypes.String, PrimaryKey: true})
 
-	for _, pair := range []plugin.TablePair{{Old: datadogOld, New: datadogNew}, {Old: oktaOld, New: oktaNew}} {
-		t.Run(pair.TableName(), func(t *testing.T) {
-			require.NoError(t, c.MigrateTables(ctx, message.WriteMigrateTables{{Table: pair.Old}}))
+	tests := []struct {
+		pair               plugin.TablePair
+		category           plugin.AssessCategory
+		row                map[string]any
+		documentIDsChanged bool
+	}{
+		{
+			pair:     plugin.TablePair{Old: datadogOld, New: datadogNew},
+			category: plugin.AssessCategoryNoChange,
+			row:      map[string]any{"id": 1},
+		},
+		{
+			pair:               plugin.TablePair{Old: oktaOld, New: oktaNew},
+			category:           plugin.AssessCategoryManualMigrationRequired,
+			row:                map[string]any{"id": "rule", "policy_id": "policy"},
+			documentIDsChanged: true,
+		},
+	}
+	for _, tc := range tests {
+		name := tc.pair.TableName()
+		t.Run(name, func(t *testing.T) {
+			findings, err := c.AssessTables(ctx, []plugin.TablePair{tc.pair}, plugin.AssessOptions{})
+			require.NoError(t, err)
+			require.Equal(t, tc.category, findings[0].Category)
+
+			t.Cleanup(func() { require.NoError(t, c.deleteIndex(ctx, &indexSchema{UID: name})) })
+			require.NoError(t, c.MigrateTables(ctx, message.WriteMigrateTables{{Table: tc.pair.Old}}))
 			before, err := c.indexes()
 			require.NoError(t, err)
 
-			require.NoError(t, c.MigrateTables(ctx, message.WriteMigrateTables{{Table: pair.New}}))
+			require.NoError(t, c.MigrateTables(ctx, message.WriteMigrateTables{{Table: tc.pair.New}}))
 			after, err := c.indexes()
 			require.NoError(t, err)
-			require.Equal(t, before[pair.TableName()], after[pair.TableName()])
+			require.Equal(t, before[name], after[name])
+
+			filterable, err := c.Meilisearch.Index(name).GetFilterableAttributes()
+			require.NoError(t, err)
+			wantFilterable := make([]any, 0, len(tc.pair.Old.Columns))
+			for _, column := range tc.pair.Old.Columns.Names() {
+				wantFilterable = append(wantFilterable, column)
+			}
+			require.ElementsMatch(t, wantFilterable, *filterable)
+
+			oldID, newID := hashUUID(tc.pair.Old)(tc.row), hashUUID(tc.pair.New)(tc.row)
+			require.Equal(t, tc.documentIDsChanged, oldID != newID)
 		})
 	}
 }
