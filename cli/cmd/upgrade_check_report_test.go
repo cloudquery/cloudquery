@@ -270,7 +270,7 @@ This check only previews the changes. It does not migrate, write, delete or uplo
 			},
 			want: `gcp v22.1.2 → v23.0.0 | postgresql (cloudquery/postgresql@v8.14.0)
 write_mode: overwrite-delete-stale | pk_mode: default
-SELECTED TABLES REMOVED — 2 removed tables, 2 tables not assessed
+SELECTED TABLES REMOVED — 2 removed tables, 2 tables not fully assessed
 
 Changes
   gcp_aiplatform_specialist_pools           removed table, the new source version no longer provides it
@@ -338,7 +338,7 @@ This check only previews the changes. It does not migrate, write, delete or uplo
 `,
 		},
 		{
-			name: "output that differs is listed in full",
+			name: "output that differs needs review",
 			report: upgradeReport{
 				SourceName:  "datadog",
 				FromVersion: "v5.19.10",
@@ -361,7 +361,7 @@ This check only previews the changes. It does not migrate, write, delete or uplo
 			},
 			want: `datadog v5.19.10 → v6.0.0 | s3 (cloudquery/s3@v7.0.0)
 write_mode: overwrite-delete-stale | pk_mode: default
-NO OUTPUT DIFFERENCE DETECTED for equivalent test values
+FILE OUTPUT CHANGED
 
 Output comparison
   list<item: utf8, nullable> → json   datadog_monitors.tags
@@ -371,10 +371,45 @@ Output comparison
     Synthetic value: []
     Before:          {"tags":[]}
     After:           {"tags":null}
-  NO OUTPUT DIFFERENCE DETECTED for equivalent test values
+  OUTPUT DIFFERENCE DETECTED for some test values
   Actual source values and behavior were not assessed.
 
-Action: no action needed; the output is the same for equivalent values.
+Action: review readers that combine old and new files.
+This check only previews the changes. It does not migrate, write, delete or upload anything.
+
+`,
+		},
+		{
+			name: "incomplete coverage is not approved",
+			report: upgradeReport{
+				SourceName:  "okta",
+				FromVersion: "v6.8.2",
+				ToVersion:   "v7.0.0",
+				Destination: postgresqlDestinationSpec(specs.WriteModeAppend, specs.MigrateModeSafe),
+				Findings: []*pluginPb.AssessTables_TableFinding{{
+					TableName:                "okta_users",
+					Category:                 pluginPb.AssessTables_CATEGORY_AUTOMATICALLY_MIGRATABLE,
+					IncompleteCoverageReason: "nested types not assessed",
+					Columns:                  []*pluginPb.AssessTables_ColumnFinding{{ColumnName: "profile", Category: pluginPb.AssessTables_CATEGORY_AUTOMATICALLY_MIGRATABLE, NewType: "jsonb"}},
+				}},
+			},
+			want: `okta v6.8.2 → v7.0.0 | postgresql (cloudquery/postgresql@v8.14.0)
+write_mode: append | pk_mode: default | migrate_mode: safe
+UNKNOWN — 1 changed table, 1 table not fully assessed
+
+Changes
+  okta_users
+    + profile   jsonb   new column
+
+Next sync
+  migrate_mode: safe (your config)
+    ✓ okta_users   migrated in place
+  migrate_mode: forced — same as safe
+
+Coverage gaps
+  okta_users: nested types not assessed
+
+Action: review the source changelog for what this check could not assess.
 This check only previews the changes. It does not migrate, write, delete or upload anything.
 
 `,
@@ -574,6 +609,11 @@ func TestUpgradeExitCode(t *testing.T) {
 		{name: "manual migration in forced mode", report: datadogTagsReport(postgresqlDestinationSpec(specs.WriteModeOverwriteDeleteStale, specs.MigrateModeForced)), want: 3},
 		{name: "selected tables removed", report: upgradeReport{Destination: postgresql, RemovedTables: []string{"t"}}, want: 3},
 		{name: "file schema changed", report: upgradeReport{Destination: s3DestinationSpec(), Findings: []*pluginPb.AssessTables_TableFinding{{TableName: "t", Category: pluginPb.AssessTables_CATEGORY_FILE_SCHEMA_CHANGED}}}, want: 3},
+		{name: "output differs", report: upgradeReport{Destination: s3DestinationSpec(), Findings: []*pluginPb.AssessTables_TableFinding{{
+			TableName: "t",
+			Category:  pluginPb.AssessTables_CATEGORY_NO_CHANGE,
+			Columns:   []*pluginPb.AssessTables_ColumnFinding{{ColumnName: "c", Category: pluginPb.AssessTables_CATEGORY_NO_CHANGE, Evidence: []*pluginPb.AssessTables_Evidence{{SyntheticValue: "[]", Before: "[]", After: "null"}}}},
+		}}}, want: 3},
 		{name: "unknown destination", report: upgradeReport{Destination: postgresql, Findings: []*pluginPb.AssessTables_TableFinding{{TableName: "t", Category: pluginPb.AssessTables_CATEGORY_UNKNOWN}}}, want: 4},
 		{name: "incomplete coverage", report: upgradeReport{Destination: postgresql, Findings: []*pluginPb.AssessTables_TableFinding{{TableName: "t", Category: pluginPb.AssessTables_CATEGORY_AUTOMATICALLY_MIGRATABLE, IncompleteCoverageReason: "nested types not assessed"}}}, want: 4},
 		{name: "unknown wins over action needed", report: upgradeReport{Destination: postgresql, RemovedTables: []string{"t"}, Findings: []*pluginPb.AssessTables_TableFinding{{TableName: "u", Category: pluginPb.AssessTables_CATEGORY_UNKNOWN}}}, want: 4},

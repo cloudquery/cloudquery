@@ -3,7 +3,11 @@ package cmd
 import (
 	"bytes"
 	"context"
+	"encoding/base64"
+	"encoding/json"
 	"errors"
+	"net/http"
+	"net/http/httptest"
 	"path"
 	"runtime"
 	"testing"
@@ -367,4 +371,44 @@ func TestUpgradeCheck(t *testing.T) {
 	report := out.String()
 	require.Contains(t, report, "test v4.5.1 → v4.7.0 | test (cloudquery/test@v2.5.1)\nwrite_mode: overwrite-delete-stale | pk_mode: default\nUNKNOWN — ")
 	require.Contains(t, report, "test_some_table: "+destinationNoAssessmentReason)
+}
+
+func TestLoadUpgradeCheckSpecsInjectsPlatformDestination(t *testing.T) {
+	tenant := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		switch r.URL.Path {
+		case "/api/external-syncs/supported-source-versions":
+			_ = json.NewEncoder(w).Encode(map[string]string{"cloudquery/aws": "v1.0.0"})
+		case "/api/external-syncs/whoami":
+			_ = json.NewEncoder(w).Encode(map[string]any{"tenant_id": "11111111-1111-1111-1111-111111111111", "plugin_version": "v1.0.1"})
+		default:
+			http.Error(w, "unexpected "+r.URL.Path, http.StatusNotFound)
+		}
+	}))
+	t.Cleanup(tenant.Close)
+	payload, err := json.Marshal(map[string]any{"u": tenant.URL, "tm": "team-x"})
+	require.NoError(t, err)
+	t.Setenv("CLOUDQUERY_API_KEY", "cqpd_"+base64.RawURLEncoding.EncodeToString(payload)+".sig")
+
+	_, filename, _, _ := runtime.Caller(0)
+	testConfig := path.Join(path.Dir(filename), "testdata", "validate-config-platform-source-only.yml")
+
+	loaded, err := loadUpgradeCheckSpecs(t.Context(), []string{testConfig}, "aws")
+	require.NoError(t, err)
+	require.Equal(t, "aws", loaded.source.Name)
+	require.Len(t, loaded.destinations, 1)
+	require.Equal(t, "platform", loaded.destinations[0].Name)
+}
+
+func TestUnknownTableFindingsUseTransformedTableNames(t *testing.T) {
+	pairs := []upgradeTablePair{
+		{Name: "test_kept", From: testTable("test_kept"), To: testTable("test_kept")},
+		{Name: "test_added", To: testTable("test_added")},
+	}
+	tables, err := transformUpgradeTables(t.Context(), specs.Source{Metadata: specs.Metadata{Name: "test"}}, specs.Destination{Metadata: specs.Metadata{Name: "postgresql"}}, []pluginPb.PluginClient{renamingTransformerClient{}}, false, pairs)
+	require.NoError(t, err)
+
+	findings := unknownTableFindings(tables, destinationNoAssessmentReason)
+
+	require.Equal(t, []string{"renamed_test_kept", "renamed_test_added"}, []string{findings[0].TableName, findings[1].TableName})
 }

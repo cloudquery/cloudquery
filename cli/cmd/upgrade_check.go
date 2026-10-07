@@ -88,37 +88,12 @@ func upgradeCheck(cmd *cobra.Command, args []string) error {
 	}
 
 	ctx := cmd.Context()
-	specReader, err := specs.NewSpecReader(args)
-	if err != nil {
-		return fmt.Errorf("failed to load spec(s) from %s. Error: %w", strings.Join(args, ", "), err)
-	}
-	sourceSpec := specReader.GetSourceByName(sourceName)
-	if sourceSpec == nil {
-		return fmt.Errorf("source %q not found in %s", sourceName, strings.Join(args, ", "))
-	}
-	transformerSpecsByName := make(map[string]*specs.Transformer)
-	for _, transformerSpec := range specReader.Transformers {
-		transformerSpecsByName[transformerSpec.Name] = transformerSpec
-	}
-	var destinationSpecs []*specs.Destination
-	var transformerSpecs []*specs.Transformer
-	transformersForDestination := make(map[string][]*specs.Transformer)
-	for _, destinationSpec := range specReader.Destinations {
-		if !slices.Contains(sourceSpec.Destinations, destinationSpec.Name) {
-			continue
-		}
-		destinationSpecs = append(destinationSpecs, destinationSpec)
-		for _, transformerName := range destinationSpec.Transformers {
-			transformersForDestination[destinationSpec.Name] = append(transformersForDestination[destinationSpec.Name], transformerSpecsByName[transformerName])
-		}
-		transformerSpecs = append(transformerSpecs, transformersForDestination[destinationSpec.Name]...)
-	}
-
-	dlToken, teamName, err := cqplatform.DownloadAuth(ctx, log.Logger, []*specs.Source{sourceSpec}, destinationSpecs, transformerSpecs)
+	loaded, err := loadUpgradeCheckSpecs(ctx, args, sourceName)
 	if err != nil {
 		return err
 	}
-	cqplatform.PropagatePluginCredential(dlToken)
+	sourceSpec, destinationSpecs, transformersForDestination := loaded.source, loaded.destinations, loaded.transformersForDestination
+	dlToken, teamName := loaded.downloadToken, loaded.teamName
 
 	opts := []managedplugin.Option{
 		managedplugin.WithLogger(log.Logger),
@@ -185,6 +160,53 @@ func upgradeExitError(cmd *cobra.Command, exitCode int) error {
 	}
 	cmd.SilenceErrors = true
 	return &ExitCodeError{Code: exitCode}
+}
+
+type upgradeCheckSpecs struct {
+	source                     *specs.Source
+	destinations               []*specs.Destination
+	transformersForDestination map[string][]*specs.Transformer
+	downloadToken              string
+	teamName                   string
+}
+
+func loadUpgradeCheckSpecs(ctx context.Context, args []string, sourceName string) (upgradeCheckSpecs, error) {
+	specReader, err := specs.NewSpecReaderWithoutValidation(args)
+	if err != nil {
+		return upgradeCheckSpecs{}, fmt.Errorf("failed to load spec(s) from %s. Error: %w", strings.Join(args, ", "), err)
+	}
+	loaded := upgradeCheckSpecs{source: specReader.GetSourceByName(sourceName), transformersForDestination: make(map[string][]*specs.Transformer)}
+	if loaded.source == nil {
+		return upgradeCheckSpecs{}, fmt.Errorf("source %q not found in %s", sourceName, strings.Join(args, ", "))
+	}
+
+	loaded.downloadToken, loaded.teamName, err = cqplatform.DownloadAuth(ctx, log.Logger, []*specs.Source{loaded.source}, specReader.Destinations, specReader.Transformers)
+	if err != nil {
+		return upgradeCheckSpecs{}, err
+	}
+	cqplatform.PropagatePluginCredential(loaded.downloadToken)
+	destinations, err := cqplatform.MaybeInjectDestination(ctx, log.Logger, loaded.downloadToken, loaded.teamName, specReader.Sources, specReader.Destinations)
+	if err != nil {
+		return upgradeCheckSpecs{}, err
+	}
+	if err := specReader.SetDestinationsAndValidate(destinations); err != nil {
+		return upgradeCheckSpecs{}, fmt.Errorf("failed to load spec(s) from %s. Error: %w", strings.Join(args, ", "), err)
+	}
+
+	transformerSpecsByName := make(map[string]*specs.Transformer)
+	for _, transformerSpec := range specReader.Transformers {
+		transformerSpecsByName[transformerSpec.Name] = transformerSpec
+	}
+	for _, destinationSpec := range specReader.Destinations {
+		if !slices.Contains(loaded.source.Destinations, destinationSpec.Name) {
+			continue
+		}
+		loaded.destinations = append(loaded.destinations, destinationSpec)
+		for _, transformerName := range destinationSpec.Transformers {
+			loaded.transformersForDestination[destinationSpec.Name] = append(loaded.transformersForDestination[destinationSpec.Name], transformerSpecsByName[transformerName])
+		}
+	}
+	return loaded, nil
 }
 
 func upgradeSourceGaps(sourceName string, versions ...upgradeSourceTables) []string {
@@ -441,11 +463,20 @@ func assessTables(ctx context.Context, client pluginPb.PluginClient, destination
 	return resp.Tables, nil
 }
 
+func upgradeDestinationTableName(table upgradeTableSchemas) string {
+	for _, schemaBytes := range [][]byte{table.To, table.From} {
+		if decoded, err := upgradeTableFromBytes(schemaBytes); err == nil && decoded != nil {
+			return decoded.Name
+		}
+	}
+	return table.Name
+}
+
 func unknownTableFindings(tables []upgradeTableSchemas, reason string) []*pluginPb.AssessTables_TableFinding {
 	findings := make([]*pluginPb.AssessTables_TableFinding, len(tables))
 	for i, table := range tables {
 		findings[i] = &pluginPb.AssessTables_TableFinding{
-			TableName:                table.Name,
+			TableName:                upgradeDestinationTableName(table),
 			Category:                 pluginPb.AssessTables_CATEGORY_UNKNOWN,
 			IncompleteCoverageReason: reason,
 		}
