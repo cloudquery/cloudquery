@@ -167,7 +167,7 @@ func TestSelectUpgradeTables(t *testing.T) {
 
 	selection, err := selectUpgradeTables(specs.Source{
 		Metadata:            specs.Metadata{Name: "test", Version: "v1.0.0"},
-		Tables:              []string{"test_removed", "test_kept", "test_added", "test_parent"},
+		Tables:              []string{"test_removed", "test_kept", "test_added", "test_parent", "test_skipped"},
 		SkipTables:          []string{"test_skipped"},
 		SkipDependentTables: lo.ToPtr(false),
 	}, from, to)
@@ -181,6 +181,25 @@ func TestSelectUpgradeTables(t *testing.T) {
 	require.Equal(t, "test_added", selection.Pairs[1].Name)
 	require.Nil(t, selection.Pairs[1].From)
 	require.Equal(t, "test_added", selection.Pairs[1].To.Name)
+}
+
+func TestSelectUpgradeTablesSkipsDependentTables(t *testing.T) {
+	parent := testTable("test_parent")
+	child := testTable("test_parent_child")
+	child.Parent = parent
+	parent.Relations = schema.Tables{child}
+	tables := schema.Tables{parent}.FlattenTables()
+
+	selection, err := selectUpgradeTables(specs.Source{
+		Metadata:            specs.Metadata{Name: "test", Version: "v1.0.0"},
+		Tables:              []string{"test_parent"},
+		SkipDependentTables: lo.ToPtr(true),
+	}, tables, tables)
+	require.NoError(t, err)
+
+	require.Empty(t, selection.RemovedTables)
+	require.Len(t, selection.Pairs, 1)
+	require.Equal(t, "test_parent", selection.Pairs[0].Name)
 }
 
 func TestTransformUpgradeTables(t *testing.T) {
