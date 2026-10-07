@@ -100,8 +100,8 @@ func (c *Client) configureIndex(ctx context.Context, s *indexSchema) error {
 		attributes = append(attributes, current...)
 		slices.Sort(attributes)
 		attributes = slices.Compact(attributes)
-		if len(attributes) == len(s.Attributes) {
-			// already the same filtered attributes, skip
+		if len(attributes) == len(current) {
+			// no new attributes to add, skip
 			c.logger.Info().Str("index", s.UID).Msg("index is already properly configured, skip")
 			return nil
 		}
