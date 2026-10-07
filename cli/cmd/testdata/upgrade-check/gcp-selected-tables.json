@@ -1,0 +1,30 @@
+{
+  "reports": [
+    {
+      "source": {
+        "name": "gcp",
+        "from_version": "v22.1.2",
+        "to_version": "v23.0.0"
+      },
+      "destination": {
+        "name": "postgresql",
+        "registry": "cloudquery",
+        "path": "cloudquery/postgresql",
+        "version": "<version>",
+        "write_mode": "overwrite-delete-stale",
+        "pk_mode": "default",
+        "migrate_mode": "safe"
+      },
+      "verdict": "SELECTED TABLES REMOVED",
+      "summary": "2 removed tables",
+      "tables": [],
+      "removed_tables": [
+        "gcp_aiplatform_specialist_pools",
+        "gcp_aiplatform_specialistpool_locations"
+      ],
+      "output_comparisons": [],
+      "coverage_gaps": [],
+      "action": "remove explicit selections and update dependent consumers."
+    }
+  ]
+}

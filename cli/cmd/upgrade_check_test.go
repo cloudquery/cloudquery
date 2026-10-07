@@ -1,8 +1,19 @@
 package cmd
 
 import (
+	"bytes"
 	"context"
+	"encoding/base64"
+	"encoding/json"
 	"errors"
+	"flag"
+	"net/http"
+	"net/http/httptest"
+	"os"
+	"path"
+	"path/filepath"
+	"runtime"
+	"strings"
 	"testing"
 
 	"github.com/apache/arrow-go/v18/arrow"
@@ -15,6 +26,8 @@ import (
 	"github.com/samber/lo"
 	"github.com/stretchr/testify/require"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 type fakeSourceClient struct {
@@ -269,4 +282,225 @@ func TestTransformUpgradeTables(t *testing.T) {
 			require.NotNil(t, to.Columns.Get(schema.CqSyncTimeColumn.Name))
 		})
 	}
+}
+
+type fakeDestinationClient struct {
+	pluginPb.PluginClient
+	assessErr error
+
+	initRequests   []*pluginPb.Init_Request
+	assessRequests []*pluginPb.AssessTables_Request
+	writeCalled    bool
+}
+
+func (f *fakeDestinationClient) Init(_ context.Context, req *pluginPb.Init_Request, _ ...grpc.CallOption) (*pluginPb.Init_Response, error) {
+	f.initRequests = append(f.initRequests, req)
+	return &pluginPb.Init_Response{}, nil
+}
+
+func (f *fakeDestinationClient) AssessTables(_ context.Context, req *pluginPb.AssessTables_Request, _ ...grpc.CallOption) (*pluginPb.AssessTables_Response, error) {
+	f.assessRequests = append(f.assessRequests, req)
+	if f.assessErr != nil {
+		return nil, f.assessErr
+	}
+	return &pluginPb.AssessTables_Response{Tables: []*pluginPb.AssessTables_TableFinding{
+		{TableName: "test_kept", Category: pluginPb.AssessTables_CATEGORY_AUTOMATICALLY_MIGRATABLE},
+	}}, nil
+}
+
+func (f *fakeDestinationClient) Write(context.Context, ...grpc.CallOption) (grpc.ClientStreamingClient[pluginPb.Write_Request, pluginPb.Write_Response], error) {
+	f.writeCalled = true
+	return nil, errors.New("write must not be called")
+}
+
+func TestAssessTables(t *testing.T) {
+	tables := []upgradeTableSchemas{
+		{Name: "test_kept", From: []byte("old"), To: []byte("new")},
+		{Name: "test_added", To: []byte("added")},
+	}
+	cases := []struct {
+		name             string
+		destination      *fakeDestinationClient
+		migrateMode      specs.MigrateMode
+		wantMigrateForce bool
+		wantFindings     []*pluginPb.AssessTables_TableFinding
+		wantErr          string
+	}{
+		{
+			name:         "returns destination findings",
+			destination:  &fakeDestinationClient{},
+			wantFindings: []*pluginPb.AssessTables_TableFinding{{TableName: "test_kept", Category: pluginPb.AssessTables_CATEGORY_AUTOMATICALLY_MIGRATABLE}},
+		},
+		{
+			name:             "passes forced migrate mode",
+			destination:      &fakeDestinationClient{},
+			migrateMode:      specs.MigrateModeForced,
+			wantMigrateForce: true,
+			wantFindings:     []*pluginPb.AssessTables_TableFinding{{TableName: "test_kept", Category: pluginPb.AssessTables_CATEGORY_AUTOMATICALLY_MIGRATABLE}},
+		},
+		{
+			name:        "destination without the assessment RPC is unknown",
+			destination: &fakeDestinationClient{assessErr: status.Error(codes.Unimplemented, "method AssessTables not implemented")},
+			wantFindings: []*pluginPb.AssessTables_TableFinding{
+				{TableName: "test_kept", Category: pluginPb.AssessTables_CATEGORY_UNKNOWN, IncompleteCoverageReason: destinationNoAssessmentReason},
+				{TableName: "test_added", Category: pluginPb.AssessTables_CATEGORY_UNKNOWN, IncompleteCoverageReason: destinationNoAssessmentReason},
+			},
+		},
+		{
+			name:        "other assessment errors fail the check",
+			destination: &fakeDestinationClient{assessErr: status.Error(codes.Internal, "boom")},
+			wantErr:     "failed to assess tables for destination postgresql",
+		},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			destinationSpec := specs.Destination{Metadata: specs.Metadata{Name: "postgresql"}, MigrateMode: tc.migrateMode, Spec: map[string]any{"connection_string": "postgres://unused"}}
+
+			findings, err := assessTables(t.Context(), tc.destination, destinationSpec, tables)
+			if tc.wantErr != "" {
+				require.ErrorContains(t, err, tc.wantErr)
+			} else {
+				require.NoError(t, err)
+				require.Equal(t, tc.wantFindings, findings)
+			}
+
+			require.Len(t, tc.destination.initRequests, 1)
+			require.True(t, tc.destination.initRequests[0].NoConnection)
+			require.Len(t, tc.destination.assessRequests, 1)
+			require.Equal(t, tc.wantMigrateForce, tc.destination.assessRequests[0].MigrateForce)
+			require.Equal(t, []*pluginPb.AssessTables_TablePair{
+				{OldTable: []byte("old"), NewTable: []byte("new")},
+				{NewTable: []byte("added")},
+			}, tc.destination.assessRequests[0].Tables)
+			require.False(t, tc.destination.writeCalled)
+		})
+	}
+}
+
+func TestUpgradeCheck(t *testing.T) {
+	_, filename, _, _ := runtime.Caller(0)
+	testConfig := path.Join(path.Dir(filename), "testdata", "transformation.yml")
+	cmd := NewCmdRoot()
+	var out, errOut bytes.Buffer
+	cmd.SetOut(&out)
+	cmd.SetErr(&errOut)
+	cmd.SetArgs(append([]string{"upgrade", "check", testConfig, "--source", "test", "--to", "v4.7.0"}, testCommandArgs(t)...))
+
+	var exitCodeErr *ExitCodeError
+	require.ErrorAs(t, cmd.Execute(), &exitCodeErr)
+	require.Equal(t, upgradeExitUnknown, exitCodeErr.Code)
+	require.Empty(t, errOut.String())
+
+	report := out.String()
+	require.Contains(t, report, "test v4.5.1 → v4.7.0 | test (cloudquery/test@v2.5.1)\nwrite_mode: overwrite-delete-stale | pk_mode: default\nUNKNOWN — ")
+	require.Contains(t, report, "test_some_table: "+destinationNoAssessmentReason)
+}
+
+var updateUpgradeCheckGolden = flag.Bool("update-upgrade-check-golden", false, "rewrite the expected upgrade check reports")
+
+func TestUpgradeCheckRFCCases(t *testing.T) {
+	setColorOutput(t, false)
+	cqDir := t.TempDir()
+
+	cases := []struct {
+		name         string
+		toVersion    string
+		wantVerdict  string
+		wantExitCode int
+	}{
+		{name: "datadog", toVersion: "v6.0.0", wantVerdict: "REVIEW REQUIRED — 6 tables need a manual migration", wantExitCode: 3},
+		{name: "okta-overwrite-delete-stale", toVersion: "v7.0.0", wantVerdict: "REVIEW REQUIRED — 1 table needs a manual migration, 1 new table", wantExitCode: 3},
+		{name: "okta-append", toVersion: "v7.0.0", wantVerdict: "AUTOMATICALLY MIGRATABLE — 1 changed table, 1 new table", wantExitCode: 0},
+		{name: "gcp-selected-tables", toVersion: "v23.0.0", wantVerdict: "SELECTED TABLES REMOVED — 2 removed tables", wantExitCode: 3},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			configPath := filepath.Join("testdata", "upgrade-check", tc.name+".yml")
+			specReader, err := specs.NewSpecReader([]string{configPath})
+			require.NoError(t, err)
+			runCheck := func(output string) (string, error) {
+				defer CloseLogFile()
+				cmd := NewCmdRoot()
+				var out bytes.Buffer
+				cmd.SetOut(&out)
+				cmd.SetArgs([]string{
+					"upgrade", "check", configPath, "--source", specReader.Sources[0].Name, "--to", tc.toVersion, "--output", output,
+					"--cq-dir", cqDir, "--log-file-name", filepath.Join(t.TempDir(), "cloudquery.log"),
+				})
+				err := cmd.Execute()
+				return strings.ReplaceAll(out.String(), specReader.Destinations[0].Version, "<version>"), err
+			}
+
+			text, err := runCheck(upgradeOutputText)
+			require.Contains(t, text, "\n"+tc.wantVerdict+"\n")
+			requireUpgradeCheckGolden(t, tc.name+".txt", text)
+			requireUpgradeCheckExitCode(t, err, tc.wantExitCode)
+
+			jsonReport, err := runCheck(upgradeOutputJSON)
+			requireUpgradeCheckGolden(t, tc.name+".json", jsonReport)
+			requireUpgradeCheckExitCode(t, err, tc.wantExitCode)
+		})
+	}
+}
+
+func requireUpgradeCheckExitCode(t *testing.T, err error, want int) {
+	t.Helper()
+	if want == 0 {
+		require.NoError(t, err)
+		return
+	}
+	var exitErr *ExitCodeError
+	require.ErrorAs(t, err, &exitErr)
+	require.Equal(t, want, exitErr.Code)
+}
+
+func requireUpgradeCheckGolden(t *testing.T, name, got string) {
+	t.Helper()
+	goldenPath := filepath.Join("testdata", "upgrade-check", name)
+	if *updateUpgradeCheckGolden {
+		require.NoError(t, os.WriteFile(goldenPath, []byte(got), 0o644))
+	}
+	want, err := os.ReadFile(goldenPath)
+	require.NoError(t, err)
+	require.Equal(t, string(want), got)
+}
+
+func TestLoadUpgradeCheckSpecsInjectsPlatformDestination(t *testing.T) {
+	tenant := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		switch r.URL.Path {
+		case "/api/external-syncs/supported-source-versions":
+			_ = json.NewEncoder(w).Encode(map[string]string{"cloudquery/aws": "v1.0.0"})
+		case "/api/external-syncs/whoami":
+			_ = json.NewEncoder(w).Encode(map[string]any{"tenant_id": "11111111-1111-1111-1111-111111111111", "plugin_version": "v1.0.1"})
+		default:
+			http.Error(w, "unexpected "+r.URL.Path, http.StatusNotFound)
+		}
+	}))
+	t.Cleanup(tenant.Close)
+	payload, err := json.Marshal(map[string]any{"u": tenant.URL, "tm": "team-x"})
+	require.NoError(t, err)
+	t.Setenv("CLOUDQUERY_API_KEY", "cqpd_"+base64.RawURLEncoding.EncodeToString(payload)+".sig")
+
+	_, filename, _, _ := runtime.Caller(0)
+	testConfig := path.Join(path.Dir(filename), "testdata", "validate-config-platform-source-only.yml")
+
+	loaded, err := loadUpgradeCheckSpecs(t.Context(), []string{testConfig}, "aws")
+	require.NoError(t, err)
+	require.Equal(t, "aws", loaded.source.Name)
+	require.Len(t, loaded.destinations, 1)
+	require.Equal(t, "platform", loaded.destinations[0].Name)
+}
+
+func TestUnknownTableFindingsUseTransformedTableNames(t *testing.T) {
+	pairs := []upgradeTablePair{
+		{Name: "test_kept", From: testTable("test_kept"), To: testTable("test_kept")},
+		{Name: "test_added", To: testTable("test_added")},
+	}
+	tables, err := transformUpgradeTables(t.Context(), specs.Source{Metadata: specs.Metadata{Name: "test"}}, specs.Destination{Metadata: specs.Metadata{Name: "postgresql"}}, []pluginPb.PluginClient{renamingTransformerClient{}}, false, pairs)
+	require.NoError(t, err)
+
+	findings := unknownTableFindings(tables, destinationNoAssessmentReason)
+
+	require.Equal(t, []string{"renamed_test_kept", "renamed_test_added"}, []string{findings[0].TableName, findings[1].TableName})
 }
