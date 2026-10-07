@@ -202,3 +202,54 @@ func TestAssessTablesWholeTable(t *testing.T) {
 		})
 	}
 }
+
+func TestAssessTablesRemovedUniqueConstraint(t *testing.T) {
+	oldTable := &schema.Table{Name: "test_table", Columns: schema.ColumnList{
+		{Name: "id", Type: arrow.BinaryTypes.String, PrimaryKey: true},
+		{Name: "name", Type: arrow.BinaryTypes.String, Unique: true},
+	}}
+	newTable := oldTable.Copy(nil)
+	newTable.Columns[1].Unique = false
+
+	require.True(t, canAutoMigrate(normalizedTable(oldTable).GetChanges(normalizedTable(newTable))), "safe-mode gate in MigrateTables must accept the change")
+	require.Equal(t, plugin.TableFinding{
+		TableName:          "test_table",
+		Category:           plugin.AssessCategoryAutomaticallyMigratable,
+		SafeModeBehavior:   behaviorMigrateTable,
+		ForcedModeBehavior: behaviorMigrateTable,
+		Columns: []plugin.ColumnFinding{{
+			ColumnName:         "name",
+			Category:           plugin.AssessCategoryAutomaticallyMigratable,
+			OldType:            "text",
+			NewType:            "text",
+			SafeModeBehavior:   "drops the unique constraint",
+			ForcedModeBehavior: "drops the unique constraint",
+		}},
+	}, assessTable(t, plugin.TablePair{Old: oldTable, New: newTable}))
+}
+
+func TestAssessTablesStoredUnchangedColumnInRecreatedTable(t *testing.T) {
+	oldTable := &schema.Table{Name: "datadog_monitors", Columns: schema.ColumnList{
+		{Name: "id", Type: arrow.PrimitiveTypes.Int64, PrimaryKey: true},
+		{Name: "tags", Type: arrow.ListOf(arrow.BinaryTypes.String)},
+		{Name: "count", Type: arrow.PrimitiveTypes.Int64},
+	}}
+	newTable := oldTable.Copy(nil)
+	newTable.Columns[1].Type = types.ExtensionTypes.JSON
+	newTable.Columns[2].Type = arrow.BinaryTypes.String
+
+	require.Equal(t, plugin.TableFinding{
+		TableName:          "datadog_monitors",
+		Category:           plugin.AssessCategoryManualMigrationRequired,
+		SafeModeBehavior:   behaviorRejectChanges,
+		ForcedModeBehavior: behaviorRecreateTable,
+		Columns: []plugin.ColumnFinding{
+			{ColumnName: "count", Category: plugin.AssessCategoryManualMigrationRequired, OldType: "bigint", NewType: "text", SafeModeBehavior: behaviorRejectChanges, ForcedModeBehavior: behaviorRecreateTable},
+			{ColumnName: "tags", Category: plugin.AssessCategoryNoChange, OldType: "json", NewType: "json", SafeModeBehavior: behaviorRejectChanges, ForcedModeBehavior: behaviorRecreateTable},
+		},
+	}, assessTable(t, plugin.TablePair{Old: oldTable, New: newTable}))
+}
+
+func normalizedTable(table *schema.Table) *schema.Table {
+	return (&Client{}).normalizeTable(table)
+}
