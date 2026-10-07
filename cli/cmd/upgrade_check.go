@@ -281,6 +281,9 @@ type upgradeSourceTables struct {
 }
 
 func loadUpgradeSourceTables(ctx context.Context, sourceSpec specs.Source, toVersion string, opts ...managedplugin.Option) (from, to upgradeSourceTables, err error) {
+	if sourceSpec.Registry != specs.RegistryCloudQuery && sourceSpec.Registry != specs.RegistryGitHub {
+		return from, to, fmt.Errorf("upgrade check supports only sources from the cloudquery or github registry, source %s uses the %s registry", sourceSpec.Name, sourceSpec.Registry)
+	}
 	if err := registerOnce(); err != nil {
 		return from, to, err
 	}
