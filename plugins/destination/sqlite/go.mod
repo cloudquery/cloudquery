@@ -5,7 +5,7 @@ go 1.27.1
 require (
 	github.com/apache/arrow-go/v18 v18.8.0
 	github.com/cloudquery/codegen v0.4.1
-	github.com/cloudquery/plugin-sdk/v4 v4.96.7-0.20261002092319-0a926485c8d7
+	github.com/cloudquery/plugin-sdk/v4 v4.97.0
 	github.com/goccy/go-json v0.10.6
 	github.com/mattn/go-sqlite3 v1.14.52
 	github.com/rs/zerolog v1.35.1
@@ -37,7 +37,7 @@ require (
 	github.com/cenkalti/backoff/v5 v5.0.3 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/cloudquery/cloudquery-api-go v1.14.13 // indirect
-	github.com/cloudquery/plugin-pb-go v1.27.24-0.20261002091754-b8dcd1cbaee9 // indirect
+	github.com/cloudquery/plugin-pb-go v1.27.24 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/getsentry/sentry-go v0.49.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
