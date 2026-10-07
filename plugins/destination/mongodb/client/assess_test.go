@@ -196,7 +196,12 @@ func TestAssessTablesWholeTable(t *testing.T) {
 		{
 			name:     "added table",
 			pair:     plugin.TablePair{New: table},
-			expected: plugin.TableFinding{TableName: "test_table", Category: plugin.AssessCategoryAutomaticallyMigratable, SafeModeBehavior: behaviorCreateCollection, ForcedModeBehavior: behaviorCreateCollection},
+			expected: plugin.TableFinding{TableName: "test_table", Category: plugin.AssessCategoryAutomaticallyMigratable, SafeModeBehavior: behaviorCreateIndex, ForcedModeBehavior: behaviorCreateIndex},
+		},
+		{
+			name:     "added table without primary key",
+			pair:     plugin.TablePair{New: withoutPrimaryKeys(table)},
+			expected: plugin.TableFinding{TableName: "test_table", Category: plugin.AssessCategoryAutomaticallyMigratable, SafeModeBehavior: behaviorCreateOnWrite, ForcedModeBehavior: behaviorCreateOnWrite},
 		},
 		{
 			name:     "removed table",

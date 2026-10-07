@@ -9,13 +9,13 @@ import (
 )
 
 const (
-	behaviorNoChange         = "makes no changes"
-	behaviorCreateCollection = "creates the collection"
-	behaviorKeepCollection   = "keeps the existing collection"
-	behaviorCreateIndex      = "creates the unique primary key index"
-	behaviorKeepIndex        = "keeps the existing unique primary key index"
-	behaviorRejectChanges    = "rejects the changes"
-	behaviorRecreateIndex    = "drops and recreates the unique primary key index, keeping existing documents"
+	behaviorNoChange       = "makes no changes"
+	behaviorCreateIndex    = "creates the unique primary key index"
+	behaviorCreateOnWrite  = "creates the collection on the first write"
+	behaviorKeepCollection = "keeps the existing collection"
+	behaviorKeepIndex      = "keeps the existing unique primary key index"
+	behaviorRejectChanges  = "rejects the changes"
+	behaviorRecreateIndex  = "drops and recreates the unique primary key index, keeping existing documents"
 )
 
 var _ plugin.Assessor = (*Client)(nil)
@@ -30,7 +30,11 @@ func (*Client) AssessTables(_ context.Context, tables []plugin.TablePair, _ plug
 
 func assessTable(pair plugin.TablePair) plugin.TableFinding {
 	if pair.Old == nil {
-		return tableFinding(pair.New.Name, plugin.AssessCategoryAutomaticallyMigratable, behaviorCreateCollection, behaviorCreateCollection)
+		behavior := behaviorCreateOnWrite
+		if len(primaryKeyIndexKeys(pair.New)) > 0 {
+			behavior = behaviorCreateIndex
+		}
+		return tableFinding(pair.New.Name, plugin.AssessCategoryAutomaticallyMigratable, behavior, behavior)
 	}
 	if pair.New == nil {
 		return tableFinding(pair.Old.Name, plugin.AssessCategoryTableRemoved, behaviorKeepCollection, behaviorKeepCollection)
