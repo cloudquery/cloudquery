@@ -68,6 +68,13 @@ func stringToIntegerColumn() plugin.TablePair {
 	return plugin.TablePair{Old: oldTable, New: newTable}
 }
 
+func sameAndChangedSqliteTypes() plugin.TablePair {
+	pair := datadogMonitorsTags()
+	pair.Old.Columns = append(pair.Old.Columns, schema.Column{Name: "count", Type: arrow.BinaryTypes.String})
+	pair.New.Columns = append(pair.New.Columns, schema.Column{Name: "count", Type: arrow.PrimitiveTypes.Int64})
+	return pair
+}
+
 func oktaPolicyRules() plugin.TablePair {
 	oldTable := &schema.Table{Name: "okta_policy_rules", Columns: schema.ColumnList{
 		{Name: "id", Type: arrow.BinaryTypes.String, PrimaryKey: true},
@@ -132,6 +139,19 @@ func TestAssessTablesTypeChange(t *testing.T) {
 			ForcedModeBehavior: behaviorRecreateTable,
 		}},
 	}, assessTable(t, stringToIntegerColumn()))
+}
+
+func TestAssessTablesSameTypeColumnInRecreatedTable(t *testing.T) {
+	require.Equal(t, plugin.TableFinding{
+		TableName:          "datadog_monitors",
+		Category:           plugin.AssessCategoryManualMigrationRequired,
+		SafeModeBehavior:   behaviorRejectChanges,
+		ForcedModeBehavior: behaviorRecreateTable,
+		Columns: []plugin.ColumnFinding{
+			{ColumnName: "count", Category: plugin.AssessCategoryManualMigrationRequired, OldType: "text", NewType: "integer", SafeModeBehavior: behaviorRejectChanges, ForcedModeBehavior: behaviorRecreateTable},
+			{ColumnName: "tags", Category: plugin.AssessCategoryNoChange, OldType: "text", NewType: "text", SafeModeBehavior: behaviorRejectChanges, ForcedModeBehavior: behaviorRecreateTable},
+		},
+	}, assessTable(t, sameAndChangedSqliteTypes()))
 }
 
 func TestAssessTablesAddedPrimaryKeyColumn(t *testing.T) {
@@ -213,6 +233,7 @@ func TestAssessTablesMatchesMigrate(t *testing.T) {
 	tests := map[string]plugin.TablePair{
 		"type change with same sqlite type": datadogMonitorsTags(),
 		"type change":                       stringToIntegerColumn(),
+		"same and changed sqlite types":     sameAndChangedSqliteTypes(),
 		"added primary key column":          oktaPolicyRules(),
 		"added nullable columns":            oktaPolicyRulesAppendMode(),
 		"removed column":                    removedColumn(),
