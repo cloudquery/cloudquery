@@ -24,11 +24,11 @@ func newNoConnectionClient(t *testing.T) *Client {
 	return c.(*Client)
 }
 
-func newConnectedClient(t *testing.T) *Client {
+func newClient(t *testing.T, s spec.Spec, opts plugin.NewClientOptions) *Client {
 	t.Helper()
-	specBytes, err := json.Marshal(spec.Spec{ConnectionString: getTestConnection()})
+	specBytes, err := json.Marshal(s)
 	require.NoError(t, err)
-	c, err := New(context.Background(), zerolog.Nop(), specBytes, plugin.NewClientOptions{})
+	c, err := New(context.Background(), zerolog.Nop(), specBytes, opts)
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, c.Close(context.Background())) })
 	return c.(*Client)
@@ -36,10 +36,19 @@ func newConnectedClient(t *testing.T) *Client {
 
 func assessTable(t *testing.T, pair plugin.TablePair) plugin.TableFinding {
 	t.Helper()
-	findings, err := newNoConnectionClient(t).AssessTables(context.Background(), []plugin.TablePair{pair}, plugin.AssessOptions{})
+	return assessTableWithClient(t, newNoConnectionClient(t), pair)
+}
+
+func assessTableWithClient(t *testing.T, c *Client, pair plugin.TablePair) plugin.TableFinding {
+	t.Helper()
+	findings, err := c.AssessTables(context.Background(), []plugin.TablePair{pair}, plugin.AssessOptions{})
 	require.NoError(t, err)
 	require.Len(t, findings, 1)
 	return findings[0]
+}
+
+func orderByID() spec.Spec {
+	return spec.Spec{OrderBy: []spec.OrderByStrategy{{Tables: []string{"*"}, OrderBy: []string{"id"}}}}
 }
 
 func withoutPrimaryKeys(table *schema.Table) *schema.Table {
@@ -94,6 +103,17 @@ func removedColumn(notNull bool) plugin.TablePair {
 	}}
 	newTable := oldTable.Copy(nil)
 	newTable.Columns = newTable.Columns[:1]
+	return plugin.TablePair{Old: oldTable, New: newTable}
+}
+
+func reorderedNotNullColumns() plugin.TablePair {
+	oldTable := &schema.Table{Name: "test_table", Columns: schema.ColumnList{
+		{Name: "id", Type: arrow.BinaryTypes.String, NotNull: true},
+		{Name: "a", Type: arrow.BinaryTypes.String, NotNull: true},
+		{Name: "b", Type: arrow.BinaryTypes.String, NotNull: true},
+	}}
+	newTable := oldTable.Copy(nil)
+	newTable.Columns[1], newTable.Columns[2] = newTable.Columns[2], newTable.Columns[1]
 	return plugin.TablePair{Old: oldTable, New: newTable}
 }
 
@@ -185,32 +205,19 @@ func TestAssessTablesRemovedColumn(t *testing.T) {
 }
 
 func TestAssessTablesSortingKeyChange(t *testing.T) {
-	oldTable := &schema.Table{Name: "test_table", Columns: schema.ColumnList{
-		{Name: "a", Type: arrow.BinaryTypes.String, NotNull: true},
-		{Name: "b", Type: arrow.BinaryTypes.String, NotNull: true},
-	}}
-	newTable := oldTable.Copy(nil)
-	newTable.Columns[0], newTable.Columns[1] = newTable.Columns[1], newTable.Columns[0]
-
-	pair := plugin.TablePair{Old: oldTable, New: newTable}
-
 	t.Run("default order", func(t *testing.T) {
 		require.Equal(t,
 			tableFinding("test_table", plugin.AssessCategoryManualMigrationRequired, behaviorRejectChanges, behaviorRecreateTable),
-			assessTable(t, pair),
+			assessTable(t, reorderedNotNullColumns()),
 		)
 	})
 
 	t.Run("order from spec", func(t *testing.T) {
-		specBytes, err := json.Marshal(spec.Spec{OrderBy: []spec.OrderByStrategy{{Tables: []string{"*"}, OrderBy: []string{"a"}}}})
-		require.NoError(t, err)
-		c, err := New(context.Background(), zerolog.Nop(), specBytes, plugin.NewClientOptions{NoConnection: true})
-		require.NoError(t, err)
-		findings, err := c.(*Client).AssessTables(context.Background(), []plugin.TablePair{pair}, plugin.AssessOptions{})
-		require.NoError(t, err)
-		require.Equal(t, []plugin.TableFinding{
+		c := newClient(t, orderByID(), plugin.NewClientOptions{NoConnection: true})
+		require.Equal(t,
 			tableFinding("test_table", plugin.AssessCategoryNoChange, behaviorNoChange, behaviorNoChange),
-		}, findings)
+			assessTableWithClient(t, c, reorderedNotNullColumns()),
+		)
 	})
 }
 
@@ -248,20 +255,28 @@ func TestAssessTablesWholeTable(t *testing.T) {
 }
 
 func TestAssessTablesMatchesMigrate(t *testing.T) {
-	tests := map[string]plugin.TablePair{
-		"type change":              datadogMonitorsTags(),
-		"added primary key column": oktaPolicyRules(),
-		"added nullable columns":   oktaPolicyRulesAppendMode(),
-		"added not null column":    addedNotNullColumn(),
-		"removed nullable column":  removedColumn(false),
-		"removed not null column":  removedColumn(true),
+	tests := map[string]struct {
+		pair plugin.TablePair
+		spec spec.Spec
+	}{
+		"type change":                       {pair: datadogMonitorsTags()},
+		"added primary key column":          {pair: oktaPolicyRules()},
+		"added nullable columns":            {pair: oktaPolicyRulesAppendMode()},
+		"added not null column":             {pair: addedNotNullColumn()},
+		"removed nullable column":           {pair: removedColumn(false)},
+		"removed not null column":           {pair: removedColumn(true)},
+		"sorting key change":                {pair: reorderedNotNullColumns()},
+		"reordered columns with spec order": {pair: reorderedNotNullColumns(), spec: orderByID()},
 	}
-	for name, pair := range tests {
+	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
 			ctx := context.Background()
-			manualMigration := assessTable(t, pair).Category == plugin.AssessCategoryManualMigrationRequired
-			pair = withUniqueTableName(pair)
-			c := newConnectedClient(t)
+			finding := assessTableWithClient(t, newClient(t, tc.spec, plugin.NewClientOptions{NoConnection: true}), tc.pair)
+			manualMigration := finding.Category == plugin.AssessCategoryManualMigrationRequired
+			pair := withUniqueTableName(tc.pair)
+			connectedSpec := tc.spec
+			connectedSpec.ConnectionString = getTestConnection()
+			c := newClient(t, connectedSpec, plugin.NewClientOptions{})
 			t.Cleanup(func() { require.NoError(t, c.dropTable(ctx, pair.New)) })
 
 			require.NoError(t, migrateTable(c, pair.Old, false))
