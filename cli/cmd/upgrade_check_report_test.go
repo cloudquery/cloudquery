@@ -264,8 +264,8 @@ This check only previews the changes. It does not migrate, write, delete or uplo
 				RemovedTables: []string{"gcp_aiplatform_specialistpool_locations", "gcp_aiplatform_specialist_pools"},
 				Destination:   postgresqlDestinationSpec(specs.WriteModeOverwriteDeleteStale, specs.MigrateModeSafe),
 				Findings: []*pluginPb.AssessTables_TableFinding{
-					{TableName: "gcp_storage_buckets", Category: pluginPb.AssessTables_CATEGORY_UNKNOWN, CoverageIncomplete: true},
-					{TableName: "gcp_compute_instances", Category: pluginPb.AssessTables_CATEGORY_UNKNOWN, CoverageIncomplete: true, CoverageIncompleteReason: destinationNoAssessmentReason},
+					{TableName: "gcp_storage_buckets", Category: pluginPb.AssessTables_CATEGORY_UNKNOWN, IncompleteCoverageReason: "nested types not assessed"},
+					{TableName: "gcp_compute_instances", Category: pluginPb.AssessTables_CATEGORY_UNKNOWN, IncompleteCoverageReason: destinationNoAssessmentReason},
 				},
 			},
 			want: `gcp v22.1.2 → v23.0.0 | postgresql (cloudquery/postgresql@v8.14.0)
@@ -279,7 +279,7 @@ Changes
 Coverage gaps
   gcp v23.0.0: tables were listed with a connection (metadata only, no rows read)
   gcp_compute_instances: destination version does not support assessment
-  gcp_storage_buckets: coverage incomplete
+  gcp_storage_buckets: nested types not assessed
 
 Action: remove explicit selections and update dependent consumers.
 This check only previews the changes. It does not migrate, write, delete or upload anything.
@@ -575,7 +575,7 @@ func TestUpgradeExitCode(t *testing.T) {
 		{name: "selected tables removed", report: upgradeReport{Destination: postgresql, RemovedTables: []string{"t"}}, want: 3},
 		{name: "file schema changed", report: upgradeReport{Destination: s3DestinationSpec(), Findings: []*pluginPb.AssessTables_TableFinding{{TableName: "t", Category: pluginPb.AssessTables_CATEGORY_FILE_SCHEMA_CHANGED}}}, want: 3},
 		{name: "unknown destination", report: upgradeReport{Destination: postgresql, Findings: []*pluginPb.AssessTables_TableFinding{{TableName: "t", Category: pluginPb.AssessTables_CATEGORY_UNKNOWN}}}, want: 4},
-		{name: "incomplete coverage", report: upgradeReport{Destination: postgresql, Findings: []*pluginPb.AssessTables_TableFinding{{TableName: "t", Category: pluginPb.AssessTables_CATEGORY_AUTOMATICALLY_MIGRATABLE, CoverageIncomplete: true}}}, want: 4},
+		{name: "incomplete coverage", report: upgradeReport{Destination: postgresql, Findings: []*pluginPb.AssessTables_TableFinding{{TableName: "t", Category: pluginPb.AssessTables_CATEGORY_AUTOMATICALLY_MIGRATABLE, IncompleteCoverageReason: "nested types not assessed"}}}, want: 4},
 		{name: "unknown wins over action needed", report: upgradeReport{Destination: postgresql, RemovedTables: []string{"t"}, Findings: []*pluginPb.AssessTables_TableFinding{{TableName: "u", Category: pluginPb.AssessTables_CATEGORY_UNKNOWN}}}, want: 4},
 		{name: "source tables could not be listed", report: upgradeReport{SourceUnknown: true}, want: 4},
 	}

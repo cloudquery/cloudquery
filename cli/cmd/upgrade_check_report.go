@@ -141,7 +141,7 @@ const (
 
 func upgradeExitCode(r upgradeReport) int {
 	unknown := r.SourceUnknown || slices.ContainsFunc(r.Findings, func(finding *pluginPb.AssessTables_TableFinding) bool {
-		return finding.Category == pluginPb.AssessTables_CATEGORY_UNKNOWN || finding.CoverageIncomplete
+		return finding.Category == pluginPb.AssessTables_CATEGORY_UNKNOWN || finding.IncompleteCoverageReason != ""
 	})
 	actionNeeded := len(r.RemovedTables) > 0 || slices.ContainsFunc(r.Findings, func(finding *pluginPb.AssessTables_TableFinding) bool {
 		return finding.Category == pluginPb.AssessTables_CATEGORY_MANUAL_MIGRATION_REQUIRED || finding.Category == pluginPb.AssessTables_CATEGORY_FILE_SCHEMA_CHANGED
@@ -324,8 +324,8 @@ func upgradeOutputComparisons(findings []*pluginPb.AssessTables_TableFinding) []
 func upgradeCoverageGaps(r upgradeReport) []string {
 	gaps := slices.Clone(r.SourceGaps)
 	for _, finding := range r.Findings {
-		if finding.CoverageIncomplete {
-			gaps = append(gaps, fmt.Sprintf("%s: %s", finding.TableName, cmp.Or(finding.CoverageIncompleteReason, "coverage incomplete")))
+		if finding.IncompleteCoverageReason != "" {
+			gaps = append(gaps, fmt.Sprintf("%s: %s", finding.TableName, finding.IncompleteCoverageReason))
 		}
 	}
 	return gaps

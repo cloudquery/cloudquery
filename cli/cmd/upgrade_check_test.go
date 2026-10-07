@@ -315,8 +315,8 @@ func TestAssessTables(t *testing.T) {
 			name:        "destination without the assessment RPC is unknown",
 			destination: &fakeDestinationClient{assessErr: status.Error(codes.Unimplemented, "method AssessTables not implemented")},
 			wantFindings: []*pluginPb.AssessTables_TableFinding{
-				{TableName: "test_kept", Category: pluginPb.AssessTables_CATEGORY_UNKNOWN, CoverageIncomplete: true, CoverageIncompleteReason: destinationNoAssessmentReason},
-				{TableName: "test_added", Category: pluginPb.AssessTables_CATEGORY_UNKNOWN, CoverageIncomplete: true, CoverageIncompleteReason: destinationNoAssessmentReason},
+				{TableName: "test_kept", Category: pluginPb.AssessTables_CATEGORY_UNKNOWN, IncompleteCoverageReason: destinationNoAssessmentReason},
+				{TableName: "test_added", Category: pluginPb.AssessTables_CATEGORY_UNKNOWN, IncompleteCoverageReason: destinationNoAssessmentReason},
 			},
 		},
 		{

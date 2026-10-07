@@ -447,8 +447,7 @@ func unknownTableFindings(tables []upgradeTableSchemas, reason string) []*plugin
 		findings[i] = &pluginPb.AssessTables_TableFinding{
 			TableName:                table.Name,
 			Category:                 pluginPb.AssessTables_CATEGORY_UNKNOWN,
-			CoverageIncomplete:       true,
-			CoverageIncompleteReason: reason,
+			IncompleteCoverageReason: reason,
 		}
 	}
 	return findings
