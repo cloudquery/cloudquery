@@ -118,3 +118,26 @@ func TestAssessTablesSchemaChanges(t *testing.T) {
 		{TableName: "okta_policy_rules", Category: plugin.AssessCategoryTableRemoved},
 	}, findings)
 }
+
+func TestAssessTablesMixedResults(t *testing.T) {
+	changed := schema.Column{Name: "interval", Type: arrow.FixedWidthTypes.MonthDayNanoInterval}
+	unknown := schema.Column{Name: "count", Type: arrow.PrimitiveTypes.Int64}
+	changedNew := schema.Column{Name: "interval", Type: types.ExtensionTypes.JSON}
+	unknownNew := schema.Column{Name: "count", Type: arrow.BinaryTypes.String}
+
+	for name, columns := range map[string][2]schema.ColumnList{
+		"changed first": {{changed, unknown}, {changedNew, unknownNew}},
+		"unknown first": {{unknown, changed}, {unknownNew, changedNew}},
+	} {
+		t.Run(name, func(t *testing.T) {
+			findings := assessTables(t, plugin.TablePair{
+				Old: &schema.Table{Name: "mixed", Columns: columns[0]},
+				New: &schema.Table{Name: "mixed", Columns: columns[1]},
+			})
+
+			require.Len(t, findings, 1)
+			require.Equal(t, plugin.AssessCategoryFileSchemaChanged, findings[0].Category)
+			require.Equal(t, "column count: unable to compare: no equivalent value for int64 and utf8", findings[0].IncompleteCoverageReason)
+		})
+	}
+}
