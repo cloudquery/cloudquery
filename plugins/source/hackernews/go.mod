@@ -5,7 +5,7 @@ go 1.27.1
 require (
 	github.com/apache/arrow-go/v18 v18.8.0
 	github.com/cloudquery/codegen v0.4.1
-	github.com/cloudquery/plugin-sdk/v4 v4.97.0
+	github.com/cloudquery/plugin-sdk/v4 v4.98.0
 	github.com/hermanschaaf/hackernews v1.0.1
 	github.com/rs/zerolog v1.35.1
 	github.com/stretchr/testify v1.12.1
