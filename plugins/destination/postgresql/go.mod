@@ -11,7 +11,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/feature/rds/auth v1.7.3
 	github.com/aws/aws-sdk-go-v2/service/sts v1.51.0
 	github.com/cloudquery/codegen v0.4.1
-	github.com/cloudquery/plugin-sdk/v4 v4.96.7-0.20261002092319-0a926485c8d7
+	github.com/cloudquery/plugin-sdk/v4 v4.97.0
 	github.com/databricks/databricks-sdk-go v0.182.0
 	github.com/goccy/go-json v0.10.6
 	github.com/google/go-cmp v0.7.0
@@ -52,7 +52,7 @@ require (
 	github.com/cenkalti/backoff/v5 v5.0.3 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/cloudquery/cloudquery-api-go v1.14.13 // indirect
-	github.com/cloudquery/plugin-pb-go v1.27.24-0.20261002091754-b8dcd1cbaee9 // indirect
+	github.com/cloudquery/plugin-pb-go v1.27.24 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/dlclark/regexp2 v1.11.0 // indirect
 	github.com/felixge/httpsnoop v1.1.0 // indirect

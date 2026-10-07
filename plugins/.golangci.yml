@@ -73,6 +73,12 @@ linters:
           disabled: true
         - name: package-naming
           disabled: true
+        - name: multiline-if-init
+          disabled: true
+        - name: epoch-naming
+          disabled: true
+        - name: unnecessary-format
+          disabled: true
         - name: deep-exit
           disabled: true
         - name: exported
