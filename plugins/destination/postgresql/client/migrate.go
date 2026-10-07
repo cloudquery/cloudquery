@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/apache/arrow-go/v18/arrow"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/jackc/pgx/v5"
@@ -200,7 +201,7 @@ func canAutoMigrate(changes []schema.TableColumnChange) bool {
 				return false
 			}
 		case schema.TableColumnChangeTypeUpdate:
-			if cqMigration && ((len(columnsAddingPK) == 1 && columnsAddingPK[0] == schema.CqIDColumn.Name) || funk.Contains(columnsRemovingPK, change.ColumnName)) {
+			if cqMigration && arrow.TypeEqual(change.Current.Type, change.Previous.Type) && ((len(columnsAddingPK) == 1 && columnsAddingPK[0] == schema.CqIDColumn.Name) || funk.Contains(columnsRemovingPK, change.ColumnName)) {
 				// We don't need to handle these changes as they are a part of the CQID migration
 				continue
 			}

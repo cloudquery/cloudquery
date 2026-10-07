@@ -154,3 +154,83 @@ func TestAssessTablesWholeTable(t *testing.T) {
 		})
 	}
 }
+
+func TestAssessTablesSamePgType(t *testing.T) {
+	oldTable := &schema.Table{Name: "test_table", Columns: schema.ColumnList{
+		{Name: "count", Type: arrow.PrimitiveTypes.Int8},
+	}}
+	newTable := oldTable.Copy(nil)
+	newTable.Columns[0].Type = arrow.PrimitiveTypes.Int16
+
+	require.Equal(t, plugin.TableFinding{
+		TableName:          "test_table",
+		Category:           plugin.AssessCategoryNoChange,
+		SafeModeBehavior:   behaviorNoChange,
+		ForcedModeBehavior: behaviorNoChange,
+	}, assessTable(t, plugin.TablePair{Old: oldTable, New: newTable}))
+}
+
+func TestAssessTablesRemovedUniqueConstraint(t *testing.T) {
+	oldTable := &schema.Table{Name: "test_table", Columns: schema.ColumnList{
+		{Name: "name", Type: arrow.BinaryTypes.String, Unique: true},
+	}}
+	newTable := oldTable.Copy(nil)
+	newTable.Columns[0].Unique = false
+
+	require.Equal(t, plugin.TableFinding{
+		TableName:          "test_table",
+		Category:           plugin.AssessCategoryAutomaticallyMigratable,
+		SafeModeBehavior:   behaviorMigrateTable,
+		ForcedModeBehavior: behaviorMigrateTable,
+		Columns: []plugin.ColumnFinding{{
+			ColumnName:         "name",
+			Category:           plugin.AssessCategoryAutomaticallyMigratable,
+			OldType:            "text",
+			NewType:            "text",
+			SafeModeBehavior:   "drops the unique constraint",
+			ForcedModeBehavior: "drops the unique constraint",
+		}},
+	}, assessTable(t, plugin.TablePair{Old: oldTable, New: newTable}))
+}
+
+func TestAssessTablesMoveToCQID(t *testing.T) {
+	oldTable := &schema.Table{Name: "test_table", Columns: schema.ColumnList{
+		{Name: schema.CqIDColumn.Name, Type: types.ExtensionTypes.UUID, NotNull: true},
+		{Name: "id", Type: arrow.BinaryTypes.String, PrimaryKey: true},
+		{Name: "count", Type: arrow.PrimitiveTypes.Int64},
+	}}
+	newTable := oldTable.Copy(nil)
+	newTable.Columns[0].PrimaryKey = true
+	newTable.Columns[1].PrimaryKey = false
+	moveBehavior := "moves the primary key to " + schema.CqIDColumn.Name
+
+	t.Run("alone", func(t *testing.T) {
+		require.Equal(t, plugin.TableFinding{
+			TableName:          "test_table",
+			Category:           plugin.AssessCategoryAutomaticallyMigratable,
+			SafeModeBehavior:   behaviorMigrateTable,
+			ForcedModeBehavior: behaviorMigrateTable,
+			Columns: []plugin.ColumnFinding{
+				{ColumnName: schema.CqIDColumn.Name, Category: plugin.AssessCategoryAutomaticallyMigratable, OldType: "uuid", NewType: "uuid", SafeModeBehavior: moveBehavior, ForcedModeBehavior: moveBehavior},
+				{ColumnName: "id", Category: plugin.AssessCategoryAutomaticallyMigratable, OldType: "text", NewType: "text", SafeModeBehavior: moveBehavior, ForcedModeBehavior: moveBehavior},
+			},
+		}, assessTable(t, plugin.TablePair{Old: oldTable, New: newTable}))
+	})
+
+	t.Run("with a type change", func(t *testing.T) {
+		changedTable := newTable.Copy(nil)
+		changedTable.Columns[2].Type = arrow.BinaryTypes.String
+
+		require.Equal(t, plugin.TableFinding{
+			TableName:          "test_table",
+			Category:           plugin.AssessCategoryManualMigrationRequired,
+			SafeModeBehavior:   behaviorRejectChanges,
+			ForcedModeBehavior: behaviorRecreateTable,
+			Columns: []plugin.ColumnFinding{
+				{ColumnName: schema.CqIDColumn.Name, Category: plugin.AssessCategoryManualMigrationRequired, OldType: "uuid", NewType: "uuid", SafeModeBehavior: behaviorRejectChanges, ForcedModeBehavior: behaviorRecreateTable},
+				{ColumnName: "id", Category: plugin.AssessCategoryManualMigrationRequired, OldType: "text", NewType: "text", SafeModeBehavior: behaviorRejectChanges, ForcedModeBehavior: behaviorRecreateTable},
+				{ColumnName: "count", Category: plugin.AssessCategoryManualMigrationRequired, OldType: "bigint", NewType: "text", SafeModeBehavior: behaviorRejectChanges, ForcedModeBehavior: behaviorRecreateTable},
+			},
+		}, assessTable(t, plugin.TablePair{Old: oldTable, New: changedTable}))
+	})
+}
