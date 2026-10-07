@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+	"strings"
 
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
@@ -14,6 +15,7 @@ const (
 	behaviorMigrateTable  = "applies the changes to the existing table"
 	behaviorRejectChanges = "rejects the changes"
 	behaviorRecreateTable = "drops and recreates the table, deleting existing rows"
+	behaviorMigrateFails  = "fails, because it adds the primary key before the new column exists"
 )
 
 var _ plugin.Assessor = (*Client)(nil)
@@ -43,6 +45,8 @@ func (*Client) assessTable(pair plugin.TablePair) plugin.TableFinding {
 	switch {
 	case len(changes) == 0:
 		finding = tableFinding(newTable.Name, plugin.AssessCategoryNoChange, behaviorNoChange, behaviorNoChange)
+	case tableAutoMigratable && addsPrimaryKeyColumn(changes):
+		return migrationFailsFinding(newTable.Name, changes, oldTable, newTable)
 	case tableAutoMigratable:
 		finding = tableFinding(newTable.Name, plugin.AssessCategoryAutomaticallyMigratable, behaviorMigrateTable, behaviorMigrateTable)
 	default:
@@ -53,6 +57,30 @@ func (*Client) assessTable(pair plugin.TablePair) plugin.TableFinding {
 	}
 	for _, columnName := range columnsStoredUnchanged(pair, changes) {
 		finding.Columns = append(finding.Columns, unchangedColumnFinding(columnName, oldTable, newTable, tableAutoMigratable))
+	}
+	return finding
+}
+
+func addsPrimaryKeyColumn(changes []schema.TableColumnChange) bool {
+	for _, change := range changes {
+		if change.Type == schema.TableColumnChangeTypeAdd && change.Current.PrimaryKey {
+			return true
+		}
+	}
+	return false
+}
+
+func migrationFailsFinding(name string, changes []schema.TableColumnChange, oldTable, newTable *schema.Table) plugin.TableFinding {
+	finding := tableFinding(name, plugin.AssessCategoryManualMigrationRequired, behaviorMigrateFails, behaviorMigrateFails)
+	for _, change := range changes {
+		finding.Columns = append(finding.Columns, plugin.ColumnFinding{
+			ColumnName:         change.ColumnName,
+			Category:           plugin.AssessCategoryManualMigrationRequired,
+			OldType:            snowflakeColumnType(oldTable, change.ColumnName),
+			NewType:            snowflakeColumnType(newTable, change.ColumnName),
+			SafeModeBehavior:   behaviorMigrateFails,
+			ForcedModeBehavior: behaviorMigrateFails,
+		})
 	}
 	return finding
 }
@@ -137,19 +165,24 @@ func snowflakeColumnType(table *schema.Table, columnName string) string {
 }
 
 func autoMigrationBehavior(change schema.TableColumnChange) string {
+	var actions []string
 	switch change.Type {
 	case schema.TableColumnChangeTypeAdd:
-		if change.Current.PrimaryKey {
-			return "adds the column and updates the primary key"
-		}
-		return "adds the column"
+		actions = append(actions, "adds the column")
 	case schema.TableColumnChangeTypeRemove:
-		return "keeps the column, new rows leave it empty"
+		actions = append(actions, "keeps the column, new rows leave it empty")
+		if change.Previous.PrimaryKey {
+			actions = append(actions, "drops the primary key")
+		}
 	case schema.TableColumnChangeTypeRemoveUniqueConstraint:
-		return "drops the unique constraint"
+		actions = append(actions, "drops the unique constraint")
+	case schema.TableColumnChangeTypeUpdate:
+		if change.Previous.PrimaryKey != change.Current.PrimaryKey {
+			actions = append(actions, "updates the primary key")
+		}
+		if change.Previous.NotNull && !change.Current.NotNull {
+			actions = append(actions, "drops the not null constraint")
+		}
 	}
-	if change.Previous.PrimaryKey != change.Current.PrimaryKey {
-		return "updates the primary key"
-	}
-	return "drops the not null constraint"
+	return strings.Join(actions, ", ")
 }
