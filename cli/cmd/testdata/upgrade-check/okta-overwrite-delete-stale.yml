@@ -15,7 +15,7 @@ spec:
   name: "postgresql"
   path: "cloudquery/postgresql"
   registry: "cloudquery"
-  version: "v8.16.0" # latest version of postgresql plugin
+  version: "v8.17.0" # latest version of postgresql plugin
   write_mode: "overwrite-delete-stale"
   spec:
     connection_string: "postgres://localhost:1/unreachable"
