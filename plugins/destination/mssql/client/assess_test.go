@@ -89,6 +89,28 @@ func TestAssessTablesTypeChange(t *testing.T) {
 	}, assessTable(t, plugin.TablePair{Old: oldTable, New: newTable}))
 }
 
+func TestAssessTablesSameSQLTypeWithRecreatedTable(t *testing.T) {
+	oldTable := &schema.Table{Name: "test_table", Columns: schema.ColumnList{
+		{Name: "id", Type: arrow.PrimitiveTypes.Int64, PrimaryKey: true},
+		{Name: "count", Type: arrow.PrimitiveTypes.Int32},
+		{Name: "tags", Type: arrow.ListOf(arrow.BinaryTypes.String)},
+	}}
+	newTable := oldTable.Copy(nil)
+	newTable.Columns[1].Type = arrow.PrimitiveTypes.Int64
+	newTable.Columns[2].Type = types.ExtensionTypes.JSON
+
+	require.Equal(t, plugin.TableFinding{
+		TableName:          "test_table",
+		Category:           plugin.AssessCategoryManualMigrationRequired,
+		SafeModeBehavior:   behaviorRejectChanges,
+		ForcedModeBehavior: behaviorRecreateTable,
+		Columns: []plugin.ColumnFinding{
+			{ColumnName: "count", Category: plugin.AssessCategoryManualMigrationRequired, OldType: "int", NewType: "bigint", SafeModeBehavior: behaviorRejectChanges, ForcedModeBehavior: behaviorRecreateTable},
+			{ColumnName: "tags", Category: plugin.AssessCategoryNoChange, OldType: "nvarchar(max)", NewType: "nvarchar(max)", SafeModeBehavior: behaviorRejectChanges, ForcedModeBehavior: behaviorRecreateTable},
+		},
+	}, assessTable(t, plugin.TablePair{Old: oldTable, New: newTable}))
+}
+
 func TestAssessTablesAddedPrimaryKeyColumn(t *testing.T) {
 	oldTable := &schema.Table{Name: "okta_policy_rules", Columns: schema.ColumnList{
 		{Name: "id", Type: arrow.BinaryTypes.String, PrimaryKey: true},

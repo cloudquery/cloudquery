@@ -60,7 +60,7 @@ func (*Client) assessTable(pair plugin.TablePair) plugin.TableFinding {
 		if change.ColumnName == "" || slices.ContainsFunc(finding.Columns, func(c plugin.ColumnFinding) bool { return c.ColumnName == change.ColumnName }) {
 			continue
 		}
-		finding.Columns = append(finding.Columns, unchangedColumnFinding(change.ColumnName, oldTable, newTable))
+		finding.Columns = append(finding.Columns, unchangedColumnFinding(change.ColumnName, oldTable, newTable, tableAutoMigratable))
 	}
 	return finding
 }
@@ -95,8 +95,8 @@ func columnFinding(change schema.TableColumnChange, oldTable, newTable *schema.T
 	return finding
 }
 
-func unchangedColumnFinding(columnName string, oldTable, newTable *schema.Table) plugin.ColumnFinding {
-	return plugin.ColumnFinding{
+func unchangedColumnFinding(columnName string, oldTable, newTable *schema.Table, tableAutoMigratable bool) plugin.ColumnFinding {
+	finding := plugin.ColumnFinding{
 		ColumnName:         columnName,
 		Category:           plugin.AssessCategoryNoChange,
 		OldType:            sqlColumnType(oldTable, columnName),
@@ -104,6 +104,11 @@ func unchangedColumnFinding(columnName string, oldTable, newTable *schema.Table)
 		SafeModeBehavior:   behaviorNoChange,
 		ForcedModeBehavior: behaviorNoChange,
 	}
+	if !tableAutoMigratable {
+		finding.SafeModeBehavior = behaviorRejectChanges
+		finding.ForcedModeBehavior = behaviorRecreateTable
+	}
+	return finding
 }
 
 func sqlColumnType(table *schema.Table, columnName string) string {
