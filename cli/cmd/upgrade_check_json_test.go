@@ -223,13 +223,12 @@ func TestUpgradeCheckJSONKeepsDownloadMessagesOffStdout(t *testing.T) {
 	stdout := redirectStdFile(t, &os.Stdout)
 	stderr := redirectStdFile(t, &os.Stderr)
 	cmd := NewCmdRoot()
-	var out bytes.Buffer
-	cmd.SetOut(&out)
 	cmd.SetArgs(append([]string{"upgrade", "check", "testdata/transformation.yml", "--source", "test", "--to", "v4.7.0", "--output", "json"}, testCommandArgs(t)...))
 
 	requireUpgradeCheckExitCode(t, cmd.Execute(), 4)
-	require.True(t, json.Valid(out.Bytes()), out.String())
-	require.Empty(t, readStdFile(t, stdout))
+	var report upgradeReportsJSON
+	require.NoError(t, json.Unmarshal([]byte(readStdFile(t, stdout)), &report))
+	require.Len(t, report.Reports, 1)
 	require.Contains(t, readStdFile(t, stderr), "Downloading ")
 }
 
