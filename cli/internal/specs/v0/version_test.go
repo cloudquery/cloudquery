@@ -1,6 +1,20 @@
 package specs
 
-import "testing"
+import (
+	"bytes"
+	"context"
+	"fmt"
+	"net/http"
+	"net/http/httptest"
+	"sync/atomic"
+	"testing"
+
+	"github.com/cloudquery/plugin-pb-go/managedplugin"
+	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
+)
 
 func TestPluginPathToOrgName(t *testing.T) {
 	tests := []struct {
@@ -33,6 +47,163 @@ func TestPluginPathToOrgName(t *testing.T) {
 			if org != tt.org || name != tt.name {
 				t.Fatalf("got org=%q name=%q, want org=%q name=%q", org, name, tt.org, tt.name)
 			}
+		})
+	}
+}
+
+func newHubServer(t *testing.T, latestVersions map[string]string) {
+	t.Helper()
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		latestVersion, ok := latestVersions[r.URL.Path]
+		if !ok {
+			w.WriteHeader(http.StatusNotFound)
+			return
+		}
+		w.Header().Set("Content-Type", "application/json")
+		_, _ = fmt.Fprintf(w, `{"latest_version":%q}`, latestVersion)
+	}))
+	t.Cleanup(server.Close)
+	t.Setenv("CLOUDQUERY_API_URL", server.URL)
+}
+
+func TestWarnOnOutdatedVersionsRecommendsUpgradeCheck(t *testing.T) {
+	tests := []struct {
+		name          string
+		latestVersion string
+		configPaths   []string
+		want          string
+	}{
+		{
+			name:          "two major versions behind",
+			latestVersion: "v32.0.0",
+			configPaths:   []string{"config.yml"},
+			want:          "Source aws-prod is 2 major versions behind (v30.1.0 → v32.0.0). Before you upgrade, run `cloudquery upgrade check config.yml --source aws-prod --to v32.0.0` to see the schema impact on your destinations.\n",
+		},
+		{
+			name:          "one major version behind with several config paths",
+			latestVersion: "v31.2.3",
+			configPaths:   []string{"sources.yml", "my configs/destinations.yml"},
+			want:          "Source aws-prod is 1 major version behind (v30.1.0 → v31.2.3). Before you upgrade, run `cloudquery upgrade check sources.yml 'my configs/destinations.yml' --source aws-prod --to v31.2.3` to see the schema impact on your destinations.\n",
+		},
+		{
+			name:          "minor version behind",
+			latestVersion: "v30.2.0",
+			configPaths:   []string{"config.yml"},
+		},
+		{
+			name:          "patch version behind",
+			latestVersion: "v30.1.1",
+			configPaths:   []string{"config.yml"},
+		},
+		{
+			name:          "same version",
+			latestVersion: "v30.1.0",
+			configPaths:   []string{"config.yml"},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			newHubServer(t, map[string]string{"/plugins/cloudquery/source/aws": tt.latestVersion})
+			warner, err := managedplugin.NewPluginVersionWarner(zerolog.Nop(), "")
+			require.NoError(t, err)
+			sources := []*Source{{Metadata: Metadata{Name: "aws-prod", Path: "cloudquery/aws", Registry: RegistryCloudQuery, Version: "v30.1.0"}}}
+
+			var output bytes.Buffer
+			WarnOnOutdatedVersions(context.Background(), warner, sources, nil, nil, WithUpgradeCheckRecommendation(tt.configPaths, &output))
+
+			assert.Equal(t, tt.want, output.String())
+		})
+	}
+}
+
+func TestWarnOnOutdatedVersionsDoesNotRecommendUpgradeCheckForDestinations(t *testing.T) {
+	newHubServer(t, map[string]string{"/plugins/cloudquery/destination/postgresql": "v9.0.0"})
+	warner, err := managedplugin.NewPluginVersionWarner(zerolog.Nop(), "")
+	require.NoError(t, err)
+	destinations := []*Destination{{Metadata: Metadata{Name: "postgresql", Path: "cloudquery/postgresql", Registry: RegistryCloudQuery, Version: "v7.0.0"}}}
+
+	var output bytes.Buffer
+	WarnOnOutdatedVersions(context.Background(), warner, nil, destinations, nil, WithUpgradeCheckRecommendation([]string{"config.yml"}, &output))
+
+	assert.Empty(t, output.String())
+}
+
+func TestWarnOnOutdatedVersionsDoesNotRecommendUpgradeCheckForNonCloudQuerySources(t *testing.T) {
+	newHubServer(t, map[string]string{"/plugins/community/source/aws": "v32.0.0"})
+	warner, err := managedplugin.NewPluginVersionWarner(zerolog.Nop(), "")
+	require.NoError(t, err)
+	sources := []*Source{{Metadata: Metadata{Name: "aws", Path: "community/aws", Registry: RegistryGitHub, Version: "v30.1.0"}}}
+
+	var output bytes.Buffer
+	WarnOnOutdatedVersions(context.Background(), warner, sources, nil, nil, WithUpgradeCheckRecommendation([]string{"config.yml"}, &output))
+
+	assert.Empty(t, output.String())
+}
+
+func TestWarnOnOutdatedVersionsRequestsSourceLatestVersionOnce(t *testing.T) {
+	var requests atomic.Int32
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+		requests.Add(1)
+		w.Header().Set("Content-Type", "application/json")
+		_, _ = w.Write([]byte(`{"latest_version":"v32.0.0"}`))
+	}))
+	t.Cleanup(server.Close)
+	t.Setenv("CLOUDQUERY_API_URL", server.URL)
+	warner, err := managedplugin.NewPluginVersionWarner(zerolog.Nop(), "")
+	require.NoError(t, err)
+	sources := []*Source{{Metadata: Metadata{Name: "aws", Path: "cloudquery/aws", Registry: RegistryCloudQuery, Version: "v30.1.0"}}}
+
+	var output bytes.Buffer
+	WarnOnOutdatedVersions(context.Background(), warner, sources, nil, nil, WithUpgradeCheckRecommendation([]string{"config.yml"}, &output))
+
+	assert.NotEmpty(t, output.String())
+	assert.Equal(t, int32(1), requests.Load())
+}
+
+func TestWarnOnOutdatedVersionsLogsOutdatedPlugins(t *testing.T) {
+	newHubServer(t, map[string]string{
+		"/plugins/cloudquery/source/aws":             "v30.2.0",
+		"/plugins/cloudquery/destination/postgresql": "v8.0.0",
+		"/plugins/cloudquery/destination/sqlite":     "v2.15.0",
+	})
+	var logs bytes.Buffer
+	originalLogger := log.Logger
+	log.Logger = zerolog.New(&logs)
+	t.Cleanup(func() { log.Logger = originalLogger })
+	warner, err := managedplugin.NewPluginVersionWarner(zerolog.Nop(), "")
+	require.NoError(t, err)
+	sources := []*Source{{Metadata: Metadata{Name: "aws", Path: "cloudquery/aws", Registry: RegistryCloudQuery, Version: "v30.1.0"}}}
+	destinations := []*Destination{
+		{Metadata: Metadata{Name: "postgresql", Path: "cloudquery/postgresql", Registry: RegistryCloudQuery, Version: "v7.0.0"}},
+		{Metadata: Metadata{Name: "sqlite", Path: "cloudquery/sqlite", Registry: RegistryCloudQuery, Version: "v2.15.0"}},
+	}
+
+	WarnOnOutdatedVersions(context.Background(), warner, sources, destinations, nil)
+
+	assert.Equal(t, `{"level":"warn","plugin":"aws","using_version":"30.1.0","latest_version":"30.2.0","url":"https://www.cloudquery.io/hub/plugins/source/cloudquery/aws","message":"Plugin is outdated, consider upgrading to the latest version."}
+{"level":"warn","plugin":"postgresql","using_version":"7.0.0","latest_version":"8.0.0","url":"https://www.cloudquery.io/hub/plugins/destination/cloudquery/postgresql","message":"Plugin is outdated, consider upgrading to the latest version."}
+`, logs.String())
+}
+
+func TestShellQuote(t *testing.T) {
+	tests := []struct {
+		value string
+		want  string
+	}{
+		{value: "config.yml", want: "config.yml"},
+		{value: "./configs/aws-prod_v2.yml", want: "./configs/aws-prod_v2.yml"},
+		{value: "", want: "''"},
+		{value: "my configs/config.yml", want: "'my configs/config.yml'"},
+		{value: "configs/$prod.yml", want: "'configs/$prod.yml'"},
+		{value: `configs\prod.yml`, want: `'configs\prod.yml'`},
+		{value: "$(rm -rf ~).yml", want: "'$(rm -rf ~).yml'"},
+		{value: "`whoami`.yml", want: "'`whoami`.yml'"},
+		{value: "it's.yml", want: `'it'\''s.yml'`},
+		{value: "*.yml", want: "'*.yml'"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.value, func(t *testing.T) {
+			assert.Equal(t, tt.want, shellQuote(tt.value))
 		})
 	}
 }
