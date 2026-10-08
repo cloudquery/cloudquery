@@ -32,11 +32,14 @@ var errInvalidSpec = errors.New("invalid spec")
 var errUnauthorized = errors.New("unauthorized")
 var errUnreachable = errors.New("unreachable")
 
-func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, _ plugin.NewClientOptions) (plugin.Client, error) {
+func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, newClientOpts plugin.NewClientOptions) (plugin.Client, error) {
 	var err error
 	c := &Client{
 		logger: logger.With().Str("module", "elasticsearch-dest").Logger(),
 		spec:   &Spec{},
+	}
+	if newClientOpts.NoConnection {
+		return c, nil
 	}
 	if err := json.Unmarshal(specBytes, c.spec); err != nil {
 		return nil, errors.Join(errInvalidSpec, err)
@@ -93,6 +96,9 @@ func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, _ plugin.
 }
 
 func (c *Client) Close(ctx context.Context) error {
+	if c.writer == nil {
+		return errors.New("client already closed or not initialized")
+	}
 	if err := c.writer.Close(ctx); err != nil {
 		return fmt.Errorf("failed to close batch writer: %w", err)
 	}
