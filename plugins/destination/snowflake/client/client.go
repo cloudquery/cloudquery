@@ -31,11 +31,14 @@ type Client struct {
 	setupWriteOnce *sync.Once
 }
 
-func New(_ context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewClientOptions) (plugin.Client, error) {
+func New(_ context.Context, logger zerolog.Logger, spec []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
 	var err error
 	c := &Client{
 		logger:         logger.With().Str("module", "sf-dest").Logger(),
 		setupWriteOnce: &sync.Once{},
+	}
+	if opts.NoConnection {
+		return c, nil
 	}
 	if err := json.Unmarshal(spec, &c.spec); err != nil {
 		return nil, errors.Join(errInvalidSpec, err)
