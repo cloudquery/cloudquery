@@ -66,7 +66,7 @@ func TestAssessTablesListToJSONHasNoFixedType(t *testing.T) {
 	}, assessPair(t, plugin.TablePair{Old: oldTable, New: newTable}))
 }
 
-func TestAssessTablesAddedColumnKeepsIndexSettings(t *testing.T) {
+func TestAssessTablesAddedColumnUpdatesIndexSettings(t *testing.T) {
 	oldTable := &schema.Table{Name: "test_table", Columns: schema.ColumnList{
 		{Name: "id", Type: arrow.BinaryTypes.String, PrimaryKey: true},
 	}}
@@ -75,12 +75,12 @@ func TestAssessTablesAddedColumnKeepsIndexSettings(t *testing.T) {
 
 	require.Equal(t, plugin.TableFinding{
 		TableName:          "test_table",
-		Category:           plugin.AssessCategoryNoChange,
-		SafeModeBehavior:   behaviorNoChange,
-		ForcedModeBehavior: behaviorNoChange,
+		Category:           plugin.AssessCategoryAutomaticallyMigratable,
+		SafeModeBehavior:   behaviorUpdateSettings,
+		ForcedModeBehavior: behaviorUpdateSettings,
 		Columns: []plugin.ColumnFinding{{
 			ColumnName:         "name",
-			Category:           plugin.AssessCategoryNoChange,
+			Category:           plugin.AssessCategoryAutomaticallyMigratable,
 			SafeModeBehavior:   behaviorAddAttribute,
 			ForcedModeBehavior: behaviorAddAttribute,
 		}},
@@ -127,7 +127,7 @@ func TestAssessTablesAddedPrimaryKeyColumn(t *testing.T) {
 			ForcedModeBehavior: behaviorNewDocumentIDs,
 			Columns: []plugin.ColumnFinding{
 				{ColumnName: "policy_id", Category: plugin.AssessCategoryManualMigrationRequired, SafeModeBehavior: behaviorNewDocumentIDs, ForcedModeBehavior: behaviorNewDocumentIDs},
-				{ColumnName: "actions", Category: plugin.AssessCategoryNoChange, SafeModeBehavior: behaviorAddAttribute, ForcedModeBehavior: behaviorAddAttribute},
+				{ColumnName: "actions", Category: plugin.AssessCategoryAutomaticallyMigratable, SafeModeBehavior: behaviorAddAttribute, ForcedModeBehavior: behaviorAddAttribute},
 			},
 		}, assessPair(t, plugin.TablePair{Old: oldTable, New: newTable}))
 	})
@@ -135,12 +135,12 @@ func TestAssessTablesAddedPrimaryKeyColumn(t *testing.T) {
 	t.Run("append write mode", func(t *testing.T) {
 		require.Equal(t, plugin.TableFinding{
 			TableName:          "okta_policy_rules",
-			Category:           plugin.AssessCategoryNoChange,
-			SafeModeBehavior:   behaviorNoChange,
-			ForcedModeBehavior: behaviorNoChange,
+			Category:           plugin.AssessCategoryAutomaticallyMigratable,
+			SafeModeBehavior:   behaviorUpdateSettings,
+			ForcedModeBehavior: behaviorUpdateSettings,
 			Columns: []plugin.ColumnFinding{
-				{ColumnName: "policy_id", Category: plugin.AssessCategoryNoChange, SafeModeBehavior: behaviorAddAttribute, ForcedModeBehavior: behaviorAddAttribute},
-				{ColumnName: "actions", Category: plugin.AssessCategoryNoChange, SafeModeBehavior: behaviorAddAttribute, ForcedModeBehavior: behaviorAddAttribute},
+				{ColumnName: "policy_id", Category: plugin.AssessCategoryAutomaticallyMigratable, SafeModeBehavior: behaviorAddAttribute, ForcedModeBehavior: behaviorAddAttribute},
+				{ColumnName: "actions", Category: plugin.AssessCategoryAutomaticallyMigratable, SafeModeBehavior: behaviorAddAttribute, ForcedModeBehavior: behaviorAddAttribute},
 			},
 		}, assessPair(t, plugin.TablePair{Old: withoutPrimaryKeys(oldTable), New: withoutPrimaryKeys(newTable)}))
 	})
