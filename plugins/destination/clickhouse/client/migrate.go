@@ -160,26 +160,12 @@ func (c *Client) allTablesChanges(ctx context.Context, want schema.Tables, have 
 		}
 		changes := t.GetChanges(chTable)
 
-		partitionChange, sortingChange, err := c.checkPartitionOrOrderByChanged(ctx, t, c.spec.Partition, c.spec.OrderBy)
+		tableSchemaChanges, err := c.checkPartitionOrOrderByChanged(ctx, t, c.spec.Partition, c.spec.OrderBy)
 		if err != nil {
 			return nil, fmt.Errorf("failed to check partition or order by changes for table %s: %w", t.Name, err)
 		}
-		tableSchemaChanges := make([]tableSchemaChange, 0, 2)
-		if partitionChange != "" {
-			tableSchemaChanges = append(tableSchemaChanges, tableSchemaChange{
-				kind:   partitionKeyChange,
-				change: partitionChange,
-			})
-		}
-		if sortingChange != "" {
-			tableSchemaChanges = append(tableSchemaChanges, tableSchemaChange{
-				kind:   sortKeyChange,
-				change: sortingChange,
-			})
-		}
-		tableSchemaChanges = slices.Clip(tableSchemaChanges)
 
-		forcedMigrationNeeded := c.forceMigrationNeeded(changes, tableSchemaChanges)
+		forcedMigrationNeeded := forceMigrationNeeded(changes, tableSchemaChanges)
 		oldTTL, newTTL, err := c.checkTTLChanged(ctx, t)
 		if err != nil {
 			return nil, fmt.Errorf("failed to check TTL changes for table %s: %w", t.Name, err)
@@ -196,7 +182,7 @@ func (c *Client) allTablesChanges(ctx context.Context, want schema.Tables, have 
 	return result, nil
 }
 
-func (*Client) forceMigrationNeeded(changes []schema.TableColumnChange, tableChanges []tableSchemaChange) bool {
+func forceMigrationNeeded(changes []schema.TableColumnChange, tableChanges []tableSchemaChange) bool {
 	if unsafe := unsafeChanges(changes); len(unsafe) > 0 {
 		return true
 	}
@@ -287,15 +273,33 @@ func (c *Client) autoMigrate(ctx context.Context, tableName string, tableChanges
 	return nil
 }
 
-func (c *Client) checkPartitionOrOrderByChanged(ctx context.Context, table *schema.Table, partition []spec.PartitionStrategy, orderBy []spec.OrderByStrategy) (partitionKeyChange, sortingKeyChange string, err error) {
+func (c *Client) checkPartitionOrOrderByChanged(ctx context.Context, table *schema.Table, partition []spec.PartitionStrategy, orderBy []spec.OrderByStrategy) ([]tableSchemaChange, error) {
+	wantPartitionKey, wantSortingKey, err := resolvePartitionKeyAndSortingKey(table, partition, orderBy)
+	if err != nil {
+		return nil, err
+	}
+
+	havePartitionKey, haveSortingKey, err := c.getPartitionKeyAndSortingKey(ctx, table)
+	if err != nil {
+		return nil, err
+	}
+
+	changes := partitionOrSortingKeyChanges(havePartitionKey, haveSortingKey, wantPartitionKey, wantSortingKey)
+	for _, change := range changes {
+		c.logger.Info().Str("table", table.Name).Msg(change.change)
+	}
+	return changes, nil
+}
+
+func resolvePartitionKeyAndSortingKey(table *schema.Table, partition []spec.PartitionStrategy, orderBy []spec.OrderByStrategy) (partitionKey, sortingKey []string, err error) {
 	resolvedOrderBy, err := queries.ResolveOrderBy(table, orderBy)
 	if err != nil {
-		return "", "", err
+		return nil, nil, err
 	}
 
 	resolvedPartitionBy, err := queries.ResolvePartitionBy(table, partition)
 	if err != nil {
-		return "", "", err
+		return nil, nil, err
 	}
 
 	splitPartitionBy := []string{}
@@ -303,34 +307,34 @@ func (c *Client) checkPartitionOrOrderByChanged(ctx context.Context, table *sche
 		splitPartitionBy = strings.Split(resolvedPartitionBy, ",")
 	}
 
-	wantPartitionKey := make([]string, 0, len(splitPartitionBy))
+	partitionKey = make([]string, 0, len(splitPartitionBy))
 	for _, key := range splitPartitionBy {
-		wantPartitionKey = append(wantPartitionKey, dequote(key))
+		partitionKey = append(partitionKey, dequote(key))
 	}
 
-	wantSortingKey := make([]string, 0, len(resolvedOrderBy))
+	sortingKey = make([]string, 0, len(resolvedOrderBy))
 	for _, key := range resolvedOrderBy {
-		wantSortingKey = append(wantSortingKey, dequote(key))
+		sortingKey = append(sortingKey, dequote(key))
 	}
 
-	havePartitionKey, haveSortingKey, err := c.getPartitionKeyAndSortingKey(ctx, table)
-	if err != nil {
-		return "", "", err
-	}
+	return partitionKey, sortingKey, nil
+}
 
-	partitionKeyChange = ""
+func partitionOrSortingKeyChanges(havePartitionKey, haveSortingKey, wantPartitionKey, wantSortingKey []string) []tableSchemaChange {
+	changes := make([]tableSchemaChange, 0, 2)
 	if !slices.Equal(havePartitionKey, wantPartitionKey) {
-		partitionKeyChange = fmt.Sprintf("partition key changed (was [%s] and would become [%s])", strings.Join(havePartitionKey, ","), strings.Join(wantPartitionKey, ","))
-		c.logger.Info().Str("table", table.Name).Msg(partitionKeyChange)
+		changes = append(changes, tableSchemaChange{
+			kind:   partitionKeyChange,
+			change: fmt.Sprintf("partition key changed (was [%s] and would become [%s])", strings.Join(havePartitionKey, ","), strings.Join(wantPartitionKey, ",")),
+		})
 	}
-
-	sortingKeyChange = ""
 	if !slices.Equal(haveSortingKey, wantSortingKey) {
-		sortingKeyChange = fmt.Sprintf("sorting key changed (was [%s] and would become [%s])", strings.Join(haveSortingKey, ","), strings.Join(wantSortingKey, ","))
-		c.logger.Info().Str("table", table.Name).Msg(sortingKeyChange)
+		changes = append(changes, tableSchemaChange{
+			kind:   sortKeyChange,
+			change: fmt.Sprintf("sorting key changed (was [%s] and would become [%s])", strings.Join(haveSortingKey, ","), strings.Join(wantSortingKey, ",")),
+		})
 	}
-
-	return partitionKeyChange, sortingKeyChange, nil
+	return slices.Clip(changes)
 }
 
 func (c *Client) checkTTLChanged(ctx context.Context, table *schema.Table) (oldTTL string, newTTL string, err error) {

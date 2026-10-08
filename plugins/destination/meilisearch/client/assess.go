@@ -15,7 +15,8 @@ const (
 	behaviorRejectChanges    = "rejects the changes"
 	behaviorRecreateIndex    = "deletes and recreates the index, deleting existing documents"
 	behaviorNewDocumentIDs   = "keeps the index, but document IDs change, so existing documents are not replaced"
-	behaviorAddAttribute     = "makes no changes, the field is not added to the filterable and sortable attributes"
+	behaviorUpdateSettings   = "updates the index settings"
+	behaviorAddAttribute     = "adds the field to the filterable and sortable attributes"
 	behaviorRemoveAttribute  = "keeps the field in the index settings, new documents omit it"
 	behaviorUntypedAttribute = "makes no changes, Meilisearch has no fixed field types"
 )
@@ -60,6 +61,9 @@ func assessIndexUpdate(oldTable, newTable *schema.Table) plugin.TableFinding {
 			continue
 		}
 		columns = append(columns, column)
+		if column.Category == plugin.AssessCategoryAutomaticallyMigratable {
+			category, behavior = plugin.AssessCategoryAutomaticallyMigratable, behaviorUpdateSettings
+		}
 	}
 	if !slices.Equal(oldPrimaryKeys, newPrimaryKeys) {
 		category, behavior = plugin.AssessCategoryManualMigrationRequired, behaviorNewDocumentIDs
@@ -75,7 +79,7 @@ func columnFinding(change schema.TableColumnChange, oldPrimaryKeys, newPrimaryKe
 	var behavior string
 	switch change.Type {
 	case schema.TableColumnChangeTypeAdd:
-		category, behavior = plugin.AssessCategoryNoChange, behaviorAddAttribute
+		category, behavior = plugin.AssessCategoryAutomaticallyMigratable, behaviorAddAttribute
 	case schema.TableColumnChangeTypeRemove:
 		category, behavior = plugin.AssessCategoryNoChange, behaviorRemoveAttribute
 	case schema.TableColumnChangeTypeUpdate:
