@@ -4,7 +4,17 @@
       "source": {
         "name": "datadog",
         "from_version": "v5.19.10",
-        "to_version": "v6.0.0"
+        "to_version": "v6.0.0",
+        "from": {
+          "registry": "cloudquery",
+          "path": "cloudquery/datadog",
+          "version": "v5.19.10"
+        },
+        "to": {
+          "registry": "cloudquery",
+          "path": "cloudquery/datadog",
+          "version": "v6.0.0"
+        }
       },
       "destination": {
         "name": "postgresql",

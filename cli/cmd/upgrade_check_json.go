@@ -25,9 +25,17 @@ type upgradeReportJSON struct {
 }
 
 type upgradeSourceJSON struct {
-	Name        string `json:"name"`
-	FromVersion string `json:"from_version"`
-	ToVersion   string `json:"to_version"`
+	Name        string                `json:"name"`
+	FromVersion string                `json:"from_version"`
+	ToVersion   string                `json:"to_version"`
+	From        upgradeSourceSideJSON `json:"from"`
+	To          upgradeSourceSideJSON `json:"to"`
+}
+
+type upgradeSourceSideJSON struct {
+	Registry string `json:"registry"`
+	Path     string `json:"path"`
+	Version  string `json:"version"`
 }
 
 type upgradeDestinationJSON struct {
@@ -77,7 +85,13 @@ func upgradeReportToJSON(r upgradeReport) upgradeReportJSON {
 	verdict, _ := upgradeVerdict(r, impacts, comparisons, migrateMode)
 	action, _ := upgradeAction(r, impacts, comparisons, migrateMode)
 	out := upgradeReportJSON{
-		Source:            upgradeSourceJSON{Name: r.SourceName, FromVersion: r.FromVersion, ToVersion: r.ToVersion},
+		Source: upgradeSourceJSON{
+			Name:        r.SourceName,
+			FromVersion: r.FromVersion,
+			ToVersion:   r.ToVersion,
+			From:        upgradeSourceSideJSON{Registry: r.FromOrigin.Registry.String(), Path: r.FromOrigin.Path, Version: r.FromVersion},
+			To:          upgradeSourceSideJSON{Registry: r.ToOrigin.Registry.String(), Path: r.ToOrigin.Path, Version: r.ToVersion},
+		},
 		Verdict:           verdict,
 		Tables:            append([]upgradeTableImpact{}, impacts...),
 		RemovedTables:     append([]string{}, r.RemovedTables...),
