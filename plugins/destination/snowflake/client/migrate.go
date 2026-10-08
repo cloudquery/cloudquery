@@ -17,7 +17,7 @@ func (c *Client) MigrateTables(ctx context.Context, msgs message.WriteMigrateTab
 	for _, msg := range msgs {
 		// Switch to effective types
 		for i, col := range msg.Table.Columns {
-			msg.Table.Columns[i].Type = SnowflakeToSchemaType(SchemaTypeToSnowflake(col.Type))
+			msg.Table.Columns[i].Type = effectiveType(col.Type)
 		}
 
 		tables = append(tables, msg.Table)
@@ -53,7 +53,7 @@ func (c *Client) MigrateTables(ctx context.Context, msgs message.WriteMigrateTab
 			}
 
 			changes := getTableChangesCaseInsensitive(table, existingTable)
-			if c.canAutoMigrate(changes) {
+			if canAutoMigrate(changes) {
 				c.logger.Info().Str("table", table.Name).Msg("Table exists, auto-migrating")
 				if err := c.autoMigrateTable(ctx, table, uniques, changes); err != nil {
 					return err
@@ -265,7 +265,7 @@ func (c *Client) dropTable(ctx context.Context, tableName string) error {
 	return nil
 }
 
-func (c *Client) nonAutoMigratableTables(tables schema.Tables, existingTables schema.Tables, safeTables map[string]bool) map[string][]schema.TableColumnChange {
+func (*Client) nonAutoMigratableTables(tables schema.Tables, existingTables schema.Tables, safeTables map[string]bool) map[string][]schema.TableColumnChange {
 	result := make(map[string][]schema.TableColumnChange)
 	for _, t := range tables {
 		existingTable := existingTables.Get(strings.ToUpper(t.Name))
@@ -273,14 +273,14 @@ func (c *Client) nonAutoMigratableTables(tables schema.Tables, existingTables sc
 			continue
 		}
 		changes := getTableChangesCaseInsensitive(t, existingTable)
-		if safeTables[t.Name] && !c.canAutoMigrate(changes) {
+		if safeTables[t.Name] && !canAutoMigrate(changes) {
 			result[t.Name] = changes
 		}
 	}
 	return result
 }
 
-func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
+func canAutoMigrate(changes []schema.TableColumnChange) bool {
 	for _, change := range changes {
 		//exhaustive:enforce
 		switch change.Type {
