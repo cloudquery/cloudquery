@@ -11,6 +11,7 @@ import (
 
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
 	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -157,4 +158,29 @@ func TestWarnOnOutdatedVersionsRequestsSourceLatestVersionOnce(t *testing.T) {
 
 	assert.NotEmpty(t, output.String())
 	assert.Equal(t, int32(1), requests.Load())
+}
+
+func TestWarnOnOutdatedVersionsLogsOutdatedPlugins(t *testing.T) {
+	newHubServer(t, map[string]string{
+		"/plugins/cloudquery/source/aws":             "v30.2.0",
+		"/plugins/cloudquery/destination/postgresql": "v8.0.0",
+		"/plugins/cloudquery/destination/sqlite":     "v2.15.0",
+	})
+	var logs bytes.Buffer
+	originalLogger := log.Logger
+	log.Logger = zerolog.New(&logs)
+	t.Cleanup(func() { log.Logger = originalLogger })
+	warner, err := managedplugin.NewPluginVersionWarner(zerolog.Nop(), "")
+	require.NoError(t, err)
+	sources := []*Source{{Metadata: Metadata{Name: "aws", Path: "cloudquery/aws", Registry: RegistryCloudQuery, Version: "v30.1.0"}}}
+	destinations := []*Destination{
+		{Metadata: Metadata{Name: "postgresql", Path: "cloudquery/postgresql", Registry: RegistryCloudQuery, Version: "v7.0.0"}},
+		{Metadata: Metadata{Name: "sqlite", Path: "cloudquery/sqlite", Registry: RegistryCloudQuery, Version: "v2.15.0"}},
+	}
+
+	WarnOnOutdatedVersions(context.Background(), warner, sources, destinations, nil)
+
+	assert.Equal(t, `{"level":"warn","plugin":"aws","using_version":"30.1.0","latest_version":"30.2.0","url":"https://www.cloudquery.io/hub/plugins/source/cloudquery/aws","message":"Plugin is outdated, consider upgrading to the latest version."}
+{"level":"warn","plugin":"postgresql","using_version":"7.0.0","latest_version":"8.0.0","url":"https://www.cloudquery.io/hub/plugins/destination/cloudquery/postgresql","message":"Plugin is outdated, consider upgrading to the latest version."}
+`, logs.String())
 }

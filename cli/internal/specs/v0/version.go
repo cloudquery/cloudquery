@@ -38,69 +38,70 @@ func WarnOnOutdatedVersions(ctx context.Context, p *managedplugin.PluginVersionW
 		return // However, avoid panicking in case it's nil.
 	}
 	for _, source := range sources {
-		org, name, err := pluginPathToOrgName(source.Path)
-		if err != nil {
-			log.Debug().Str("plugin", source.Name).Err(err).Msg("failed to get org and name from plugin path")
-			continue
-		}
-		// N.B.: warning is best-effort; we ignore errors, but the function still logs errors with Debug logs
-		// We only check for outdated plugins if the registry is cloudquery or github and the org is cloudquery
-		if source.Registry == RegistryCloudQuery || (source.Registry == RegistryGitHub && org == "cloudquery") {
-			outdated, _ := p.WarnIfOutdated(ctx, org, name, managedplugin.PluginSource.String(), source.Version)
-			if outdated && options.upgradeCheckOutput != nil {
-				recommendUpgradeCheck(ctx, p, org, name, source, options)
-			}
+		usingVersion, latestVersion, outdated := warnIfOutdated(ctx, p, managedplugin.PluginSource, source.Metadata)
+		if outdated && options.upgradeCheckOutput != nil {
+			recommendUpgradeCheck(source.Name, usingVersion, latestVersion, options)
 		}
 	}
 	for _, destination := range destinations {
-		org, name, err := pluginPathToOrgName(destination.Path)
-		if err != nil {
-			log.Debug().Str("plugin", destination.Name).Err(err).Msg("failed to get org and name from plugin path")
-			continue
-		}
-		// N.B.: warning is best-effort; we ignore errors, but the function still logs errors with Debug logs
-		// We only check for outdated plugins if the registry is cloudquery or github and the org is cloudquery
-		if destination.Registry == RegistryCloudQuery || (destination.Registry == RegistryGitHub && org == "cloudquery") {
-			_, _ = p.WarnIfOutdated(ctx, org, name, managedplugin.PluginDestination.String(), destination.Version)
-		}
+		warnIfOutdated(ctx, p, managedplugin.PluginDestination, destination.Metadata)
 	}
 	for _, transformer := range transformers {
-		org, name, err := pluginPathToOrgName(transformer.Path)
-		if err != nil {
-			log.Debug().Str("plugin", transformer.Name).Err(err).Msg("failed to get org and name from plugin path")
-			continue
-		}
-		// N.B.: warning is best-effort; we ignore errors, but the function still logs errors with Debug logs
-		// We only check for outdated plugins if the registry is cloudquery or github and the org is cloudquery
-		if transformer.Registry == RegistryCloudQuery || (transformer.Registry == RegistryGitHub && org == "cloudquery") {
-			_, _ = p.WarnIfOutdated(ctx, org, name, managedplugin.PluginTransformer.String(), transformer.Version)
-		}
+		warnIfOutdated(ctx, p, managedplugin.PluginTransformer, transformer.Metadata)
 	}
 }
 
-func recommendUpgradeCheck(ctx context.Context, p *managedplugin.PluginVersionWarner, org, name string, source *Source, options versionWarningOptions) {
-	latestVersion, err := p.LatestVersion(ctx, org, name, managedplugin.PluginSource.String())
-	if err != nil {
-		return
+func warnIfOutdated(ctx context.Context, p *managedplugin.PluginVersionWarner, kind managedplugin.PluginType, plugin Metadata) (usingVersion, latestVersion *semver.Version, outdated bool) {
+	if plugin.Version == "" {
+		return nil, nil, false
 	}
-	usingVersion, err := semver.NewVersion(source.Version)
+	org, name, err := pluginPathToOrgName(plugin.Path)
 	if err != nil {
-		return
+		log.Debug().Str("plugin", plugin.Name).Err(err).Msg("failed to get org and name from plugin path")
+		return nil, nil, false
 	}
+	// N.B.: warning is best-effort; we ignore errors, but the function still logs errors with Debug logs
+	// We only check for outdated plugins if the registry is cloudquery or github and the org is cloudquery
+	if plugin.Registry != RegistryCloudQuery && (plugin.Registry != RegistryGitHub || org != "cloudquery") {
+		return nil, nil, false
+	}
+	usingVersion, err = semver.NewVersion(plugin.Version)
+	if err != nil {
+		log.Debug().Str("plugin", name).Str("version", plugin.Version).Err(err).Msg("failed to parse actual version")
+		return nil, nil, false
+	}
+	latestVersion, err = p.LatestVersion(ctx, org, name, kind.String())
+	if err != nil {
+		return nil, nil, false
+	}
+	if !usingVersion.LessThan(latestVersion) {
+		return nil, nil, false
+	}
+	log.Warn().
+		Str("plugin", name).
+		Str("using_version", usingVersion.String()).
+		Str("latest_version", latestVersion.String()).
+		Str("url", fmt.Sprintf("https://www.cloudquery.io/hub/plugins/%s/%s/%s", kind, org, name)).
+		Msg("Plugin is outdated, consider upgrading to the latest version.")
+	return usingVersion, latestVersion, true
+}
+
+func recommendUpgradeCheck(sourceName string, usingVersion, latestVersion *semver.Version, options versionWarningOptions) {
 	majorsBehind := latestVersion.Major() - usingVersion.Major()
 	if majorsBehind <= 0 {
 		return
 	}
+	using := "v" + usingVersion.String()
 	latest := "v" + latestVersion.String()
-	command := upgradeCheckCommand(options.upgradeCheckConfigPaths, source.Name, latest)
+	command := upgradeCheckCommand(options.upgradeCheckConfigPaths, sourceName, latest)
 	versionsWord := "versions"
 	if majorsBehind == 1 {
 		versionsWord = "version"
 	}
-	message := fmt.Sprintf("Source %s is %d major %s behind (%s → %s). Before you upgrade, run `%s` to see the schema impact on your destinations.", source.Name, majorsBehind, versionsWord, source.Version, latest, command)
+	message := fmt.Sprintf("Source %s is %d major %s behind (%s → %s). Before you upgrade, run `%s` to see the schema impact on your destinations.", sourceName, majorsBehind, versionsWord, using, latest, command)
 	log.Warn().
-		Str("source", source.Name).
-		Str("using_version", source.Version).
+		Str("source", sourceName).
+		Str("using_version", using).
 		Str("latest_version", latest).
 		Str("command", command).
 		Msg(message)
