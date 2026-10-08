@@ -9,6 +9,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/apache/arrow-go/v18/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/firehose"
@@ -52,29 +53,17 @@ func (c *Client) Write(ctx context.Context, messages <-chan message.WriteMessage
 		table, rec := ins.GetTable(), ins.Record
 
 		for row := int64(0); row < rec.NumRows(); row++ {
-			jsonObj := make(map[string]any, rec.NumCols()+1)
-			for i := range rec.Columns() {
-				jsonObj[rec.ColumnName(i)] = rec.Column(i).GetOneForMarshal(int(row))
-			}
-			// Add table name to the json object
-			// TODO: This should be added to the SDK so that it can be used for other plugins as well
-			jsonObj["_cq_table_name"] = table.Name
-			b, err := json.Marshal(jsonObj)
+			data, err := marshalRow(table.Name, rec, int(row))
 			if err != nil {
 				return err
 			}
-			dst := &bytes.Buffer{}
-			err = json.Compact(dst, b)
-			if err != nil {
-				return err
-			}
-			if len(dst.Bytes()) > c.spec.MaxRecordSizeBytes {
-				c.logger.Warn().Msgf("skipping record because it is too large: %s", string(b))
+			if len(data) > c.spec.MaxRecordSizeBytes {
+				c.logger.Warn().Msgf("skipping record because it is too large: %s", string(data))
 				continue
 			}
 
 			// If adding this record would exceed the batch size, send the batch
-			if len(dst.Bytes())+batchSize > c.spec.MaxBatchSizeBytes {
+			if len(data)+batchSize > c.spec.MaxBatchSizeBytes {
 				err := c.sendBatch(ctx, recordsBatchInput, 0)
 				if err != nil {
 					return err
@@ -84,10 +73,10 @@ func (c *Client) Write(ctx context.Context, messages <-chan message.WriteMessage
 			}
 
 			recordsBatchInput.Records = append(recordsBatchInput.Records, types.Record{
-				Data: dst.Bytes(),
+				Data: data,
 			})
 			// Store a running total of the batch size
-			batchSize += len(dst.Bytes())
+			batchSize += len(data)
 
 			// Send the batch if it is full
 			if len(recordsBatchInput.Records) >= c.spec.MaxBatchRecords {
@@ -103,6 +92,25 @@ func (c *Client) Write(ctx context.Context, messages <-chan message.WriteMessage
 	}
 	// Send the last batch
 	return c.sendBatch(ctx, recordsBatchInput, 0)
+}
+
+func marshalRow(tableName string, rec arrow.RecordBatch, row int) ([]byte, error) {
+	jsonObj := make(map[string]any, rec.NumCols()+1)
+	for i := range rec.Columns() {
+		jsonObj[rec.ColumnName(i)] = rec.Column(i).GetOneForMarshal(row)
+	}
+	// Add table name to the json object
+	// TODO: This should be added to the SDK so that it can be used for other plugins as well
+	jsonObj["_cq_table_name"] = tableName
+	b, err := json.Marshal(jsonObj)
+	if err != nil {
+		return nil, err
+	}
+	dst := &bytes.Buffer{}
+	if err := json.Compact(dst, b); err != nil {
+		return nil, err
+	}
+	return dst.Bytes(), nil
 }
 
 func (c *Client) sendBatch(ctx context.Context, recordsBatchInput *firehose.PutRecordBatchInput, count int) error {
