@@ -67,13 +67,7 @@ type indexTemplate struct {
 func (*Client) getIndexTemplates(table *schema.Table) []indexTemplate {
 	var indexes []indexTemplate
 
-	pks := table.PrimaryKeys()
-	if len(pks) > 0 {
-		indexCols := make(bson.D, 0, len(pks))
-		for _, name := range pks {
-			indexCols = append(indexCols, bson.E{Key: name, Value: 1})
-		}
-
+	if indexCols := primaryKeyIndexKeys(table); len(indexCols) > 0 {
 		pkIndexName := "cq_pk"
 		indexes = append(indexes, indexTemplate{
 			name: pkIndexName,
@@ -85,6 +79,15 @@ func (*Client) getIndexTemplates(table *schema.Table) []indexTemplate {
 	}
 
 	return indexes
+}
+
+func primaryKeyIndexKeys(table *schema.Table) bson.D {
+	pks := table.PrimaryKeys()
+	indexCols := make(bson.D, 0, len(pks))
+	for _, name := range pks {
+		indexCols = append(indexCols, bson.E{Key: name, Value: 1})
+	}
+	return indexCols
 }
 
 func isIndexConflictError(err error) bool {
