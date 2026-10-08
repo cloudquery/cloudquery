@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 	"io"
-	"strconv"
 	"strings"
+	"unicode"
 
 	"github.com/Masterminds/semver"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
@@ -119,10 +119,14 @@ func upgradeCheckCommand(configPaths []string, sourceName, toVersion string) str
 }
 
 func shellQuote(value string) string {
-	if value == "" || strings.ContainsAny(value, " \t\n'\"") {
-		return strconv.Quote(value)
+	if value != "" && !strings.ContainsFunc(value, isShellUnsafe) {
+		return value
 	}
-	return value
+	return "'" + strings.ReplaceAll(value, "'", `'\''`) + "'"
+}
+
+func isShellUnsafe(r rune) bool {
+	return !unicode.IsLetter(r) && !unicode.IsDigit(r) && !strings.ContainsRune("_-./:@%+=,", r)
 }
 
 func pluginPathToOrgName(pluginPath string) (org string, name string, err error) {

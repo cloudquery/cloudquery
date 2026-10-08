@@ -83,7 +83,7 @@ func TestWarnOnOutdatedVersionsRecommendsUpgradeCheck(t *testing.T) {
 			name:          "one major version behind with several config paths",
 			latestVersion: "v31.2.3",
 			configPaths:   []string{"sources.yml", "my configs/destinations.yml"},
-			want:          "Source aws-prod is 1 major version behind (v30.1.0 → v31.2.3). Before you upgrade, run `cloudquery upgrade check sources.yml \"my configs/destinations.yml\" --source aws-prod --to v31.2.3` to see the schema impact on your destinations.\n",
+			want:          "Source aws-prod is 1 major version behind (v30.1.0 → v31.2.3). Before you upgrade, run `cloudquery upgrade check sources.yml 'my configs/destinations.yml' --source aws-prod --to v31.2.3` to see the schema impact on your destinations.\n",
 		},
 		{
 			name:          "minor version behind",
@@ -183,4 +183,27 @@ func TestWarnOnOutdatedVersionsLogsOutdatedPlugins(t *testing.T) {
 	assert.Equal(t, `{"level":"warn","plugin":"aws","using_version":"30.1.0","latest_version":"30.2.0","url":"https://www.cloudquery.io/hub/plugins/source/cloudquery/aws","message":"Plugin is outdated, consider upgrading to the latest version."}
 {"level":"warn","plugin":"postgresql","using_version":"7.0.0","latest_version":"8.0.0","url":"https://www.cloudquery.io/hub/plugins/destination/cloudquery/postgresql","message":"Plugin is outdated, consider upgrading to the latest version."}
 `, logs.String())
+}
+
+func TestShellQuote(t *testing.T) {
+	tests := []struct {
+		value string
+		want  string
+	}{
+		{value: "config.yml", want: "config.yml"},
+		{value: "./configs/aws-prod_v2.yml", want: "./configs/aws-prod_v2.yml"},
+		{value: "", want: "''"},
+		{value: "my configs/config.yml", want: "'my configs/config.yml'"},
+		{value: "configs/$prod.yml", want: "'configs/$prod.yml'"},
+		{value: `configs\prod.yml`, want: `'configs\prod.yml'`},
+		{value: "$(rm -rf ~).yml", want: "'$(rm -rf ~).yml'"},
+		{value: "`whoami`.yml", want: "'`whoami`.yml'"},
+		{value: "it's.yml", want: `'it'\''s.yml'`},
+		{value: "*.yml", want: "'*.yml'"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.value, func(t *testing.T) {
+			assert.Equal(t, tt.want, shellQuote(tt.value))
+		})
+	}
 }
