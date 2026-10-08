@@ -134,6 +134,8 @@ func textAction(report string) (string, bool) {
 func TestRenderUpgradeReportsJSON(t *testing.T) {
 	report := upgradeReport{
 		SourceName: "okta", FromVersion: "v6.8.2", ToVersion: "v7.0.0",
+		FromOrigin:    upgradeSourceOrigin{Registry: specs.RegistryCloudQuery, Path: "cloudquery/okta"},
+		ToOrigin:      upgradeSourceOrigin{Registry: specs.RegistryCloudQuery, Path: "cloudquery/okta"},
 		Destination:   postgresqlDestinationSpec(specs.WriteModeAppend, specs.MigrateModeSafe),
 		RemovedTables: []string{"okta_removed"},
 		Findings: []*pluginPb.AssessTables_TableFinding{
@@ -160,7 +162,11 @@ func TestRenderUpgradeReportsJSON(t *testing.T) {
 	require.NoError(t, renderUpgradeReportsJSON(&out, []upgradeReport{report}))
 
 	require.JSONEq(t, `{"reports": [{
-		"source": {"name": "okta", "from_version": "v6.8.2", "to_version": "v7.0.0"},
+		"source": {
+			"name": "okta", "from_version": "v6.8.2", "to_version": "v7.0.0",
+			"from": {"registry": "cloudquery", "path": "cloudquery/okta", "version": "v6.8.2"},
+			"to": {"registry": "cloudquery", "path": "cloudquery/okta", "version": "v7.0.0"}
+		},
 		"destination": {"name": "postgresql", "registry": "cloudquery", "path": "cloudquery/postgresql", "version": "v8.14.0", "write_mode": "append", "pk_mode": "default", "migrate_mode": "safe"},
 		"verdict": "SELECTED TABLES REMOVED",
 		"summary": "1 changed table, 1 removed table",
@@ -188,10 +194,18 @@ func TestRenderUpgradeReportsJSON(t *testing.T) {
 
 func TestRenderUpgradeReportsJSONWithoutDestination(t *testing.T) {
 	var out bytes.Buffer
-	require.NoError(t, renderUpgradeReportsJSON(&out, []upgradeReport{{SourceName: "s3", FromVersion: "v1.0.0", ToVersion: "v2.0.0", SourceUnknown: true}}))
+	require.NoError(t, renderUpgradeReportsJSON(&out, []upgradeReport{{
+		SourceName: "s3", FromVersion: "unknown", ToVersion: "v2.0.0", SourceUnknown: true,
+		FromOrigin: upgradeSourceOrigin{Registry: specs.RegistryLocal, Path: "/opt/plugins/s3"},
+		ToOrigin:   upgradeSourceOrigin{Registry: specs.RegistryCloudQuery, Path: "cloudquery/s3"},
+	}}))
 
 	require.JSONEq(t, `{"reports": [{
-		"source": {"name": "s3", "from_version": "v1.0.0", "to_version": "v2.0.0"},
+		"source": {
+			"name": "s3", "from_version": "unknown", "to_version": "v2.0.0",
+			"from": {"registry": "local", "path": "/opt/plugins/s3", "version": "unknown"},
+			"to": {"registry": "cloudquery", "path": "cloudquery/s3", "version": "v2.0.0"}
+		},
 		"destination": null,
 		"verdict": "UNKNOWN",
 		"tables": [],

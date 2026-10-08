@@ -4,7 +4,17 @@
       "source": {
         "name": "gcp",
         "from_version": "v22.1.2",
-        "to_version": "v23.0.0"
+        "to_version": "v23.0.0",
+        "from": {
+          "registry": "cloudquery",
+          "path": "cloudquery/gcp",
+          "version": "v22.1.2"
+        },
+        "to": {
+          "registry": "cloudquery",
+          "path": "cloudquery/gcp",
+          "version": "v23.0.0"
+        }
       },
       "destination": {
         "name": "postgresql",

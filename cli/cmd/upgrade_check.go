@@ -33,6 +33,9 @@ Exit codes:
 With several destinations, the highest of 0, 3 and 4 is used. The report is always printed first.`
 	upgradeCheckExample = `# Check how upgrading the datadog source to v6.0.0 affects the destinations in config.yml
 cloudquery upgrade check ./config.yml --source datadog --to v6.0.0
+
+# Compare a source that runs from a local binary, gRPC server or Docker image with cloudquery/semgrep v3.1.0 from the CloudQuery Hub
+cloudquery upgrade check ./config.yml --source semgrep --to v3.1.0 --to-path cloudquery/semgrep
 `
 	destinationNoProtocolV3Reason = "destination does not support plugin protocol v3"
 	destinationNoAssessmentReason = "destination version does not support assessment"
@@ -61,6 +64,7 @@ func newCmdUpgradeCheck() *cobra.Command {
 	}
 	cmd.Flags().String("source", "", "Name of the source to upgrade, as set in the configuration")
 	cmd.Flags().String("to", "", "Source plugin version to upgrade to")
+	cmd.Flags().String("to-path", "", "CloudQuery Hub path of the source plugin to upgrade to, as <team>/<name>. Only for sources from the local, grpc or docker registry. Default: cloudquery/<name reported by the configured source>")
 	_ = cmd.MarkFlagRequired("source")
 	_ = cmd.MarkFlagRequired("to")
 	cmd.Flags().String("output", upgradeOutputText, "Output format. One of: text, json")
@@ -80,6 +84,10 @@ func upgradeCheck(cmd *cobra.Command, args []string) error {
 		return err
 	}
 	toVersion, err := cmd.Flags().GetString("to")
+	if err != nil {
+		return err
+	}
+	toPath, err := cmd.Flags().GetString("to-path")
 	if err != nil {
 		return err
 	}
@@ -131,7 +139,7 @@ func upgradeCheck(cmd *cobra.Command, args []string) error {
 		opts = append(opts, managedplugin.WithNoSentry())
 	}
 
-	from, to, err := loadUpgradeSourceTables(ctx, *sourceSpec, toVersion, opts...)
+	from, to, err := loadUpgradeSourceTables(ctx, *sourceSpec, upgradeTarget{Version: toVersion, Path: toPath}, managedplugin.NewClient, opts...)
 	if err != nil {
 		return err
 	}
@@ -161,6 +169,8 @@ func upgradeReports(ctx context.Context, sourceSpec specs.Source, destinationSpe
 		SourceName:  sourceSpec.Name,
 		FromVersion: from.Version,
 		ToVersion:   to.Version,
+		FromOrigin:  from.Origin,
+		ToOrigin:    to.Origin,
 		SourceGaps:  upgradeSourceGaps(sourceSpec.Name, from, to),
 	}
 	if from.UnknownReason != "" || to.UnknownReason != "" {
@@ -216,7 +226,7 @@ func loadUpgradeCheckSpecs(ctx context.Context, args []string, sourceName string
 		return upgradeCheckSpecs{}, fmt.Errorf("source %q not found in %s", sourceName, strings.Join(args, ", "))
 	}
 
-	loaded.downloadToken, loaded.teamName, err = cqplatform.DownloadAuth(ctx, log.Logger, []*specs.Source{loaded.source}, specReader.Destinations, specReader.Transformers)
+	loaded.downloadToken, loaded.teamName, err = cqplatform.DownloadAuth(ctx, log.Logger, upgradeAuthSources(*loaded.source), specReader.Destinations, specReader.Transformers)
 	if err != nil {
 		return upgradeCheckSpecs{}, err
 	}
@@ -245,13 +255,25 @@ func loadUpgradeCheckSpecs(ctx context.Context, args []string, sourceName string
 	return loaded, nil
 }
 
-func upgradeSourceGaps(sourceName string, versions ...upgradeSourceTables) []string {
+func upgradeAuthSources(sourceSpec specs.Source) []*specs.Source {
+	sources := []*specs.Source{&sourceSpec}
+	if !upgradeVersionSelectsBinary(sourceSpec.Registry) {
+		sources = append(sources, &specs.Source{Metadata: specs.Metadata{Name: sourceSpec.Name, Registry: specs.RegistryCloudQuery}})
+	}
+	return sources
+}
+
+func upgradeSourceGaps(sourceName string, from, to upgradeSourceTables) []string {
+	fromLabel, toLabel := upgradeSourceLabels(from.Origin, from.Version, to.Origin, to.Version)
 	var gaps []string
-	for _, version := range versions {
-		if version.UnknownReason != "" {
-			gaps = append(gaps, fmt.Sprintf("%s %s: tables could not be listed: %s", sourceName, version.Version, version.UnknownReason))
-		} else if version.Connected {
-			gaps = append(gaps, fmt.Sprintf("%s %s: tables were listed with a connection (metadata only, no rows read)", sourceName, version.Version))
+	for _, side := range []struct {
+		label  string
+		tables upgradeSourceTables
+	}{{fromLabel, from}, {toLabel, to}} {
+		if side.tables.UnknownReason != "" {
+			gaps = append(gaps, fmt.Sprintf("%s %s: tables could not be listed: %s", sourceName, side.label, side.tables.UnknownReason))
+		} else if side.tables.Connected {
+			gaps = append(gaps, fmt.Sprintf("%s %s: tables were listed with a connection (metadata only, no rows read)", sourceName, side.label))
 		}
 	}
 	return gaps
@@ -273,48 +295,145 @@ func terminatePlugin(client *managedplugin.Client) {
 	}
 }
 
+type upgradeSourceOrigin struct {
+	Registry specs.Registry
+	Path     string
+}
+
+func (o upgradeSourceOrigin) label(version string) string {
+	if upgradeVersionSelectsBinary(o.Registry) {
+		return o.Path + "@" + version
+	}
+	return fmt.Sprintf("(%s: %s, %s)", o.Registry, o.Path, version)
+}
+
+func upgradeSourceLabels(from upgradeSourceOrigin, fromVersion string, to upgradeSourceOrigin, toVersion string) (fromLabel, toLabel string) {
+	if from == to {
+		return fromVersion, toVersion
+	}
+	return from.label(fromVersion), to.label(toVersion)
+}
+
 type upgradeSourceTables struct {
+	Origin        upgradeSourceOrigin
 	Version       string
+	PluginName    string
 	Tables        schema.Tables
 	Connected     bool
 	UnknownReason string
 }
 
-func loadUpgradeSourceTables(ctx context.Context, sourceSpec specs.Source, toVersion string, opts ...managedplugin.Option) (from, to upgradeSourceTables, err error) {
-	if sourceSpec.Registry != specs.RegistryCloudQuery && sourceSpec.Registry != specs.RegistryGitHub {
-		return from, to, fmt.Errorf("upgrade check supports only sources from the cloudquery or github registry, source %s uses the %s registry", sourceSpec.Name, sourceSpec.Registry)
+type upgradeTarget struct {
+	Version string
+	Path    string
+}
+
+type newPluginClientFunc func(ctx context.Context, typ managedplugin.PluginType, config managedplugin.Config, opts ...managedplugin.Option) (*managedplugin.Client, error)
+
+const upgradeUnknownVersion = "unknown"
+
+func upgradeVersionSelectsBinary(registry specs.Registry) bool {
+	return registry == specs.RegistryCloudQuery || registry == specs.RegistryGitHub
+}
+
+func loadUpgradeSourceTables(ctx context.Context, sourceSpec specs.Source, target upgradeTarget, newClient newPluginClientFunc, opts ...managedplugin.Option) (from, to upgradeSourceTables, err error) {
+	if err := validateUpgradeTarget(sourceSpec, target); err != nil {
+		return from, to, err
 	}
 	if err := registerOnce(); err != nil {
 		return from, to, err
 	}
-	from, err = loadSourceVersionTables(ctx, sourceSpec, sourceSpec.Version, opts...)
+	fromOrigin := upgradeSourceOrigin{Registry: sourceSpec.Registry, Path: sourceSpec.Path}
+	from, err = loadSourceTables(ctx, newClient, sourceSpec, fromOrigin, managedPluginConfig(sourceSpec.Metadata), opts...)
 	if err != nil {
 		return from, to, err
 	}
-	to, err = loadSourceVersionTables(ctx, sourceSpec, toVersion, opts...)
+	toOrigin, toConfig, err := upgradeTargetConfig(sourceSpec, target, from.PluginName)
+	if err != nil {
+		return from, to, err
+	}
+	to, err = loadSourceTables(ctx, newClient, sourceSpec, toOrigin, toConfig, opts...)
+	if err != nil && !upgradeVersionSelectsBinary(sourceSpec.Registry) && target.Path == "" {
+		return from, to, fmt.Errorf("%w. The CloudQuery Hub path %s was inferred from the name the source reports. Use --to-path <team>/<name> to set a different path", err, toConfig.Path)
+	}
 	return from, to, err
 }
 
-func loadSourceVersionTables(ctx context.Context, sourceSpec specs.Source, version string, opts ...managedplugin.Option) (upgradeSourceTables, error) {
+func validateUpgradeTarget(sourceSpec specs.Source, target upgradeTarget) error {
+	if target.Path == "" {
+		return nil
+	}
+	if upgradeVersionSelectsBinary(sourceSpec.Registry) {
+		return fmt.Errorf("--to-path is supported only for sources from the local, grpc or docker registry, source %s uses the %s registry", sourceSpec.Name, sourceSpec.Registry)
+	}
+	team, name, ok := strings.Cut(target.Path, "/")
+	if !ok || team == "" || name == "" || strings.Contains(name, "/") {
+		return fmt.Errorf("invalid --to-path %q. Use <team>/<name>, for example cloudquery/aws", target.Path)
+	}
+	return nil
+}
+
+func upgradeTargetConfig(sourceSpec specs.Source, target upgradeTarget, pluginName string) (upgradeSourceOrigin, managedplugin.Config, error) {
 	config := managedPluginConfig(sourceSpec.Metadata)
-	config.Version = version
-	client, err := managedplugin.NewClient(ctx, managedplugin.PluginSource, config, opts...)
+	config.Version = target.Version
+	if upgradeVersionSelectsBinary(sourceSpec.Registry) {
+		return upgradeSourceOrigin{Registry: sourceSpec.Registry, Path: config.Path}, config, nil
+	}
+	config.Registry = managedplugin.RegistryCloudQuery
+	config.DockerAuth = ""
+	config.Path = target.Path
+	if config.Path == "" {
+		if pluginName == "" {
+			return upgradeSourceOrigin{}, managedplugin.Config{}, fmt.Errorf("could not infer the CloudQuery Hub path to upgrade source %s to, because the source from the %s registry did not report its name. Use --to-path <team>/<name> to set the path, for example --to-path cloudquery/aws", sourceSpec.Name, sourceSpec.Registry)
+		}
+		config.Path = "cloudquery/" + pluginName
+	}
+	return upgradeSourceOrigin{Registry: specs.RegistryCloudQuery, Path: config.Path}, config, nil
+}
+
+func loadSourceTables(ctx context.Context, newClient newPluginClientFunc, sourceSpec specs.Source, origin upgradeSourceOrigin, config managedplugin.Config, opts ...managedplugin.Option) (upgradeSourceTables, error) {
+	version := config.Version
+	if !upgradeVersionSelectsBinary(origin.Registry) {
+		version = upgradeUnknownVersion
+	}
+	client, err := newClient(ctx, managedplugin.PluginSource, config, opts...)
 	if err != nil {
-		return upgradeSourceTables{}, fmt.Errorf("failed to start source %s@%s: %w", sourceSpec.Name, version, err)
+		return upgradeSourceTables{}, fmt.Errorf("failed to start source %s %s: %w", sourceSpec.Name, origin.label(version), err)
 	}
 	defer terminatePlugin(client)
 
 	versions, err := client.Versions(ctx)
 	if err != nil {
-		return upgradeSourceTables{}, fmt.Errorf("failed to get protocol versions for %s@%s: %w", sourceSpec.Name, version, err)
+		return upgradeSourceTables{}, fmt.Errorf("failed to get protocol versions for %s %s: %w", sourceSpec.Name, origin.label(version), err)
 	}
 	if findMaxCommonVersion(versions, []int{3}) != 3 {
-		return upgradeSourceTables{Version: version, UnknownReason: "source does not support plugin protocol v3"}, nil
+		return upgradeSourceTables{Origin: origin, Version: version, UnknownReason: "source does not support plugin protocol v3"}, nil
 	}
 
-	result := listSourceTables(ctx, pluginPb.NewPluginClient(client.Conn), sourceSpec.Spec)
+	pluginClient := pluginPb.NewPluginClient(client.Conn)
+	pluginName, reportedVersion := reportedPluginIdentity(ctx, pluginClient)
+	if !upgradeVersionSelectsBinary(origin.Registry) && reportedVersion != "" {
+		version = reportedVersion
+	}
+	result := listSourceTables(ctx, pluginClient, sourceSpec.Spec)
+	result.Origin = origin
 	result.Version = version
+	result.PluginName = pluginName
 	return result, nil
+}
+
+func reportedPluginIdentity(ctx context.Context, client pluginPb.PluginClient) (name, version string) {
+	if resp, err := client.GetName(ctx, &pluginPb.GetName_Request{}); err == nil {
+		name = resp.Name
+	} else {
+		log.Debug().Err(err).Msg("failed to get source plugin name")
+	}
+	if resp, err := client.GetVersion(ctx, &pluginPb.GetVersion_Request{}); err == nil {
+		version = resp.Version
+	} else {
+		log.Debug().Err(err).Msg("failed to get source plugin version")
+	}
+	return name, version
 }
 
 func listSourceTables(ctx context.Context, client pluginPb.PluginClient, spec map[string]any) upgradeSourceTables {
@@ -364,7 +483,7 @@ type upgradeTableSchemas struct {
 func selectUpgradeTables(sourceSpec specs.Source, from, to schema.Tables) (upgradeTableSelection, error) {
 	selectedFrom, err := selectSourceTables(sourceSpec, from)
 	if err != nil {
-		return upgradeTableSelection{}, fmt.Errorf("failed to select tables from source version %s: %w", sourceSpec.Version, err)
+		return upgradeTableSelection{}, fmt.Errorf("failed to select tables from current source version: %w", err)
 	}
 	selectedTo, err := selectSourceTables(sourceSpec, to)
 	if err != nil {
@@ -427,7 +546,7 @@ func transformUpgradeTables(ctx context.Context, sourceSpec specs.Source, destin
 	for i, pair := range pairs {
 		from, err := transform(pair.From)
 		if err != nil {
-			return nil, fmt.Errorf("failed to transform table %s from source version %s for destination %s: %w", pair.Name, sourceSpec.Version, destinationSpec.Name, err)
+			return nil, fmt.Errorf("failed to transform table %s from current source version for destination %s: %w", pair.Name, destinationSpec.Name, err)
 		}
 		to, err := transform(pair.To)
 		if err != nil {
