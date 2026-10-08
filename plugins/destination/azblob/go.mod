@@ -7,8 +7,8 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/storage/azblob v1.8.1
 	github.com/apache/arrow-go/v18 v18.8.0
 	github.com/cloudquery/codegen v0.4.1
-	github.com/cloudquery/filetypes/v4 v4.7.5
-	github.com/cloudquery/plugin-sdk/v4 v4.97.0
+	github.com/cloudquery/filetypes/v4 v4.8.0
+	github.com/cloudquery/plugin-sdk/v4 v4.98.0
 	github.com/google/go-cmp v0.7.0
 	github.com/google/uuid v1.6.0
 	github.com/invopop/jsonschema v0.14.0
