@@ -3,6 +3,7 @@ package cmd
 import (
 	"errors"
 	"fmt"
+	"os"
 	"strings"
 
 	"github.com/cloudquery/cloudquery/cli/v6/internal/auth"
@@ -63,7 +64,7 @@ func installPlugin(cmd *cobra.Command, args []string) error {
 	}
 
 	pluginVersionWarner, _ := managedplugin.NewPluginVersionWarner(log.Logger, authToken.Value)
-	specs.WarnOnOutdatedVersions(ctx, pluginVersionWarner, sources, destinations, transformers)
+	specs.WarnOnOutdatedVersions(ctx, pluginVersionWarner, sources, destinations, transformers, specs.WithUpgradeCheckRecommendation(args, os.Stdout))
 
 	opts := []managedplugin.Option{
 		managedplugin.WithNoExec(),
