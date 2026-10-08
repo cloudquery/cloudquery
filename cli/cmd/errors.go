@@ -19,3 +19,11 @@ func handleSendError(err error, client safeWriteClient, msgType string) error {
 	}
 	return fmt.Errorf("failed to send write request (%v): %w", msgType, err)
 }
+
+type ExitCodeError struct {
+	Code int
+}
+
+func (e *ExitCodeError) Error() string {
+	return fmt.Sprintf("exit code %d", e.Code)
+}

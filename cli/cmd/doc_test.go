@@ -27,6 +27,8 @@ var docFiles = []string{
 	"cloudquery_migrate.md",
 	"cloudquery_tables.md",
 	"cloudquery_test-connection.md",
+	"cloudquery_upgrade.md",
+	"cloudquery_upgrade_check.md",
 	"cloudquery_validate-config.md",
 	"cloudquery_plugin.md",
 	"cloudquery_plugin_install.md",
