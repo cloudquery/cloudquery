@@ -3,6 +3,7 @@ package client
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
@@ -21,9 +22,12 @@ type Client struct {
 	writer *batchwriter.BatchWriter
 }
 
-func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewClientOptions) (plugin.Client, error) {
+func New(ctx context.Context, logger zerolog.Logger, spec []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
 	c := &Client{
 		logger: logger.With().Str("module", "neo4j").Logger(),
+	}
+	if opts.NoConnection {
+		return c, nil
 	}
 	if err := json.Unmarshal(spec, &c.spec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal spec: %w, %w", errInvalidSpec, err)
@@ -57,6 +61,9 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewCl
 }
 
 func (c *Client) Close(ctx context.Context) error {
+	if c.client == nil {
+		return errors.New("client already closed or not initialized")
+	}
 	if err := c.writer.Close(ctx); err != nil {
 		_ = c.client.Close(ctx)
 		return fmt.Errorf("failed to close writer: %w", err)
