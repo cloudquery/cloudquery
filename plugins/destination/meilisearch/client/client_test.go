@@ -46,6 +46,12 @@ func TestSafeMigrateMatchesAssessment(t *testing.T) {
 	datadogNew := datadogOld.Copy(nil)
 	datadogNew.Columns[1].Type = types.ExtensionTypes.JSON
 
+	githubOld := &schema.Table{Name: "github_repositories_" + uuid.NewString()[:8], Columns: schema.ColumnList{
+		{Name: "id", Type: arrow.PrimitiveTypes.Int64, PrimaryKey: true},
+	}}
+	githubNew := githubOld.Copy(nil)
+	githubNew.Columns = append(githubNew.Columns, schema.Column{Name: "topics", Type: types.ExtensionTypes.JSON})
+
 	oktaOld := &schema.Table{Name: "okta_policy_rules_" + uuid.NewString()[:8], Columns: schema.ColumnList{
 		{Name: "id", Type: arrow.BinaryTypes.String, PrimaryKey: true},
 	}}
@@ -61,6 +67,11 @@ func TestSafeMigrateMatchesAssessment(t *testing.T) {
 		{
 			pair:     plugin.TablePair{Old: datadogOld, New: datadogNew},
 			category: plugin.AssessCategoryNoChange,
+			row:      map[string]any{"id": 1},
+		},
+		{
+			pair:     plugin.TablePair{Old: githubOld, New: githubNew},
+			category: plugin.AssessCategoryAutomaticallyMigratable,
 			row:      map[string]any{"id": 1},
 		},
 		{
@@ -89,8 +100,8 @@ func TestSafeMigrateMatchesAssessment(t *testing.T) {
 
 			filterable, err := c.Meilisearch.Index(name).GetFilterableAttributes()
 			require.NoError(t, err)
-			wantFilterable := make([]any, 0, len(tc.pair.Old.Columns))
-			for _, column := range tc.pair.Old.Columns.Names() {
+			wantFilterable := make([]any, 0, len(tc.pair.New.Columns))
+			for _, column := range tc.pair.New.Columns.Names() {
 				wantFilterable = append(wantFilterable, column)
 			}
 			require.ElementsMatch(t, wantFilterable, *filterable)
