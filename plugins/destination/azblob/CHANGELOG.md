@@ -1,5 +1,31 @@
 # Changelog
 
+## [4.6.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-azblob-v4.5.11...plugins-destination-azblob-v4.6.0) (2026-10-08)
+
+
+### Features
+
+* Assess file, GCS, Azure Blob and Kafka schema impact without a connection ([#23482](https://github.com/cloudquery/cloudquery/issues/23482)) ([bf8a918](https://github.com/cloudquery/cloudquery/commit/bf8a9186b222de61c3eae51bdbc0bf6c01562284))
+
+
+### Bug Fixes
+
+* **deps:** Update go module directive to v1.26.6 ([#23344](https://github.com/cloudquery/cloudquery/issues/23344)) ([bfc2d40](https://github.com/cloudquery/cloudquery/commit/bfc2d406c5a6806479ca5b2313977324bdcd7c70))
+* **deps:** Update go module directive to v1.27.1 ([#23402](https://github.com/cloudquery/cloudquery/issues/23402)) ([9e24c06](https://github.com/cloudquery/cloudquery/commit/9e24c066c451a1e3ae0576a45c9447e938909e19))
+* **deps:** Update module github.com/Azure/azure-sdk-for-go/sdk/azidentity to v1.14.1 ([#23345](https://github.com/cloudquery/cloudquery/issues/23345)) ([0d476b4](https://github.com/cloudquery/cloudquery/commit/0d476b44024a4d371d8e4dfe3d2cae79b777e517))
+* **deps:** Update module github.com/Azure/azure-sdk-for-go/sdk/storage/azblob to v1.8.1 ([#23396](https://github.com/cloudquery/cloudquery/issues/23396)) ([7a31e0c](https://github.com/cloudquery/cloudquery/commit/7a31e0c2da152b10cd237cab27dd79f9171b0be6))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.7.4 ([#23388](https://github.com/cloudquery/cloudquery/issues/23388)) ([ac63b2e](https://github.com/cloudquery/cloudquery/commit/ac63b2ecfd57865025ca99b6ef713b346708bb29))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.7.5 ([#23412](https://github.com/cloudquery/cloudquery/issues/23412)) ([2d3f97f](https://github.com/cloudquery/cloudquery/commit/2d3f97f02ef22f840b37562ff98850ad88ff6ac7))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.8.0 ([#23488](https://github.com/cloudquery/cloudquery/issues/23488)) ([1a81afb](https://github.com/cloudquery/cloudquery/commit/1a81afba41a6dac572f499c35e4df703dda247de))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.96.2 ([#23277](https://github.com/cloudquery/cloudquery/issues/23277)) ([d15a83d](https://github.com/cloudquery/cloudquery/commit/d15a83ddc3c2e8af081afa2745f1a54a9cec62ab))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.96.3 ([#23330](https://github.com/cloudquery/cloudquery/issues/23330)) ([2502476](https://github.com/cloudquery/cloudquery/commit/2502476eb0933484ce7acb933b3b3c31b2ad4dea))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.96.4 ([#23389](https://github.com/cloudquery/cloudquery/issues/23389)) ([c7dc863](https://github.com/cloudquery/cloudquery/commit/c7dc86388bdc63e5eb663fdd36d70e8f99226d0d))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.96.6 ([#23414](https://github.com/cloudquery/cloudquery/issues/23414)) ([21c5ffe](https://github.com/cloudquery/cloudquery/commit/21c5ffe0dc57ed3bb7edd97026622b3068a151b5))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.97.0 ([#23485](https://github.com/cloudquery/cloudquery/issues/23485)) ([8684fe0](https://github.com/cloudquery/cloudquery/commit/8684fe076608257d1870ab12a0881f4998e6a7c9))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.98.0 ([#23486](https://github.com/cloudquery/cloudquery/issues/23486)) ([0787ffa](https://github.com/cloudquery/cloudquery/commit/0787ffa4957b19d8291212dc97ac4f1e8de8251b))
+* **deps:** Update module github.com/stretchr/testify to v1.12.1 ([#23322](https://github.com/cloudquery/cloudquery/issues/23322)) ([58653f2](https://github.com/cloudquery/cloudquery/commit/58653f29c681bb584bcd2cfda92691fcba3d9005))
+* **deps:** Update module google.golang.org/grpc to v1.83.2 [SECURITY] ([#23365](https://github.com/cloudquery/cloudquery/issues/23365)) ([99ba461](https://github.com/cloudquery/cloudquery/commit/99ba461b1b88b99d27284b02364ca77bed9c8043))
+
 ## [4.5.11](https://github.com/cloudquery/cloudquery/compare/plugins-destination-azblob-v4.5.10...plugins-destination-azblob-v4.5.11) (2026-08-22)
 
 
