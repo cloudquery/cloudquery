@@ -77,11 +77,16 @@ func (c *Client) MigrateTables(ctx context.Context, msgs message.WriteMigrateTab
 	return nil
 }
 
-func (c *Client) getIndexTemplate(table *schema.Table) (string, error) {
+func indexProperties(table *schema.Table) map[string]types.Property {
 	properties := map[string]types.Property{}
 	for _, col := range table.Columns {
 		properties[col.Name] = arrowTypeToElasticsearchProperty(col.Type)
 	}
+	return properties
+}
+
+func (c *Client) getIndexTemplate(table *schema.Table) (string, error) {
+	properties := indexProperties(table)
 	tmp := types.IndexTemplate{
 		AllowAutoCreate: nil,
 		ComposedOf:      []string{},
