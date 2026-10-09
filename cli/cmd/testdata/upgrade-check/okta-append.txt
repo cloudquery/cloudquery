@@ -3,16 +3,16 @@ write_mode: append | pk_mode: default | migrate_mode: safe
 AUTOMATICALLY MIGRATABLE — 1 changed table, 1 new table
 
 Changes
-  okta_policy_mappings   new table
   okta_policy_rules
-    + policy_id    text    new column (string)
     + actions      jsonb   new column (json)
     + conditions   jsonb   new column (json)
+    + policy_id    text    new column (string)
+  okta_policy_mappings   new table
 
 Next sync
   migrate_mode: safe (your config)
-    ✓ okta_policy_mappings   created
     ✓ okta_policy_rules      migrated in place
+    ✓ okta_policy_mappings   created
   migrate_mode: forced — same as safe
 
 Action: use safe migration.

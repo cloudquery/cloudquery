@@ -34,7 +34,7 @@
       ],
       "output_comparisons": [],
       "coverage_gaps": [],
-      "action": "remove explicit selections and update dependent consumers."
+      "action": "remove explicit selections (gcp_aiplatform_specialist_pools, gcp_aiplatform_specialistpool_locations) and update dependent consumers."
     }
   ]
 }

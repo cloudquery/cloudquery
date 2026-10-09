@@ -6,6 +6,6 @@ Changes
   gcp_aiplatform_specialist_pools           removed table, the new source version no longer provides it
   gcp_aiplatform_specialistpool_locations   removed table, the new source version no longer provides it
 
-Action: remove explicit selections and update dependent consumers.
+Action: remove explicit selections (gcp_aiplatform_specialist_pools, gcp_aiplatform_specialistpool_locations) and update dependent consumers.
 This check only previews the changes. It does not migrate, write, delete or upload anything.
 

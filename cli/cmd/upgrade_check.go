@@ -183,6 +183,7 @@ func upgradeReports(ctx context.Context, sourceSpec specs.Source, destinationSpe
 		return err
 	}
 	report.RemovedTables = selection.RemovedTables
+	report.UnmatchedTablePatterns = selection.UnmatchedTablePatterns
 	for _, destinationSpec := range destinationSpecs {
 		tables, findings, err := assessDestination(ctx, sourceSpec, *destinationSpec, transformersForDestination[destinationSpec.Name], cqColumnsNotNull, selection.Pairs, opts...)
 		if err != nil {
@@ -469,9 +470,23 @@ type upgradeTablePair struct {
 	To   *schema.Table
 }
 
+type upgradeTableSelectedBy string
+
+const (
+	upgradeSelectedByName      upgradeTableSelectedBy = "name"
+	upgradeSelectedByPattern   upgradeTableSelectedBy = "pattern"
+	upgradeSelectedAsDependent upgradeTableSelectedBy = "dependent"
+)
+
+type upgradeRemovedTable struct {
+	Name       string
+	SelectedBy upgradeTableSelectedBy
+}
+
 type upgradeTableSelection struct {
-	Pairs         []upgradeTablePair
-	RemovedTables []string
+	Pairs                  []upgradeTablePair
+	RemovedTables          []upgradeRemovedTable
+	UnmatchedTablePatterns []string
 }
 
 type upgradeTableSchemas struct {
@@ -494,7 +509,7 @@ func selectUpgradeTables(sourceSpec specs.Source, from, to schema.Tables) (upgra
 	for _, fromTable := range selectedFrom {
 		toTable := selectedTo.Get(fromTable.Name)
 		if toTable == nil {
-			selection.RemovedTables = append(selection.RemovedTables, fromTable.Name)
+			selection.RemovedTables = append(selection.RemovedTables, upgradeRemovedTable{Name: fromTable.Name, SelectedBy: upgradeSelectedBy(sourceSpec.Tables, fromTable.Name)})
 			continue
 		}
 		selection.Pairs = append(selection.Pairs, upgradeTablePair{Name: fromTable.Name, From: fromTable, To: toTable})
@@ -504,7 +519,32 @@ func selectUpgradeTables(sourceSpec specs.Source, from, to schema.Tables) (upgra
 			selection.Pairs = append(selection.Pairs, upgradeTablePair{Name: toTable.Name, To: toTable})
 		}
 	}
+	selection.UnmatchedTablePatterns = upgradeUnmatchedTablePatterns(sourceSpec.Tables, selection.RemovedTables, to)
 	return selection, nil
+}
+
+func upgradeSelectedBy(patterns []string, tableName string) upgradeTableSelectedBy {
+	switch {
+	case slices.Contains(patterns, tableName):
+		return upgradeSelectedByName
+	case slices.ContainsFunc(patterns, func(pattern string) bool { return glob.Glob(pattern, tableName) }):
+		return upgradeSelectedByPattern
+	}
+	return upgradeSelectedAsDependent
+}
+
+func upgradeUnmatchedTablePatterns(patterns []string, removedTables []upgradeRemovedTable, to schema.Tables) []string {
+	var unmatched []string
+	for _, pattern := range patterns {
+		if !strings.Contains(pattern, glob.GLOB) {
+			continue
+		}
+		matchesRemoved := slices.ContainsFunc(removedTables, func(table upgradeRemovedTable) bool { return glob.Glob(pattern, table.Name) })
+		if matchesRemoved && !slices.ContainsFunc(to, matchesAnyTablePattern([]string{pattern})) {
+			unmatched = append(unmatched, pattern)
+		}
+	}
+	return unmatched
 }
 
 func selectSourceTables(sourceSpec specs.Source, tables schema.Tables) (schema.Tables, error) {

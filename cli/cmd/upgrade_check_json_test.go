@@ -59,7 +59,7 @@ func TestRenderUpgradeReportsJSONMatchesText(t *testing.T) {
 			name: "manual migration and removed tables",
 			report: upgradeReport{
 				SourceName: "datadog", FromVersion: "v5.19.10", ToVersion: "v6.0.0", Destination: destination,
-				RemovedTables: []string{"datadog_removed"},
+				RemovedTables: []upgradeRemovedTable{{Name: "datadog_removed", SelectedBy: upgradeSelectedByName}},
 				Findings: []*pluginPb.AssessTables_TableFinding{{
 					TableName: "datadog_monitors",
 					Category:  pluginPb.AssessTables_CATEGORY_MANUAL_MIGRATION_REQUIRED,
@@ -137,7 +137,7 @@ func TestRenderUpgradeReportsJSON(t *testing.T) {
 		FromOrigin:    upgradeSourceOrigin{Registry: specs.RegistryCloudQuery, Path: "cloudquery/okta"},
 		ToOrigin:      upgradeSourceOrigin{Registry: specs.RegistryCloudQuery, Path: "cloudquery/okta"},
 		Destination:   postgresqlDestinationSpec(specs.WriteModeAppend, specs.MigrateModeSafe),
-		RemovedTables: []string{"okta_removed"},
+		RemovedTables: []upgradeRemovedTable{{Name: "okta_removed", SelectedBy: upgradeSelectedByName}},
 		Findings: []*pluginPb.AssessTables_TableFinding{
 			{
 				TableName: "okta_policy_rules",
@@ -169,7 +169,7 @@ func TestRenderUpgradeReportsJSON(t *testing.T) {
 		},
 		"destination": {"name": "postgresql", "registry": "cloudquery", "path": "cloudquery/postgresql", "version": "v8.14.0", "write_mode": "append", "pk_mode": "default", "migrate_mode": "safe"},
 		"verdict": "SELECTED TABLES REMOVED",
-		"summary": "1 changed table, 1 removed table",
+		"summary": "1 removed table, 1 changed table",
 		"tables": [{
 			"name": "okta_policy_rules",
 			"changes": [{"kind": "added", "column": "policy_id", "new_type": "text"}],
@@ -187,7 +187,7 @@ func TestRenderUpgradeReportsJSON(t *testing.T) {
 			"evidence": [{"synthetic_value": "[\"env:prod\"]", "before": "{\"tags\":[\"env:prod\"]}", "after": "{\"tags\":[\"env:prod\"]}"}]
 		}],
 		"coverage_gaps": [],
-		"action": "remove explicit selections and update dependent consumers."
+		"action": "remove explicit selections (okta_removed) and update dependent consumers."
 	}]}`, out.String())
 	require.NotContains(t, out.String(), `\u003c`)
 }

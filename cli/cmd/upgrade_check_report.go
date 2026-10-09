@@ -23,17 +23,18 @@ var (
 )
 
 type upgradeReport struct {
-	SourceName    string
-	FromVersion   string
-	ToVersion     string
-	FromOrigin    upgradeSourceOrigin
-	ToOrigin      upgradeSourceOrigin
-	SourceUnknown bool
-	SourceGaps    []string
-	RemovedTables []string
-	Destination   *specs.Destination
-	Tables        map[string]upgradeTablePair
-	Findings      []*pluginPb.AssessTables_TableFinding
+	SourceName             string
+	FromVersion            string
+	ToVersion              string
+	FromOrigin             upgradeSourceOrigin
+	ToOrigin               upgradeSourceOrigin
+	SourceUnknown          bool
+	SourceGaps             []string
+	RemovedTables          []upgradeRemovedTable
+	UnmatchedTablePatterns []string
+	Destination            *specs.Destination
+	Tables                 map[string]upgradeTablePair
+	Findings               []*pluginPb.AssessTables_TableFinding
 }
 
 type upgradeChangeKind string
@@ -86,6 +87,8 @@ const (
 	upgradeRemovedTableText = "removed table, the new source version no longer provides it"
 	upgradeDataLossText     = "dropped and recreated, existing rows deleted"
 	upgradeSafeModeFallback = "safe mode cannot apply these changes"
+	upgradeMaxTypeWidth     = 40
+	upgradeLongChangeList   = 10
 )
 
 func renderUpgradeReport(w io.Writer, r upgradeReport) error {
@@ -124,8 +127,11 @@ func renderUpgradeReport(w io.Writer, r upgradeReport) error {
 		verdict += " — " + summary
 	}
 	b.WriteString(verdictColor.Sprint(verdict) + "\n")
+	if breaking := upgradeBreakingSummary(r, impacts, migrateMode); breaking != "" && len(impacts)+len(r.RemovedTables) > upgradeLongChangeList {
+		b.WriteString(verdictColor.Sprint("Breaking: "+breaking) + "\n")
+	}
 
-	writeUpgradeChanges(&b, impacts, r.RemovedTables)
+	writeUpgradeChanges(&b, impacts, upgradeRemovedTableNames(r.RemovedTables))
 	writeUpgradeOutputComparisons(&b, comparisons, r.Tables)
 	writeUpgradeNextSync(&b, impacts, migrateMode)
 	writeUpgradeCoverageGaps(&b, gaps)
@@ -158,7 +164,9 @@ func upgradeExitCode(r upgradeReport) int {
 }
 
 func sortUpgradeReport(r upgradeReport) upgradeReport {
-	r.RemovedTables = slices.Sorted(slices.Values(r.RemovedTables))
+	r.RemovedTables = slices.SortedFunc(slices.Values(r.RemovedTables), func(a, b upgradeRemovedTable) int {
+		return strings.Compare(a.Name, b.Name)
+	})
 	r.Findings = slices.SortedFunc(slices.Values(r.Findings), func(a, b *pluginPb.AssessTables_TableFinding) int {
 		return strings.Compare(a.TableName, b.TableName)
 	})
@@ -192,7 +200,22 @@ func upgradeTableImpacts(r upgradeReport) []upgradeTableImpact {
 		}
 		impacts = append(impacts, impact)
 	}
+	slices.SortStableFunc(impacts, func(a, b upgradeTableImpact) int {
+		return cmp.Or(cmp.Compare(upgradeImpactRank(a), upgradeImpactRank(b)), strings.Compare(a.Name, b.Name))
+	})
 	return impacts
+}
+
+func upgradeImpactRank(impact upgradeTableImpact) int {
+	switch {
+	case impact.NewTable:
+		return 3
+	case impact.Category == pluginPb.AssessTables_CATEGORY_MANUAL_MIGRATION_REQUIRED:
+		return 0
+	case impact.Category == pluginPb.AssessTables_CATEGORY_FILE_SCHEMA_CHANGED:
+		return 1
+	}
+	return 2
 }
 
 func upgradeColumnChanges(finding *pluginPb.AssessTables_TableFinding, table upgradeTablePair) []upgradeColumnChange {
@@ -219,7 +242,20 @@ func upgradeColumnChanges(finding *pluginPb.AssessTables_TableFinding, table upg
 		}
 		changes = append(changes, change)
 	}
+	slices.SortStableFunc(changes, func(a, b upgradeColumnChange) int {
+		return cmp.Or(cmp.Compare(upgradeColumnChangeRank(a), upgradeColumnChangeRank(b)), strings.Compare(a.Column, b.Column))
+	})
 	return changes
+}
+
+func upgradeColumnChangeRank(change upgradeColumnChange) int {
+	switch {
+	case change.Kind == upgradeColumnRemoved || upgradeSafeModeBlocker(change) != "":
+		return 0
+	case change.Kind == upgradeColumnAdded:
+		return 1
+	}
+	return 2
 }
 
 func upgradeTableColumn(table *schema.Table, columnName string) *schema.Column {
@@ -353,13 +389,26 @@ func upgradeNotFullyAssessedTables(r upgradeReport) int {
 	return notAssessed
 }
 
+func upgradeEvidenceDiffers(evidence []*pluginPb.AssessTables_Evidence) bool {
+	return slices.ContainsFunc(evidence, func(e *pluginPb.AssessTables_Evidence) bool { return e.Before != e.After })
+}
+
 func upgradeOutputDiffers(comparisons []*pluginPb.AssessTables_TableFinding) bool {
-	differs := func(e *pluginPb.AssessTables_Evidence) bool { return e.Before != e.After }
 	return slices.ContainsFunc(comparisons, func(finding *pluginPb.AssessTables_TableFinding) bool {
-		return slices.ContainsFunc(finding.Evidence, differs) || slices.ContainsFunc(finding.Columns, func(column *pluginPb.AssessTables_ColumnFinding) bool {
-			return slices.ContainsFunc(column.Evidence, differs)
+		return upgradeEvidenceDiffers(finding.Evidence) || slices.ContainsFunc(finding.Columns, func(column *pluginPb.AssessTables_ColumnFinding) bool {
+			return upgradeEvidenceDiffers(column.Evidence)
 		})
 	})
+}
+
+func upgradeDiffersFirst(aDiffers, bDiffers bool) int {
+	switch {
+	case aDiffers == bDiffers:
+		return 0
+	case aDiffers:
+		return -1
+	}
+	return 1
 }
 
 func upgradeVerdict(r upgradeReport, impacts []upgradeTableImpact, comparisons []*pluginPb.AssessTables_TableFinding, migrateMode specs.MigrateMode) (string, *color.Color) {
@@ -399,25 +448,50 @@ func upgradeSummary(r upgradeReport, impacts []upgradeTableImpact, migrateMode s
 		}
 	}
 	var parts []string
-	for _, part := range []struct {
-		count            int
-		singular, plural string
-	}{
-		{failing, "table needs a manual migration", "tables need a manual migration"},
-		{lossy, "table will be recreated, deleting existing rows", "tables will be recreated, deleting existing rows"},
-		{changed, "changed table", "changed tables"},
-		{added, "new table", "new tables"},
-		{len(r.RemovedTables), "removed table", "removed tables"},
-		{upgradeNotFullyAssessedTables(r), "table not fully assessed", "tables not fully assessed"},
+	for _, part := range []string{
+		upgradeCount(len(r.RemovedTables), "removed table", "removed tables"),
+		upgradeCount(failing, "table needs a manual migration", "tables need a manual migration"),
+		upgradeCount(lossy, "table will be recreated, deleting existing rows", "tables will be recreated, deleting existing rows"),
+		upgradeCount(changed, "changed table", "changed tables"),
+		upgradeCount(added, "new table", "new tables"),
+		upgradeCount(upgradeNotFullyAssessedTables(r), "table not fully assessed", "tables not fully assessed"),
 	} {
-		switch {
-		case part.count == 1:
-			parts = append(parts, "1 "+part.singular)
-		case part.count > 1:
-			parts = append(parts, fmt.Sprintf("%d %s", part.count, part.plural))
+		if part != "" {
+			parts = append(parts, part)
 		}
 	}
 	return strings.Join(parts, ", ")
+}
+
+func upgradeCount(count int, singular, plural string) string {
+	switch {
+	case count == 1:
+		return "1 " + singular
+	case count > 1:
+		return fmt.Sprintf("%d %s", count, plural)
+	}
+	return ""
+}
+
+func upgradeBreakingSummary(r upgradeReport, impacts []upgradeTableImpact, migrateMode specs.MigrateMode) string {
+	var parts []string
+	add := func(names []string, singular, plural string) {
+		if len(names) > 0 {
+			parts = append(parts, fmt.Sprintf("%s (%s)", upgradeCount(len(names), singular, plural), upgradeShortList(names)))
+		}
+	}
+	add(upgradeRemovedTableNames(r.RemovedTables), "removed table", "removed tables")
+	add(upgradeImpactNames(upgradeImpactsWithOutcome(impacts, migrateMode, upgradeOutcomeFails)), "table needs a manual migration", "tables need a manual migration")
+	add(upgradeImpactNames(upgradeImpactsWithOutcome(impacts, migrateMode, upgradeOutcomeDataLoss)), "table will be recreated, deleting existing rows", "tables will be recreated, deleting existing rows")
+	return strings.Join(parts, "; ")
+}
+
+func upgradeImpactNames(impacts []upgradeTableImpact) []string {
+	names := make([]string, len(impacts))
+	for i, impact := range impacts {
+		names[i] = impact.Name
+	}
+	return names
 }
 
 func upgradeAction(r upgradeReport, impacts []upgradeTableImpact, comparisons []*pluginPb.AssessTables_TableFinding, migrateMode specs.MigrateMode) (string, color.Attribute) {
@@ -433,7 +507,7 @@ func upgradeAction(r upgradeReport, impacts []upgradeTableImpact, comparisons []
 	}
 	switch {
 	case len(r.RemovedTables) > 0:
-		return "remove explicit selections and update dependent consumers.", color.FgYellow
+		return upgradeRemovedTablesAction(r), color.FgYellow
 	case upgradeHasCategory(impacts, pluginPb.AssessTables_CATEGORY_FILE_SCHEMA_CHANGED), upgradeOutputDiffers(comparisons):
 		return "review readers that combine old and new files.", color.FgYellow
 	case r.SourceUnknown || upgradeNotFullyAssessedTables(r) > 0:
@@ -448,15 +522,43 @@ func upgradeAction(r upgradeReport, impacts []upgradeTableImpact, comparisons []
 	return "no action needed.", color.FgGreen
 }
 
+func upgradeRemovedTablesAction(r upgradeReport) string {
+	var names []string
+	for _, table := range r.RemovedTables {
+		if table.SelectedBy == upgradeSelectedByName {
+			names = append(names, table.Name)
+		}
+	}
+	selections := slices.Clone(r.UnmatchedTablePatterns)
+	if len(names) > 0 {
+		selections = append(selections, upgradeShortList(names))
+	}
+	if len(selections) == 0 {
+		return "update dependent consumers; the removed tables stop syncing, and their existing data in the destination is kept but no longer updated."
+	}
+	return fmt.Sprintf("remove explicit selections (%s) and update dependent consumers.", strings.Join(selections, ", "))
+}
+
+func upgradeShortList(names []string) string {
+	if len(names) > 3 {
+		return fmt.Sprintf("%s and %d more", strings.Join(names[:3], ", "), len(names)-3)
+	}
+	return strings.Join(names, ", ")
+}
+
+func upgradeRemovedTableNames(tables []upgradeRemovedTable) []string {
+	names := make([]string, len(tables))
+	for i, table := range tables {
+		names[i] = table.Name
+	}
+	return names
+}
+
 func upgradeTableList(impacts []upgradeTableImpact) string {
 	if len(impacts) > 3 {
 		return fmt.Sprintf("these %d tables", len(impacts))
 	}
-	names := make([]string, len(impacts))
-	for i, impact := range impacts {
-		names[i] = impact.Name
-	}
-	return strings.Join(names, ", ")
+	return strings.Join(upgradeImpactNames(impacts), ", ")
 }
 
 func writeUpgradeChanges(b *strings.Builder, impacts []upgradeTableImpact, removedTables []string) {
@@ -468,7 +570,7 @@ func writeUpgradeChanges(b *strings.Builder, impacts []upgradeTableImpact, remov
 		tableWidth = max(tableWidth, len(impact.Name))
 		for _, change := range impact.Changes {
 			columnWidth = max(columnWidth, len(change.Column))
-			typeWidth = max(typeWidth, len([]rune(upgradeChangeType(change))))
+			typeWidth = max(typeWidth, min(len([]rune(upgradeChangeType(change))), upgradeMaxTypeWidth))
 		}
 	}
 	for _, table := range removedTables {
@@ -476,6 +578,9 @@ func writeUpgradeChanges(b *strings.Builder, impacts []upgradeTableImpact, remov
 	}
 
 	b.WriteString("\nChanges\n")
+	for _, table := range removedTables {
+		fmt.Fprintf(b, "  %s%s%s\n", bold.Sprint(table), strings.Repeat(" ", tableWidth-len(table)+3), upgradeRed.Sprint(upgradeRemovedTableText))
+	}
 	for _, impact := range impacts {
 		if impact.NewTable {
 			fmt.Fprintf(b, "  %s%s%s\n", bold.Sprint(impact.Name), strings.Repeat(" ", tableWidth-len(impact.Name)+3), upgradeGreen.Sprint("new table"))
@@ -483,9 +588,6 @@ func writeUpgradeChanges(b *strings.Builder, impacts []upgradeTableImpact, remov
 		}
 		b.WriteString("  " + bold.Sprint(impact.Name) + "\n")
 		writeUpgradeColumnChanges(b, impact, columnWidth, typeWidth)
-	}
-	for _, table := range removedTables {
-		fmt.Fprintf(b, "  %s%s%s\n", bold.Sprint(table), strings.Repeat(" ", tableWidth-len(table)+3), upgradeRed.Sprint(upgradeRemovedTableText))
 	}
 }
 
@@ -503,7 +605,7 @@ func writeUpgradeColumnChanges(b *strings.Builder, impact upgradeTableImpact, co
 		}
 		lineColor := upgradeChangeColor(impact, change)
 		changeType := upgradeChangeType(change)
-		line := fmt.Sprintf("%s %-*s   %s%s   %s", marker, columnWidth, change.Column, changeType, strings.Repeat(" ", typeWidth-len([]rune(changeType))), description)
+		line := fmt.Sprintf("%s %-*s   %s%s   %s", marker, columnWidth, change.Column, changeType, strings.Repeat(" ", max(typeWidth-len([]rune(changeType)), 0)), description)
 		b.WriteString("    " + lineColor.Sprint(line) + "\n")
 	}
 }
@@ -561,6 +663,9 @@ func groupUpgradeOutputComparisons(comparisons []*pluginPb.AssessTables_TableFin
 			add("", finding.TableName, finding.Evidence)
 		}
 	}
+	slices.SortStableFunc(groups, func(a, b *upgradeOutputComparisonGroup) int {
+		return upgradeDiffersFirst(upgradeEvidenceDiffers(a.evidence), upgradeEvidenceDiffers(b.evidence))
+	})
 	return groups
 }
 
@@ -655,7 +760,11 @@ func writeUpgradeNextSync(b *strings.Builder, impacts []upgradeTableImpact, conf
 			label += " (your config)"
 		}
 		b.WriteString("  " + bold.Sprint(label) + "\n")
-		for _, impact := range withOutcomes {
+		ordered := slices.Clone(withOutcomes)
+		slices.SortStableFunc(ordered, func(a, b upgradeTableImpact) int {
+			return cmp.Compare(upgradeOutcomeRank(a.Outcomes[mode.String()].Result), upgradeOutcomeRank(b.Outcomes[mode.String()].Result))
+		})
+		for _, impact := range ordered {
 			outcome := impact.Outcomes[mode.String()]
 			marker, lineColor := "✓", upgradeGreen
 			switch outcome.Result {
@@ -667,6 +776,16 @@ func writeUpgradeNextSync(b *strings.Builder, impacts []upgradeTableImpact, conf
 			b.WriteString("    " + lineColor.Sprintf("%s %-*s   %s", marker, tableWidth, impact.Name, outcome.Text) + "\n")
 		}
 	}
+}
+
+func upgradeOutcomeRank(result upgradeOutcomeResult) int {
+	switch result {
+	case upgradeOutcomeFails:
+		return 0
+	case upgradeOutcomeDataLoss:
+		return 1
+	}
+	return 2
 }
 
 func upgradeOutcomesMatch(impacts []upgradeTableImpact, a, b specs.MigrateMode) bool {

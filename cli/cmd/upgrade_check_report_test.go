@@ -2,6 +2,8 @@ package cmd
 
 import (
 	"bytes"
+	"fmt"
+	"strings"
 	"testing"
 
 	"github.com/apache/arrow-go/v18/arrow"
@@ -210,19 +212,19 @@ write_mode: overwrite-delete-stale | pk_mode: default | migrate_mode: safe
 REVIEW REQUIRED — 1 table needs a manual migration, 1 new table
 
 Changes
-  okta_policy_mappings   new table
   okta_policy_rules
     + policy_id    text    new column, part of the primary key (string)
     + actions      jsonb   new column (json)
     + conditions   jsonb   new column (json)
+  okta_policy_mappings   new table
 
 Next sync
   migrate_mode: safe (your config)
-    ✓ okta_policy_mappings   created
     ✗ okta_policy_rules      fails: safe mode cannot change a primary key
-  migrate_mode: forced
     ✓ okta_policy_mappings   created
+  migrate_mode: forced
     ! okta_policy_rules      dropped and recreated, existing rows deleted
+    ✓ okta_policy_mappings   created
 
 Action: migrate okta_policy_rules manually before upgrading, or switch to migrate_mode: forced and accept losing its rows.
 This check only previews the changes. It does not migrate, write, delete or upload anything.
@@ -237,16 +239,16 @@ write_mode: append | pk_mode: default | migrate_mode: safe
 AUTOMATICALLY MIGRATABLE — 1 changed table, 1 new table
 
 Changes
-  okta_policy_mappings   new table
   okta_policy_rules
-    + policy_id    text    new column (string)
     + actions      jsonb   new column (json)
     + conditions   jsonb   new column (json)
+    + policy_id    text    new column (string)
+  okta_policy_mappings   new table
 
 Next sync
   migrate_mode: safe (your config)
-    ✓ okta_policy_mappings   created
     ✓ okta_policy_rules      migrated in place
+    ✓ okta_policy_mappings   created
   migrate_mode: forced — same as safe
 
 Action: use safe migration.
@@ -257,12 +259,15 @@ This check only previews the changes. It does not migrate, write, delete or uplo
 		{
 			name: "removed tables are sorted, with unknown tables and a source listed with a connection",
 			report: upgradeReport{
-				SourceName:    "gcp",
-				FromVersion:   "v22.1.2",
-				ToVersion:     "v23.0.0",
-				SourceGaps:    []string{"gcp v23.0.0: tables were listed with a connection (metadata only, no rows read)"},
-				RemovedTables: []string{"gcp_aiplatform_specialistpool_locations", "gcp_aiplatform_specialist_pools"},
-				Destination:   postgresqlDestinationSpec(specs.WriteModeOverwriteDeleteStale, specs.MigrateModeSafe),
+				SourceName:  "gcp",
+				FromVersion: "v22.1.2",
+				ToVersion:   "v23.0.0",
+				SourceGaps:  []string{"gcp v23.0.0: tables were listed with a connection (metadata only, no rows read)"},
+				RemovedTables: []upgradeRemovedTable{
+					{Name: "gcp_aiplatform_specialistpool_locations", SelectedBy: upgradeSelectedByName},
+					{Name: "gcp_aiplatform_specialist_pools", SelectedBy: upgradeSelectedByName},
+				},
+				Destination: postgresqlDestinationSpec(specs.WriteModeOverwriteDeleteStale, specs.MigrateModeSafe),
 				Findings: []*pluginPb.AssessTables_TableFinding{
 					{TableName: "gcp_storage_buckets", Category: pluginPb.AssessTables_CATEGORY_UNKNOWN, IncompleteCoverageReason: "nested types not assessed"},
 					{TableName: "gcp_compute_instances", Category: pluginPb.AssessTables_CATEGORY_UNKNOWN, IncompleteCoverageReason: destinationNoAssessmentReason},
@@ -281,7 +286,7 @@ Coverage gaps
   gcp_compute_instances: destination version does not support assessment
   gcp_storage_buckets: nested types not assessed
 
-Action: remove explicit selections and update dependent consumers.
+Action: remove explicit selections (gcp_aiplatform_specialist_pools, gcp_aiplatform_specialistpool_locations) and update dependent consumers.
 This check only previews the changes. It does not migrate, write, delete or upload anything.
 
 `,
@@ -538,7 +543,7 @@ func TestRenderUpgradeReportWithColor(t *testing.T) {
 			name: "removed tables, coverage gaps and file changes",
 			report: upgradeReport{
 				SourceName: "gcp", FromVersion: "v22.1.2", ToVersion: "v23.0.0", Destination: s3DestinationSpec(),
-				RemovedTables: []string{"gcp_removed"},
+				RemovedTables: []upgradeRemovedTable{{Name: "gcp_removed", SelectedBy: upgradeSelectedByPattern}},
 				SourceGaps:    []string{"gcp v23.0.0: tables were listed with a connection (metadata only, no rows read)"},
 				Findings: []*pluginPb.AssessTables_TableFinding{{
 					TableName: "gcp_buckets",
@@ -547,11 +552,11 @@ func TestRenderUpgradeReportWithColor(t *testing.T) {
 				}},
 			},
 			contains: []string{
-				"\x1b[33mSELECTED TABLES REMOVED — 1 changed table, 1 removed table\x1b[0m\n",
+				"\x1b[33mSELECTED TABLES REMOVED — 1 removed table, 1 changed table\x1b[0m\n",
 				"    \x1b[33m- created_on   INT64   column removed\x1b[0m\n",
 				"  \x1b[1mgcp_removed\x1b[22m   \x1b[31mremoved table, the new source version no longer provides it\x1b[0m\n",
 				"  \x1b[33mgcp v23.0.0: tables were listed with a connection (metadata only, no rows read)\x1b[0m\n",
-				"\x1b[1;33mAction: remove explicit selections and update dependent consumers.\x1b[22;0m\n",
+				"\x1b[1;33mAction: update dependent consumers; the removed tables stop syncing, and their existing data in the destination is kept but no longer updated.\x1b[22;0m\n",
 			},
 		},
 		{
@@ -582,6 +587,207 @@ func TestRenderUpgradeReportWithColor(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestUpgradeRemovedTablesAction(t *testing.T) {
+	const stopSyncing = "update dependent consumers; the removed tables stop syncing, and their existing data in the destination is kept but no longer updated."
+	byName := func(name string) upgradeRemovedTable {
+		return upgradeRemovedTable{Name: name, SelectedBy: upgradeSelectedByName}
+	}
+	cases := []struct {
+		name   string
+		report upgradeReport
+		want   string
+	}{
+		{
+			name:   "exact name",
+			report: upgradeReport{RemovedTables: []upgradeRemovedTable{byName("gcp_firebaseappcheck_safety_net_configs")}},
+			want:   "remove explicit selections (gcp_firebaseappcheck_safety_net_configs) and update dependent consumers.",
+		},
+		{
+			name:   "wildcard",
+			report: upgradeReport{RemovedTables: []upgradeRemovedTable{{Name: "gcp_firebaseappcheck_safety_net_configs", SelectedBy: upgradeSelectedByPattern}}},
+			want:   stopSyncing,
+		},
+		{
+			name: "glob prefix",
+			report: upgradeReport{RemovedTables: []upgradeRemovedTable{
+				{Name: "aws_ec2_removed", SelectedBy: upgradeSelectedByPattern},
+				{Name: "aws_ec2_old", SelectedBy: upgradeSelectedByPattern},
+			}},
+			want: stopSyncing,
+		},
+		{
+			name: "glob prefix with no match in the new version",
+			report: upgradeReport{
+				RemovedTables:          []upgradeRemovedTable{{Name: "aws_iam_old", SelectedBy: upgradeSelectedByPattern}},
+				UnmatchedTablePatterns: []string{"aws_iam_*"},
+			},
+			want: "remove explicit selections (aws_iam_*) and update dependent consumers.",
+		},
+		{
+			name:   "dependent table",
+			report: upgradeReport{RemovedTables: []upgradeRemovedTable{{Name: "aws_s3_bucket_grants", SelectedBy: upgradeSelectedAsDependent}}},
+			want:   stopSyncing,
+		},
+		{
+			name: "mix",
+			report: upgradeReport{RemovedTables: []upgradeRemovedTable{
+				byName("aws_ec2_removed"),
+				{Name: "aws_ec2_old", SelectedBy: upgradeSelectedByPattern},
+				{Name: "aws_s3_bucket_grants", SelectedBy: upgradeSelectedAsDependent},
+			}},
+			want: "remove explicit selections (aws_ec2_removed) and update dependent consumers.",
+		},
+		{
+			name: "many exact names",
+			report: upgradeReport{
+				RemovedTables:          []upgradeRemovedTable{byName("t1"), byName("t2"), byName("t3"), byName("t4")},
+				UnmatchedTablePatterns: []string{"t_*"},
+			},
+			want: "remove explicit selections (t_*, t1, t2, t3 and 1 more) and update dependent consumers.",
+		},
+		{
+			name: "unmatched patterns are never shortened",
+			report: upgradeReport{
+				RemovedTables:          []upgradeRemovedTable{byName("t1"), byName("t2"), byName("t3")},
+				UnmatchedTablePatterns: []string{"a_*", "b_*", "c_*", "d_*"},
+			},
+			want: "remove explicit selections (a_*, b_*, c_*, d_*, t1, t2, t3) and update dependent consumers.",
+		},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			tc.report.Destination = postgresqlDestinationSpec(specs.WriteModeOverwriteDeleteStale, specs.MigrateModeSafe)
+			action, _ := upgradeAction(tc.report, upgradeTableImpacts(tc.report), nil, specs.MigrateModeSafe)
+			require.Equal(t, tc.want, action)
+			require.Equal(t, tc.want, upgradeReportToJSON(tc.report).Action)
+		})
+	}
+}
+
+func TestRenderUpgradeReportCapsTypeColumnWidth(t *testing.T) {
+	setColorOutput(t, false)
+	report := upgradeReport{
+		SourceName: "aws", FromVersion: "v1.0.0", ToVersion: "v2.0.0", Destination: s3DestinationSpec(),
+		Findings: []*pluginPb.AssessTables_TableFinding{{
+			TableName: "aws_ec2_instances",
+			Category:  pluginPb.AssessTables_CATEGORY_FILE_SCHEMA_CHANGED,
+			Columns: []*pluginPb.AssessTables_ColumnFinding{
+				{ColumnName: "cpu", Category: pluginPb.AssessTables_CATEGORY_FILE_SCHEMA_CHANGED, OldType: "optional float", NewType: "optional int64 (Int(bitWidth=64, isSigned=true))"},
+				{ColumnName: "name", Category: pluginPb.AssessTables_CATEGORY_FILE_SCHEMA_CHANGED, NewType: "optional byte_array (String)"},
+			},
+		}},
+	}
+
+	var out bytes.Buffer
+	require.NoError(t, renderUpgradeReport(&out, report))
+
+	require.Contains(t, out.String(), "    ~ cpu    optional float → optional int64 (Int(bitWidth=64, isSigned=true))   type changed\n")
+	require.Contains(t, out.String(), "    + name   optional byte_array (String)"+strings.Repeat(" ", upgradeMaxTypeWidth-len("optional byte_array (String)"))+"   new column\n")
+}
+
+func upgradeOrderingReport(extraChangedTables int) upgradeReport {
+	added := func(column string) *pluginPb.AssessTables_ColumnFinding {
+		return &pluginPb.AssessTables_ColumnFinding{ColumnName: column, Category: pluginPb.AssessTables_CATEGORY_AUTOMATICALLY_MIGRATABLE, NewType: "text"}
+	}
+	findings := make([]*pluginPb.AssessTables_TableFinding, 0, 3+extraChangedTables)
+	findings = append(findings,
+		&pluginPb.AssessTables_TableFinding{TableName: "a_new", Category: pluginPb.AssessTables_CATEGORY_AUTOMATICALLY_MIGRATABLE, Columns: []*pluginPb.AssessTables_ColumnFinding{added("id")}},
+		&pluginPb.AssessTables_TableFinding{TableName: "b_changed", Category: pluginPb.AssessTables_CATEGORY_AUTOMATICALLY_MIGRATABLE, Columns: []*pluginPb.AssessTables_ColumnFinding{added("b")}},
+		&pluginPb.AssessTables_TableFinding{
+			TableName: "c_manual",
+			Category:  pluginPb.AssessTables_CATEGORY_MANUAL_MIGRATION_REQUIRED,
+			Columns: []*pluginPb.AssessTables_ColumnFinding{
+				added("a_added"),
+				{ColumnName: "z_type", Category: pluginPb.AssessTables_CATEGORY_MANUAL_MIGRATION_REQUIRED, OldType: "text", NewType: "jsonb"},
+				{ColumnName: "m_removed", Category: pluginPb.AssessTables_CATEGORY_AUTOMATICALLY_MIGRATABLE, OldType: "text"},
+			},
+		},
+	)
+	for i := range extraChangedTables {
+		findings = append(findings, &pluginPb.AssessTables_TableFinding{TableName: fmt.Sprintf("d_changed_%02d", i), Category: pluginPb.AssessTables_CATEGORY_AUTOMATICALLY_MIGRATABLE, Columns: []*pluginPb.AssessTables_ColumnFinding{added("d")}})
+	}
+	return upgradeReport{
+		SourceName: "gcp", FromVersion: "v23.4.1", ToVersion: "v24.1.1",
+		Destination:   postgresqlDestinationSpec(specs.WriteModeOverwriteDeleteStale, specs.MigrateModeSafe),
+		RemovedTables: []upgradeRemovedTable{{Name: "z_removed", SelectedBy: upgradeSelectedByPattern}},
+		Tables:        map[string]upgradeTablePair{"a_new": {To: testTable("a_new")}},
+		Findings:      findings,
+	}
+}
+
+func TestRenderUpgradeReportPutsBreakingChangesFirst(t *testing.T) {
+	setColorOutput(t, false)
+	var out bytes.Buffer
+	require.NoError(t, renderUpgradeReport(&out, upgradeOrderingReport(0)))
+
+	require.Contains(t, out.String(), `
+Changes
+  z_removed   removed table, the new source version no longer provides it
+  c_manual
+    - m_removed   text           column removed
+    ~ z_type      text → jsonb   type changed
+    + a_added     text           new column
+  b_changed
+    + b           text           new column
+  a_new       new table
+
+Next sync
+  migrate_mode: safe (your config)
+    ✗ c_manual    fails: safe mode cannot change a column type
+    ✓ b_changed   migrated in place
+    ✓ a_new       created
+  migrate_mode: forced
+    ! c_manual    dropped and recreated, existing rows deleted
+    ✓ b_changed   migrated in place
+    ✓ a_new       created
+`)
+	require.NotContains(t, out.String(), "Breaking:")
+
+	report := upgradeReportToJSON(upgradeOrderingReport(0))
+	require.Equal(t, []string{"c_manual", "b_changed", "a_new"}, upgradeImpactNames(report.Tables))
+	require.Equal(t, "m_removed", report.Tables[0].Changes[0].Column)
+}
+
+func TestRenderUpgradeReportBreakingSummary(t *testing.T) {
+	setColorOutput(t, false)
+	var out bytes.Buffer
+	require.NoError(t, renderUpgradeReport(&out, upgradeOrderingReport(upgradeLongChangeList)))
+
+	require.Contains(t, out.String(), "REVIEW REQUIRED — 1 removed table, 1 table needs a manual migration, 11 changed tables, 1 new table\nBreaking: 1 removed table (z_removed); 1 table needs a manual migration (c_manual)\n\nChanges\n")
+
+	report := upgradeOrderingReport(upgradeLongChangeList)
+	report.Findings = report.Findings[3:]
+	out.Reset()
+	require.NoError(t, renderUpgradeReport(&out, report))
+	require.Contains(t, out.String(), "Breaking: 1 removed table (z_removed)\n")
+
+	report.RemovedTables = nil
+	out.Reset()
+	require.NoError(t, renderUpgradeReport(&out, report))
+	require.NotContains(t, out.String(), "Breaking:")
+}
+
+func TestUpgradeOutputComparisonsPutDifferencesFirst(t *testing.T) {
+	setColorOutput(t, false)
+	evidence := func(after string) []*pluginPb.AssessTables_Evidence {
+		return []*pluginPb.AssessTables_Evidence{{SyntheticValue: "1", Before: "1", After: after}}
+	}
+	report := upgradeReport{
+		SourceName: "aws", FromVersion: "v1.0.0", ToVersion: "v2.0.0", Destination: s3DestinationSpec(),
+		Findings: []*pluginPb.AssessTables_TableFinding{
+			{TableName: "a_same", Category: pluginPb.AssessTables_CATEGORY_NO_CHANGE, Columns: []*pluginPb.AssessTables_ColumnFinding{{ColumnName: "c", Category: pluginPb.AssessTables_CATEGORY_NO_CHANGE, OldType: "int64", NewType: "string", Evidence: evidence("1")}}},
+			{TableName: "b_differs", Category: pluginPb.AssessTables_CATEGORY_NO_CHANGE, Columns: []*pluginPb.AssessTables_ColumnFinding{{ColumnName: "c", Category: pluginPb.AssessTables_CATEGORY_NO_CHANGE, OldType: "int64", NewType: "json", Evidence: evidence(`"1"`)}}},
+		},
+	}
+
+	var out bytes.Buffer
+	require.NoError(t, renderUpgradeReport(&out, report))
+	require.Less(t, strings.Index(out.String(), "b_differs.c"), strings.Index(out.String(), "a_same.c"))
+
+	comparisons := upgradeReportToJSON(report).OutputComparisons
+	require.Equal(t, []string{"b_differs", "a_same"}, []string{comparisons[0].Table, comparisons[1].Table})
 }
 
 func TestUpgradeTablesByName(t *testing.T) {
@@ -630,7 +836,9 @@ func TestUpgradeExitCode(t *testing.T) {
 		{name: "source listed with a connection", report: upgradeReport{Destination: postgresql, SourceGaps: []string{"listed with a connection"}}, want: 0},
 		{name: "manual migration", report: datadogTagsReport(postgresql), want: 3},
 		{name: "manual migration in forced mode", report: datadogTagsReport(postgresqlDestinationSpec(specs.WriteModeOverwriteDeleteStale, specs.MigrateModeForced)), want: 3},
-		{name: "selected tables removed", report: upgradeReport{Destination: postgresql, RemovedTables: []string{"t"}}, want: 3},
+		{name: "selected tables removed", report: upgradeReport{Destination: postgresql, RemovedTables: []upgradeRemovedTable{{Name: "t", SelectedBy: upgradeSelectedByName}}}, want: 3},
+		{name: "tables removed from a wildcard selection", report: upgradeReport{Destination: postgresql, RemovedTables: []upgradeRemovedTable{{Name: "t", SelectedBy: upgradeSelectedByPattern}}}, want: 3},
+		{name: "dependent tables removed", report: upgradeReport{Destination: postgresql, RemovedTables: []upgradeRemovedTable{{Name: "t", SelectedBy: upgradeSelectedAsDependent}}}, want: 3},
 		{name: "file schema changed", report: upgradeReport{Destination: s3DestinationSpec(), Findings: []*pluginPb.AssessTables_TableFinding{{TableName: "t", Category: pluginPb.AssessTables_CATEGORY_FILE_SCHEMA_CHANGED}}}, want: 3},
 		{name: "output differs", report: upgradeReport{Destination: s3DestinationSpec(), Findings: []*pluginPb.AssessTables_TableFinding{{
 			TableName: "t",
@@ -639,7 +847,7 @@ func TestUpgradeExitCode(t *testing.T) {
 		}}}, want: 3},
 		{name: "unknown destination", report: upgradeReport{Destination: postgresql, Findings: []*pluginPb.AssessTables_TableFinding{{TableName: "t", Category: pluginPb.AssessTables_CATEGORY_UNKNOWN}}}, want: 4},
 		{name: "incomplete coverage", report: upgradeReport{Destination: postgresql, Findings: []*pluginPb.AssessTables_TableFinding{{TableName: "t", Category: pluginPb.AssessTables_CATEGORY_AUTOMATICALLY_MIGRATABLE, IncompleteCoverageReason: "nested types not assessed"}}}, want: 4},
-		{name: "unknown wins over action needed", report: upgradeReport{Destination: postgresql, RemovedTables: []string{"t"}, Findings: []*pluginPb.AssessTables_TableFinding{{TableName: "u", Category: pluginPb.AssessTables_CATEGORY_UNKNOWN}}}, want: 4},
+		{name: "unknown wins over action needed", report: upgradeReport{Destination: postgresql, RemovedTables: []upgradeRemovedTable{{Name: "t", SelectedBy: upgradeSelectedByPattern}}, Findings: []*pluginPb.AssessTables_TableFinding{{TableName: "u", Category: pluginPb.AssessTables_CATEGORY_UNKNOWN}}}, want: 4},
 		{name: "source tables could not be listed", report: upgradeReport{SourceUnknown: true}, want: 4},
 	}
 	for _, tc := range cases {

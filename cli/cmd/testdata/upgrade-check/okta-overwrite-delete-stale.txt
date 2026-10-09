@@ -3,19 +3,19 @@ write_mode: overwrite-delete-stale | pk_mode: default | migrate_mode: safe
 REVIEW REQUIRED — 1 table needs a manual migration, 1 new table
 
 Changes
-  okta_policy_mappings   new table
   okta_policy_rules
     + policy_id    text    new column, part of the primary key (string)
     + actions      jsonb   new column (json)
     + conditions   jsonb   new column (json)
+  okta_policy_mappings   new table
 
 Next sync
   migrate_mode: safe (your config)
-    ✓ okta_policy_mappings   created
     ✗ okta_policy_rules      fails: safe mode cannot change a primary key
-  migrate_mode: forced
     ✓ okta_policy_mappings   created
+  migrate_mode: forced
     ! okta_policy_rules      dropped and recreated, existing rows deleted
+    ✓ okta_policy_mappings   created
 
 Action: migrate okta_policy_rules manually before upgrading, or switch to migrate_mode: forced and accept losing its rows.
 This check only previews the changes. It does not migrate, write, delete or upload anything.

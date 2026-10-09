@@ -29,20 +29,6 @@
       "summary": "1 table needs a manual migration, 1 new table",
       "tables": [
         {
-          "name": "okta_policy_mappings",
-          "new_table": true,
-          "outcomes": {
-            "forced": {
-              "result": "applied",
-              "text": "created"
-            },
-            "safe": {
-              "result": "applied",
-              "text": "created"
-            }
-          }
-        },
-        {
           "name": "okta_policy_rules",
           "changes": [
             {
@@ -73,6 +59,20 @@
             "safe": {
               "result": "fails",
               "text": "fails: safe mode cannot change a primary key"
+            }
+          }
+        },
+        {
+          "name": "okta_policy_mappings",
+          "new_table": true,
+          "outcomes": {
+            "forced": {
+              "result": "applied",
+              "text": "created"
+            },
+            "safe": {
+              "result": "applied",
+              "text": "created"
             }
           }
         }
