@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.6.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-file-v5.6.0...plugins-destination-file-v5.6.1) (2026-10-09)
+
+
+### Bug Fixes
+
+* Correct Parquet option defaults in destination docs ([#23507](https://github.com/cloudquery/cloudquery/issues/23507)) ([7213d7d](https://github.com/cloudquery/cloudquery/commit/7213d7dcf296d66f8fc7576d5ddbc6e87b7e4594))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.9.0 ([#23513](https://github.com/cloudquery/cloudquery/issues/23513)) ([6ad2890](https://github.com/cloudquery/cloudquery/commit/6ad2890f92ae100a15c3acdbf45e61abdf64ffed))
+
 ## [5.6.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-file-v5.5.10...plugins-destination-file-v5.6.0) (2026-10-08)
 
 
