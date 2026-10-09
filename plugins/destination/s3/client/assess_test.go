@@ -132,9 +132,9 @@ func TestAssessTablesParquetSchemaChange(t *testing.T) {
 		Category:  plugin.AssessCategoryFileSchemaChanged,
 		Columns: []plugin.ColumnFinding{
 			{ColumnName: "created_on", Category: plugin.AssessCategoryFileSchemaChanged, OldType: "optional byte_array (String)"},
-			{ColumnName: "cloudflare_branding", Category: plugin.AssessCategoryFileSchemaChanged, NewType: "optional boolean"},
-			{ColumnName: "validation_errors", Category: plugin.AssessCategoryFileSchemaChanged, NewType: "optional byte_array (String)"},
-			{ColumnName: "validation_records", Category: plugin.AssessCategoryFileSchemaChanged, NewType: "optional byte_array (String)"},
+			{ColumnName: "cloudflare_branding", Category: plugin.AssessCategoryAutomaticallyMigratable, NewType: "optional boolean"},
+			{ColumnName: "validation_errors", Category: plugin.AssessCategoryAutomaticallyMigratable, NewType: "optional byte_array (String)"},
+			{ColumnName: "validation_records", Category: plugin.AssessCategoryAutomaticallyMigratable, NewType: "optional byte_array (String)"},
 		},
 	}, assessTable(t, filetypes.FormatTypeParquet, cloudflareCertificatePacks()))
 }

@@ -84,7 +84,7 @@
             "optional",
             "repeated"
           ],
-          "description": "Root repetition",
+          "description": "Root repetition. This option is kept for compatibility. Since arrow-go v18.6.0, the Parquet writer does not write the root repetition. The value has no effect on the file.",
           "default": "repeated"
         },
         "max_row_group_length": {
