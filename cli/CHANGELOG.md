@@ -5,6 +5,13 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.46.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.45.1...cli-v6.46.0) (2026-10-09)
+
+
+### Features
+
+* Support local, gRPC and Docker sources in `upgrade check` ([#23497](https://github.com/cloudquery/cloudquery/issues/23497)) ([a45a119](https://github.com/cloudquery/cloudquery/commit/a45a11980e480fcabdcbb501413c7f31149094cd))
+
 ## [6.45.1](https://github.com/cloudquery/cloudquery/compare/cli-v6.45.0...cli-v6.45.1) (2026-10-08)
 
 
