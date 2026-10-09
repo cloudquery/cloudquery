@@ -5,6 +5,13 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.47.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.46.1...cli-v6.47.0) (2026-10-09)
+
+
+### Features
+
+* Report additive file schema changes and short Parquet types in upgrade check ([#23506](https://github.com/cloudquery/cloudquery/issues/23506)) ([b84d718](https://github.com/cloudquery/cloudquery/commit/b84d718a41478b5236fbc898ba5d88b59eafb8b8))
+
 ## [6.46.1](https://github.com/cloudquery/cloudquery/compare/cli-v6.46.0...cli-v6.46.1) (2026-10-09)
 
 
