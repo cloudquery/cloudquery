@@ -29,28 +29,8 @@
       "summary": "1 changed table, 1 new table",
       "tables": [
         {
-          "name": "okta_policy_mappings",
-          "new_table": true,
-          "outcomes": {
-            "forced": {
-              "result": "applied",
-              "text": "created"
-            },
-            "safe": {
-              "result": "applied",
-              "text": "created"
-            }
-          }
-        },
-        {
           "name": "okta_policy_rules",
           "changes": [
-            {
-              "kind": "added",
-              "column": "policy_id",
-              "new_type": "text",
-              "new_source_type": "string"
-            },
             {
               "kind": "added",
               "column": "actions",
@@ -62,6 +42,12 @@
               "column": "conditions",
               "new_type": "jsonb",
               "new_source_type": "json"
+            },
+            {
+              "kind": "added",
+              "column": "policy_id",
+              "new_type": "text",
+              "new_source_type": "string"
             }
           ],
           "outcomes": {
@@ -72,6 +58,20 @@
             "safe": {
               "result": "applied",
               "text": "migrated in place"
+            }
+          }
+        },
+        {
+          "name": "okta_policy_mappings",
+          "new_table": true,
+          "outcomes": {
+            "forced": {
+              "result": "applied",
+              "text": "created"
+            },
+            "safe": {
+              "result": "applied",
+              "text": "created"
             }
           }
         }

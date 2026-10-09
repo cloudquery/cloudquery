@@ -169,7 +169,7 @@ func TestRenderUpgradeReportsJSON(t *testing.T) {
 		},
 		"destination": {"name": "postgresql", "registry": "cloudquery", "path": "cloudquery/postgresql", "version": "v8.14.0", "write_mode": "append", "pk_mode": "default", "migrate_mode": "safe"},
 		"verdict": "SELECTED TABLES REMOVED",
-		"summary": "1 changed table, 1 removed table",
+		"summary": "1 removed table, 1 changed table",
 		"tables": [{
 			"name": "okta_policy_rules",
 			"changes": [{"kind": "added", "column": "policy_id", "new_type": "text"}],

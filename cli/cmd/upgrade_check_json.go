@@ -3,6 +3,7 @@ package cmd
 import (
 	"encoding/json"
 	"io"
+	"slices"
 
 	"github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0"
 	pluginPb "github.com/cloudquery/plugin-pb-go/pb/plugin/v3"
@@ -136,7 +137,14 @@ func upgradeOutputComparisonsToJSON(comparisons []*pluginPb.AssessTables_TableFi
 			out = append(out, upgradeOutputComparisonJSON{Table: finding.TableName, Evidence: upgradeEvidenceToJSON(finding.Evidence)})
 		}
 	}
+	slices.SortStableFunc(out, func(a, b upgradeOutputComparisonJSON) int {
+		return upgradeDiffersFirst(upgradeEvidenceJSONDiffers(a.Evidence), upgradeEvidenceJSONDiffers(b.Evidence))
+	})
 	return out
+}
+
+func upgradeEvidenceJSONDiffers(evidence []upgradeEvidenceJSON) bool {
+	return slices.ContainsFunc(evidence, func(e upgradeEvidenceJSON) bool { return e.Before != e.After })
 }
 
 func upgradeEvidenceToJSON(evidence []*pluginPb.AssessTables_Evidence) []upgradeEvidenceJSON {

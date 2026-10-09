@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"bytes"
+	"fmt"
 	"strings"
 	"testing"
 
@@ -211,19 +212,19 @@ write_mode: overwrite-delete-stale | pk_mode: default | migrate_mode: safe
 REVIEW REQUIRED — 1 table needs a manual migration, 1 new table
 
 Changes
-  okta_policy_mappings   new table
   okta_policy_rules
     + policy_id    text    new column, part of the primary key (string)
     + actions      jsonb   new column (json)
     + conditions   jsonb   new column (json)
+  okta_policy_mappings   new table
 
 Next sync
   migrate_mode: safe (your config)
-    ✓ okta_policy_mappings   created
     ✗ okta_policy_rules      fails: safe mode cannot change a primary key
-  migrate_mode: forced
     ✓ okta_policy_mappings   created
+  migrate_mode: forced
     ! okta_policy_rules      dropped and recreated, existing rows deleted
+    ✓ okta_policy_mappings   created
 
 Action: migrate okta_policy_rules manually before upgrading, or switch to migrate_mode: forced and accept losing its rows.
 This check only previews the changes. It does not migrate, write, delete or upload anything.
@@ -238,16 +239,16 @@ write_mode: append | pk_mode: default | migrate_mode: safe
 AUTOMATICALLY MIGRATABLE — 1 changed table, 1 new table
 
 Changes
-  okta_policy_mappings   new table
   okta_policy_rules
-    + policy_id    text    new column (string)
     + actions      jsonb   new column (json)
     + conditions   jsonb   new column (json)
+    + policy_id    text    new column (string)
+  okta_policy_mappings   new table
 
 Next sync
   migrate_mode: safe (your config)
-    ✓ okta_policy_mappings   created
     ✓ okta_policy_rules      migrated in place
+    ✓ okta_policy_mappings   created
   migrate_mode: forced — same as safe
 
 Action: use safe migration.
@@ -551,7 +552,7 @@ func TestRenderUpgradeReportWithColor(t *testing.T) {
 				}},
 			},
 			contains: []string{
-				"\x1b[33mSELECTED TABLES REMOVED — 1 changed table, 1 removed table\x1b[0m\n",
+				"\x1b[33mSELECTED TABLES REMOVED — 1 removed table, 1 changed table\x1b[0m\n",
 				"    \x1b[33m- created_on   INT64   column removed\x1b[0m\n",
 				"  \x1b[1mgcp_removed\x1b[22m   \x1b[31mremoved table, the new source version no longer provides it\x1b[0m\n",
 				"  \x1b[33mgcp v23.0.0: tables were listed with a connection (metadata only, no rows read)\x1b[0m\n",
@@ -676,6 +677,109 @@ func TestRenderUpgradeReportCapsTypeColumnWidth(t *testing.T) {
 
 	require.Contains(t, out.String(), "    ~ cpu    optional float → optional int64 (Int(bitWidth=64, isSigned=true))   type changed\n")
 	require.Contains(t, out.String(), "    + name   optional byte_array (String)"+strings.Repeat(" ", upgradeMaxTypeWidth-len("optional byte_array (String)"))+"   new column\n")
+}
+
+func upgradeOrderingReport(extraChangedTables int) upgradeReport {
+	added := func(column string) *pluginPb.AssessTables_ColumnFinding {
+		return &pluginPb.AssessTables_ColumnFinding{ColumnName: column, Category: pluginPb.AssessTables_CATEGORY_AUTOMATICALLY_MIGRATABLE, NewType: "text"}
+	}
+	findings := make([]*pluginPb.AssessTables_TableFinding, 0, 3+extraChangedTables)
+	findings = append(findings,
+		&pluginPb.AssessTables_TableFinding{TableName: "a_new", Category: pluginPb.AssessTables_CATEGORY_AUTOMATICALLY_MIGRATABLE, Columns: []*pluginPb.AssessTables_ColumnFinding{added("id")}},
+		&pluginPb.AssessTables_TableFinding{TableName: "b_changed", Category: pluginPb.AssessTables_CATEGORY_AUTOMATICALLY_MIGRATABLE, Columns: []*pluginPb.AssessTables_ColumnFinding{added("b")}},
+		&pluginPb.AssessTables_TableFinding{
+			TableName: "c_manual",
+			Category:  pluginPb.AssessTables_CATEGORY_MANUAL_MIGRATION_REQUIRED,
+			Columns: []*pluginPb.AssessTables_ColumnFinding{
+				added("a_added"),
+				{ColumnName: "z_type", Category: pluginPb.AssessTables_CATEGORY_MANUAL_MIGRATION_REQUIRED, OldType: "text", NewType: "jsonb"},
+				{ColumnName: "m_removed", Category: pluginPb.AssessTables_CATEGORY_AUTOMATICALLY_MIGRATABLE, OldType: "text"},
+			},
+		},
+	)
+	for i := range extraChangedTables {
+		findings = append(findings, &pluginPb.AssessTables_TableFinding{TableName: fmt.Sprintf("d_changed_%02d", i), Category: pluginPb.AssessTables_CATEGORY_AUTOMATICALLY_MIGRATABLE, Columns: []*pluginPb.AssessTables_ColumnFinding{added("d")}})
+	}
+	return upgradeReport{
+		SourceName: "gcp", FromVersion: "v23.4.1", ToVersion: "v24.1.1",
+		Destination:   postgresqlDestinationSpec(specs.WriteModeOverwriteDeleteStale, specs.MigrateModeSafe),
+		RemovedTables: []upgradeRemovedTable{{Name: "z_removed", SelectedBy: upgradeSelectedByPattern}},
+		Tables:        map[string]upgradeTablePair{"a_new": {To: testTable("a_new")}},
+		Findings:      findings,
+	}
+}
+
+func TestRenderUpgradeReportPutsBreakingChangesFirst(t *testing.T) {
+	setColorOutput(t, false)
+	var out bytes.Buffer
+	require.NoError(t, renderUpgradeReport(&out, upgradeOrderingReport(0)))
+
+	require.Contains(t, out.String(), `
+Changes
+  z_removed   removed table, the new source version no longer provides it
+  c_manual
+    - m_removed   text           column removed
+    ~ z_type      text → jsonb   type changed
+    + a_added     text           new column
+  b_changed
+    + b           text           new column
+  a_new       new table
+
+Next sync
+  migrate_mode: safe (your config)
+    ✗ c_manual    fails: safe mode cannot change a column type
+    ✓ b_changed   migrated in place
+    ✓ a_new       created
+  migrate_mode: forced
+    ! c_manual    dropped and recreated, existing rows deleted
+    ✓ b_changed   migrated in place
+    ✓ a_new       created
+`)
+	require.NotContains(t, out.String(), "Breaking:")
+
+	report := upgradeReportToJSON(upgradeOrderingReport(0))
+	require.Equal(t, []string{"c_manual", "b_changed", "a_new"}, upgradeImpactNames(report.Tables))
+	require.Equal(t, "m_removed", report.Tables[0].Changes[0].Column)
+}
+
+func TestRenderUpgradeReportBreakingSummary(t *testing.T) {
+	setColorOutput(t, false)
+	var out bytes.Buffer
+	require.NoError(t, renderUpgradeReport(&out, upgradeOrderingReport(upgradeLongChangeList)))
+
+	require.Contains(t, out.String(), "REVIEW REQUIRED — 1 removed table, 1 table needs a manual migration, 11 changed tables, 1 new table\nBreaking: 1 removed table (z_removed); 1 table needs a manual migration (c_manual)\n\nChanges\n")
+
+	report := upgradeOrderingReport(upgradeLongChangeList)
+	report.Findings = report.Findings[3:]
+	out.Reset()
+	require.NoError(t, renderUpgradeReport(&out, report))
+	require.Contains(t, out.String(), "Breaking: 1 removed table (z_removed)\n")
+
+	report.RemovedTables = nil
+	out.Reset()
+	require.NoError(t, renderUpgradeReport(&out, report))
+	require.NotContains(t, out.String(), "Breaking:")
+}
+
+func TestUpgradeOutputComparisonsPutDifferencesFirst(t *testing.T) {
+	setColorOutput(t, false)
+	evidence := func(after string) []*pluginPb.AssessTables_Evidence {
+		return []*pluginPb.AssessTables_Evidence{{SyntheticValue: "1", Before: "1", After: after}}
+	}
+	report := upgradeReport{
+		SourceName: "aws", FromVersion: "v1.0.0", ToVersion: "v2.0.0", Destination: s3DestinationSpec(),
+		Findings: []*pluginPb.AssessTables_TableFinding{
+			{TableName: "a_same", Category: pluginPb.AssessTables_CATEGORY_NO_CHANGE, Columns: []*pluginPb.AssessTables_ColumnFinding{{ColumnName: "c", Category: pluginPb.AssessTables_CATEGORY_NO_CHANGE, OldType: "int64", NewType: "string", Evidence: evidence("1")}}},
+			{TableName: "b_differs", Category: pluginPb.AssessTables_CATEGORY_NO_CHANGE, Columns: []*pluginPb.AssessTables_ColumnFinding{{ColumnName: "c", Category: pluginPb.AssessTables_CATEGORY_NO_CHANGE, OldType: "int64", NewType: "json", Evidence: evidence(`"1"`)}}},
+		},
+	}
+
+	var out bytes.Buffer
+	require.NoError(t, renderUpgradeReport(&out, report))
+	require.Less(t, strings.Index(out.String(), "b_differs.c"), strings.Index(out.String(), "a_same.c"))
+
+	comparisons := upgradeReportToJSON(report).OutputComparisons
+	require.Equal(t, []string{"b_differs", "a_same"}, []string{comparisons[0].Table, comparisons[1].Table})
 }
 
 func TestUpgradeTablesByName(t *testing.T) {
