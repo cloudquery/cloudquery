@@ -55,6 +55,8 @@ func TestRenderUpgradeReportsJSONMatchesText(t *testing.T) {
 				}},
 			},
 		},
+		{name: "file schema extended", report: k8sParquetReport("optional byte_array (String)")},
+		{name: "file schema changed with short types", report: semgrepParquetReport()},
 		{
 			name: "manual migration and removed tables",
 			report: upgradeReport{
@@ -190,6 +192,50 @@ func TestRenderUpgradeReportsJSON(t *testing.T) {
 		"action": "remove explicit selections (okta_removed) and update dependent consumers."
 	}]}`, out.String())
 	require.NotContains(t, out.String(), `\u003c`)
+}
+
+func TestRenderUpgradeReportsJSONFileSchemaExtended(t *testing.T) {
+	got := renderUpgradeReportJSON(t, k8sParquetReport("optional byte_array (String)"))
+
+	require.Equal(t, "FILE SCHEMA EXTENDED", got.Verdict)
+	require.Equal(t, "1 changed table, 1 new table", got.Summary)
+	require.Equal(t, "no action needed; new files add these columns and tables. Readers that match columns by position must be updated.", got.Action)
+	require.Equal(t, "s3", got.Destination.Name)
+	require.Empty(t, got.Tables[0].Outcomes)
+	require.Contains(t, got.Tables[0].Changes, upgradeColumnChange{
+		Kind:           upgradeColumnAdded,
+		Column:         "spec_taints",
+		NewType:        "list<string>",
+		NewParquetType: "optional group (List) {list: repeated group {element: optional byte_array (String)}}",
+		NewSourceType:  "list<string>",
+	})
+}
+
+func TestRenderUpgradeReportsJSONKeepsParquetTypes(t *testing.T) {
+	got := renderUpgradeReportJSON(t, semgrepParquetReport())
+
+	require.Equal(t, "FILE SCHEMA CHANGED", got.Verdict)
+	require.Equal(t, []upgradeColumnChange{
+		{
+			Kind: upgradeColumnChanged, Column: "categories",
+			OldType: "list<string>", NewType: "string",
+			OldParquetType: "optional group (List) {list: repeated group {element: optional byte_array (String)}}",
+			NewParquetType: "optional byte_array (String)",
+			OldSourceType:  "list<string>", NewSourceType: "string",
+		},
+		{
+			Kind: upgradeColumnChanged, Column: "id",
+			OldType: "double", NewType: "int64",
+			OldParquetType: "optional double",
+			NewParquetType: "optional int64 (Int(bitWidth=64, isSigned=true))",
+			OldSourceType:  "float64", NewSourceType: "int64",
+		},
+		{
+			Kind: upgradeColumnAdded, Column: "first_seen_at",
+			NewType:        "required timestamp (us, UTC)",
+			NewParquetType: "required int64 (Timestamp(isAdjustedToUTC=true, timeUnit=microseconds, is_from_converted_type=false, force_set_converted_type=true))",
+		},
+	}, got.Tables[0].Changes)
 }
 
 func TestRenderUpgradeReportsJSONWithoutDestination(t *testing.T) {

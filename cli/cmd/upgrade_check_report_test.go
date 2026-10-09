@@ -30,7 +30,98 @@ func postgresqlDestinationSpec(writeMode specs.WriteMode, migrateMode specs.Migr
 }
 
 func s3DestinationSpec() *specs.Destination {
-	return &specs.Destination{Metadata: specs.Metadata{Name: "s3", Path: "cloudquery/s3", Version: "v7.0.0", Registry: specs.RegistryCloudQuery}}
+	return &specs.Destination{
+		Metadata:  specs.Metadata{Name: "s3", Path: "cloudquery/s3", Version: "v7.0.0", Registry: specs.RegistryCloudQuery},
+		WriteMode: specs.WriteModeAppend,
+		Spec:      map[string]any{"format": "parquet"},
+	}
+}
+
+func k8sParquetReport(nodeNameType string) upgradeReport {
+	nodes := func(columns ...schema.Column) *schema.Table {
+		return &schema.Table{Name: "k8s_core_nodes", Columns: append(schema.ColumnList{{Name: "uid", Type: arrow.BinaryTypes.String, NotNull: true}}, columns...)}
+	}
+	return upgradeReport{
+		SourceName:  "k8s",
+		FromVersion: "v7.9.8",
+		ToVersion:   "v8.4.1",
+		Destination: s3DestinationSpec(),
+		Tables: map[string]upgradeTablePair{
+			"k8s_core_nodes": {
+				From: nodes(),
+				To: nodes(
+					schema.Column{Name: "cloud_cluster_id", Type: arrow.BinaryTypes.String},
+					schema.Column{Name: "spec_taints", Type: arrow.ListOf(arrow.BinaryTypes.String)},
+					schema.Column{Name: "node_name", Type: arrow.BinaryTypes.String},
+				),
+			},
+			"k8s_openshift_routes": {To: &schema.Table{Name: "k8s_openshift_routes", Columns: schema.ColumnList{{Name: "uid", Type: arrow.BinaryTypes.String}}}},
+		},
+		Findings: []*pluginPb.AssessTables_TableFinding{
+			{
+				TableName:          "k8s_core_nodes",
+				Category:           pluginPb.AssessTables_CATEGORY_AUTOMATICALLY_MIGRATABLE,
+				SafeModeBehavior:   "new files add the new columns, existing files are not changed",
+				ForcedModeBehavior: "new files add the new columns, existing files are not changed",
+				Columns: []*pluginPb.AssessTables_ColumnFinding{
+					{ColumnName: "cloud_cluster_id", Category: pluginPb.AssessTables_CATEGORY_AUTOMATICALLY_MIGRATABLE, NewType: "optional byte_array (String)"},
+					{ColumnName: "spec_taints", Category: pluginPb.AssessTables_CATEGORY_AUTOMATICALLY_MIGRATABLE, NewType: "optional group (List) {list: repeated group {element: optional byte_array (String)}}"},
+					{ColumnName: "node_name", Category: pluginPb.AssessTables_CATEGORY_AUTOMATICALLY_MIGRATABLE, NewType: nodeNameType},
+				},
+			},
+			{
+				TableName:          "k8s_openshift_routes",
+				Category:           pluginPb.AssessTables_CATEGORY_AUTOMATICALLY_MIGRATABLE,
+				SafeModeBehavior:   "new files add the new table",
+				ForcedModeBehavior: "new files add the new table",
+				Columns:            []*pluginPb.AssessTables_ColumnFinding{{ColumnName: "uid", Category: pluginPb.AssessTables_CATEGORY_AUTOMATICALLY_MIGRATABLE, NewType: "optional byte_array (String)"}},
+			},
+		},
+	}
+}
+
+func semgrepParquetReport() upgradeReport {
+	findings := func(columns ...schema.Column) *schema.Table {
+		return &schema.Table{Name: "semgrep_findings", Columns: columns}
+	}
+	return upgradeReport{
+		SourceName:  "semgrep",
+		FromVersion: "v1.0.5",
+		ToVersion:   "v3.1.0",
+		Destination: s3DestinationSpec(),
+		Tables: map[string]upgradeTablePair{
+			"semgrep_findings": {
+				From: findings(
+					schema.Column{Name: "id", Type: arrow.PrimitiveTypes.Float64},
+					schema.Column{Name: "created_at", Type: arrow.FixedWidthTypes.Timestamp_us},
+					schema.Column{Name: "categories", Type: arrow.ListOf(arrow.BinaryTypes.String)},
+				),
+				To: findings(
+					schema.Column{Name: "id", Type: arrow.PrimitiveTypes.Int64},
+					schema.Column{Name: "created_at", Type: arrow.FixedWidthTypes.Timestamp_us},
+					schema.Column{Name: "categories", Type: arrow.BinaryTypes.String},
+				),
+			},
+		},
+		Findings: []*pluginPb.AssessTables_TableFinding{{
+			TableName: "semgrep_findings",
+			Category:  pluginPb.AssessTables_CATEGORY_FILE_SCHEMA_CHANGED,
+			Columns: []*pluginPb.AssessTables_ColumnFinding{
+				{ColumnName: "id", Category: pluginPb.AssessTables_CATEGORY_FILE_SCHEMA_CHANGED, OldType: "optional double", NewType: "optional int64 (Int(bitWidth=64, isSigned=true))"},
+				{
+					ColumnName: "categories",
+					Category:   pluginPb.AssessTables_CATEGORY_FILE_SCHEMA_CHANGED,
+					OldType:    "optional group (List) {list: repeated group {element: optional byte_array (String)}}",
+					NewType:    "optional byte_array (String)",
+				},
+				{
+					ColumnName: "first_seen_at",
+					Category:   pluginPb.AssessTables_CATEGORY_FILE_SCHEMA_CHANGED,
+					NewType:    "required int64 (Timestamp(isAdjustedToUTC=true, timeUnit=microseconds, is_from_converted_type=false, force_set_converted_type=true))",
+				},
+			},
+		}},
+	}
 }
 
 func datadogTagsReport(destination *specs.Destination) upgradeReport {
@@ -308,7 +399,7 @@ This check only previews the changes. It does not migrate, write, delete or uplo
 				}},
 			},
 			want: `cloudflare v11.4.0 → v12.0.0 | s3 (cloudquery/s3@v7.0.0)
-write_mode: overwrite-delete-stale | pk_mode: default
+write_mode: append | pk_mode: default
 FILE SCHEMA CHANGED — 1 changed table
 
 Changes
@@ -322,10 +413,90 @@ This check only previews the changes. It does not migrate, write, delete or uplo
 `,
 		},
 		{
+			name:   "new nullable file columns and new tables extend the file schema",
+			report: k8sParquetReport("optional byte_array (String)"),
+			want: `k8s v7.9.8 → v8.4.1 | s3 (cloudquery/s3@v7.0.0)
+write_mode: append | pk_mode: default
+FILE SCHEMA EXTENDED — 1 changed table, 1 new table
+
+Changes
+  k8s_core_nodes
+    + cloud_cluster_id   string         new column (string)
+    + node_name          string         new column (string)
+    + spec_taints        list<string>   new column (list<string>)
+  k8s_openshift_routes   new table
+
+Action: no action needed; new files add these columns and tables. Readers that match columns by position must be updated.
+This check only previews the changes. It does not migrate, write, delete or upload anything.
+
+`,
+		},
+		{
+			name:   "new file tables only extend the file schema",
+			report: func() upgradeReport { r := k8sParquetReport(""); r.Findings = r.Findings[1:]; return r }(),
+			want: `k8s v7.9.8 → v8.4.1 | s3 (cloudquery/s3@v7.0.0)
+write_mode: append | pk_mode: default
+FILE SCHEMA EXTENDED — 1 new table
+
+Changes
+  k8s_openshift_routes   new table
+
+Action: no action needed; new files add these tables.
+This check only previews the changes. It does not migrate, write, delete or upload anything.
+
+`,
+		},
+		{
+			name:   "file type changes show short parquet types",
+			report: semgrepParquetReport(),
+			want: `semgrep v1.0.5 → v3.1.0 | s3 (cloudquery/s3@v7.0.0)
+write_mode: append | pk_mode: default
+FILE SCHEMA CHANGED — 1 changed table
+
+Changes
+  semgrep_findings
+    ~ categories      list<string> → string          type changed (list<string> → string)
+    ~ id              double → int64                 type changed (float64 → int64)
+    + first_seen_at   required timestamp (us, UTC)   new column
+
+Action: review readers that combine old and new files.
+This check only previews the changes. It does not migrate, write, delete or upload anything.
+
+`,
+		},
+		{
+			name: "file type changes that shorten to the same name show full parquet types",
+			report: upgradeReport{
+				SourceName: "aws", FromVersion: "v1.0.0", ToVersion: "v2.0.0", Destination: s3DestinationSpec(),
+				Findings: []*pluginPb.AssessTables_TableFinding{{
+					TableName: "aws_ec2_instances",
+					Category:  pluginPb.AssessTables_CATEGORY_FILE_SCHEMA_CHANGED,
+					Columns: []*pluginPb.AssessTables_ColumnFinding{{
+						ColumnName: "tags",
+						Category:   pluginPb.AssessTables_CATEGORY_FILE_SCHEMA_CHANGED,
+						OldType:    "optional group (List) {list: repeated group {element: optional byte_array (String)}}",
+						NewType:    "optional group (List) {list: repeated group {element: required byte_array (String)}}",
+					}},
+				}},
+			},
+			want: `aws v1.0.0 → v2.0.0 | s3 (cloudquery/s3@v7.0.0)
+write_mode: append | pk_mode: default
+FILE SCHEMA CHANGED — 1 changed table
+
+Changes
+  aws_ec2_instances
+    ~ tags   optional group (List) {list: repeated group {element: optional byte_array (String)}} → optional group (List) {list: repeated group {element: required byte_array (String)}}   type changed
+
+Action: review readers that combine old and new files.
+This check only previews the changes. It does not migrate, write, delete or upload anything.
+
+`,
+		},
+		{
 			name:   "file output unchanged for equivalent test values",
 			report: s3JSONReport(),
 			want: `datadog v5.19.10 → v6.0.0 | s3 (cloudquery/s3@v7.0.0)
-write_mode: overwrite-delete-stale | pk_mode: default
+write_mode: append | pk_mode: default
 NO OUTPUT DIFFERENCE DETECTED for equivalent test values
 
 Output comparison
@@ -365,7 +536,7 @@ This check only previews the changes. It does not migrate, write, delete or uplo
 				}},
 			},
 			want: `datadog v5.19.10 → v6.0.0 | s3 (cloudquery/s3@v7.0.0)
-write_mode: overwrite-delete-stale | pk_mode: default
+write_mode: append | pk_mode: default
 FILE OUTPUT CHANGED
 
 Output comparison
@@ -674,8 +845,8 @@ func TestRenderUpgradeReportCapsTypeColumnWidth(t *testing.T) {
 			TableName: "aws_ec2_instances",
 			Category:  pluginPb.AssessTables_CATEGORY_FILE_SCHEMA_CHANGED,
 			Columns: []*pluginPb.AssessTables_ColumnFinding{
-				{ColumnName: "cpu", Category: pluginPb.AssessTables_CATEGORY_FILE_SCHEMA_CHANGED, OldType: "optional float", NewType: "optional int64 (Int(bitWidth=64, isSigned=true))"},
-				{ColumnName: "name", Category: pluginPb.AssessTables_CATEGORY_FILE_SCHEMA_CHANGED, NewType: "optional byte_array (String)"},
+				{ColumnName: "cpu", Category: pluginPb.AssessTables_CATEGORY_FILE_SCHEMA_CHANGED, OldType: "Nullable(Float64)", NewType: "Array(Nullable(Map(String, Nullable(String))))"},
+				{ColumnName: "name", Category: pluginPb.AssessTables_CATEGORY_FILE_SCHEMA_CHANGED, NewType: "LowCardinality(Nullable(String))"},
 			},
 		}},
 	}
@@ -683,8 +854,8 @@ func TestRenderUpgradeReportCapsTypeColumnWidth(t *testing.T) {
 	var out bytes.Buffer
 	require.NoError(t, renderUpgradeReport(&out, report))
 
-	require.Contains(t, out.String(), "    ~ cpu    optional float → optional int64 (Int(bitWidth=64, isSigned=true))   type changed\n")
-	require.Contains(t, out.String(), "    + name   optional byte_array (String)"+strings.Repeat(" ", upgradeMaxTypeWidth-len("optional byte_array (String)"))+"   new column\n")
+	require.Contains(t, out.String(), "    ~ cpu    Nullable(Float64) → Array(Nullable(Map(String, Nullable(String))))   type changed\n")
+	require.Contains(t, out.String(), "    + name   LowCardinality(Nullable(String))"+strings.Repeat(" ", upgradeMaxTypeWidth-len("LowCardinality(Nullable(String))"))+"   new column\n")
 }
 
 func upgradeOrderingReport(extraChangedTables int) upgradeReport {
@@ -839,6 +1010,8 @@ func TestUpgradeExitCode(t *testing.T) {
 		{name: "selected tables removed", report: upgradeReport{Destination: postgresql, RemovedTables: []upgradeRemovedTable{{Name: "t", SelectedBy: upgradeSelectedByName}}}, want: 3},
 		{name: "tables removed from a wildcard selection", report: upgradeReport{Destination: postgresql, RemovedTables: []upgradeRemovedTable{{Name: "t", SelectedBy: upgradeSelectedByPattern}}}, want: 3},
 		{name: "dependent tables removed", report: upgradeReport{Destination: postgresql, RemovedTables: []upgradeRemovedTable{{Name: "t", SelectedBy: upgradeSelectedAsDependent}}}, want: 3},
+		{name: "file schema extended", report: k8sParquetReport("optional byte_array (String)"), want: 0},
+		{name: "file schema changed with short types", report: semgrepParquetReport(), want: 3},
 		{name: "file schema changed", report: upgradeReport{Destination: s3DestinationSpec(), Findings: []*pluginPb.AssessTables_TableFinding{{TableName: "t", Category: pluginPb.AssessTables_CATEGORY_FILE_SCHEMA_CHANGED}}}, want: 3},
 		{name: "output differs", report: upgradeReport{Destination: s3DestinationSpec(), Findings: []*pluginPb.AssessTables_TableFinding{{
 			TableName: "t",
