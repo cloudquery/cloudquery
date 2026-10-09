@@ -46,13 +46,15 @@ const (
 )
 
 type upgradeColumnChange struct {
-	Kind          upgradeChangeKind `json:"kind"`
-	Column        string            `json:"column"`
-	OldType       string            `json:"old_type,omitempty"`
-	NewType       string            `json:"new_type,omitempty"`
-	OldSourceType string            `json:"old_source_type,omitempty"`
-	NewSourceType string            `json:"new_source_type,omitempty"`
-	Reason        string            `json:"reason,omitempty"`
+	Kind           upgradeChangeKind `json:"kind"`
+	Column         string            `json:"column"`
+	OldType        string            `json:"old_type,omitempty"`
+	NewType        string            `json:"new_type,omitempty"`
+	OldParquetType string            `json:"old_parquet_type,omitempty"`
+	NewParquetType string            `json:"new_parquet_type,omitempty"`
+	OldSourceType  string            `json:"old_source_type,omitempty"`
+	NewSourceType  string            `json:"new_source_type,omitempty"`
+	Reason         string            `json:"reason,omitempty"`
 }
 
 type upgradeOutcomeResult string
@@ -109,7 +111,7 @@ func renderUpgradeReport(w io.Writer, r upgradeReport) error {
 	} else {
 		b.WriteString(bold.Sprint(header+" | ") + upgradeDestination.Sprint(r.Destination.VersionString()) + "\n")
 		settings := fmt.Sprintf("write_mode: %s | pk_mode: %s", r.Destination.WriteMode, r.Destination.PKMode)
-		if upgradeHasMigrateModes(r.Findings) {
+		if upgradeHasMigrateModes(r) {
 			settings += " | migrate_mode: " + r.Destination.MigrateMode.String()
 		}
 		b.WriteString(upgradeFaint.Sprint(settings) + "\n")
@@ -173,8 +175,19 @@ func sortUpgradeReport(r upgradeReport) upgradeReport {
 	return r
 }
 
-func upgradeHasMigrateModes(findings []*pluginPb.AssessTables_TableFinding) bool {
-	return slices.ContainsFunc(findings, func(finding *pluginPb.AssessTables_TableFinding) bool {
+func upgradeWritesFiles(destination *specs.Destination) bool {
+	if destination == nil {
+		return false
+	}
+	format, _ := destination.Spec["format"].(string)
+	return format != ""
+}
+
+func upgradeHasMigrateModes(r upgradeReport) bool {
+	if upgradeWritesFiles(r.Destination) {
+		return false
+	}
+	return slices.ContainsFunc(r.Findings, func(finding *pluginPb.AssessTables_TableFinding) bool {
 		return finding.Category == pluginPb.AssessTables_CATEGORY_MANUAL_MIGRATION_REQUIRED ||
 			finding.Category == pluginPb.AssessTables_CATEGORY_AUTOMATICALLY_MIGRATABLE ||
 			finding.SafeModeBehavior != "" || finding.ForcedModeBehavior != ""
@@ -182,7 +195,7 @@ func upgradeHasMigrateModes(findings []*pluginPb.AssessTables_TableFinding) bool
 }
 
 func upgradeTableImpacts(r upgradeReport) []upgradeTableImpact {
-	hasMigrateModes := upgradeHasMigrateModes(r.Findings)
+	hasMigrateModes := upgradeHasMigrateModes(r)
 	var impacts []upgradeTableImpact
 	for _, finding := range r.Findings {
 		if finding.Category == pluginPb.AssessTables_CATEGORY_NO_CHANGE || finding.Category == pluginPb.AssessTables_CATEGORY_UNKNOWN {
@@ -233,6 +246,12 @@ func upgradeColumnChanges(finding *pluginPb.AssessTables_TableFinding, table upg
 			OldSourceType: upgradeSourceTypeName(oldColumn),
 			NewSourceType: upgradeSourceTypeName(newColumn),
 			Reason:        upgradeColumnChangeReason(oldColumn, newColumn),
+		}
+		if shortType, ok := upgradeParquetTypeName(column.OldType); ok {
+			change.OldType, change.OldParquetType = shortType, column.OldType
+		}
+		if shortType, ok := upgradeParquetTypeName(column.NewType); ok {
+			change.NewType, change.NewParquetType = shortType, column.NewType
 		}
 		switch {
 		case column.OldType == "":
@@ -425,6 +444,8 @@ func upgradeVerdict(r upgradeReport, impacts []upgradeTableImpact, comparisons [
 		return "FILE OUTPUT CHANGED", upgradeYellow
 	case r.SourceUnknown || upgradeNotFullyAssessedTables(r) > 0:
 		return "UNKNOWN", upgradeYellow
+	case len(impacts) > 0 && upgradeWritesFiles(r.Destination):
+		return "FILE SCHEMA EXTENDED", upgradeGreen
 	case len(impacts) > 0:
 		return "AUTOMATICALLY MIGRATABLE", upgradeYellow
 	case len(comparisons) > 0:
@@ -512,6 +533,8 @@ func upgradeAction(r upgradeReport, impacts []upgradeTableImpact, comparisons []
 		return "review readers that combine old and new files.", color.FgYellow
 	case r.SourceUnknown || upgradeNotFullyAssessedTables(r) > 0:
 		return "review the source changelog for what this check could not assess.", color.FgYellow
+	case len(impacts) > 0 && upgradeWritesFiles(r.Destination):
+		return upgradeFileSchemaExtendedAction(impacts), color.FgGreen
 	case len(impacts) > 0 && migrateMode == specs.MigrateModeForced:
 		return "no action needed; the next sync applies these changes.", color.FgGreen
 	case len(impacts) > 0:
@@ -520,6 +543,18 @@ func upgradeAction(r upgradeReport, impacts []upgradeTableImpact, comparisons []
 		return "no action needed; the output is the same for equivalent values.", color.FgGreen
 	}
 	return "no action needed.", color.FgGreen
+}
+
+func upgradeFileSchemaExtendedAction(impacts []upgradeTableImpact) string {
+	newTables := slices.ContainsFunc(impacts, func(impact upgradeTableImpact) bool { return impact.NewTable })
+	changedTables := slices.ContainsFunc(impacts, func(impact upgradeTableImpact) bool { return !impact.NewTable })
+	switch {
+	case changedTables && newTables:
+		return "no action needed; new files add these columns and tables. Readers that match columns by position must be updated."
+	case changedTables:
+		return "no action needed; new files add these columns. Readers that match columns by position must be updated."
+	}
+	return "no action needed; new files add these tables."
 }
 
 func upgradeRemovedTablesAction(r upgradeReport) string {
@@ -612,6 +647,8 @@ func writeUpgradeColumnChanges(b *strings.Builder, impact upgradeTableImpact, co
 
 func upgradeChangeColor(impact upgradeTableImpact, change upgradeColumnChange) *color.Color {
 	switch {
+	case impact.Outcomes == nil && impact.Category == pluginPb.AssessTables_CATEGORY_AUTOMATICALLY_MIGRATABLE:
+		return upgradeGreen
 	case impact.Outcomes == nil:
 		return upgradeYellow
 	case impact.Category == pluginPb.AssessTables_CATEGORY_MANUAL_MIGRATION_REQUIRED && upgradeSafeModeBlocker(change) != "":
