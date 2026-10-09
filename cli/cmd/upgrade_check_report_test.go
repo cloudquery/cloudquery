@@ -465,6 +465,34 @@ This check only previews the changes. It does not migrate, write, delete or uplo
 `,
 		},
 		{
+			name: "file type changes that shorten to the same name show full parquet types",
+			report: upgradeReport{
+				SourceName: "aws", FromVersion: "v1.0.0", ToVersion: "v2.0.0", Destination: s3DestinationSpec(),
+				Findings: []*pluginPb.AssessTables_TableFinding{{
+					TableName: "aws_ec2_instances",
+					Category:  pluginPb.AssessTables_CATEGORY_FILE_SCHEMA_CHANGED,
+					Columns: []*pluginPb.AssessTables_ColumnFinding{{
+						ColumnName: "tags",
+						Category:   pluginPb.AssessTables_CATEGORY_FILE_SCHEMA_CHANGED,
+						OldType:    "optional group (List) {list: repeated group {element: optional byte_array (String)}}",
+						NewType:    "optional group (List) {list: repeated group {element: required byte_array (String)}}",
+					}},
+				}},
+			},
+			want: `aws v1.0.0 → v2.0.0 | s3 (cloudquery/s3@v7.0.0)
+write_mode: append | pk_mode: default
+FILE SCHEMA CHANGED — 1 changed table
+
+Changes
+  aws_ec2_instances
+    ~ tags   optional group (List) {list: repeated group {element: optional byte_array (String)}} → optional group (List) {list: repeated group {element: required byte_array (String)}}   type changed
+
+Action: review readers that combine old and new files.
+This check only previews the changes. It does not migrate, write, delete or upload anything.
+
+`,
+		},
+		{
 			name:   "file output unchanged for equivalent test values",
 			report: s3JSONReport(),
 			want: `datadog v5.19.10 → v6.0.0 | s3 (cloudquery/s3@v7.0.0)

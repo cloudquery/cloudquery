@@ -253,6 +253,9 @@ func upgradeColumnChanges(finding *pluginPb.AssessTables_TableFinding, table upg
 		if shortType, ok := upgradeParquetTypeName(column.NewType); ok {
 			change.NewType, change.NewParquetType = shortType, column.NewType
 		}
+		if change.OldType == change.NewType && column.OldType != column.NewType {
+			change.OldType, change.NewType = column.OldType, column.NewType
+		}
 		switch {
 		case column.OldType == "":
 			change.Kind = upgradeColumnAdded
