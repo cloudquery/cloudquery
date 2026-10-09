@@ -46,8 +46,8 @@ github.com/clipperhouse/uax29/v2 v2.7.0 h1:+gs4oBZ2gPfVrKPthwbMzWZDaAFPGYK72F0NJ
 github.com/clipperhouse/uax29/v2 v2.7.0/go.mod h1:EFJ2TJMRUaplDxHKj1qAEhCtQPW2tJSwu5BF98AuoVM=
 github.com/cloudquery/cloudquery-api-go v1.14.13 h1:+lu1mLKqVSwrc02eqf9vfqGj9c0RowtJowx3VCBueoY=
 github.com/cloudquery/cloudquery-api-go v1.14.13/go.mod h1:u4uzOBEss9hJZco/tULIZuObqiBD748kejlxZ2AqOxs=
-github.com/cloudquery/cloudquery/cli/v6 v6.46.1 h1:yoZVWG/H1vPpngQmZgOEXU+K80IaanSe+ZZiufvEoh4=
-github.com/cloudquery/cloudquery/cli/v6 v6.46.1/go.mod h1:5TEMx3/IFte40ulEkecjl+jCYAsRY5ugCEnKuLip+TA=
+github.com/cloudquery/cloudquery/cli/v6 v6.47.0 h1:UYaaHDCe4pbxvRi6MKIX7tH8n5673dV0MKq3ZdCNSA8=
+github.com/cloudquery/cloudquery/cli/v6 v6.47.0/go.mod h1:5TEMx3/IFte40ulEkecjl+jCYAsRY5ugCEnKuLip+TA=
 github.com/cloudquery/codegen v0.4.1 h1:c9D18N925tUvnDeGHIl3JWKj37TyII9daHufkf8hU+Y=
 github.com/cloudquery/codegen v0.4.1/go.mod h1:QWIOD6R1aCa+YM+th+9Qt9lZw+ztdJR9JDEMLWyazwM=
 github.com/cloudquery/plugin-pb-go v1.28.1 h1:ybmzSjSsptntiUeh1PCOuxYqpdtHRgYC3CaFDLtNNic=
