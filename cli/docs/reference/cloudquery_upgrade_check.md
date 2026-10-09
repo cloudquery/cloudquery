@@ -27,6 +27,9 @@ cloudquery upgrade check [files or directories] [flags]
 # Check how upgrading the datadog source to v6.0.0 affects the destinations in config.yml
 cloudquery upgrade check ./config.yml --source datadog --to v6.0.0
 
+# Compare a source that runs from a local binary, gRPC server or Docker image with cloudquery/semgrep v3.1.0 from the CloudQuery Hub
+cloudquery upgrade check ./config.yml --source semgrep --to v3.1.0 --to-path cloudquery/semgrep
+
 ```
 
 ## Options
@@ -37,6 +40,7 @@ cloudquery upgrade check ./config.yml --source datadog --to v6.0.0
       --output string    Output format. One of: text, json (default "text")
       --source string    Name of the source to upgrade, as set in the configuration
       --to string        Source plugin version to upgrade to
+      --to-path string   CloudQuery Hub path of the source plugin to upgrade to, as <team>/<name>. Only for sources from the local, grpc or docker registry. Default: cloudquery/<name reported by the configured source>
 ```
 
 ## Options inherited from parent commands

@@ -26,6 +26,8 @@ type upgradeReport struct {
 	SourceName    string
 	FromVersion   string
 	ToVersion     string
+	FromOrigin    upgradeSourceOrigin
+	ToOrigin      upgradeSourceOrigin
 	SourceUnknown bool
 	SourceGaps    []string
 	RemovedTables []string
@@ -97,7 +99,8 @@ func renderUpgradeReport(w io.Writer, r upgradeReport) error {
 	}
 
 	var b strings.Builder
-	header := fmt.Sprintf("%s %s → %s", r.SourceName, r.FromVersion, r.ToVersion)
+	fromLabel, toLabel := upgradeSourceLabels(r.FromOrigin, r.FromVersion, r.ToOrigin, r.ToVersion)
+	header := fmt.Sprintf("%s %s → %s", r.SourceName, fromLabel, toLabel)
 	if r.Destination == nil {
 		b.WriteString(bold.Sprint(header) + "\n")
 	} else {

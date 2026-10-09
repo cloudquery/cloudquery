@@ -4,7 +4,17 @@
       "source": {
         "name": "okta",
         "from_version": "v6.8.2",
-        "to_version": "v7.0.0"
+        "to_version": "v7.0.0",
+        "from": {
+          "registry": "cloudquery",
+          "path": "cloudquery/okta",
+          "version": "v6.8.2"
+        },
+        "to": {
+          "registry": "cloudquery",
+          "path": "cloudquery/okta",
+          "version": "v7.0.0"
+        }
       },
       "destination": {
         "name": "postgresql",

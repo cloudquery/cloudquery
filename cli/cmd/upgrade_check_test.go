@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"errors"
 	"flag"
+	"net"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -20,6 +21,7 @@ import (
 	"github.com/cloudquery/cloudquery/cli/v6/internal/auth"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
+	discoveryPb "github.com/cloudquery/plugin-pb-go/pb/discovery/v1"
 	pluginPb "github.com/cloudquery/plugin-pb-go/pb/plugin/v3"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/rs/zerolog/log"
@@ -173,7 +175,7 @@ func TestLoadUpgradeSourceTables(t *testing.T) {
 	teamName, err := auth.GetTeamForToken(ctx, authToken)
 	require.NoError(t, err)
 
-	from, to, err := loadUpgradeSourceTables(ctx, sourceSpec, "v4.7.0",
+	from, to, err := loadUpgradeSourceTables(ctx, sourceSpec, upgradeTarget{Version: "v4.7.0"}, managedplugin.NewClient,
 		managedplugin.WithLogger(log.Logger),
 		managedplugin.WithAuthToken(authToken.Value),
 		managedplugin.WithTeamName(teamName),
@@ -188,17 +190,244 @@ func TestLoadUpgradeSourceTables(t *testing.T) {
 	}
 	require.Equal(t, "v4.5.1", from.Version)
 	require.Equal(t, "v4.7.0", to.Version)
+	require.Equal(t, upgradeSourceOrigin{Registry: specs.RegistryCloudQuery, Path: "cloudquery/test"}, from.Origin)
+	require.Equal(t, from.Origin, to.Origin)
 }
 
-func TestLoadUpgradeSourceTablesRejectsFixedPathRegistries(t *testing.T) {
-	for _, registry := range []specs.Registry{specs.RegistryLocal, specs.RegistryGRPC, specs.RegistryDocker} {
-		t.Run(registry.String(), func(t *testing.T) {
-			sourceSpec := specs.Source{Metadata: specs.Metadata{Name: "test", Path: "/plugins/test", Version: "v1.0.0", Registry: registry}}
+type fakeSourceServer struct {
+	pluginPb.UnimplementedPluginServer
+	discoveryPb.UnimplementedDiscoveryServer
+	name    string
+	version string
+	tables  schema.Tables
+}
 
-			_, _, err := loadUpgradeSourceTables(context.Background(), sourceSpec, "v2.0.0")
+func (*fakeSourceServer) GetVersions(context.Context, *discoveryPb.GetVersions_Request) (*discoveryPb.GetVersions_Response, error) {
+	return &discoveryPb.GetVersions_Response{Versions: []int32{3}}, nil
+}
 
-			require.ErrorContains(t, err, "upgrade check supports only sources from the cloudquery or github registry")
+func (f *fakeSourceServer) GetName(context.Context, *pluginPb.GetName_Request) (*pluginPb.GetName_Response, error) {
+	if f.name == "" {
+		return nil, status.Error(codes.Unimplemented, "no name")
+	}
+	return &pluginPb.GetName_Response{Name: f.name}, nil
+}
+
+func (f *fakeSourceServer) GetVersion(context.Context, *pluginPb.GetVersion_Request) (*pluginPb.GetVersion_Response, error) {
+	if f.version == "" {
+		return nil, status.Error(codes.Unimplemented, "no version")
+	}
+	return &pluginPb.GetVersion_Response{Version: f.version}, nil
+}
+
+func (*fakeSourceServer) Init(context.Context, *pluginPb.Init_Request) (*pluginPb.Init_Response, error) {
+	return &pluginPb.Init_Response{}, nil
+}
+
+func (f *fakeSourceServer) GetTables(context.Context, *pluginPb.GetTables_Request) (*pluginPb.GetTables_Response, error) {
+	b, err := pluginPb.SchemasToBytes(f.tables.ToArrowSchemas())
+	if err != nil {
+		return nil, err
+	}
+	return &pluginPb.GetTables_Response{Tables: b}, nil
+}
+
+func startFakeSourceServer(t *testing.T, source *fakeSourceServer) string {
+	t.Helper()
+	listener, err := net.Listen("tcp", "127.0.0.1:0")
+	require.NoError(t, err)
+	server := grpc.NewServer()
+	pluginPb.RegisterPluginServer(server, source)
+	discoveryPb.RegisterDiscoveryServer(server, source)
+	go func() { _ = server.Serve(listener) }()
+	t.Cleanup(server.Stop)
+	return listener.Addr().String()
+}
+
+type recordingPluginStarter struct {
+	fromAddress string
+	toAddress   string
+	toVersion   string
+	toErr       error
+	configs     []managedplugin.Config
+}
+
+func (r *recordingPluginStarter) newClient(ctx context.Context, typ managedplugin.PluginType, config managedplugin.Config, opts ...managedplugin.Option) (*managedplugin.Client, error) {
+	r.configs = append(r.configs, config)
+	address := r.fromAddress
+	if config.Version == r.toVersion {
+		if r.toErr != nil {
+			return nil, r.toErr
+		}
+		address = r.toAddress
+	}
+	return managedplugin.NewClient(ctx, typ, managedplugin.Config{Name: config.Name, Registry: managedplugin.RegistryGrpc, Path: address}, opts...)
+}
+
+func TestLoadUpgradeSourceTablesRegistryDispatch(t *testing.T) {
+	fromAddress := startFakeSourceServer(t, &fakeSourceServer{name: "semgrep", version: "v3.0.0", tables: schema.Tables{testTable("semgrep_old")}})
+	toAddress := startFakeSourceServer(t, &fakeSourceServer{name: "semgrep", version: "v3.1.0", tables: schema.Tables{testTable("semgrep_new")}})
+
+	cases := []struct {
+		name           string
+		metadata       specs.Metadata
+		toPath         string
+		wantFromConfig managedplugin.Config
+		wantToConfig   managedplugin.Config
+		wantFrom       upgradeSourceOrigin
+		wantTo         upgradeSourceOrigin
+		wantFromVer    string
+	}{
+		{
+			name:           "cloudquery registry starts the same path at both versions",
+			metadata:       specs.Metadata{Name: "semgrep", Registry: specs.RegistryCloudQuery, Path: "cloudquery/semgrep", Version: "v3.0.0"},
+			wantFromConfig: managedplugin.Config{Name: "semgrep", Registry: managedplugin.RegistryCloudQuery, Path: "cloudquery/semgrep", Version: "v3.0.0"},
+			wantToConfig:   managedplugin.Config{Name: "semgrep", Registry: managedplugin.RegistryCloudQuery, Path: "cloudquery/semgrep", Version: "v3.1.0"},
+			wantFrom:       upgradeSourceOrigin{Registry: specs.RegistryCloudQuery, Path: "cloudquery/semgrep"},
+			wantTo:         upgradeSourceOrigin{Registry: specs.RegistryCloudQuery, Path: "cloudquery/semgrep"},
+			wantFromVer:    "v3.0.0",
+		},
+		{
+			name:           "github registry starts the same path at both versions",
+			metadata:       specs.Metadata{Name: "semgrep", Registry: specs.RegistryGitHub, Path: "cloudquery/semgrep", Version: "v3.0.0"},
+			wantFromConfig: managedplugin.Config{Name: "semgrep", Registry: managedplugin.RegistryGithub, Path: "cloudquery/semgrep", Version: "v3.0.0"},
+			wantToConfig:   managedplugin.Config{Name: "semgrep", Registry: managedplugin.RegistryGithub, Path: "cloudquery/semgrep", Version: "v3.1.0"},
+			wantFrom:       upgradeSourceOrigin{Registry: specs.RegistryGitHub, Path: "cloudquery/semgrep"},
+			wantTo:         upgradeSourceOrigin{Registry: specs.RegistryGitHub, Path: "cloudquery/semgrep"},
+			wantFromVer:    "v3.0.0",
+		},
+		{
+			name:           "local registry starts the configured binary and the inferred hub plugin",
+			metadata:       specs.Metadata{Name: "semgrep-prod", Registry: specs.RegistryLocal, Path: "/opt/plugins/semgrep"},
+			wantFromConfig: managedplugin.Config{Name: "semgrep-prod", Registry: managedplugin.RegistryLocal, Path: "/opt/plugins/semgrep"},
+			wantToConfig:   managedplugin.Config{Name: "semgrep-prod", Registry: managedplugin.RegistryCloudQuery, Path: "cloudquery/semgrep", Version: "v3.1.0"},
+			wantFrom:       upgradeSourceOrigin{Registry: specs.RegistryLocal, Path: "/opt/plugins/semgrep"},
+			wantTo:         upgradeSourceOrigin{Registry: specs.RegistryCloudQuery, Path: "cloudquery/semgrep"},
+			wantFromVer:    "v3.0.0",
+		},
+		{
+			name:           "grpc registry connects to the configured server and the inferred hub plugin",
+			metadata:       specs.Metadata{Name: "semgrep", Registry: specs.RegistryGRPC, Path: "localhost:7777"},
+			wantFromConfig: managedplugin.Config{Name: "semgrep", Registry: managedplugin.RegistryGrpc, Path: "localhost:7777"},
+			wantToConfig:   managedplugin.Config{Name: "semgrep", Registry: managedplugin.RegistryCloudQuery, Path: "cloudquery/semgrep", Version: "v3.1.0"},
+			wantFrom:       upgradeSourceOrigin{Registry: specs.RegistryGRPC, Path: "localhost:7777"},
+			wantTo:         upgradeSourceOrigin{Registry: specs.RegistryCloudQuery, Path: "cloudquery/semgrep"},
+			wantFromVer:    "v3.0.0",
+		},
+		{
+			name:           "docker registry starts the configured image and the hub plugin from --to-path",
+			metadata:       specs.Metadata{Name: "semgrep", Registry: specs.RegistryDocker, Path: "ghcr.io/acme/semgrep:v3.0.0", DockerRegistryAuthToken: "secret"},
+			toPath:         "acme/semgrep-fork",
+			wantFromConfig: managedplugin.Config{Name: "semgrep", Registry: managedplugin.RegistryDocker, Path: "ghcr.io/acme/semgrep:v3.0.0", DockerAuth: "secret"},
+			wantToConfig:   managedplugin.Config{Name: "semgrep", Registry: managedplugin.RegistryCloudQuery, Path: "acme/semgrep-fork", Version: "v3.1.0"},
+			wantFrom:       upgradeSourceOrigin{Registry: specs.RegistryDocker, Path: "ghcr.io/acme/semgrep:v3.0.0"},
+			wantTo:         upgradeSourceOrigin{Registry: specs.RegistryCloudQuery, Path: "acme/semgrep-fork"},
+			wantFromVer:    "v3.0.0",
+		},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			starter := &recordingPluginStarter{fromAddress: fromAddress, toAddress: toAddress, toVersion: "v3.1.0"}
+			sourceSpec := specs.Source{Metadata: tc.metadata, Spec: map[string]any{}}
+
+			from, to, err := loadUpgradeSourceTables(t.Context(), sourceSpec, upgradeTarget{Version: "v3.1.0", Path: tc.toPath}, starter.newClient, managedplugin.WithLogger(log.Logger))
+
+			require.NoError(t, err)
+			require.Equal(t, []managedplugin.Config{tc.wantFromConfig, tc.wantToConfig}, starter.configs)
+			require.Equal(t, tc.wantFrom, from.Origin)
+			require.Equal(t, tc.wantTo, to.Origin)
+			require.Equal(t, tc.wantFromVer, from.Version)
+			require.Equal(t, "v3.1.0", to.Version)
+			require.Equal(t, []string{"semgrep_old"}, tableNames(from.Tables))
+			require.Equal(t, []string{"semgrep_new"}, tableNames(to.Tables))
 		})
+	}
+}
+
+func TestLoadUpgradeSourceTablesUnknownReportedVersion(t *testing.T) {
+	starter := &recordingPluginStarter{
+		fromAddress: startFakeSourceServer(t, &fakeSourceServer{name: "semgrep", tables: schema.Tables{testTable("semgrep_old")}}),
+		toAddress:   startFakeSourceServer(t, &fakeSourceServer{name: "semgrep", tables: schema.Tables{testTable("semgrep_new")}}),
+		toVersion:   "v3.1.0",
+	}
+	sourceSpec := specs.Source{Metadata: specs.Metadata{Name: "semgrep", Registry: specs.RegistryLocal, Path: "/opt/plugins/semgrep"}}
+
+	from, _, err := loadUpgradeSourceTables(t.Context(), sourceSpec, upgradeTarget{Version: "v3.1.0"}, starter.newClient, managedplugin.WithLogger(log.Logger))
+
+	require.NoError(t, err)
+	require.Equal(t, upgradeUnknownVersion, from.Version)
+}
+
+func TestLoadUpgradeSourceTablesErrors(t *testing.T) {
+	namedAddress := startFakeSourceServer(t, &fakeSourceServer{name: "semgrep", tables: schema.Tables{testTable("semgrep_old")}})
+	unnamedAddress := startFakeSourceServer(t, &fakeSourceServer{tables: schema.Tables{testTable("semgrep_old")}})
+	local := specs.Metadata{Name: "semgrep", Registry: specs.RegistryLocal, Path: "/opt/plugins/semgrep"}
+
+	cases := []struct {
+		name        string
+		metadata    specs.Metadata
+		toPath      string
+		fromAddress string
+		toErr       error
+		wantErr     string
+		wantStarts  int
+	}{
+		{
+			name:     "to-path with the cloudquery registry",
+			metadata: specs.Metadata{Name: "semgrep", Registry: specs.RegistryCloudQuery, Path: "cloudquery/semgrep", Version: "v3.0.0"},
+			toPath:   "cloudquery/semgrep",
+			wantErr:  "--to-path is supported only for sources from the local, grpc or docker registry, source semgrep uses the cloudquery registry",
+		},
+		{
+			name:     "to-path without a team",
+			metadata: local,
+			toPath:   "semgrep",
+			wantErr:  `invalid --to-path "semgrep". Use <team>/<name>, for example cloudquery/aws`,
+		},
+		{
+			name:     "to-path with too many parts",
+			metadata: local,
+			toPath:   "cloudquery/semgrep/v3",
+			wantErr:  `invalid --to-path "cloudquery/semgrep/v3"`,
+		},
+		{
+			name:        "source does not report its name",
+			metadata:    local,
+			fromAddress: unnamedAddress,
+			wantErr:     "could not infer the CloudQuery Hub path to upgrade source semgrep to, because the source from the local registry did not report its name. Use --to-path <team>/<name> to set the path",
+			wantStarts:  1,
+		},
+		{
+			name:        "inferred hub path cannot be started",
+			metadata:    local,
+			fromAddress: namedAddress,
+			toErr:       errors.New("plugin not found"),
+			wantErr:     "failed to start source semgrep cloudquery/semgrep@v3.1.0: plugin not found. The CloudQuery Hub path cloudquery/semgrep was inferred from the name the source reports. Use --to-path <team>/<name> to set a different path",
+			wantStarts:  2,
+		},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			starter := &recordingPluginStarter{fromAddress: tc.fromAddress, toVersion: "v3.1.0", toErr: tc.toErr}
+
+			_, _, err := loadUpgradeSourceTables(t.Context(), specs.Source{Metadata: tc.metadata}, upgradeTarget{Version: "v3.1.0", Path: tc.toPath}, starter.newClient, managedplugin.WithLogger(log.Logger))
+
+			require.ErrorContains(t, err, tc.wantErr)
+			require.Len(t, starter.configs, tc.wantStarts)
+		})
+	}
+}
+
+func TestUpgradeAuthSources(t *testing.T) {
+	for _, registry := range []specs.Registry{specs.RegistryCloudQuery, specs.RegistryGitHub} {
+		sourceSpec := specs.Source{Metadata: specs.Metadata{Name: "semgrep", Registry: registry}}
+		require.Equal(t, []*specs.Source{&sourceSpec}, upgradeAuthSources(sourceSpec))
+	}
+	for _, registry := range []specs.Registry{specs.RegistryLocal, specs.RegistryGRPC, specs.RegistryDocker} {
+		sourceSpec := specs.Source{Metadata: specs.Metadata{Name: "semgrep", Registry: registry}}
+		sources := upgradeAuthSources(sourceSpec)
+		require.Len(t, sources, 2)
+		require.Equal(t, specs.RegistryCloudQuery, sources[1].Registry)
 	}
 }
 

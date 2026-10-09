@@ -449,6 +449,29 @@ This check only previews the changes. It does not migrate, write, delete or uplo
 
 `,
 		},
+		{
+			name: "source from a local binary compared with the hub",
+			report: upgradeReport{
+				SourceName: "semgrep", FromVersion: "v3.0.0", ToVersion: "v3.1.0", SourceUnknown: true,
+				FromOrigin: upgradeSourceOrigin{Registry: specs.RegistryLocal, Path: "/opt/plugins/semgrep"},
+				ToOrigin:   upgradeSourceOrigin{Registry: specs.RegistryCloudQuery, Path: "cloudquery/semgrep"},
+				SourceGaps: upgradeSourceGaps("semgrep",
+					upgradeSourceTables{Origin: upgradeSourceOrigin{Registry: specs.RegistryLocal, Path: "/opt/plugins/semgrep"}, Version: "v3.0.0", UnknownReason: "source returned no tables with or without a connection"},
+					upgradeSourceTables{Origin: upgradeSourceOrigin{Registry: specs.RegistryCloudQuery, Path: "cloudquery/semgrep"}, Version: "v3.1.0", Connected: true},
+				),
+			},
+			want: `semgrep (local: /opt/plugins/semgrep, v3.0.0) → cloudquery/semgrep@v3.1.0
+UNKNOWN
+
+Coverage gaps
+  semgrep (local: /opt/plugins/semgrep, v3.0.0): tables could not be listed: source returned no tables with or without a connection
+  semgrep cloudquery/semgrep@v3.1.0: tables were listed with a connection (metadata only, no rows read)
+
+Action: review the source changelog for what this check could not assess.
+This check only previews the changes. It does not migrate, write, delete or upload anything.
+
+`,
+		},
 	}
 	setColorOutput(t, false)
 	for _, tc := range cases {
