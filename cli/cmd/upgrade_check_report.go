@@ -523,17 +523,20 @@ func upgradeAction(r upgradeReport, impacts []upgradeTableImpact, comparisons []
 }
 
 func upgradeRemovedTablesAction(r upgradeReport) string {
-	var selections []string
+	var names []string
 	for _, table := range r.RemovedTables {
 		if table.SelectedBy == upgradeSelectedByName {
-			selections = append(selections, table.Name)
+			names = append(names, table.Name)
 		}
 	}
-	selections = append(selections, r.UnmatchedTablePatterns...)
+	selections := slices.Clone(r.UnmatchedTablePatterns)
+	if len(names) > 0 {
+		selections = append(selections, upgradeShortList(names))
+	}
 	if len(selections) == 0 {
 		return "update dependent consumers; the removed tables stop syncing, and their existing data in the destination is kept but no longer updated."
 	}
-	return fmt.Sprintf("remove explicit selections (%s) and update dependent consumers.", upgradeShortList(selections))
+	return fmt.Sprintf("remove explicit selections (%s) and update dependent consumers.", strings.Join(selections, ", "))
 }
 
 func upgradeShortList(names []string) string {

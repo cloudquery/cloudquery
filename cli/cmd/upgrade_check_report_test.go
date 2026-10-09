@@ -645,7 +645,15 @@ func TestUpgradeRemovedTablesAction(t *testing.T) {
 				RemovedTables:          []upgradeRemovedTable{byName("t1"), byName("t2"), byName("t3"), byName("t4")},
 				UnmatchedTablePatterns: []string{"t_*"},
 			},
-			want: "remove explicit selections (t1, t2, t3 and 2 more) and update dependent consumers.",
+			want: "remove explicit selections (t_*, t1, t2, t3 and 1 more) and update dependent consumers.",
+		},
+		{
+			name: "unmatched patterns are never shortened",
+			report: upgradeReport{
+				RemovedTables:          []upgradeRemovedTable{byName("t1"), byName("t2"), byName("t3")},
+				UnmatchedTablePatterns: []string{"a_*", "b_*", "c_*", "d_*"},
+			},
+			want: "remove explicit selections (a_*, b_*, c_*, d_*, t1, t2, t3) and update dependent consumers.",
 		},
 	}
 	for _, tc := range cases {
