@@ -458,7 +458,12 @@ func TestSelectUpgradeTables(t *testing.T) {
 	}, from, to)
 	require.NoError(t, err)
 
-	require.Equal(t, []string{"test_removed", "test_parent", "test_parent_child"}, selection.RemovedTables)
+	require.Equal(t, []upgradeRemovedTable{
+		{Name: "test_removed", SelectedBy: upgradeSelectedByName},
+		{Name: "test_parent", SelectedBy: upgradeSelectedByName},
+		{Name: "test_parent_child", SelectedBy: upgradeSelectedAsDependent},
+	}, selection.RemovedTables)
+	require.Empty(t, selection.UnmatchedTablePatterns)
 	require.Len(t, selection.Pairs, 2)
 	require.Equal(t, "test_kept", selection.Pairs[0].Name)
 	require.Equal(t, "test_kept", selection.Pairs[0].From.Name)
@@ -485,6 +490,76 @@ func TestSelectUpgradeTablesSkipsDependentTables(t *testing.T) {
 	require.Empty(t, selection.RemovedTables)
 	require.Len(t, selection.Pairs, 1)
 	require.Equal(t, "test_parent", selection.Pairs[0].Name)
+}
+
+func TestSelectUpgradeTablesRecordsHowRemovedTablesWereSelected(t *testing.T) {
+	fromBuckets := testTable("aws_s3_buckets")
+	grants := testTable("aws_s3_bucket_grants")
+	grants.Parent = fromBuckets
+	fromBuckets.Relations = schema.Tables{grants}
+	from := schema.Tables{testTable("aws_ec2_instances"), testTable("aws_ec2_removed"), testTable("aws_iam_old"), fromBuckets}.FlattenTables()
+	to := schema.Tables{testTable("aws_ec2_instances"), testTable("aws_s3_buckets")}
+
+	cases := []struct {
+		name          string
+		tables        []string
+		wantRemoved   []upgradeRemovedTable
+		wantUnmatched []string
+	}{
+		{
+			name:        "exact name",
+			tables:      []string{"aws_ec2_instances", "aws_ec2_removed"},
+			wantRemoved: []upgradeRemovedTable{{Name: "aws_ec2_removed", SelectedBy: upgradeSelectedByName}},
+		},
+		{
+			name:   "wildcard",
+			tables: []string{"*"},
+			wantRemoved: []upgradeRemovedTable{
+				{Name: "aws_ec2_removed", SelectedBy: upgradeSelectedByPattern},
+				{Name: "aws_iam_old", SelectedBy: upgradeSelectedByPattern},
+				{Name: "aws_s3_bucket_grants", SelectedBy: upgradeSelectedByPattern},
+			},
+		},
+		{
+			name:        "glob prefix",
+			tables:      []string{"aws_ec2_*"},
+			wantRemoved: []upgradeRemovedTable{{Name: "aws_ec2_removed", SelectedBy: upgradeSelectedByPattern}},
+		},
+		{
+			name:          "glob prefix with no match in the new version",
+			tables:        []string{"aws_ec2_*", "aws_iam_*"},
+			wantRemoved:   []upgradeRemovedTable{{Name: "aws_ec2_removed", SelectedBy: upgradeSelectedByPattern}, {Name: "aws_iam_old", SelectedBy: upgradeSelectedByPattern}},
+			wantUnmatched: []string{"aws_iam_*"},
+		},
+		{
+			name:        "dependent table",
+			tables:      []string{"aws_s3_buckets"},
+			wantRemoved: []upgradeRemovedTable{{Name: "aws_s3_bucket_grants", SelectedBy: upgradeSelectedAsDependent}},
+		},
+		{
+			name:   "mix",
+			tables: []string{"aws_ec2_removed", "aws_ec2_*", "aws_iam_*", "aws_s3_buckets"},
+			wantRemoved: []upgradeRemovedTable{
+				{Name: "aws_ec2_removed", SelectedBy: upgradeSelectedByName},
+				{Name: "aws_iam_old", SelectedBy: upgradeSelectedByPattern},
+				{Name: "aws_s3_bucket_grants", SelectedBy: upgradeSelectedAsDependent},
+			},
+			wantUnmatched: []string{"aws_iam_*"},
+		},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			selection, err := selectUpgradeTables(specs.Source{
+				Metadata:            specs.Metadata{Name: "aws", Version: "v1.0.0"},
+				Tables:              tc.tables,
+				SkipDependentTables: lo.ToPtr(false),
+			}, from, to)
+			require.NoError(t, err)
+
+			require.ElementsMatch(t, tc.wantRemoved, selection.RemovedTables)
+			require.Equal(t, tc.wantUnmatched, selection.UnmatchedTablePatterns)
+		})
+	}
 }
 
 func TestTransformUpgradeTables(t *testing.T) {

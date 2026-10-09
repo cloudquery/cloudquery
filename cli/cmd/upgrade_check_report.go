@@ -23,17 +23,18 @@ var (
 )
 
 type upgradeReport struct {
-	SourceName    string
-	FromVersion   string
-	ToVersion     string
-	FromOrigin    upgradeSourceOrigin
-	ToOrigin      upgradeSourceOrigin
-	SourceUnknown bool
-	SourceGaps    []string
-	RemovedTables []string
-	Destination   *specs.Destination
-	Tables        map[string]upgradeTablePair
-	Findings      []*pluginPb.AssessTables_TableFinding
+	SourceName             string
+	FromVersion            string
+	ToVersion              string
+	FromOrigin             upgradeSourceOrigin
+	ToOrigin               upgradeSourceOrigin
+	SourceUnknown          bool
+	SourceGaps             []string
+	RemovedTables          []upgradeRemovedTable
+	UnmatchedTablePatterns []string
+	Destination            *specs.Destination
+	Tables                 map[string]upgradeTablePair
+	Findings               []*pluginPb.AssessTables_TableFinding
 }
 
 type upgradeChangeKind string
@@ -86,6 +87,7 @@ const (
 	upgradeRemovedTableText = "removed table, the new source version no longer provides it"
 	upgradeDataLossText     = "dropped and recreated, existing rows deleted"
 	upgradeSafeModeFallback = "safe mode cannot apply these changes"
+	upgradeMaxTypeWidth     = 40
 )
 
 func renderUpgradeReport(w io.Writer, r upgradeReport) error {
@@ -125,7 +127,7 @@ func renderUpgradeReport(w io.Writer, r upgradeReport) error {
 	}
 	b.WriteString(verdictColor.Sprint(verdict) + "\n")
 
-	writeUpgradeChanges(&b, impacts, r.RemovedTables)
+	writeUpgradeChanges(&b, impacts, upgradeRemovedTableNames(r.RemovedTables))
 	writeUpgradeOutputComparisons(&b, comparisons, r.Tables)
 	writeUpgradeNextSync(&b, impacts, migrateMode)
 	writeUpgradeCoverageGaps(&b, gaps)
@@ -158,7 +160,9 @@ func upgradeExitCode(r upgradeReport) int {
 }
 
 func sortUpgradeReport(r upgradeReport) upgradeReport {
-	r.RemovedTables = slices.Sorted(slices.Values(r.RemovedTables))
+	r.RemovedTables = slices.SortedFunc(slices.Values(r.RemovedTables), func(a, b upgradeRemovedTable) int {
+		return strings.Compare(a.Name, b.Name)
+	})
 	r.Findings = slices.SortedFunc(slices.Values(r.Findings), func(a, b *pluginPb.AssessTables_TableFinding) int {
 		return strings.Compare(a.TableName, b.TableName)
 	})
@@ -433,7 +437,7 @@ func upgradeAction(r upgradeReport, impacts []upgradeTableImpact, comparisons []
 	}
 	switch {
 	case len(r.RemovedTables) > 0:
-		return "remove explicit selections and update dependent consumers.", color.FgYellow
+		return upgradeRemovedTablesAction(r), color.FgYellow
 	case upgradeHasCategory(impacts, pluginPb.AssessTables_CATEGORY_FILE_SCHEMA_CHANGED), upgradeOutputDiffers(comparisons):
 		return "review readers that combine old and new files.", color.FgYellow
 	case r.SourceUnknown || upgradeNotFullyAssessedTables(r) > 0:
@@ -446,6 +450,35 @@ func upgradeAction(r upgradeReport, impacts []upgradeTableImpact, comparisons []
 		return "no action needed; the output is the same for equivalent values.", color.FgGreen
 	}
 	return "no action needed.", color.FgGreen
+}
+
+func upgradeRemovedTablesAction(r upgradeReport) string {
+	var selections []string
+	for _, table := range r.RemovedTables {
+		if table.SelectedBy == upgradeSelectedByName {
+			selections = append(selections, table.Name)
+		}
+	}
+	selections = append(selections, r.UnmatchedTablePatterns...)
+	if len(selections) == 0 {
+		return "update dependent consumers; the removed tables stop syncing, and their existing data in the destination is kept but no longer updated."
+	}
+	return fmt.Sprintf("remove explicit selections (%s) and update dependent consumers.", upgradeShortList(selections))
+}
+
+func upgradeShortList(names []string) string {
+	if len(names) > 3 {
+		return fmt.Sprintf("%s and %d more", strings.Join(names[:3], ", "), len(names)-3)
+	}
+	return strings.Join(names, ", ")
+}
+
+func upgradeRemovedTableNames(tables []upgradeRemovedTable) []string {
+	names := make([]string, len(tables))
+	for i, table := range tables {
+		names[i] = table.Name
+	}
+	return names
 }
 
 func upgradeTableList(impacts []upgradeTableImpact) string {
@@ -468,7 +501,7 @@ func writeUpgradeChanges(b *strings.Builder, impacts []upgradeTableImpact, remov
 		tableWidth = max(tableWidth, len(impact.Name))
 		for _, change := range impact.Changes {
 			columnWidth = max(columnWidth, len(change.Column))
-			typeWidth = max(typeWidth, len([]rune(upgradeChangeType(change))))
+			typeWidth = max(typeWidth, min(len([]rune(upgradeChangeType(change))), upgradeMaxTypeWidth))
 		}
 	}
 	for _, table := range removedTables {
@@ -503,7 +536,7 @@ func writeUpgradeColumnChanges(b *strings.Builder, impact upgradeTableImpact, co
 		}
 		lineColor := upgradeChangeColor(impact, change)
 		changeType := upgradeChangeType(change)
-		line := fmt.Sprintf("%s %-*s   %s%s   %s", marker, columnWidth, change.Column, changeType, strings.Repeat(" ", typeWidth-len([]rune(changeType))), description)
+		line := fmt.Sprintf("%s %-*s   %s%s   %s", marker, columnWidth, change.Column, changeType, strings.Repeat(" ", max(typeWidth-len([]rune(changeType)), 0)), description)
 		b.WriteString("    " + lineColor.Sprint(line) + "\n")
 	}
 }

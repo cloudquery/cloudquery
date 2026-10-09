@@ -94,7 +94,7 @@ func upgradeReportToJSON(r upgradeReport) upgradeReportJSON {
 		},
 		Verdict:           verdict,
 		Tables:            append([]upgradeTableImpact{}, impacts...),
-		RemovedTables:     append([]string{}, r.RemovedTables...),
+		RemovedTables:     upgradeRemovedTableNames(r.RemovedTables),
 		OutputComparisons: upgradeOutputComparisonsToJSON(comparisons),
 		CoverageGaps:      append([]string{}, upgradeCoverageGaps(r)...),
 		Action:            action,
