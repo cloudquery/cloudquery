@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.34](https://github.com/cloudquery/cloudquery/compare/plugins-source-square-v1.3.33...plugins-source-square-v1.3.34) (2026-10-10)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency pyarrow to v23.0.1 [SECURITY] ([#23116](https://github.com/cloudquery/cloudquery/issues/23116)) ([aff6c13](https://github.com/cloudquery/cloudquery/commit/aff6c1315d4b391bf87af80fde096d9b854f438e))
+* **deps:** Update dependency pyarrow to v23.0.1 [SECURITY] ([#23458](https://github.com/cloudquery/cloudquery/issues/23458)) ([60be3e0](https://github.com/cloudquery/cloudquery/commit/60be3e0394cdd0453b1f278982ba071e3c3f8364))
+* **deps:** Update dependency squareup to v46 ([#23455](https://github.com/cloudquery/cloudquery/issues/23455)) ([578596a](https://github.com/cloudquery/cloudquery/commit/578596aaf4b568c4f2181d4d7cf07f7595810b82))
+* **deps:** Update ghcr.io/astral-sh/uv Docker tag to v0.12.1 ([#23199](https://github.com/cloudquery/cloudquery/issues/23199)) ([d6c3547](https://github.com/cloudquery/cloudquery/commit/d6c35475abac21407e8c1677f08402e86c825956))
+* **deps:** Update ghcr.io/astral-sh/uv Docker tag to v0.12.21 ([#23425](https://github.com/cloudquery/cloudquery/issues/23425)) ([5eba7bb](https://github.com/cloudquery/cloudquery/commit/5eba7bb43326d35d93298233768067d541e41100))
+* **deps:** Update ghcr.io/astral-sh/uv Docker tag to v0.12.8 ([#23304](https://github.com/cloudquery/cloudquery/issues/23304)) ([bcb04aa](https://github.com/cloudquery/cloudquery/commit/bcb04aa561c82bd23de5b9eb43a55c822ea13bfd))
+
 ## [1.3.33](https://github.com/cloudquery/cloudquery/compare/plugins-source-square-v1.3.32...plugins-source-square-v1.3.33) (2026-07-13)
 
 
