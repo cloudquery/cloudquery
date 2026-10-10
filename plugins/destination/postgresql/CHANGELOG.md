@@ -1,5 +1,12 @@
 # Changelog
 
+## [8.17.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.17.0...plugins-destination-postgresql-v8.17.1) (2026-10-10)
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#23522](https://github.com/cloudquery/cloudquery/issues/23522)) ([1af82b6](https://github.com/cloudquery/cloudquery/commit/1af82b6393e4f2b1e0d05550f98f30f5b6791ed9))
+
 ## [8.17.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.16.0...plugins-destination-postgresql-v8.17.0) (2026-10-07)
 
 
