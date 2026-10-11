@@ -130,7 +130,7 @@ jobs:
       - name: Read CloudQuery CLI version
         id: cloudquery-cli-version
         if: needs.prepare.outputs.ui_dir_arg != ''
-        run: echo "version=$(tr -d '[:space:]' < .github/cloudquery-cli-version)" >> "$GITHUB_OUTPUT"
+        run: echo "version=$(tr -d '[:space:]' < "$GITHUB_WORKSPACE/.github/cloudquery-cli-version")" >> "$GITHUB_OUTPUT"
       - name: Setup CloudQuery
         if: needs.prepare.outputs.ui_dir_arg != ''
         uses: cloudquery/setup-cloudquery@757b19eb8496cf9e89a78de54f2c677253f54f6b # v5.0.3
@@ -259,7 +259,7 @@ jobs:
 
       - name: Read CloudQuery CLI version
         id: cloudquery-cli-version
-        run: echo "version=$(tr -d '[:space:]' < .github/cloudquery-cli-version)" >> "$GITHUB_OUTPUT"
+        run: echo "version=$(tr -d '[:space:]' < "$GITHUB_WORKSPACE/.github/cloudquery-cli-version")" >> "$GITHUB_OUTPUT"
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@757b19eb8496cf9e89a78de54f2c677253f54f6b # v5.0.3
         with:
@@ -364,7 +364,7 @@ jobs:
 
       - name: Read CloudQuery CLI version
         id: cloudquery-cli-version
-        run: echo "version=$(tr -d '[:space:]' < .github/cloudquery-cli-version)" >> "$GITHUB_OUTPUT"
+        run: echo "version=$(tr -d '[:space:]' < "$GITHUB_WORKSPACE/.github/cloudquery-cli-version")" >> "$GITHUB_OUTPUT"
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@757b19eb8496cf9e89a78de54f2c677253f54f6b # v5.0.3
         with:
@@ -466,7 +466,7 @@ jobs:
 
       - name: Read CloudQuery CLI version
         id: cloudquery-cli-version
-        run: echo "version=$(tr -d '[:space:]' < .github/cloudquery-cli-version)" >> "$GITHUB_OUTPUT"
+        run: echo "version=$(tr -d '[:space:]' < "$GITHUB_WORKSPACE/.github/cloudquery-cli-version")" >> "$GITHUB_OUTPUT"
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@757b19eb8496cf9e89a78de54f2c677253f54f6b # v5.0.3
         with:
@@ -573,7 +573,7 @@ jobs:
 
       - name: Read CloudQuery CLI version
         id: cloudquery-cli-version
-        run: echo "version=$(tr -d '[:space:]' < .github/cloudquery-cli-version)" >> "$GITHUB_OUTPUT"
+        run: echo "version=$(tr -d '[:space:]' < "$GITHUB_WORKSPACE/.github/cloudquery-cli-version")" >> "$GITHUB_OUTPUT"
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@757b19eb8496cf9e89a78de54f2c677253f54f6b # v5.0.3
         with:
