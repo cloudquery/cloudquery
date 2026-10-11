@@ -9,6 +9,7 @@ on:
     paths:
       - "plugins/source/test/**"
       - ".github/workflows/source_test.yml"
+      - ".github/cloudquery-cli-version"
   push:
     branches:
       - main

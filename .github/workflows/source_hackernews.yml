@@ -9,6 +9,7 @@ on:
     paths:
       - 'plugins/source/hackernews/**'
       - '.github/workflows/source_hackernews.yml'
+      - '.github/cloudquery-cli-version'
   push:
     branches:
       - main

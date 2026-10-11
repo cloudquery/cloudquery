@@ -9,6 +9,7 @@ on:
     paths:
       - "plugins/source/xkcd/**"
       - ".github/workflows/source_xkcd.yml"
+      - ".github/cloudquery-cli-version"
   push:
     branches:
       - main
