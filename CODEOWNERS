@@ -11,3 +11,5 @@
 plugins/source/*/docs/tables/*.md
 plugins/source/**/mocks/*.go
 plugins/source/**/spec/schema.json
+
+.github/cloudquery-cli-version
