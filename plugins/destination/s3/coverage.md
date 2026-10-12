@@ -1,7 +1,10 @@
 | File | Function | Coverage |
 | --- | --- | --- |
-| github.com/cloudquery/cloudquery/plugins/destination/s3/v7/client/client.go:189: | Close | 100.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/s3/v7/client/client.go:193: | credentialsCacheOptionsFunc | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/s3/v7/client/assess.go:26: | assessTable | 100.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/s3/v7/client/client.go:52: | New | 62.9% |
+| github.com/cloudquery/cloudquery/plugins/destination/s3/v7/client/client.go:193: | isEmptySpec | 100.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/s3/v7/client/client.go:198: | Close | 100.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/s3/v7/client/client.go:205: | credentialsCacheOptionsFunc | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/s3/v7/client/read.go:23: | Read | 57.1% |
 | github.com/cloudquery/cloudquery/plugins/destination/s3/v7/client/spec/gen/main.go:14: | main | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/s3/v7/client/spec/gen/main.go:24: | currDir | 0.0% |
@@ -23,4 +26,4 @@
 | github.com/cloudquery/cloudquery/plugins/destination/s3/v7/client/write.go:144: | sanitizeJSONRawMessage | 80.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/s3/v7/client/write.go:154: | sanitizeJSONKeysForObject | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/s3/v7/main.go:18: | main | 0.0% |
-| total: | (statements) | 51.3% |
+| total: | (statements) | 53.3% |
