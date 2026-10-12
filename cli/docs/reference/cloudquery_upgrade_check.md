@@ -24,11 +24,11 @@ cloudquery upgrade check [files or directories] [flags]
 ## Examples
 
 ```
-# Check how upgrading the datadog source to v6.0.0 affects the destinations in config.yml
-cloudquery upgrade check ./config.yml --source datadog --to v6.0.0
-
-# Same check when datadog is the only source in config.yml
+# Check how upgrading the only source in config.yml to v6.0.0 affects its destinations
 cloudquery upgrade check ./config.yml --to v6.0.0
+
+# Check how upgrading the datadog source to v6.0.0 affects its destinations, when config.yml has more than one source
+cloudquery upgrade check ./config.yml --source datadog --to v6.0.0
 
 # Compare a source that runs from a local binary, gRPC server or Docker image with cloudquery/semgrep v3.1.0 from the CloudQuery Hub
 cloudquery upgrade check ./config.yml --source semgrep --to v3.1.0 --to-path cloudquery/semgrep
