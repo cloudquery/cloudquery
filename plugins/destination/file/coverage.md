@@ -1,6 +1,9 @@
 | File | Function | Coverage |
 | --- | --- | --- |
-| github.com/cloudquery/cloudquery/plugins/destination/file/v5/client/client.go:63: | Close | 100.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/file/v5/client/assess.go:26: | assessTable | 100.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/file/v5/client/client.go:29: | New | 84.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/file/v5/client/client.go:68: | isEmptySpec | 100.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/file/v5/client/client.go:73: | Close | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/file/v5/client/read.go:14: | Read | 81.2% |
 | github.com/cloudquery/cloudquery/plugins/destination/file/v5/client/spec/gen/main.go:14: | main | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/file/v5/client/spec/gen/main.go:24: | currDir | 0.0% |
@@ -14,4 +17,4 @@
 | github.com/cloudquery/cloudquery/plugins/destination/file/v5/client/write.go:18: | WriteTable | 76.2% |
 | github.com/cloudquery/cloudquery/plugins/destination/file/v5/client/write.go:57: | Write | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/file/v5/main.go:18: | main | 0.0% |
-| total: | (statements) | 46.5% |
+| total: | (statements) | 50.8% |

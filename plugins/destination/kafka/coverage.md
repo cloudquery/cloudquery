@@ -1,7 +1,10 @@
 | File | Function | Coverage |
 | --- | --- | --- |
-| github.com/cloudquery/cloudquery/plugins/destination/kafka/v5/client/client.go:55: | New | 69.6% |
-| github.com/cloudquery/cloudquery/plugins/destination/kafka/v5/client/client.go:116: | Close | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/kafka/v5/client/assess.go:26: | assessTable | 100.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/kafka/v5/client/client.go:33: | createTLSConfiguration | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/kafka/v5/client/client.go:56: | New | 72.9% |
+| github.com/cloudquery/cloudquery/plugins/destination/kafka/v5/client/client.go:120: | isEmptySpec | 100.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/kafka/v5/client/client.go:125: | Close | 66.7% |
 | github.com/cloudquery/cloudquery/plugins/destination/kafka/v5/client/logger.go:10: | NewSaramaLoggerAdapter | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/kafka/v5/client/logger.go:16: | Print | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/kafka/v5/client/logger.go:20: | Printf | 100.0% |
@@ -16,4 +19,4 @@
 | github.com/cloudquery/cloudquery/plugins/destination/kafka/v5/client/write.go:16: | Write | 75.7% |
 | github.com/cloudquery/cloudquery/plugins/destination/kafka/v5/client/write.go:72: | createTopics | 45.5% |
 | github.com/cloudquery/cloudquery/plugins/destination/kafka/v5/main.go:20: | main | 0.0% |
-| total: | (statements) | 43.8% |
+| total: | (statements) | 48.5% |
