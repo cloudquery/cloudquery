@@ -418,6 +418,43 @@ func TestLoadUpgradeSourceTablesErrors(t *testing.T) {
 	}
 }
 
+func TestUpgradeCheckSource(t *testing.T) {
+	destinationOnly := filepath.Join(t.TempDir(), "destination-only.yml")
+	require.NoError(t, os.WriteFile(destinationOnly, []byte("kind: destination\nspec:\n  name: test\n  path: cloudquery/test\n  version: v2.5.1\n"), 0o644))
+	singleSource := filepath.Join("testdata", "transformation.yml")
+	multipleSources := filepath.Join("testdata", "multiple-sources.yml")
+
+	cases := []struct {
+		name       string
+		config     string
+		sourceName string
+		want       string
+		wantErr    string
+	}{
+		{name: "single source without --source", config: singleSource, want: "test"},
+		{name: "single source with --source", config: singleSource, sourceName: "test", want: "test"},
+		{name: "multiple sources with --source", config: multipleSources, sourceName: "test2", want: "test2"},
+		{name: "multiple sources without --source", config: multipleSources, wantErr: "multiple sources found in " + multipleSources + ", set --source to one of: test, test2"},
+		{name: "unknown source", config: singleSource, sourceName: "nope", wantErr: `source "nope" not found in ` + singleSource},
+		{name: "no sources", config: destinationOnly, wantErr: "no source found in " + destinationOnly},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			specReader, err := specs.NewSpecReaderWithoutValidation([]string{tc.config})
+			require.NoError(t, err)
+
+			source, err := upgradeCheckSource(specReader, tc.sourceName, []string{tc.config})
+
+			if tc.wantErr != "" {
+				require.EqualError(t, err, tc.wantErr)
+				return
+			}
+			require.NoError(t, err)
+			require.Equal(t, tc.want, source.Name)
+		})
+	}
+}
+
 func TestUpgradeAuthSources(t *testing.T) {
 	for _, registry := range []specs.Registry{specs.RegistryCloudQuery, specs.RegistryGitHub} {
 		sourceSpec := specs.Source{Metadata: specs.Metadata{Name: "semgrep", Registry: registry}}
@@ -731,7 +768,7 @@ func TestUpgradeCheck(t *testing.T) {
 	var out, errOut bytes.Buffer
 	cmd.SetOut(&out)
 	cmd.SetErr(&errOut)
-	cmd.SetArgs(append([]string{"upgrade", "check", testConfig, "--source", "test", "--to", "v4.7.0"}, testCommandArgs(t)...))
+	cmd.SetArgs(append([]string{"upgrade", "check", testConfig, "--to", "v4.7.0"}, testCommandArgs(t)...))
 
 	var exitCodeErr *ExitCodeError
 	require.ErrorAs(t, cmd.Execute(), &exitCodeErr)
