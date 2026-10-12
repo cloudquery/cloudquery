@@ -1,9 +1,16 @@
 | File | Function | Coverage |
 | --- | --- | --- |
+| github.com/cloudquery/cloudquery/plugins/destination/mssql/v5/client/assess.go:31: | assessTable | 96.6% |
+| github.com/cloudquery/cloudquery/plugins/destination/mssql/v5/client/assess.go:68: | tableFinding | 100.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/mssql/v5/client/assess.go:77: | columnFinding | 100.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/mssql/v5/client/assess.go:98: | unchangedColumnFinding | 100.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/mssql/v5/client/assess.go:114: | sqlColumnType | 100.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/mssql/v5/client/assess.go:122: | autoMigrationBehavior | 75.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/mssql/v5/client/bulk_insert.go:14: | bulkInsert | 72.7% |
 | github.com/cloudquery/cloudquery/plugins/destination/mssql/v5/client/changes.go:10: | unsafeChanges | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/mssql/v5/client/changes.go:20: | needsTableDrop | 85.7% |
-| github.com/cloudquery/cloudquery/plugins/destination/mssql/v5/client/client.go:30: | Close | 0.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/mssql/v5/client/client.go:38: | New | 83.9% |
+| github.com/cloudquery/cloudquery/plugins/destination/mssql/v5/client/client.go:30: | Close | 33.3% |
+| github.com/cloudquery/cloudquery/plugins/destination/mssql/v5/client/client.go:41: | New | 84.8% |
 | github.com/cloudquery/cloudquery/plugins/destination/mssql/v5/client/columns.go:12: | getTableColumns | 86.5% |
 | github.com/cloudquery/cloudquery/plugins/destination/mssql/v5/client/columns.go:57: | getTablePK | 77.3% |
 | github.com/cloudquery/cloudquery/plugins/destination/mssql/v5/client/delete_stale.go:11: | DeleteStale | 85.7% |
@@ -71,4 +78,4 @@
 | github.com/cloudquery/cloudquery/plugins/destination/mssql/v5/queries/values.go:29: | prealloc | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/mssql/v5/queries/values.go:37: | getColValue | 26.9% |
 | github.com/cloudquery/cloudquery/plugins/destination/mssql/v5/queries/values.go:97: | ptr | 100.0% |
-| total: | (statements) | 61.6% |
+| total: | (statements) | 65.3% |

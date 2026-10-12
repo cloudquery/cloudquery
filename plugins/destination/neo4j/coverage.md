@@ -1,8 +1,13 @@
 | File | Function | Coverage |
 | --- | --- | --- |
-| github.com/cloudquery/cloudquery/plugins/destination/neo4j/v5/client/client.go:24: | New | 70.8% |
-| github.com/cloudquery/cloudquery/plugins/destination/neo4j/v5/client/client.go:59: | Close | 0.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/neo4j/v5/client/client.go:67: | Session | 100.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/neo4j/v5/client/assess.go:21: | AssessTables | 100.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/neo4j/v5/client/assess.go:29: | assessTable | 91.7% |
+| github.com/cloudquery/cloudquery/plugins/destination/neo4j/v5/client/assess.go:51: | indexMigration | 100.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/neo4j/v5/client/assess.go:65: | tableFinding | 100.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/neo4j/v5/client/assess.go:74: | columnFinding | 100.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/neo4j/v5/client/client.go:25: | New | 73.1% |
+| github.com/cloudquery/cloudquery/plugins/destination/neo4j/v5/client/client.go:63: | Close | 50.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/neo4j/v5/client/client.go:74: | Session | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/neo4j/v5/client/connection.go:26: | NewConnectionTester | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/neo4j/v5/client/deletestale.go:14: | DeleteStale | 85.7% |
 | github.com/cloudquery/cloudquery/plugins/destination/neo4j/v5/client/logger.go:17: | Error | 0.0% |
@@ -13,7 +18,7 @@
 | github.com/cloudquery/cloudquery/plugins/destination/neo4j/v5/client/logger.go:37: | LogServerMessage | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/neo4j/v5/client/migrate.go:18: | MigrateTables | 81.8% |
 | github.com/cloudquery/cloudquery/plugins/destination/neo4j/v5/client/migrate.go:34: | tryCreateIndex | 50.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/neo4j/v5/client/migrate.go:76: | createIndexQuery | 94.4% |
+| github.com/cloudquery/cloudquery/plugins/destination/neo4j/v5/client/migrate.go:76: | createIndexQuery | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/neo4j/v5/client/migrate.go:101: | indexName | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/neo4j/v5/client/read.go:17: | reverseTransform | 86.8% |
 | github.com/cloudquery/cloudquery/plugins/destination/neo4j/v5/client/read.go:88: | reverseTransformer | 85.7% |
@@ -27,4 +32,4 @@
 | github.com/cloudquery/cloudquery/plugins/destination/neo4j/v5/client/write.go:13: | WriteTableBatch | 89.2% |
 | github.com/cloudquery/cloudquery/plugins/destination/neo4j/v5/client/write.go:63: | Write | 60.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/neo4j/v5/main.go:17: | main | 0.0% |
-| total: | (statements) | 80.6% |
+| total: | (statements) | 83.1% |
