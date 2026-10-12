@@ -31,7 +31,10 @@ Exit codes:
   1  the check failed with an error
 
 With several destinations, the highest of 0, 3 and 4 is used. The report is always printed first.`
-	upgradeCheckExample = `# Check how upgrading the datadog source to v6.0.0 affects the destinations in config.yml
+	upgradeCheckExample = `# Check how upgrading the only source in config.yml to v6.0.0 affects its destinations
+cloudquery upgrade check ./config.yml --to v6.0.0
+
+# Check how upgrading the datadog source to v6.0.0 affects its destinations, when config.yml has more than one source
 cloudquery upgrade check ./config.yml --source datadog --to v6.0.0
 
 # Compare a source that runs from a local binary, gRPC server or Docker image with cloudquery/semgrep v3.1.0 from the CloudQuery Hub
@@ -62,10 +65,9 @@ func newCmdUpgradeCheck() *cobra.Command {
 		Args:    cobra.MinimumNArgs(1),
 		RunE:    upgradeCheck,
 	}
-	cmd.Flags().String("source", "", "Name of the source to upgrade, as set in the configuration")
+	cmd.Flags().String("source", "", "Name of the source to upgrade, as set in the configuration. Optional when the configuration has a single source")
 	cmd.Flags().String("to", "", "Source plugin version to upgrade to")
 	cmd.Flags().String("to-path", "", "CloudQuery Hub path of the source plugin to upgrade to, as <team>/<name>. Only for sources from the local, grpc or docker registry. Default: cloudquery/<name reported by the configured source>")
-	_ = cmd.MarkFlagRequired("source")
 	_ = cmd.MarkFlagRequired("to")
 	cmd.Flags().String("output", upgradeOutputText, "Output format. One of: text, json")
 	cmd.Flags().String("license", "", "set offline license file")
@@ -222,10 +224,11 @@ func loadUpgradeCheckSpecs(ctx context.Context, args []string, sourceName string
 	if err != nil {
 		return upgradeCheckSpecs{}, fmt.Errorf("failed to load spec(s) from %s. Error: %w", strings.Join(args, ", "), err)
 	}
-	loaded := upgradeCheckSpecs{source: specReader.GetSourceByName(sourceName), transformersForDestination: make(map[string][]*specs.Transformer)}
-	if loaded.source == nil {
-		return upgradeCheckSpecs{}, fmt.Errorf("source %q not found in %s", sourceName, strings.Join(args, ", "))
+	source, err := upgradeCheckSource(specReader, sourceName, args)
+	if err != nil {
+		return upgradeCheckSpecs{}, err
 	}
+	loaded := upgradeCheckSpecs{source: source, transformersForDestination: make(map[string][]*specs.Transformer)}
 
 	loaded.downloadToken, loaded.teamName, err = cqplatform.DownloadAuth(ctx, log.Logger, upgradeAuthSources(*loaded.source), specReader.Destinations, specReader.Transformers)
 	if err != nil {
@@ -254,6 +257,28 @@ func loadUpgradeCheckSpecs(ctx context.Context, args []string, sourceName string
 		}
 	}
 	return loaded, nil
+}
+
+func upgradeCheckSource(specReader *specs.SpecReader, sourceName string, args []string) (*specs.Source, error) {
+	files := strings.Join(args, ", ")
+	if sourceName != "" {
+		source := specReader.GetSourceByName(sourceName)
+		if source == nil {
+			return nil, fmt.Errorf("source %q not found in %s", sourceName, files)
+		}
+		return source, nil
+	}
+	switch len(specReader.Sources) {
+	case 0:
+		return nil, fmt.Errorf("no source found in %s", files)
+	case 1:
+		return specReader.Sources[0], nil
+	}
+	names := make([]string, len(specReader.Sources))
+	for i, source := range specReader.Sources {
+		names[i] = source.Name
+	}
+	return nil, fmt.Errorf("multiple sources found in %s, set --source to one of: %s", files, strings.Join(names, ", "))
 }
 
 func upgradeAuthSources(sourceSpec specs.Source) []*specs.Source {
