@@ -158,10 +158,13 @@ jobs:
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
         run: |
           go run main.go package -m ${{ steps.release-notes.outputs.result }} ${{ needs.prepare.outputs.plugin_version }} .
+      - name: Read CloudQuery CLI version
+        id: cloudquery-cli-version
+        run: echo "version=$(tr -d '[:space:]' < "$GITHUB_WORKSPACE/.github/cloudquery-cli-version")" >> "$GITHUB_OUTPUT"
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@757b19eb8496cf9e89a78de54f2c677253f54f6b # v5.0.3
         with:
-          version: v6.47.0
+          version: ${{ steps.cloudquery-cli-version.outputs.version }}
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
