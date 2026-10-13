@@ -32,6 +32,11 @@ func TestConfigureLakebase(t *testing.T) {
 			connString:      "postgres://u@localhost:5432/db?sslmode=require&pool_max_conn_lifetime=10m",
 			wantMaxLifetime: 10 * time.Minute,
 		},
+		{
+			name:            "overrides user-supplied application_name",
+			connString:      "postgres://u@localhost:5432/db?sslmode=require&application_name=custom",
+			wantMaxLifetime: maxLakebaseConnLifetime,
+		},
 	}
 
 	for _, tc := range cases {
