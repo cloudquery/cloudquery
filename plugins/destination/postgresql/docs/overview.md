@@ -206,7 +206,7 @@ This is the (nested) spec used by the PostgreSQL destination Plugin.
 
 ### Databricks Lakebase
 
-[Databricks Lakebase](https://docs.databricks.com/aws/en/oltp) is a PostgreSQL-compatible managed database. To sync into it, set the `lakebase` block. The plugin authenticates with a Databricks service principal (OAuth M2M) and mints a fresh short-lived database credential for every new connection, so you do not put a password in the `connection_string`. The connection string supplies the Lakebase host, port, database, user (the service principal client ID) and must use `sslmode=require`.
+[Databricks Lakebase](https://docs.databricks.com/aws/en/oltp) is a PostgreSQL-compatible managed database. To sync into it, set the `lakebase` block. The plugin authenticates with a Databricks service principal (OAuth M2M) and mints a fresh short-lived database credential for every new connection, so you do not put a password in the `connection_string`. The connection string supplies the Lakebase host, port, database, user (the service principal client ID) and must use `sslmode=require`. The plugin sets the connection `application_name` to `CloudQuery_Lakebase/<plugin-version>` for Databricks partner attribution, overriding any `application_name` in the connection string.
 
 ```yaml copy
 kind: destination
