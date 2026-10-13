@@ -79,9 +79,9 @@ func TestConfigureLakebase_RequiresTLS(t *testing.T) {
 		{name: "verify-ca ok", connString: "postgres://u@localhost:5432/db?sslmode=verify-ca"},
 		{name: "verify-full ok", connString: "postgres://u@localhost:5432/db?sslmode=verify-full"},
 		{name: "disable rejected", connString: "postgres://u@localhost:5432/db?sslmode=disable", wantErr: true},
-		// allow connects in plaintext first, then falls back to TLS.
+		// allow connects in plaintext first, then falls back to TLS
 		{name: "allow rejected", connString: "postgres://u@localhost:5432/db?sslmode=allow", wantErr: true},
-		// prefer (the default when sslmode is unset) can fall back to plaintext.
+		// prefer (the default when sslmode is unset) can fall back to plaintext
 		{name: "prefer rejected", connString: "postgres://u@localhost:5432/db?sslmode=prefer", wantErr: true},
 		{name: "default (unset) rejected", connString: "postgres://u@localhost:5432/db", wantErr: true},
 	}
