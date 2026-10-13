@@ -5,6 +5,13 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.48.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.47.0...cli-v6.48.0) (2026-10-12)
+
+
+### Features
+
+* Make `--source` optional in `upgrade check` when the configuration has one source ([#23539](https://github.com/cloudquery/cloudquery/issues/23539)) ([910a929](https://github.com/cloudquery/cloudquery/commit/910a929257309e4482cccd4bdb332b6fa6633937))
+
 ## [6.47.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.46.1...cli-v6.47.0) (2026-10-09)
 
 
