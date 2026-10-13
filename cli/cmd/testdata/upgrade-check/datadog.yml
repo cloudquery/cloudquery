@@ -1,0 +1,23 @@
+kind: "source"
+spec:
+  name: "datadog"
+  path: "cloudquery/datadog"
+  registry: "cloudquery"
+  version: "v5.19.10"
+  tables: ["*"]
+  destinations: ["postgresql"]
+  spec:
+    accounts:
+      - name: "placeholder"
+        api_key: "placeholder"
+        app_key: "placeholder"
+---
+kind: "destination"
+spec:
+  name: "postgresql"
+  path: "cloudquery/postgresql"
+  registry: "cloudquery"
+  version: "v8.17.0" # latest version of postgresql plugin
+  write_mode: "overwrite-delete-stale"
+  spec:
+    connection_string: "postgres://localhost:1/unreachable"

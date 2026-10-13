@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
-import square
-import square.client
+from square import Square
+from square.environment import SquareEnvironment
 
 DEFAULT_CONCURRENCY = 100
 DEFAULT_QUEUE_SIZE = 10000
@@ -69,13 +69,14 @@ class Spec:
 class Client:
     def __init__(self, spec: Spec) -> None:
         self._spec = spec
-        self._client = square.client.Client(
-            access_token=self._spec.access_token, environment=self._spec.environment
+        self._client = Square(
+            token=self._spec.access_token,
+            environment=SquareEnvironment[self._spec.environment.upper()],
         )
 
     def id(self):
         return "square"
 
     @property
-    def client(self) -> square.client.Client:
+    def client(self) -> Square:
         return self._client

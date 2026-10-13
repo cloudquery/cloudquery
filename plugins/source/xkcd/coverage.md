@@ -22,4 +22,4 @@
 | github.com/cloudquery/cloudquery/plugins/source/xkcd/resources/plugin/plugin.go:8: | Plugin | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/source/xkcd/resources/services/comic.go:13: | ComicsTable | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/source/xkcd/resources/services/comic.go:21: | fetchComics | 78.9% |
-| total: | (statements) | 20.1% |
+| total: | (statements) | 17.0% |

@@ -78,6 +78,7 @@ module.exports = async ({github, context}) => {
         }
     }
 
+    actions = [...new Set(actions)]
     pendingActions = [...actions]
     console.log(`Waiting for ${pendingActions.join(", ")}`)
     while (now <= deadline) {

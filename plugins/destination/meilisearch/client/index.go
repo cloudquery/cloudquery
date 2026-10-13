@@ -100,10 +100,15 @@ func (c *Client) configureIndex(ctx context.Context, s *indexSchema) error {
 		attributes = append(attributes, current...)
 		slices.Sort(attributes)
 		attributes = slices.Compact(attributes)
-		if len(attributes) == len(s.Attributes) {
-			// already the same filtered attributes, skip
-			c.logger.Info().Str("index", s.UID).Msg("index is already properly configured, skip")
-			return nil
+		if len(attributes) == len(current) {
+			sortable, err := index.GetSortableAttributes()
+			if err != nil {
+				return err
+			}
+			if sortable != nil && containsAll(*sortable, attributes) {
+				c.logger.Info().Str("index", s.UID).Msg("index is already properly configured, skip")
+				return nil
+			}
 		}
 	}
 
@@ -172,4 +177,13 @@ func (c *Client) deleteIndex(ctx context.Context, s *indexSchema) error {
 	}
 
 	return nil
+}
+
+func containsAll(have, want []string) bool {
+	for _, attr := range want {
+		if !slices.Contains(have, attr) {
+			return false
+		}
+	}
+	return true
 }

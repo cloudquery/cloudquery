@@ -30,6 +30,9 @@ var _ plugin.Client = (*Client)(nil)
 var _ batchwriter.Client = (*Client)(nil)
 
 func (c *Client) Close(ctx context.Context) error {
+	if c.conn == nil {
+		return nil
+	}
 	if err := c.writer.Close(ctx); err != nil {
 		_ = c.conn.Close()
 		return err
@@ -39,7 +42,10 @@ func (c *Client) Close(ctx context.Context) error {
 
 var errInvalidSpec = errors.New("invalid spec")
 
-func New(_ context.Context, logger zerolog.Logger, specBytes []byte, _ plugin.NewClientOptions) (plugin.Client, error) {
+func New(_ context.Context, logger zerolog.Logger, specBytes []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
+	if opts.NoConnection && len(specBytes) == 0 {
+		specBytes = []byte("{}")
+	}
 	var s spec.Spec
 	if err := json.Unmarshal(specBytes, &s); err != nil {
 		return nil, errors.Join(errInvalidSpec, err)
@@ -47,6 +53,9 @@ func New(_ context.Context, logger zerolog.Logger, specBytes []byte, _ plugin.Ne
 	s.SetDefaults()
 	if err := s.Validate(); err != nil {
 		return nil, errors.Join(errInvalidSpec, err)
+	}
+	if opts.NoConnection {
+		return &Client{spec: &s, logger: logger.With().Str("module", "dest-clickhouse").Logger()}, nil
 	}
 
 	options, err := s.Options()

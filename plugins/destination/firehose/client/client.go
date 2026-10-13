@@ -34,7 +34,12 @@ type Client struct {
 
 var _ plugin.Client = (*Client)(nil)
 
-func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, _ plugin.NewClientOptions) (plugin.Client, error) {
+func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
+	logger = logger.With().Str("module", "firehose").Logger()
+	if opts.NoConnection {
+		return &Client{logger: logger}, nil
+	}
+
 	var s spec.Spec
 	if err := json.Unmarshal(specBytes, &s); err != nil {
 		return nil, errors.Join(errInvalidSpec, fmt.Errorf("failed to unmarshal spec: %w", err))
@@ -56,7 +61,7 @@ func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, _ plugin.
 		return nil, errors.Join(errUnauthorized, err)
 	}
 	return &Client{
-		logger:         logger.With().Str("module", "firehose").Logger(),
+		logger:         logger,
 		spec:           s,
 		firehoseClient: firehose.NewFromConfig(cfg),
 	}, nil

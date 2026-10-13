@@ -17,7 +17,23 @@ func appendFromString(b array.Builder, s string) error {
 		dec := json.NewDecoder(strings.NewReader(s))
 		dec.UseNumber()
 		return b.UnmarshalOne(dec)
+	case arrow.TIMESTAMP:
+		return appendTimestampFromString(b.(*array.TimestampBuilder), s)
 	default:
 		return b.AppendValueFromString(s)
 	}
+}
+
+func appendTimestampFromString(b *array.TimestampBuilder, s string) error {
+	dt := b.Type().(*arrow.TimestampType)
+	loc, err := dt.GetZone()
+	if err != nil {
+		return err
+	}
+	ts, _, err := arrow.TimestampFromStringInLocation(s, dt.Unit, loc)
+	if err != nil {
+		return err
+	}
+	b.Append(ts)
+	return nil
 }

@@ -56,7 +56,7 @@ func New(ctx context.Context, logger zerolog.Logger, s []byte, opts plugin.NewCl
 		initializedTables: make(map[string]string),
 		spec:              &spec.Spec{},
 	}
-	if opts.NoConnection {
+	if opts.NoConnection && isEmptySpec(s) {
 		return c, nil
 	}
 
@@ -68,15 +68,19 @@ func New(ctx context.Context, logger zerolog.Logger, s []byte, opts plugin.NewCl
 	}
 	c.spec.SetDefaults()
 
-	if c.syncID == "" && c.spec.PathContainsSyncID() {
-		return nil, errors.New("path contains {{SYNC_ID}}. Upgrade your CLI to use this path variable")
-	}
-
 	filetypesClient, err := filetypes.NewClient(&c.spec.FileSpec)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create filetypes client: %w", err)
 	}
 	c.Client = filetypesClient
+
+	if opts.NoConnection {
+		return c, nil
+	}
+
+	if c.syncID == "" && c.spec.PathContainsSyncID() {
+		return nil, errors.New("path contains {{SYNC_ID}}. Upgrade your CLI to use this path variable")
+	}
 
 	configFns := []func(*config.LoadOptions) error{
 		config.WithDefaultRegion("us-east-1"),
@@ -186,7 +190,15 @@ func New(ctx context.Context, logger zerolog.Logger, s []byte, opts plugin.NewCl
 	return c, nil
 }
 
+func isEmptySpec(s []byte) bool {
+	trimmed := bytes.TrimSpace(s)
+	return len(trimmed) == 0 || bytes.Equal(trimmed, []byte("null"))
+}
+
 func (c *Client) Close(ctx context.Context) error {
+	if c.writer == nil {
+		return nil
+	}
 	return c.writer.Close(ctx)
 }
 

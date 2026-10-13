@@ -14,7 +14,7 @@ type BoolColumnsBuilder struct {
 	typeSchema map[string]string
 }
 
-func NewBoolColumnsBuilder(typeSchema map[string]string, originalColumn *types.JSONArray) columnBuilder {
+func NewBoolColumnsBuilder(typeSchema map[string]string, originalColumn *types.JSONArray) ColumnBuilder {
 	b := &BoolColumnsBuilder{i: -1, values: make(map[string][]*bool), typeSchema: typeSchema}
 	for key, typ := range typeSchema {
 		if typ != schemaupdater.BoolType {

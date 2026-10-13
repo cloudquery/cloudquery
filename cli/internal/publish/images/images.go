@@ -18,11 +18,10 @@ import (
 
 	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/hub"
-	"github.com/yuin/goldmark"
-	"github.com/yuin/goldmark/ast"
-	"github.com/yuin/goldmark/parser"
-	"github.com/yuin/goldmark/text"
-	"github.com/yuin/goldmark/util"
+	"github.com/yuin/goldmark/v2/ast"
+	"github.com/yuin/goldmark/v2/parser"
+	"github.com/yuin/goldmark/v2/text"
+	"github.com/yuin/goldmark/v2/util"
 	"golang.org/x/exp/maps"
 	"golang.org/x/net/html"
 	"golang.org/x/sync/errgroup"
@@ -140,14 +139,10 @@ func findMarkdownImages(contents, docDir string) (map[listKey][]reference, error
 	imf := &imageFinder{
 		docDir: docDir,
 	}
-	p := goldmark.New(
-		goldmark.WithParserOptions(
-			parser.WithASTTransformers(util.Prioritized(imf, 999999)),
-		),
+	p := parser.New(
+		parser.WithASTTransformers(util.Prioritized[parser.ASTTransformer](imf, 999999)),
 	)
-	if err := p.Convert([]byte(contents), io.Discard); err != nil {
-		return nil, fmt.Errorf("failed to parse markdown: %w", err)
-	}
+	p.Parse([]byte(contents))
 	if imf.err != nil {
 		return nil, imf.err
 	}
@@ -324,8 +319,8 @@ func (f *imageFinder) Transform(node *ast.Document, reader text.Reader, pc parse
 		dest, title string
 	}
 
-	refs := pc.References()
-	refList := make(map[refKeyType][]parser.Reference, len(refs))
+	refs := pc.LinkDefinitions()
+	refList := make(map[refKeyType][]parser.LinkDefinition, len(refs))
 	for _, ref := range refs {
 		key := refKeyType{dest: string(ref.Destination()), title: string(ref.Title())}
 		refList[key] = append(refList[key], ref) // multiple refs can have the same dest/title (but different labels)
@@ -349,9 +344,9 @@ func (f *imageFinder) Transform(node *ast.Document, reader text.Reader, pc parse
 		switch el := n.(type) {
 		case *ast.Image:
 			imgRef := reference{
-				ref: string(el.Destination),
+				ref: el.Destination.Str(src),
 			}
-			refKey := refKeyType{dest: imgRef.ref, title: string(el.Title)}
+			refKey := refKeyType{dest: imgRef.ref, title: el.Title.Str(src)}
 			imageDestinations[refKey] = struct{}{} // mark this as an image so that we can cross-check with the reference list later
 			if len(refList[refKey]) > 0 {
 				// it's a reference, no need to check further as we won't find anything useful (regarding byte positions). Leave it to the reference handler
@@ -366,12 +361,8 @@ func (f *imageFinder) Transform(node *ast.Document, reader text.Reader, pc parse
 			imgs = append(imgs, imgRef)
 		case *ast.CodeBlock:
 			return ast.WalkSkipChildren, nil
-		case *ast.FencedCodeBlock:
-			return ast.WalkSkipChildren, nil
 		case *ast.HTMLBlock:
-			sz := el.Lines().Len()
-			for i := 0; i < sz; i++ {
-				a := el.Lines().At(i)
+			for i, a := range el.Value.Segments() {
 				htmlBytes = append(htmlBytes, src[a.Start:a.Stop]...)
 				if i == 0 {
 					htmlStartPos = a.Start
@@ -379,22 +370,10 @@ func (f *imageFinder) Transform(node *ast.Document, reader text.Reader, pc parse
 			}
 			// handle htmlBytes below
 		case *ast.RawHTML:
-			if el.Segments != nil {
-				for i := 0; i < el.Segments.Len(); i++ { // should have 1 segment per tag?
-					a := el.Segments.At(i)
-					htmlBytes = append(htmlBytes, src[a.Start:a.Stop]...)
-					if i == 0 {
-						htmlStartPos = a.Start
-					}
-				}
-			} else {
-				sz := el.Lines().Len()
-				for i := 0; i < sz; i++ {
-					a := el.Lines().At(i)
-					htmlBytes = append(htmlBytes, src[a.Start:a.Stop]...)
-					if i == 0 {
-						htmlStartPos = a.Start
-					}
+			for i, a := range el.Value.Indices() {
+				htmlBytes = append(htmlBytes, src[a.Start:a.Stop]...)
+				if i == 0 {
+					htmlStartPos = a.Start
 				}
 			}
 			// handle htmlBytes below
@@ -482,24 +461,26 @@ func (f *imageFinder) Transform(node *ast.Document, reader text.Reader, pc parse
 }
 
 func handleImage(el *ast.Image, source []byte) (seg text.Segment, found bool) {
+	destination := el.Destination.Bytes(source)
+	title := el.Title.Bytes(source)
 	p := el.BaseNode.Parent()
 	for p != nil {
-		if p.Kind() == ast.KindParagraph {
-			for i := 0; i < p.Lines().Len(); i++ {
+		if para, ok := p.(*ast.Paragraph); ok {
+			for _, line := range para.Source() {
 				// we can have multiple lines in a paragraph, so we need to check each one to match destination/title, hoping there are no dupes
-				lineLiteral := source[p.Lines().At(i).Start:p.Lines().At(i).Stop]
+				lineLiteral := source[line.Start:line.Stop]
 
 				// these checks are false negative if this image is a reference, but we handled them above
-				if !bytes.Contains(lineLiteral, el.Destination) || (len(el.Title) > 0 && !bytes.Contains(lineLiteral, el.Title)) {
+				if !bytes.Contains(lineLiteral, destination) || (len(title) > 0 && !bytes.Contains(lineLiteral, title)) {
 					continue
 				}
-				if len(el.Title) == 0 { // if no title, make sure the element ends with the link
-					parts := bytes.SplitN(lineLiteral, el.Destination, 2)
+				if len(title) == 0 { // if no title, make sure the element ends with the link
+					parts := bytes.SplitN(lineLiteral, destination, 2)
 					if len(parts) != 2 || !bytes.HasPrefix(bytes.TrimSpace(parts[1]), []byte(")")) { // HasPrefix because we can be inside a link
 						continue
 					}
 				}
-				return p.Lines().At(i), true
+				return line, true
 			}
 			break
 		}

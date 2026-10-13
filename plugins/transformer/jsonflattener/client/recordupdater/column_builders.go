@@ -9,8 +9,8 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/types"
 )
 
-// columnBuilder creates separate columns from ONE json column, based on the type schema.
-type columnBuilder interface {
+// ColumnBuilder creates separate columns from ONE json column, based on the type schema.
+type ColumnBuilder interface {
 	addRow(row map[string]any)
 	build(key string) (arrow.Array, error)
 }
@@ -20,7 +20,7 @@ type columnBuilders struct {
 	colName             string
 	typeSchema          map[string]string
 	preprocessRowKeysFn func(row map[string]any) map[string]any
-	builders            []columnBuilder
+	builders            []ColumnBuilder
 	caser               *caser.Caser
 }
 
@@ -30,7 +30,7 @@ func newColumnBuilders(tableName string, colName string, typeSchema map[string]s
 		colName:    colName,
 		typeSchema: typeSchema,
 		caser:      caser.New(),
-		builders: []columnBuilder{
+		builders: []ColumnBuilder{
 			NewInt64ColumnsBuilder(typeSchema, originalColumn),
 			NewUTF8ColumnsBuilder(typeSchema, originalColumn),
 			NewTimestampColumnsBuilder(typeSchema, originalColumn),

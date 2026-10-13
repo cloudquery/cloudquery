@@ -40,10 +40,13 @@ func oidcCredential(o *spec.WorkloadIdentityFederation) options.Credential {
 	}
 }
 
-func New(ctx context.Context, logger zerolog.Logger, specByte []byte, _ plugin.NewClientOptions) (plugin.Client, error) {
+func New(ctx context.Context, logger zerolog.Logger, specByte []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
 	var err error
 	c := &Client{
 		logger: logger.With().Str("module", "mongo-dest").Logger(),
+	}
+	if opts.NoConnection {
+		return c, nil
 	}
 	if err := json.Unmarshal(specByte, &c.spec); err != nil {
 		return nil, errors.Join(errInvalidSpec, err)
@@ -89,6 +92,9 @@ func New(ctx context.Context, logger zerolog.Logger, specByte []byte, _ plugin.N
 }
 
 func (c *Client) Close(ctx context.Context) error {
+	if c.client == nil {
+		return errors.New("client already closed or not initialized")
+	}
 	if err := c.writer.Close(ctx); err != nil {
 		_ = c.client.Disconnect(ctx)
 		return fmt.Errorf("failed to close writer: %w", err)

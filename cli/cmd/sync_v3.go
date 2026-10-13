@@ -30,6 +30,7 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/cloudquery/cloudquery/cli/v6/internal/analytics"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/featureflags"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/tablenamechanger"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/transformer"
@@ -176,6 +177,7 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 		totalResources = int64(0)
 		totals         = sourceClient.Metrics()
 		statsPerTable  = utils.NewConcurrentMap[string, SyncRunTableProgressValue]()
+		idCollector    = newIDCollector(ctx, sourceSpec.Path, destinationSpecs)
 	)
 	defer func() {
 		// Platform-only syncs are external syncs: the platform emits the canonical
@@ -191,6 +193,7 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 			Duration:          syncTimeTook,
 			ResourceCount:     totalResources,
 			AbortedDueToError: syncErr,
+			IDSummaries:       idCollector.Summaries(),
 		})
 	}()
 
@@ -246,25 +249,10 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 	syncGroupId := make([]string, len(destinationsClients))
 	for i := range destinationsClients {
 		destinationsPbClients[i] = plugin.NewPluginClient(destinationsClients[i].Conn)
-		opts := []transformer.RecordTransformerOption{
-			transformer.WithSourceNameColumn(sourceName),
-			transformer.WithSyncTimeColumn(syncTime),
-		}
-		if cqColumnsNotNull {
-			opts = append(opts, transformer.WithCQColumnsNotNull())
-		}
 		if destinationSpecs[i].SyncGroupId != "" {
 			syncGroupId[i] = destinationSpecs[i].RenderedSyncGroupId(syncTime, uid)
-			opts = append(opts, transformer.WithSyncGroupIdColumn(syncGroupId[i]))
 		}
-		if destinationSpecs[i].WriteMode == specs.WriteModeAppend {
-			opts = append(opts, transformer.WithRemovePKs())
-			opts = append(opts, transformer.WithRemoveUniqueConstraints())
-		} else if destinationSpecs[i].PKMode == specs.PKModeCQID {
-			opts = append(opts, transformer.WithRemovePKs())
-			opts = append(opts, transformer.WithCQIDPrimaryKey())
-		}
-		destinationTransformers[i] = transformer.NewRecordTransformer(opts...)
+		destinationTransformers[i] = newDestinationRecordTransformer(destinationSpecs[i], sourceName, syncTime, syncGroupId[i], cqColumnsNotNull)
 		connection := destinationsClients[i].ConnectionString()
 		variables.Plugins[destinationSpecs[i].Name] = specs.PluginVariables{
 			Connection: connection,
@@ -483,6 +471,7 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 				stats, _ := statsPerTable.Get(tableName)
 				stats.Rows += record.NumRows()
 				statsPerTable.Add(tableName, stats)
+				idCollector.Observe(tableName, record)
 				for i := range destinationsPbClients {
 					destinationName := destinationSpecs[i].Name
 					transformedRecord := destinationTransformers[i].Transform(record)
@@ -507,18 +496,9 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 					originalSchema := createTableNameSchema(m.DeleteRecord.TableName)
 
 					// Apply the same transformation pipeline as MigrateTable
-					transformedSchema := destinationTransformers[i].TransformSchema(originalSchema)
-					transformedSchemaBytes, err := plugin.SchemaToBytes(transformedSchema)
+					transformedSchemaBytes, err := transformSchemaForDestination(ctx, destinationTransformers[i], transformerPbClientsByDestination[destinationName], originalSchema)
 					if err != nil {
 						return err
-					}
-
-					for _, transformerPbClient := range transformerPbClientsByDestination[destinationName] {
-						resp, err := transformerPbClient.TransformSchema(ctx, &plugin.TransformSchema_Request{Schema: transformedSchemaBytes})
-						if err != nil {
-							return err
-						}
-						transformedSchemaBytes = resp.Schema
 					}
 
 					tableName, err := getTransformedTableNameFromSchema(transformedSchemaBytes)
@@ -562,18 +542,9 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 				}
 				for i := range destinationsPbClients {
 					destinationName := destinationSpecs[i].Name
-					transformedSchema := destinationTransformers[i].TransformSchema(sc)
-					transformedSchemaBytes, err := plugin.SchemaToBytes(transformedSchema)
+					transformedSchemaBytes, err := transformSchemaForDestination(ctx, destinationTransformers[i], transformerPbClientsByDestination[destinationName], sc)
 					if err != nil {
 						return err
-					}
-					// Sequentially apply schema transformations from transformers
-					for _, transformerPbClient := range transformerPbClientsByDestination[destinationName] {
-						resp, err := transformerPbClient.TransformSchema(ctx, &plugin.TransformSchema_Request{Schema: transformedSchemaBytes})
-						if err != nil {
-							return err
-						}
-						transformedSchemaBytes = resp.Schema
 					}
 
 					// Table name might have changed due to a transformation.
@@ -861,4 +832,31 @@ func getTransformedTableNameFromSchema(transformedSchemaBytes []byte) (string, e
 	}
 
 	return tableName, nil
+}
+
+func newIDCollector(ctx context.Context, sourcePath string, destinationSpecs []specs.Destination) analytics.IDCollector {
+	if platform.OnlyPlatformDestinations(destinationSpecs) {
+		return analytics.NoopIDCollector{}
+	}
+
+	if !analytics.SupportedIDSource(sourcePath) {
+		return analytics.NoopIDCollector{}
+	}
+
+	userID, team, environment, ok := analytics.Identity(ctx)
+	if !ok {
+		return analytics.NoopIDCollector{}
+	}
+
+	enabled := featureflags.BoolFlag(ctx, featureflags.AccountIDAnalytics, false, featureflags.Context{
+		UserID:      userID,
+		Team:        team,
+		Environment: environment,
+		CLIVersion:  Version,
+	})
+	if !enabled {
+		return analytics.NoopIDCollector{}
+	}
+
+	return analytics.NewIDCollector(sourcePath, analytics.TeamAnalyticsSalt(ctx, team))
 }

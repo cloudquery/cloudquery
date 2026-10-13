@@ -26,8 +26,8 @@
 | github.com/cloudquery/cloudquery/plugins/source/hackernews/v3/resources/services/items/items.go:13: | Items | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/source/hackernews/v3/resources/services/items/items.go:37: | typeTransformer | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/source/hackernews/v3/resources/services/items/items.go:44: | resolverTransformer | 100.0% |
-| github.com/cloudquery/cloudquery/plugins/source/hackernews/v3/resources/services/items/items_fetch.go:31: | fetchItems | 83.3% |
+| github.com/cloudquery/cloudquery/plugins/source/hackernews/v3/resources/services/items/items_fetch.go:31: | fetchItems | 85.4% |
 | github.com/cloudquery/cloudquery/plugins/source/hackernews/v3/resources/services/items/items_fetch.go:109: | fetchBatch | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/source/hackernews/v3/resources/services/items/items_fetch.go:125: | fetchItem | 50.0% |
 | github.com/cloudquery/cloudquery/plugins/source/hackernews/v3/resources/services/items/items_fetch.go:140: | findFirstPostAfter | 80.0% |
-| total: | (statements) | 46.5% |
+| total: | (statements) | 44.5% |

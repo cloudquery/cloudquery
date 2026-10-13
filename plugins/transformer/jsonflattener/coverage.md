@@ -3,7 +3,7 @@
 | github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client/client.go:49: | Transform | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client/client.go:73: | TransformSchema | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client/client.go:84: | Close | 0.0% |
-| github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client/recordupdater/column_builders.go:27: | newColumnBuilders | 75.0% |
+| github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client/recordupdater/column_builders.go:27: | newColumnBuilders | 83.3% |
 | github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client/recordupdater/column_builders.go:50: | addRow | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client/recordupdater/column_builders.go:57: | build | 71.4% |
 | github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client/recordupdater/column_builders.go:70: | requireNoUnknownTypes | 75.0% |
@@ -28,7 +28,7 @@
 | github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client/recordupdater/column_builders_json.go:42: | build | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client/recordupdater/column_builders_json.go:49: | buildJSONColumn | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client/recordupdater/column_builders_timestamp.go:19: | NewTimestampColumnsBuilder | 100.0% |
-| github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client/recordupdater/column_builders_timestamp.go:30: | addRow | 86.7% |
+| github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client/recordupdater/column_builders_timestamp.go:30: | addRow | 88.2% |
 | github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client/recordupdater/column_builders_timestamp.go:71: | build | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client/recordupdater/column_builders_timestamp.go:78: | buildTimestampColumn | 72.7% |
 | github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client/recordupdater/column_builders_utf8.go:17: | NewUTF8ColumnsBuilder | 100.0% |
@@ -40,14 +40,14 @@
 | github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client/recordupdater/column_builders_uuid.go:44: | build | 66.7% |
 | github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client/recordupdater/column_builders_uuid.go:51: | buildUUIDColumn | 80.0% |
 | github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client/recordupdater/record_updater.go:25: | New | 100.0% |
-| github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client/recordupdater/record_updater.go:36: | FlattenJSONFields | 74.1% |
+| github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client/recordupdater/record_updater.go:36: | FlattenJSONFields | 78.1% |
 | github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client/recordupdater/record_updater.go:80: | countNewColumns | 100.0% |
-| github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client/recordupdater/record_updater.go:88: | buildAllNewColumns | 90.9% |
+| github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client/recordupdater/record_updater.go:88: | buildAllNewColumns | 92.9% |
 | github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client/recordupdater/record_updater.go:110: | buildNewColumnsFromColumn | 78.9% |
-| github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client/recordupdater/record_updater.go:144: | preprocessRow | 45.5% |
-| github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client/recordupdater/record_updater.go:167: | preprocessTypeSchema | 91.7% |
+| github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client/recordupdater/record_updater.go:144: | preprocessRow | 53.8% |
+| github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client/recordupdater/record_updater.go:167: | preprocessTypeSchema | 92.9% |
 | github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client/schemaupdater/schema_updater.go:30: | New | 100.0% |
-| github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client/schemaupdater/schema_updater.go:34: | AddJSONFlattenedFields | 84.6% |
+| github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client/schemaupdater/schema_updater.go:34: | AddJSONFlattenedFields | 88.9% |
 | github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client/schemaupdater/schema_updater.go:60: | uniqueName | 80.0% |
 | github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client/schemaupdater/schema_updater.go:69: | typeFromString | 44.4% |
 | github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client/spec/spec.go:7: | SetDefaults | 100.0% |
@@ -63,4 +63,4 @@
 | github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client/transformers/transformers.go:82: | makeEmptyRecord | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client/util/util.go:7: | SortedKeys | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/main.go:13: | main | 0.0% |
-| total: | (statements) | 72.2% |
+| total: | (statements) | 73.7% |

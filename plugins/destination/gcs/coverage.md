@@ -1,6 +1,9 @@
 | File | Function | Coverage |
 | --- | --- | --- |
-| github.com/cloudquery/cloudquery/plugins/destination/gcs/v5/client/client.go:87: | Close | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/gcs/v5/client/assess.go:26: | assessTable | 100.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/gcs/v5/client/client.go:37: | New | 57.5% |
+| github.com/cloudquery/cloudquery/plugins/destination/gcs/v5/client/client.go:95: | isEmptySpec | 100.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/gcs/v5/client/client.go:100: | Close | 66.7% |
 | github.com/cloudquery/cloudquery/plugins/destination/gcs/v5/client/read.go:15: | Read | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/gcs/v5/client/spec/gen/main.go:14: | main | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/gcs/v5/client/spec/gen/main.go:24: | currDir | 0.0% |
@@ -10,8 +13,8 @@
 | github.com/cloudquery/cloudquery/plugins/destination/gcs/v5/client/spec/spec.go:127: | PathContainsUUID | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/gcs/v5/client/spec/spec.go:131: | isValidJson | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/gcs/v5/client/spec/spec.go:140: | int64ptr | 0.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/gcs/v5/client/spec/spec.go:144: | ReplacePathVariables | 81.2% |
+| github.com/cloudquery/cloudquery/plugins/destination/gcs/v5/client/spec/spec.go:144: | ReplacePathVariables | 87.5% |
 | github.com/cloudquery/cloudquery/plugins/destination/gcs/v5/client/write.go:14: | WriteTable | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/gcs/v5/client/write.go:45: | Write | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/gcs/v5/main.go:18: | main | 0.0% |
-| total: | (statements) | 15.1% |
+| total: | (statements) | 24.9% |

@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"os"
 	"os/signal"
@@ -60,7 +61,12 @@ func main() {
 
 	// This ensures we don't print anything until logging is configured
 	log.Logger = log.Level(zerolog.Disabled)
-	if err := executeRootCmdWithContext(); err != nil {
+	err := executeRootCmdWithContext()
+	var exitCodeErr *cmd.ExitCodeError
+	switch {
+	case errors.As(err, &exitCodeErr):
+		exitCode = exitCodeErr.Code
+	case err != nil:
 		log.Error().Err(err).Msg("exiting with error")
 		exitCode = 1
 	}

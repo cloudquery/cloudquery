@@ -24,11 +24,10 @@ func (c *Client) MigrateTables(ctx context.Context, messages message.WriteMigrat
 
 	var recreate, create, update []*indexSchema
 	for uid, need := range want {
-		got := have[uid]
-		switch {
-		case got == nil:
+		switch planIndexMigration(have[uid], need) {
+		case indexCreate:
 			create = append(create, need)
-		case got.canMigrate(need):
+		case indexUpdate:
 			update = append(update, need)
 		default:
 			recreate = append(recreate, need)
@@ -57,4 +56,23 @@ func (c *Client) MigrateTables(ctx context.Context, messages message.WriteMigrat
 	}
 
 	return nil
+}
+
+type indexMigration int
+
+const (
+	indexCreate indexMigration = iota
+	indexUpdate
+	indexRecreate
+)
+
+func planIndexMigration(got, need *indexSchema) indexMigration {
+	switch {
+	case got == nil:
+		return indexCreate
+	case got.canMigrate(need):
+		return indexUpdate
+	default:
+		return indexRecreate
+	}
 }

@@ -13,7 +13,7 @@ type JSONColumnsBuilder struct {
 	typeSchema map[string]string
 }
 
-func NewJSONColumnsBuilder(typeSchema map[string]string, originalColumn *types.JSONArray) columnBuilder {
+func NewJSONColumnsBuilder(typeSchema map[string]string, originalColumn *types.JSONArray) ColumnBuilder {
 	b := &JSONColumnsBuilder{i: -1, values: make(map[string][]*any), typeSchema: typeSchema}
 	for key, typ := range typeSchema {
 		if typ != schemaupdater.JSONType {

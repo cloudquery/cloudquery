@@ -181,6 +181,7 @@ type SyncFinishedEvent struct {
 	Duration          time.Duration
 	ResourceCount     int64
 	AbortedDueToError error
+	IDSummaries       map[string]IDSummary
 }
 
 func TrackSyncCompleted(ctx context.Context, invocationUUID uuid.UUID, event SyncFinishedEvent) {
@@ -210,11 +211,30 @@ func TrackSyncCompleted(ctx context.Context, invocationUUID uuid.UUID, event Syn
 		Set("warnings", event.Warnings).
 		Set("aborted_due_to_error", event.AbortedDueToError)
 
+	for dimension, summary := range event.IDSummaries {
+		props = props.Set(dimension+"_id_hashes", summary.Hashes).
+			Set(dimension+"_id_count", summary.Count).
+			Set(dimension+"_ids_truncated", summary.Truncated).
+			Set(dimension+"_id_count_is_floor", summary.CountIsFloor)
+	}
+
 	_ = client.Enqueue(rudderstack.Track{
 		UserId:     details.user.ID.String(),
 		Event:      "sync_run_completed",
 		Properties: props,
 	})
+}
+
+func Identity(ctx context.Context) (userID, team, environment string, ok bool) {
+	if client == nil {
+		return "", "", "", false
+	}
+	details := getSyncEventDetails(ctx)
+	if details == nil || details.isCurrentTeamInternal {
+		return "", "", "", false
+	}
+	userID, _ = getUserIDEmail(details.user, details.currentTeam)
+	return userID, details.currentTeam, details.environment, true
 }
 
 type InitEvent struct {

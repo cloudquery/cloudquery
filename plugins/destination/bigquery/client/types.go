@@ -1,6 +1,8 @@
 package client
 
 import (
+	"strings"
+
 	"cloud.google.com/go/bigquery"
 	"github.com/apache/arrow-go/v18/arrow"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
@@ -21,6 +23,21 @@ func (c *Client) ColumnToBigQuerySchema(col schema.Column) *bigquery.FieldSchema
 		sc.Repeated = true
 	}
 	return &sc
+}
+
+func bigQueryTypeName(f *bigquery.FieldSchema) string {
+	name := string(f.Type)
+	if f.Type == bigquery.RecordFieldType {
+		fields := make([]string, len(f.Schema))
+		for i, nested := range f.Schema {
+			fields[i] = nested.Name + " " + bigQueryTypeName(nested)
+		}
+		name += "<" + strings.Join(fields, ", ") + ">"
+	}
+	if f.Repeated {
+		return "ARRAY<" + name + ">"
+	}
+	return name
 }
 
 func isListType(dt arrow.DataType) bool {

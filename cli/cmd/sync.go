@@ -287,7 +287,7 @@ func sync(cmd *cobra.Command, args []string) error {
 		}
 	}()
 	pluginVersionWarner, _ := managedplugin.NewPluginVersionWarner(log.Logger, dlToken)
-	specs.WarnOnOutdatedVersions(ctx, pluginVersionWarner, sources, destinations, transformers)
+	specs.WarnOnOutdatedVersions(ctx, pluginVersionWarner, sources, destinations, transformers, specs.WithUpgradeCheckRecommendation(args, os.Stdout))
 
 	// in a cloud sync environment, we pass only the relevant environment variables to the plugin
 	osEnviron := os.Environ()

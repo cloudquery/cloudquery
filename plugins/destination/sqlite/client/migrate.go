@@ -43,16 +43,20 @@ func (c *Client) sqliteTables(tables schema.Tables) (schema.Tables, error) {
 			return nil, err
 		}
 		for _, col := range info.columns {
-			columns = append(columns, schema.Column{
-				Name:       col.name,
-				Type:       c.sqliteTypeToArrowType(col.typ),
-				PrimaryKey: col.pk != 0,
-				NotNull:    col.notNull,
-			})
+			columns = append(columns, c.sqliteColumn(col.name, col.typ, col.pk != 0, col.notNull))
 		}
 		schemaTables = append(schemaTables, &schema.Table{Name: table.Name, Columns: columns})
 	}
 	return schemaTables, nil
+}
+
+func (c *Client) sqliteColumn(name string, sqliteType string, primaryKey bool, notNull bool) schema.Column {
+	return schema.Column{
+		Name:       name,
+		Type:       c.sqliteTypeToArrowType(sqliteType),
+		PrimaryKey: primaryKey,
+		NotNull:    notNull,
+	}
 }
 
 func (c *Client) normalizeTables(tables schema.Tables) schema.Tables {
@@ -82,7 +86,7 @@ func (c *Client) normalizeField(field arrow.Field) *arrow.Field {
 	}
 }
 
-func (c *Client) nonAutoMigratableTables(tables schema.Tables, sqliteTables schema.Tables, safeTables map[string]bool) map[string][]schema.TableColumnChange {
+func (*Client) nonAutoMigratableTables(tables schema.Tables, sqliteTables schema.Tables, safeTables map[string]bool) map[string][]schema.TableColumnChange {
 	result := make(map[string][]schema.TableColumnChange)
 	for _, t := range tables {
 		sqliteTable := sqliteTables.Get(t.Name)
@@ -90,7 +94,7 @@ func (c *Client) nonAutoMigratableTables(tables schema.Tables, sqliteTables sche
 			continue
 		}
 		changes := sqliteTable.GetChanges(t)
-		if safeTables[t.Name] && !c.canAutoMigrate(changes) {
+		if safeTables[t.Name] && !canAutoMigrate(changes) {
 			result[t.Name] = changes
 		}
 	}
@@ -108,7 +112,7 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table, chan
 	return nil
 }
 
-func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
+func canAutoMigrate(changes []schema.TableColumnChange) bool {
 	for _, change := range changes {
 		switch change.Type {
 		case schema.TableColumnChangeTypeAdd:
@@ -163,7 +167,7 @@ func (c *Client) MigrateTables(ctx context.Context, msgs message.WriteMigrateTab
 			}
 		} else {
 			changes := table.GetChanges(sqlite)
-			if c.canAutoMigrate(changes) {
+			if canAutoMigrate(changes) {
 				c.logger.Info().Str("table", table.Name).Msg("Table exists, auto-migrating")
 				if err := c.autoMigrateTable(ctx, table, changes); err != nil {
 					return err

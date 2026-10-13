@@ -1,3 +1,7 @@
 blockExoticSubdeps: true
 
 minimumReleaseAge: 10080 # 7 days
+
+allowBuilds:
+  protobufjs: false
+  unrs-resolver: false

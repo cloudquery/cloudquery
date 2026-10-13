@@ -30,6 +30,8 @@ This publishes a plugin version to CloudQuery Hub from a local dist directory.
 cloudquery plugin publish`
 )
 
+var errInvalidPluginName = errors.New("invalid plugin name. Must be in format <team_name>/<plugin_name>, set via the \"team\" and \"name\" fields in package.json or passed as an argument")
+
 func newCmdPluginPublish() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "publish [-D dist]",
@@ -89,9 +91,12 @@ func runPluginPublish(ctx context.Context, cmd *cobra.Command, args []string) er
 
 	teamName, pluginName := pkgJSON.Team, pkgJSON.Name
 	if teamName == "" || pluginName == "" {
+		if len(args) == 0 {
+			return errInvalidPluginName
+		}
 		parts := strings.Split(args[0], "/")
 		if len(parts) != 2 {
-			return errors.New("invalid plugin name. Must be in format <team_name>/<plugin_name>")
+			return errInvalidPluginName
 		}
 		teamName, pluginName = parts[0], parts[1]
 		pkgJSON.Team, pkgJSON.Name = teamName, pluginName
