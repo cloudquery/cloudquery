@@ -1,5 +1,17 @@
 # Changelog
 
+## [8.18.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.17.0...plugins-destination-postgresql-v8.18.0) (2026-10-13)
+
+
+### Features
+
+* Add lakebase usage attribution ([#23543](https://github.com/cloudquery/cloudquery/issues/23543)) ([2f2f336](https://github.com/cloudquery/cloudquery/commit/2f2f3360cb63cc5137587a96490401f795425ea2))
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#23522](https://github.com/cloudquery/cloudquery/issues/23522)) ([1af82b6](https://github.com/cloudquery/cloudquery/commit/1af82b6393e4f2b1e0d05550f98f30f5b6791ed9))
+
 ## [8.17.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.16.0...plugins-destination-postgresql-v8.17.0) (2026-10-07)
 
 
