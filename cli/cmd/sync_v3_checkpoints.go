@@ -184,21 +184,15 @@ func (c *checkpointer) add(recordBytes []byte) error {
 	return nil
 }
 
-func stateColumn[T arrow.Array](record arrow.RecordBatch, name string) (T, bool) {
-	var zero T
-	indices := record.Schema().FieldIndices(name)
-	if len(indices) != 1 {
-		return zero, false
-	}
-	col, ok := record.Column(indices[0]).(T)
-	return col, ok
-}
-
 func requiredStateColumn[T arrow.Array](record arrow.RecordBatch, name string, typ arrow.DataType) (T, error) {
 	var zero T
 	indices := record.Schema().FieldIndices(name)
-	if len(indices) != 1 {
+	switch len(indices) {
+	case 0:
 		return zero, fmt.Errorf("checkpoint has no %q column", name)
+	case 1:
+	default:
+		return zero, fmt.Errorf("checkpoint has %d %q columns", len(indices), name)
 	}
 	col, ok := record.Column(indices[0]).(T)
 	if !ok || !arrow.TypeEqual(col.DataType(), typ) {
@@ -298,59 +292,50 @@ func (c *checkpointer) commit(ctx context.Context) error {
 }
 
 func (c *checkpointer) persist(ctx context.Context) error {
-	records, err := c.pendingRecords()
-	if err != nil {
-		return err
-	}
-	inserts := make([]*plugin.Write_Request, len(records))
-	for i, recordBytes := range records {
-		inserts[i] = &plugin.Write_Request{Message: &plugin.Write_Request_Insert{Insert: &plugin.Write_MessageInsert{Record: recordBytes}}}
-	}
-
-	if !c.backendFlushes {
+	var (
+		send   func(*plugin.Write_Request) error
+		finish func() error
+	)
+	if c.backendFlushes {
+		if c.backendStream == nil {
+			stream, err := c.backend.WriteStream(ctx)
+			if err != nil {
+				return err
+			}
+			c.backendStream = newFlushingWriteClient("state backend", stream)
+		}
+		send, finish = c.backendStream.Send, c.backendStream.Flush
+	} else {
 		stream, err := c.backend.Write(ctx)
 		if err != nil {
 			return err
 		}
-		for _, insert := range inserts {
-			if err := stream.Send(insert); err != nil {
-				if errors.Is(err, io.EOF) {
-					break
-				}
-				return err
-			}
+		send = stream.Send
+		finish = func() error {
+			_, err := stream.CloseAndRecv()
+			return err
 		}
-		_, err = stream.CloseAndRecv()
+	}
+
+	// io.EOF means the stream ended, and finish returns the reason
+	err := c.eachPendingRecord(func(recordBytes []byte) error {
+		return send(&plugin.Write_Request{Message: &plugin.Write_Request_Insert{Insert: &plugin.Write_MessageInsert{Record: recordBytes}}})
+	})
+	if err != nil && !errors.Is(err, io.EOF) {
 		return err
 	}
-
-	if c.backendStream == nil {
-		stream, err := c.backend.WriteStream(ctx)
-		if err != nil {
-			return err
-		}
-		c.backendStream = newFlushingWriteClient("state backend", stream)
-	}
-	for _, insert := range inserts {
-		if err := c.backendStream.Send(insert); err != nil {
-			if errors.Is(err, io.EOF) {
-				break
-			}
-			return err
-		}
-	}
-	return c.backendStream.Flush()
+	return finish()
 }
 
-// pendingRecords returns the pending state as records of about maxRecordBytes each.
-func (c *checkpointer) pendingRecords() ([][]byte, error) {
+// eachPendingRecord passes the pending state to fn in records of about maxRecordBytes each, building each record only
+// when the previous one is handled.
+func (c *checkpointer) eachPendingRecord(fn func([]byte) error) error {
 	keys := make([]string, 0, len(c.pending))
 	for key := range c.pending {
 		keys = append(keys, key)
 	}
 	slices.Sort(keys)
 
-	var records [][]byte
 	for start := 0; start < len(keys); {
 		end, size := start, 0
 		for end < len(keys) && (end == start || size+c.rowBytes(keys[end]) <= c.maxRecordBytes) {
@@ -359,18 +344,20 @@ func (c *checkpointer) pendingRecords() ([][]byte, error) {
 		}
 		record, err := c.stateRecord(keys[start:end])
 		if err != nil {
-			return nil, err
+			return err
 		}
-		records = append(records, record)
+		if err := fn(record); err != nil {
+			return err
+		}
 		start = end
 	}
-	return records, nil
+	return nil
 }
 
-// rowBytes approximates the size of a state row in a record.
+// rowBytes approximates the size of a state row in a record, with a null in every column that is not a state column.
 func (c *checkpointer) rowBytes(key string) int {
-	const versionAndOffsets = 16
-	return len(key) + len(c.pending[key].value) + versionAndOffsets
+	const versionAndOffsets, perColumn = 16, 8
+	return len(key) + len(c.pending[key].value) + versionAndOffsets + perColumn*len(c.schema.Fields())
 }
 
 func (c *checkpointer) stateRecord(keys []string) ([]byte, error) {
@@ -403,6 +390,15 @@ func (c *checkpointer) close() error {
 	}
 	_, err := c.backendStream.CloseAndRecv()
 	return err
+}
+
+// receiveError returns the error the sync ends with when receiving from the source fails, or nil if another goroutine of
+// the sync failed first.
+func receiveError(ctx, gctx context.Context, err error) error {
+	if err := unlessFailedElsewhere(ctx, gctx, err); err != nil {
+		return fmt.Errorf("unexpected error from sync client receive: %w", err)
+	}
+	return nil
 }
 
 // unlessFailedElsewhere returns nil when err comes from another goroutine of the sync failing first, such as a

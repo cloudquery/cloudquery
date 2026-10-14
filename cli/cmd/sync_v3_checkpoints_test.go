@@ -54,7 +54,7 @@ type fakeWritePlugin struct {
 	supportsFlush bool
 	// acknowledges flushes with this id instead of the requested one
 	flushID uint64
-	// returned by WriteStream on the first insert
+	// returned by Write and WriteStream on the first insert
 	insertErr error
 }
 
@@ -98,6 +98,9 @@ func (p *fakeWritePlugin) Write(stream plugin.Plugin_WriteServer) error {
 		if err != nil {
 			return err
 		}
+		if p.insertErr != nil && req.GetInsert() != nil {
+			return p.insertErr
+		}
 		if err := p.record(req); err != nil {
 			return err
 		}
@@ -133,6 +136,16 @@ func (p *fakeWritePlugin) WriteStream(stream plugin.Plugin_WriteStreamServer) er
 			}
 		}
 	}
+}
+
+func stateColumn[T arrow.Array](record arrow.RecordBatch, name string) (T, bool) {
+	var zero T
+	indices := record.Schema().FieldIndices(name)
+	if len(indices) != 1 {
+		return zero, false
+	}
+	col, ok := record.Column(indices[0]).(T)
+	return col, ok
 }
 
 func serveFakePlugin(t *testing.T, p *fakeWritePlugin) plugin.PluginClient {
@@ -299,7 +312,7 @@ func TestCheckpointerSplitsLargeState(t *testing.T) {
 	dest := openFlushingClient(t, serveFakePlugin(t, &fakeWritePlugin{name: "dest", log: log}))
 	backend := serveFakePlugin(t, &fakeWritePlugin{name: "backend", log: log})
 	c := newCheckpointer([]*flushingWriteClient{dest}, nil, backend, true, "cq_state")
-	c.maxRecordBytes = 60
+	c.maxRecordBytes = 110
 
 	require.NoError(t, c.add(stateRecord(t, "cq_state",
 		stateEntry{"a", "0123456789", 1},
@@ -410,6 +423,16 @@ func TestCheckpointOptionsStateWriter(t *testing.T) {
 			wantWriter: backend,
 		},
 		{name: "backend address", change: func(o *checkpointOptions) { o.backendConnection = "localhost:7777" }, wantReason: "the state backend is not a plugin of this sync"},
+		{
+			name: "destination name is a prefix of the backend's",
+			change: func(o *checkpointOptions) {
+				o.backendConnection = "@@plugins.pg2.connection"
+				o.destinationNames = []string{"pg", "pg2"}
+				o.destinations = []plugin.PluginClient{pg, pg2}
+			},
+			wantWriter:  pg2,
+			wantFlushes: true,
+		},
 	}
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
@@ -431,6 +454,8 @@ type fakeCheckpointSource struct {
 	responses []*plugin.Sync_Response
 	// keeps the stream open without sending more, until the client goes away
 	idle bool
+	// keeps the stream open without sending more, until closed
+	release chan struct{}
 
 	mu      gosync.Mutex
 	request *plugin.Sync_Request
@@ -451,6 +476,12 @@ func (s *fakeCheckpointSource) Sync(req *plugin.Sync_Request, stream plugin.Plug
 	}
 	if s.idle {
 		<-stream.Context().Done()
+	}
+	if s.release != nil {
+		select {
+		case <-s.release:
+		case <-stream.Context().Done():
+		}
 	}
 	return nil
 }
@@ -591,7 +622,8 @@ func TestSyncPersistsCheckpointsAfterDestinationsFlush(t *testing.T) {
 	})
 }
 
-func TestSyncReportsDestinationErrorWhileSourceIsIdle(t *testing.T) {
+// TestSyncReportsDestinationErrorFromCommit checks that a destination write error surfaces when the commit fails.
+func TestSyncReportsDestinationErrorFromCommit(t *testing.T) {
 	interval := checkpointInterval
 	checkpointInterval = 0
 	t.Cleanup(func() { checkpointInterval = interval })
@@ -604,4 +636,101 @@ func TestSyncReportsDestinationErrorWhileSourceIsIdle(t *testing.T) {
 	)
 	require.ErrorContains(t, err, "disk full")
 	require.NotContains(t, err.Error(), "context canceled")
+}
+
+func TestCommitWaitsForPipelineDelivery(t *testing.T) {
+	ctx := context.Background()
+	log := &eventLog{}
+	dest := openFlushingClient(t, serveFakePlugin(t, &fakeWritePlugin{name: "dest", log: log}))
+	backend := serveFakePlugin(t, &fakeWritePlugin{name: "backend", log: log})
+
+	pipeline, _, err := transformerpipeline.New(ctx, nil)
+	require.NoError(t, err)
+	release := make(chan struct{})
+	require.NoError(t, pipeline.OnOutput(func(record []byte) error {
+		<-release
+		return dest.Send(&plugin.Write_Request{Message: &plugin.Write_Request_Insert{Insert: &plugin.Write_MessageInsert{Record: record}}})
+	}))
+	go func() { _ = pipeline.RunBlocking() }()
+	t.Cleanup(pipeline.Close)
+
+	c := newCheckpointer([]*flushingWriteClient{dest}, []*transformerpipeline.TransformerPipeline{pipeline}, backend, true, "cq_state")
+	require.NoError(t, pipeline.Send(stateRecord(t, "items", stateEntry{"x", "1", 1})))
+	require.NoError(t, c.add(stateRecord(t, "cq_state", stateEntry{"cursor", "1", 1})))
+
+	committed := make(chan error, 1)
+	go func() { committed <- c.commit(ctx) }()
+	select {
+	case err := <-committed:
+		t.Fatalf("commit returned before the pipeline delivered its record: %v", err)
+	case <-time.After(100 * time.Millisecond):
+	}
+	require.NotContains(t, log.get(), "dest: flush 1", "the flush must not overtake an undelivered insert")
+	close(release)
+	select {
+	case err := <-committed:
+		require.NoError(t, err)
+	case <-time.After(5 * time.Second):
+		t.Fatal("commit did not return after the record was delivered")
+	}
+	require.Equal(t, []string{"dest: insert items x=1", "dest: flush 1", "backend: insert cq_state cursor=1", "backend: flush 1"}, log.get())
+	require.NoError(t, c.close())
+}
+
+func TestReceiveError(t *testing.T) {
+	cancelled, cancel := context.WithCancel(context.Background())
+	cancel()
+	require.NoError(t, receiveError(context.Background(), cancelled, context.Canceled), "another goroutine of the sync failed first")
+	require.ErrorContains(t, receiveError(context.Background(), context.Background(), errors.New("stream broke")), "unexpected error from sync client receive: stream broke")
+	require.ErrorIs(t, receiveError(cancelled, cancelled, context.Canceled), context.Canceled, "the sync was cancelled")
+}
+
+func TestSyncPersistsCheckpointsWhileSourceIsIdle(t *testing.T) {
+	interval := checkpointInterval
+	checkpointInterval = 100 * time.Millisecond
+	t.Cleanup(func() { checkpointInterval = interval })
+
+	log := &eventLog{}
+	source := &fakeCheckpointSource{release: make(chan struct{})}
+	synced := make(chan error, 1)
+	go func() {
+		_, err := syncWithFakeSource(t, source, &fakeWritePlugin{name: "dest", log: log, supportsFlush: true},
+			itemsInsert(t, 1, 2),
+			checkpointResponse(t, stateEntry{"cursor", "1", 1}),
+		)
+		synced <- err
+	}()
+	require.Eventually(t, func() bool {
+		return slices.Contains(log.get(), "dest: insert cq_state cursor=1")
+	}, 5*time.Second, 10*time.Millisecond, "the state is persisted while the source sends nothing")
+	close(source.release)
+	select {
+	case err := <-synced:
+		require.NoError(t, err)
+	case <-time.After(10 * time.Second):
+		t.Fatal("sync did not finish")
+	}
+}
+
+func TestCheckpointerReportsBackendErrors(t *testing.T) {
+	for _, flushes := range []bool{true, false} {
+		t.Run(fmt.Sprintf("backend_flushes=%t", flushes), func(t *testing.T) {
+			ctx := context.Background()
+			log := &eventLog{}
+			dest := openFlushingClient(t, serveFakePlugin(t, &fakeWritePlugin{name: "dest", log: log}))
+			backend := serveFakePlugin(t, &fakeWritePlugin{name: "backend", log: log, insertErr: errors.New("disk full")})
+			c := newCheckpointer([]*flushingWriteClient{dest}, nil, backend, flushes, "cq_state")
+			// one record per key, so sending the later records hits the failed stream
+			c.maxRecordBytes = 1
+			entries := make([]stateEntry, 0, 20)
+			for i := range 20 {
+				entries = append(entries, stateEntry{fmt.Sprintf("key%02d", i), "value", 1})
+			}
+			require.NoError(t, c.add(stateRecord(t, "cq_state", entries...)))
+
+			err := c.commit(ctx)
+			require.ErrorContains(t, err, "failed to persist state")
+			require.ErrorContains(t, err, "disk full")
+		})
+	}
 }

@@ -512,10 +512,7 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 				if errors.Is(err, io.EOF) {
 					break
 				}
-				if err := unlessFailedElsewhere(ctx, gctx, err); err != nil {
-					return fmt.Errorf("unexpected error from sync client receive: %w", err)
-				}
-				return nil
+				return receiveError(ctx, gctx, err)
 			}
 			syncResponseMsg := r.GetMessage()
 			switch m := syncResponseMsg.(type) {
