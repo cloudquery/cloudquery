@@ -98,13 +98,17 @@ func CLIDestinationSpecToPbSpec(spec specs.Destination) pbSpecs.Destination {
 
 // initPlugin is a simple wrapper that will try to validate the spec before actually passing it to Init.
 func initPlugin(ctx context.Context, client plugin.PluginClient, spec map[string]any, noConnection bool, syncID string) error {
+	_, err := initPluginWithResponse(ctx, client, spec, noConnection, syncID)
+	return err
+}
+
+func initPluginWithResponse(ctx context.Context, client plugin.PluginClient, spec map[string]any, noConnection bool, syncID string) (*plugin.Init_Response, error) {
 	specBytes, err := marshalSpec(spec)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	_, err = client.Init(ctx, &plugin.Init_Request{Spec: specBytes, NoConnection: noConnection, InvocationId: syncID})
-	return err
+	return client.Init(ctx, &plugin.Init_Request{Spec: specBytes, NoConnection: noConnection, InvocationId: syncID})
 }
 
 // validatePluginSpec encompasses spec validation against a plugin obtained

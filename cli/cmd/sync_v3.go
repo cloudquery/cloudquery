@@ -8,6 +8,7 @@ import (
 	"io"
 	"slices"
 	"strconv"
+	"strings"
 	gosync "sync"
 	"sync/atomic"
 	"time"
@@ -267,8 +268,10 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 	}
 
 	// initialize destinations first, so that their connections may be used as backends by the source
+	destinationsSupportFlush := len(destinationSpecs) > 0
 	for i, destinationSpec := range destinationSpecs {
-		if err := initPlugin(ctx, destinationsPbClients[i], destinationSpec.Spec, false, uid); err != nil {
+		res, err := initPluginWithResponse(ctx, destinationsPbClients[i], destinationSpec.Spec, false, uid)
+		if err != nil {
 			if platform.IsInjectedDestination(destinationSpec.Name) {
 				// Surface the platform's own message (e.g. an unsupported-version
 				// 422) instead of the gRPC/plugin-sdk wrapper chain.
@@ -276,11 +279,15 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 			}
 			return fmt.Errorf("failed to init destination %v: %w", destinationSpec.Name, err)
 		}
+		destinationsSupportFlush = destinationsSupportFlush && res.SupportsFlush
 	}
+	backendSupportsFlush := false
 	if backend != nil {
-		if err := initPlugin(ctx, backendPbClient, backend.spec.Spec, false, uid); err != nil {
+		res, err := initPluginWithResponse(ctx, backendPbClient, backend.spec.Spec, false, uid)
+		if err != nil {
 			return fmt.Errorf("failed to init backend %v: %w", backend.spec.Name, err)
 		}
+		backendSupportsFlush = res.SupportsFlush
 	}
 	for name, transformers := range transformersByDestination {
 		for i, tf := range transformers {
@@ -288,6 +295,40 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 				return fmt.Errorf("failed to init transformer %v: %w", tf.spec.Name, err)
 			}
 		}
+	}
+
+	isStateBackendEnabled := sourceSpec.BackendOptions != nil && sourceSpec.BackendOptions.TableName != ""
+
+	// With checkpoints, the source sends its state on the sync stream and we persist it once the destinations commit
+	// the records synced before it.
+	var stateWriter plugin.PluginClient
+	stateWriterSupportsFlush := false
+	checkpointsDisabledReason := ""
+	switch {
+	case !isStateBackendEnabled:
+	case !destinationsSupportFlush:
+		checkpointsDisabledReason = "not all destinations support flushing"
+	case lo.SomeBy(lo.Values(transformersByDestination), func(ts []v3transformer) bool { return len(ts) > 0 }):
+		checkpointsDisabledReason = "destinations use transformers"
+	default:
+		for i, destinationSpec := range destinationSpecs {
+			if strings.Contains(sourceSpec.BackendOptions.Connection, "@@plugins."+destinationSpec.Name+".") {
+				stateWriter, stateWriterSupportsFlush = destinationsPbClients[i], true
+				break
+			}
+		}
+		if stateWriter == nil && backend != nil {
+			stateWriter, stateWriterSupportsFlush = backendPbClient, backendSupportsFlush
+		}
+		if stateWriter == nil {
+			checkpointsDisabledReason = "the state backend is not a plugin of this sync"
+		}
+	}
+	checkpointsEnabled := isStateBackendEnabled && checkpointsDisabledReason == ""
+	if checkpointsEnabled {
+		log.Info().Str("source", sourceSpec.Name).Msg("State checkpoints enabled: state is persisted after destinations commit the records synced before it")
+	} else if isStateBackendEnabled {
+		log.Debug().Str("source", sourceSpec.Name).Str("reason", checkpointsDisabledReason).Msg("State checkpoints disabled")
 	}
 
 	// replace @@plugins.name.connection with the actual GRPC connection string from the client
@@ -308,14 +349,25 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 		return fmt.Errorf("failed to init source %v: %w", sourceSpec.Name, err)
 	}
 
-	writeClients := make([]safeWriteClient, len(destinationsPbClients))
-	writeClientsByName := map[string]safeWriteClient{}
+	writeClients := make([]writeClient, len(destinationsPbClients))
+	writeClientsByName := map[string]writeClient{}
+	flushingWriteClients := make([]*flushingWriteClient, 0, len(destinationsPbClients))
 	for i := range destinationsPbClients {
-		writeClient, err := destinationsPbClients[i].Write(ctx)
-		if err != nil {
-			return err
+		if checkpointsEnabled {
+			stream, err := destinationsPbClients[i].WriteStream(ctx)
+			if err != nil {
+				return err
+			}
+			client := newFlushingWriteClient(stream)
+			flushingWriteClients = append(flushingWriteClients, client)
+			writeClients[i] = client
+		} else {
+			stream, err := destinationsPbClients[i].Write(ctx)
+			if err != nil {
+				return err
+			}
+			writeClients[i] = newSafeWriteClient(stream)
 		}
-		writeClients[i] = newSafeWriteClient(writeClient)
 		writeClientsByName[destinationSpecs[i].Name] = writeClients[i]
 	}
 	transformClientsByDestination := map[string][]plugin.Plugin_TransformClient{}
@@ -338,6 +390,7 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 		SkipDependentTables: *sourceSpec.SkipDependentTables,
 		DeterministicCqId:   sourceSpec.DeterministicCQID,
 		WithErrorMessages:   true,
+		SupportsCheckpoints: checkpointsEnabled,
 	}
 	if sourceSpec.BackendOptions != nil {
 		syncReq.Backend = &plugin.Sync_BackendOptions{
@@ -367,8 +420,6 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 			progressbar.OptionClearOnFinish(),
 		)
 	}
-
-	isStateBackendEnabled := sourceSpec.BackendOptions != nil && sourceSpec.BackendOptions.TableName != ""
 
 	// Read from the sync stream and write to all destinations.
 	isComplete := int64(0)
@@ -415,6 +466,11 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 		}
 		eg.Go(pipeline.RunBlocking) // each transformer runs in its own goroutine
 		pipelineByDestinationName[destinationName] = pipeline
+	}
+
+	var checkpoints *checkpointer
+	if checkpointsEnabled {
+		checkpoints = newCheckpointer(flushingWriteClients, lo.Values(pipelineByDestinationName), stateWriter, stateWriterSupportsFlush, sourceSpec.BackendOptions.TableName)
 	}
 
 	// Add a ticker to update the progress bar every 100ms
@@ -567,9 +623,27 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 				stats, _ := statsPerTable.Get(m.Error.TableName)
 				stats.Errors++
 				statsPerTable.Add(m.Error.TableName, stats)
+			case *plugin.Sync_Response_Checkpoint:
+				if checkpoints == nil {
+					return errors.New("source sent a state checkpoint, but checkpoints are not enabled for this sync")
+				}
+				if err := checkpoints.add(m.Checkpoint.Record); err != nil {
+					return err
+				}
 			default:
 				return fmt.Errorf("unknown message type: %T", m)
 			}
+			if checkpoints != nil && checkpoints.due() {
+				if err := checkpoints.commit(gctx); err != nil {
+					return err
+				}
+			}
+		}
+		if checkpoints != nil {
+			if err := checkpoints.commit(gctx); err != nil {
+				return err
+			}
+			return checkpoints.close()
 		}
 		return nil
 	})
@@ -787,7 +861,7 @@ func hintSelectMessage(destinationSpecs []specs.Destination, statsPerTable *util
 	}
 }
 
-func deleteStale(client safeWriteClient, tables map[string]bool, sourceName string, syncTime time.Time) error {
+func deleteStale(client writeClient, tables map[string]bool, sourceName string, syncTime time.Time) error {
 	for tableName := range tables {
 		if err := client.Send(&plugin.Write_Request{
 			Message: &plugin.Write_Request_Delete{

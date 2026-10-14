@@ -119,7 +119,7 @@ func generateSummaryTable() (*schema.Table, error) {
 	return t[0], nil
 }
 
-func migrateSummaryTable(writeClient safeWriteClient, destTransformer *transformer.RecordTransformer, spec specs.Destination) error {
+func migrateSummaryTable(writeClient writeClient, destTransformer *transformer.RecordTransformer, spec specs.Destination) error {
 	if !spec.SyncSummary {
 		return nil
 	}
@@ -147,7 +147,7 @@ func migrateSummaryTable(writeClient safeWriteClient, destTransformer *transform
 	return nil
 }
 
-func sendSummary(writeClient safeWriteClient, destinationSpec specs.Destination, destinationsClient *managedplugin.Client, destinationTransformer *transformer.RecordTransformer, summary *syncSummary, noMigrate bool) error {
+func sendSummary(writeClient writeClient, destinationSpec specs.Destination, destinationsClient *managedplugin.Client, destinationTransformer *transformer.RecordTransformer, summary *syncSummary, noMigrate bool) error {
 	summaryTable, err := generateSummaryTable()
 	if err != nil {
 		return err
