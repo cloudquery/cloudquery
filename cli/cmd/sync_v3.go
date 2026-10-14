@@ -504,7 +504,7 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 			r, err := recv()
 			if errors.Is(err, errCheckpointDue) {
 				if err := checkpoints.commit(gctx); err != nil {
-					return checkpointCommitError(ctx, gctx, err)
+					return unlessFailedElsewhere(ctx, gctx, err)
 				}
 				continue
 			}
@@ -512,7 +512,10 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 				if errors.Is(err, io.EOF) {
 					break
 				}
-				return fmt.Errorf("unexpected error from sync client receive: %w", err)
+				if err := unlessFailedElsewhere(ctx, gctx, err); err != nil {
+					return fmt.Errorf("unexpected error from sync client receive: %w", err)
+				}
+				return nil
 			}
 			syncResponseMsg := r.GetMessage()
 			switch m := syncResponseMsg.(type) {
@@ -638,13 +641,13 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 			}
 			if checkpoints != nil && checkpoints.due() {
 				if err := checkpoints.commit(gctx); err != nil {
-					return checkpointCommitError(ctx, gctx, err)
+					return unlessFailedElsewhere(ctx, gctx, err)
 				}
 			}
 		}
 		if checkpoints != nil {
 			if err := checkpoints.commit(gctx); err != nil {
-				return checkpointCommitError(ctx, gctx, err)
+				return unlessFailedElsewhere(ctx, gctx, err)
 			}
 			return checkpoints.close()
 		}

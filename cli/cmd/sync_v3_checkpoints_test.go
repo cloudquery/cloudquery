@@ -54,6 +54,8 @@ type fakeWritePlugin struct {
 	supportsFlush bool
 	// acknowledges flushes with this id instead of the requested one
 	flushID uint64
+	// returned by WriteStream on the first insert
+	insertErr error
 }
 
 func (p *fakeWritePlugin) Init(context.Context, *plugin.Init_Request) (*plugin.Init_Response, error) {
@@ -111,6 +113,9 @@ func (p *fakeWritePlugin) WriteStream(stream plugin.Plugin_WriteStreamServer) er
 		}
 		if err != nil {
 			return err
+		}
+		if p.insertErr != nil && req.GetInsert() != nil {
+			return p.insertErr
 		}
 		if err := p.record(req); err != nil {
 			return err
@@ -358,15 +363,15 @@ func TestCheckpointerValidatesColumns(t *testing.T) {
 	}
 }
 
-func TestCheckpointCommitError(t *testing.T) {
+func TestUnlessFailedElsewhere(t *testing.T) {
 	failed := errors.New("flush failed")
 	cancelled, cancel := context.WithCancel(context.Background())
 	cancel()
 
-	require.NoError(t, checkpointCommitError(context.Background(), context.Background(), transformerpipeline.ErrPipelineClosed), "the pipeline reports its own error")
-	require.NoError(t, checkpointCommitError(context.Background(), cancelled, context.Canceled), "another goroutine of the sync failed first")
-	require.ErrorIs(t, checkpointCommitError(cancelled, cancelled, context.Canceled), context.Canceled, "the sync was cancelled")
-	require.ErrorIs(t, checkpointCommitError(context.Background(), context.Background(), failed), failed)
+	require.NoError(t, unlessFailedElsewhere(context.Background(), context.Background(), transformerpipeline.ErrPipelineClosed), "the pipeline reports its own error")
+	require.NoError(t, unlessFailedElsewhere(context.Background(), cancelled, context.Canceled), "another goroutine of the sync failed first")
+	require.ErrorIs(t, unlessFailedElsewhere(cancelled, cancelled, context.Canceled), context.Canceled, "the sync was cancelled")
+	require.ErrorIs(t, unlessFailedElsewhere(context.Background(), context.Background(), failed), failed)
 }
 
 func TestCheckpointOptionsStateWriter(t *testing.T) {
@@ -424,6 +429,8 @@ type fakeCheckpointSource struct {
 	plugin.UnimplementedPluginServer
 	discoveryPb.UnimplementedDiscoveryServer
 	responses []*plugin.Sync_Response
+	// keeps the stream open without sending more, until the client goes away
+	idle bool
 
 	mu      gosync.Mutex
 	request *plugin.Sync_Request
@@ -441,6 +448,9 @@ func (s *fakeCheckpointSource) Sync(req *plugin.Sync_Request, stream plugin.Plug
 		if err := stream.Send(res); err != nil {
 			return err
 		}
+	}
+	if s.idle {
+		<-stream.Context().Done()
 	}
 	return nil
 }
@@ -484,11 +494,16 @@ var checkpointItemsTable = &schema.Table{Name: "items", Columns: schema.ColumnLi
 // syncWithFakePlugins runs a sync from a fake source to a fake destination that is also the state backend.
 func syncWithFakePlugins(t *testing.T, destination *fakeWritePlugin, responses ...*plugin.Sync_Response) (*plugin.Sync_Request, error) {
 	t.Helper()
+	return syncWithFakeSource(t, &fakeCheckpointSource{}, destination, responses...)
+}
+
+func syncWithFakeSource(t *testing.T, source *fakeCheckpointSource, destination *fakeWritePlugin, responses ...*plugin.Sync_Response) (*plugin.Sync_Request, error) {
+	t.Helper()
 	tableBytes, err := plugin.SchemaToBytes(checkpointItemsTable.ToArrowSchema())
 	require.NoError(t, err)
-	source := &fakeCheckpointSource{responses: append([]*plugin.Sync_Response{
+	source.responses = append([]*plugin.Sync_Response{
 		{Message: &plugin.Sync_Response_MigrateTable{MigrateTable: &plugin.Sync_MessageMigrateTable{Table: tableBytes}}},
-	}, responses...)}
+	}, responses...)
 	sourceAddress := startFakeServer(t, func(s *grpc.Server) {
 		plugin.RegisterPluginServer(s, source)
 		discoveryPb.RegisterDiscoveryServer(s, source)
@@ -574,4 +589,19 @@ func TestSyncPersistsCheckpointsAfterDestinationsFlush(t *testing.T) {
 			require.NotContains(t, event, "cq_state")
 		}
 	})
+}
+
+func TestSyncReportsDestinationErrorWhileSourceIsIdle(t *testing.T) {
+	interval := checkpointInterval
+	checkpointInterval = 0
+	t.Cleanup(func() { checkpointInterval = interval })
+
+	destination := &fakeWritePlugin{name: "dest", log: &eventLog{}, supportsFlush: true, insertErr: errors.New("disk full")}
+	_, err := syncWithFakeSource(t, &fakeCheckpointSource{idle: true}, destination,
+		itemsInsert(t, 1, 2),
+		itemsInsert(t, 3),
+		checkpointResponse(t, stateEntry{"cursor", "1", 1}),
+	)
+	require.ErrorContains(t, err, "disk full")
+	require.NotContains(t, err.Error(), "context canceled")
 }

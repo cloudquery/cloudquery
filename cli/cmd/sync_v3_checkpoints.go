@@ -405,9 +405,9 @@ func (c *checkpointer) close() error {
 	return err
 }
 
-// checkpointCommitError returns nil when the commit failed because another goroutine of the sync failed first, so that
-// the sync reports that error instead.
-func checkpointCommitError(ctx, gctx context.Context, err error) error {
+// unlessFailedElsewhere returns nil when err comes from another goroutine of the sync failing first, such as a
+// destination write in a pipeline, so that the sync reports that error instead.
+func unlessFailedElsewhere(ctx, gctx context.Context, err error) error {
 	if errors.Is(err, transformerpipeline.ErrPipelineClosed) || (gctx.Err() != nil && ctx.Err() == nil) {
 		return nil
 	}
