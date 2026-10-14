@@ -17,7 +17,6 @@ import (
 	"github.com/cloudquery/plugin-pb-go/pb/plugin/v3"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/rs/zerolog/log"
-	"golang.org/x/sync/errgroup"
 	"google.golang.org/grpc"
 
 	"github.com/cloudquery/cloudquery/cli/v6/internal/transformerpipeline"
@@ -136,6 +135,8 @@ type checkpointer struct {
 	// destinations that failed to commit records, by name. The state then summarizes lost records, so the sync saves no
 	// more of it.
 	failed map[string]error
+	// set when the state backend failed to commit state. The sync then saves no more state, as it does for destinations.
+	backendFailed error
 }
 
 func newCheckpointer(destinations []*flushingWriteClient, pipelines []*transformerpipeline.TransformerPipeline, backend plugin.PluginClient, backendFlushes bool, stateTable string) *checkpointer {
@@ -178,7 +179,7 @@ func (c *checkpointer) add(recordBytes []byte) error {
 			return err
 		}
 	}
-	if len(c.failed) > 0 {
+	if !c.saving() {
 		return nil
 	}
 	if !c.received {
@@ -222,17 +223,44 @@ func requiredStateColumn[T arrow.Array](record arrow.RecordBatch, name string, t
 
 // due reports whether the pending state should be persisted now.
 func (c *checkpointer) due() bool {
-	return len(c.failed) == 0 && len(c.pending) > 0 && time.Since(c.lastCommit) >= checkpointInterval
+	return c.saving() && len(c.pending) > 0 && time.Since(c.lastCommit) >= checkpointInterval
 }
 
-// failure returns why the sync saves no state, if a destination failed to commit records.
+// saving reports whether the sync still saves state, which it stops once a destination or the state backend fails to
+// commit what it was sent.
+func (c *checkpointer) saving() bool {
+	return len(c.failed) == 0 && c.backendFailed == nil
+}
+
+// failure returns why the sync saves no more state, if a destination or the state backend failed to commit.
 func (c *checkpointer) failure() error {
-	errs := make([]error, 0, len(c.failed))
+	errs := make([]error, 0, len(c.failed)+1)
 	for _, name := range slices.Sorted(maps.Keys(c.failed)) {
 		errs = append(errs, fmt.Errorf("destination %s: %w", name, c.failed[name]))
 	}
+	if c.backendFailed != nil {
+		errs = append(errs, fmt.Errorf("state backend: %w", c.backendFailed))
+	}
 	return errors.Join(errs...)
 }
+
+// stateNotSavedError is returned when a sync finishes, but saved no state since a destination or the state backend
+// failed to commit.
+type stateNotSavedError struct {
+	err error
+	// whether the source sent checkpoints. A source that does not saves its state itself, which may then be past the
+	// records that were lost.
+	checkpointed bool
+}
+
+func (e *stateNotSavedError) Error() string {
+	if e.checkpointed {
+		return fmt.Sprintf("sync finished without saving its state, as it failed to commit: %v", e.err)
+	}
+	return fmt.Sprintf("sync finished, but failed to commit, and the source sent no state checkpoints, so state it saved itself may be past the lost records: %v", e.err)
+}
+
+func (e *stateNotSavedError) Unwrap() error { return e.err }
 
 // failedDestination reports whether the destination failed to commit records.
 func (c *checkpointer) failedDestination(name string) bool {
@@ -294,57 +322,43 @@ func (c *checkpointer) waitForResult(ctx context.Context, results <-chan syncRes
 
 // commit persists the pending state after every destination commits the records sent so far.
 func (c *checkpointer) commit(ctx context.Context) error {
-	if len(c.pending) == 0 {
+	if len(c.pending) == 0 || !c.saving() {
 		return nil
 	}
 	return c.flushAndPersist(ctx)
 }
 
-// finish commits at the end of the sync. It flushes the destinations even without pending state, so that the sync
-// learns about records they failed to commit.
+// finish commits at the end of the sync. It flushes every destination that has not failed yet, even without pending
+// state, so that the sync learns about every destination that failed to commit records.
 func (c *checkpointer) finish(ctx context.Context) error {
 	return c.flushAndPersist(ctx)
 }
 
 func (c *checkpointer) flushAndPersist(ctx context.Context) error {
-	if len(c.failed) > 0 {
-		return nil
-	}
 	for _, pipeline := range c.pipelines {
 		if err := pipeline.WaitDelivered(ctx); err != nil {
 			return fmt.Errorf("failed to wait for records to reach destinations: %w", err)
 		}
 	}
-	var mu gosync.Mutex
-	eg := errgroup.Group{}
-	for _, destination := range c.destinations {
-		eg.Go(func() error {
-			err := destination.Flush()
-			var failed *flushFailedError
-			if errors.As(err, &failed) {
-				mu.Lock()
-				c.failed[destination.name] = failed
-				mu.Unlock()
-				return nil
-			}
-			if err != nil {
-				return fmt.Errorf("destination %s: %w", destination.name, err)
-			}
-			return nil
-		})
-	}
-	if err := eg.Wait(); err != nil {
+	if err := c.flushDestinations(); err != nil {
 		return fmt.Errorf("failed to flush destinations: %w", err)
 	}
-	if len(c.failed) > 0 {
+	if !c.saving() {
 		clear(c.pending)
-		log.Error().Err(c.failure()).Msg("Destinations failed to write records, so the sync saves no more state, and fails once it finishes")
 		return nil
 	}
 	if len(c.pending) == 0 {
 		return nil
 	}
-	if err := c.persist(ctx); err != nil {
+	err := c.persist(ctx)
+	var failed *flushFailedError
+	if errors.As(err, &failed) {
+		c.backendFailed = failed
+		clear(c.pending)
+		log.Error().Err(c.failure()).Msg("The state backend failed to write state, so the sync saves no more state, and fails once it finishes")
+		return nil
+	}
+	if err != nil {
 		return fmt.Errorf("failed to persist state: %w", err)
 	}
 	for key, row := range c.pending {
@@ -352,6 +366,43 @@ func (c *checkpointer) flushAndPersist(ctx context.Context) error {
 	}
 	clear(c.pending)
 	c.lastCommit = time.Now()
+	return nil
+}
+
+// flushDestinations flushes every destination that has not failed yet, and records the ones that failed to commit
+// records.
+func (c *checkpointer) flushDestinations() error {
+	results := make([]error, len(c.destinations))
+	var wg gosync.WaitGroup
+	for i, destination := range c.destinations {
+		if !c.failedDestination(destination.name) {
+			wg.Go(func() { results[i] = destination.Flush() })
+		}
+	}
+	wg.Wait()
+
+	var (
+		errs        []error
+		newFailures bool
+	)
+	for i, err := range results {
+		name := c.destinations[i].name
+		var failed *flushFailedError
+		switch {
+		case errors.As(err, &failed):
+			c.failed[name] = failed
+			newFailures = true
+		case err != nil:
+			errs = append(errs, fmt.Errorf("destination %s: %w", name, err))
+		}
+	}
+	if len(errs) > 0 {
+		// failures to commit records are part of why the sync fails
+		return errors.Join(append(errs, c.failure())...)
+	}
+	if newFailures {
+		log.Error().Err(c.failure()).Msg("Destinations failed to write records, so the sync saves no more state, and fails once it finishes")
+	}
 	return nil
 }
 
@@ -453,24 +504,6 @@ func (c *checkpointer) close() error {
 		return nil
 	}
 	_, err := c.backendStream.CloseAndRecv()
-	return err
-}
-
-// receiveError returns the error the sync ends with when receiving from the source fails, or nil if another goroutine of
-// the sync failed first.
-func receiveError(ctx, gctx context.Context, err error) error {
-	if err := unlessFailedElsewhere(ctx, gctx, err); err != nil {
-		return fmt.Errorf("unexpected error from sync client receive: %w", err)
-	}
-	return nil
-}
-
-// unlessFailedElsewhere returns nil when err comes from another goroutine of the sync failing first, such as a
-// destination write in a pipeline, so that the sync reports that error instead.
-func unlessFailedElsewhere(ctx, gctx context.Context, err error) error {
-	if errors.Is(err, transformerpipeline.ErrPipelineClosed) || (gctx.Err() != nil && ctx.Err() == nil) {
-		return nil
-	}
 	return err
 }
 

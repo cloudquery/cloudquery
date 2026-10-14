@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"io"
 	"net"
+	"os"
+	"path"
 	"slices"
 	"strings"
 	gosync "sync"
@@ -56,8 +58,10 @@ type fakeWritePlugin struct {
 	flushID uint64
 	// returned by Write and WriteStream on the first insert
 	insertErr error
-	// reported in every flush response, as a destination does when it could not commit some records
+	// reported in flush responses, as a destination does when it could not commit some records
 	flushFailure string
+	// reports flushFailure only from the flush with this id on
+	flushFailureFrom uint64
 }
 
 func (p *fakeWritePlugin) Init(context.Context, *plugin.Init_Request) (*plugin.Init_Response, error) {
@@ -135,7 +139,11 @@ func (p *fakeWritePlugin) WriteStream(stream plugin.Plugin_WriteStreamServer) er
 			if p.flushID != 0 {
 				id = p.flushID
 			}
-			if err := stream.Send(&plugin.Write_Response{FlushId: id, FlushError: p.flushFailure}); err != nil {
+			res := &plugin.Write_Response{FlushId: id}
+			if flush.Id >= p.flushFailureFrom {
+				res.FlushError = p.flushFailure
+			}
+			if err := stream.Send(res); err != nil {
 				return err
 			}
 		}
@@ -355,6 +363,7 @@ func TestCheckpointerValidatesColumns(t *testing.T) {
 		err   string
 	}{
 		{name: "no key", table: stateTable(value), err: `checkpoint has no "key" column`},
+		{name: "two keys", table: &schema.Table{Name: "cq_state", Columns: schema.ColumnList{key, value, key}}, err: `checkpoint has 2 "key" columns`},
 		{name: "large string key", table: stateTable(schema.Column{Name: stateKeyColumn, Type: arrow.BinaryTypes.LargeString}, value), err: `checkpoint column "key" is large_utf8, expected utf8`},
 		{name: "int64 version", table: stateTable(key, value, schema.Column{Name: stateVersionColumn, Type: arrow.PrimitiveTypes.Int64}), err: `checkpoint column "version" is int64, expected uint64`},
 		{name: "no version", table: stateTable(key, value)},
@@ -378,17 +387,6 @@ func TestCheckpointerValidatesColumns(t *testing.T) {
 			require.EqualError(t, err, tc.err)
 		})
 	}
-}
-
-func TestUnlessFailedElsewhere(t *testing.T) {
-	failed := errors.New("flush failed")
-	cancelled, cancel := context.WithCancel(context.Background())
-	cancel()
-
-	require.NoError(t, unlessFailedElsewhere(context.Background(), context.Background(), transformerpipeline.ErrPipelineClosed), "the pipeline reports its own error")
-	require.NoError(t, unlessFailedElsewhere(context.Background(), cancelled, context.Canceled), "another goroutine of the sync failed first")
-	require.ErrorIs(t, unlessFailedElsewhere(cancelled, cancelled, context.Canceled), context.Canceled, "the sync was cancelled")
-	require.ErrorIs(t, unlessFailedElsewhere(context.Background(), context.Background(), failed), failed)
 }
 
 func TestCheckpointOptionsStateWriter(t *testing.T) {
@@ -539,6 +537,16 @@ func syncWithFakeSource(t *testing.T, source *fakeCheckpointSource, destination 
 
 func syncWithFakeSourceMode(t *testing.T, source *fakeCheckpointSource, destination *fakeWritePlugin, writeMode specs.WriteMode, responses ...*plugin.Sync_Response) (*plugin.Sync_Request, error) {
 	t.Helper()
+	err := syncWithFakeDestinations(t, source, []*fakeWritePlugin{destination}, writeMode, responses...)
+	source.mu.Lock()
+	defer source.mu.Unlock()
+	return source.request, err
+}
+
+// syncWithFakeDestinations runs a sync from a fake source to fake destinations, the first of which is also the state
+// backend.
+func syncWithFakeDestinations(t *testing.T, source *fakeCheckpointSource, destinations []*fakeWritePlugin, writeMode specs.WriteMode, responses ...*plugin.Sync_Response) error {
+	t.Helper()
 	tableBytes, err := plugin.SchemaToBytes(checkpointItemsTable.ToArrowSchema())
 	require.NoError(t, err)
 	source.responses = append([]*plugin.Sync_Response{
@@ -548,29 +556,32 @@ func syncWithFakeSourceMode(t *testing.T, source *fakeCheckpointSource, destinat
 		plugin.RegisterPluginServer(s, source)
 		discoveryPb.RegisterDiscoveryServer(s, source)
 	})
-	destinationAddress := startFakeServer(t, func(s *grpc.Server) { plugin.RegisterPluginServer(s, destination) })
+	names := make([]string, 0, len(destinations))
+	v3destinations := make([]v3destination, 0, len(destinations))
+	for _, destination := range destinations {
+		address := startFakeServer(t, func(s *grpc.Server) { plugin.RegisterPluginServer(s, destination) })
+		names = append(names, destination.name)
+		v3destinations = append(v3destinations, v3destination{
+			client: grpcPluginClient(t, managedplugin.PluginDestination, destination.name, address),
+			spec:   specs.Destination{Metadata: specs.Metadata{Name: destination.name, Path: address}, WriteMode: writeMode},
+		})
+	}
 
 	skipDependentTables := true
-	err = syncConnectionV3(context.Background(), syncV3Options{
+	return syncConnectionV3(context.Background(), syncV3Options{
 		source: v3source{
 			client: grpcPluginClient(t, managedplugin.PluginSource, "source", sourceAddress),
 			spec: specs.Source{
 				Metadata:            specs.Metadata{Name: "source", Path: sourceAddress},
 				Tables:              []string{"*"},
-				Destinations:        []string{"dest"},
+				Destinations:        names,
 				SkipDependentTables: &skipDependentTables,
-				BackendOptions:      &specs.BackendOptions{TableName: "cq_state", Connection: "@@plugins.dest.connection"},
+				BackendOptions:      &specs.BackendOptions{TableName: "cq_state", Connection: "@@plugins." + names[0] + ".connection"},
 			},
 		},
-		destinations: []v3destination{{
-			client: grpcPluginClient(t, managedplugin.PluginDestination, "dest", destinationAddress),
-			spec:   specs.Destination{Metadata: specs.Metadata{Name: "dest", Path: destinationAddress}, WriteMode: writeMode},
-		}},
-		uid: "test",
+		destinations: v3destinations,
+		uid:          "test",
 	})
-	source.mu.Lock()
-	defer source.mu.Unlock()
-	return source.request, err
 }
 
 func TestSyncPersistsCheckpointsAfterDestinationsFlush(t *testing.T) {
@@ -686,14 +697,6 @@ func TestCommitWaitsForPipelineDelivery(t *testing.T) {
 	require.NoError(t, c.close())
 }
 
-func TestReceiveError(t *testing.T) {
-	cancelled, cancel := context.WithCancel(context.Background())
-	cancel()
-	require.NoError(t, receiveError(context.Background(), cancelled, context.Canceled), "another goroutine of the sync failed first")
-	require.ErrorContains(t, receiveError(context.Background(), context.Background(), errors.New("stream broke")), "unexpected error from sync client receive: stream broke")
-	require.ErrorIs(t, receiveError(cancelled, cancelled, context.Canceled), context.Canceled, "the sync was cancelled")
-}
-
 func TestSyncPersistsCheckpointsWhileSourceIsIdle(t *testing.T) {
 	interval := checkpointInterval
 	checkpointInterval = 100 * time.Millisecond
@@ -793,4 +796,244 @@ func TestSyncFinishesWithoutStateAfterFailedFlush(t *testing.T) {
 		}
 	}
 	require.Equal(t, 2, inserts, "the sync goes on after the failed flush")
+}
+
+func TestSyncClosesTheStateStream(t *testing.T) {
+	log := &eventLog{}
+	_, err := syncWithFakePlugins(t, &fakeWritePlugin{name: "dest", log: log, supportsFlush: true},
+		itemsInsert(t, 1),
+		checkpointResponse(t, stateEntry{"cursor", "1", 1}),
+	)
+	require.NoError(t, err)
+	var closes int
+	for _, event := range log.get() {
+		if event == "dest: close" {
+			closes++
+		}
+	}
+	require.Equal(t, 2, closes, "both the records stream and the state stream end")
+}
+
+func TestSyncCatchesFailureAfterLastCheckpoint(t *testing.T) {
+	interval := checkpointInterval
+	checkpointInterval = 0
+	t.Cleanup(func() { checkpointInterval = interval })
+
+	log := &eventLog{}
+	destination := &fakeWritePlugin{name: "dest", log: log, supportsFlush: true, flushFailure: "table items: disk full", flushFailureFrom: 2}
+	_, err := syncWithFakeSourceMode(t, &fakeCheckpointSource{}, destination, specs.WriteModeOverwriteDeleteStale,
+		itemsInsert(t, 1, 2),
+		checkpointResponse(t, stateEntry{"cursor", "1", 1}),
+		itemsInsert(t, 3),
+	)
+	require.ErrorAs(t, err, new(*stateNotSavedError))
+	require.ErrorContains(t, err, "destination dest: table items: disk full")
+	require.Contains(t, log.get(), "dest: insert cq_state cursor=1", "the state before the failure is saved")
+	for _, event := range log.get() {
+		require.NotContains(t, event, "delete stale")
+	}
+}
+
+func TestSyncFlushesOtherDestinationsAfterAFailure(t *testing.T) {
+	interval := checkpointInterval
+	checkpointInterval = 0
+	t.Cleanup(func() { checkpointInterval = interval })
+
+	log := &eventLog{}
+	failing := &fakeWritePlugin{name: "dest", log: log, supportsFlush: true, flushFailure: "table items: disk full"}
+	failingLater := &fakeWritePlugin{name: "dest2", log: log, supportsFlush: true, flushFailure: "table items: quota exceeded", flushFailureFrom: 2}
+	healthy := &fakeWritePlugin{name: "dest3", log: log, supportsFlush: true}
+	err := syncWithFakeDestinations(t, &fakeCheckpointSource{}, []*fakeWritePlugin{failing, failingLater, healthy}, specs.WriteModeOverwriteDeleteStale,
+		itemsInsert(t, 1, 2),
+		checkpointResponse(t, stateEntry{"cursor", "1", 1}),
+		itemsInsert(t, 3),
+		checkpointResponse(t, stateEntry{"cursor", "2", 2}),
+	)
+	require.ErrorAs(t, err, new(*stateNotSavedError))
+	require.ErrorContains(t, err, "destination dest: table items: disk full")
+	require.ErrorContains(t, err, "destination dest2: table items: quota exceeded")
+	require.NotContains(t, err.Error(), "dest3")
+
+	events := log.get()
+	require.Contains(t, events, "dest2: flush 2", "the final flush reaches destinations that did not fail yet")
+	require.NotContains(t, events, "dest: flush 2", "a failed destination is not flushed again")
+	require.Contains(t, events, "dest3: delete stale items", "delete-stale runs on the destination that committed every record")
+	for _, event := range events {
+		require.NotContains(t, event, "cq_state", "no state is saved")
+		require.False(t, strings.HasPrefix(event, "dest: delete stale") || strings.HasPrefix(event, "dest2: delete stale"), "delete-stale is skipped on failed destinations: %s", event)
+	}
+}
+
+func TestSyncWithoutCheckpointsFromTheSourceWarnsThatItsStateMayBeAhead(t *testing.T) {
+	destination := &fakeWritePlugin{name: "dest", log: &eventLog{}, supportsFlush: true, flushFailure: "table items: disk full"}
+	req, err := syncWithFakePlugins(t, destination, itemsInsert(t, 1, 2))
+	require.True(t, req.SupportsCheckpoints)
+	require.ErrorAs(t, err, new(*stateNotSavedError))
+	require.ErrorContains(t, err, "the source sent no state checkpoints, so state it saved itself may be past the lost records")
+	require.ErrorContains(t, err, "destination dest: table items: disk full")
+}
+
+func TestCheckpointerStopsSavingStateAfterBackendFlushFails(t *testing.T) {
+	ctx := context.Background()
+	log := &eventLog{}
+	dest := openFlushingClient(t, serveFakePlugin(t, &fakeWritePlugin{name: "dest", log: log}))
+	backend := serveFakePlugin(t, &fakeWritePlugin{name: "backend", log: log, flushFailure: "table cq_state: disk full"})
+	c := newCheckpointer([]*flushingWriteClient{dest}, nil, backend, true, "cq_state")
+
+	require.NoError(t, c.add(stateRecord(t, "cq_state", stateEntry{"cursor", "1", 1})))
+	require.NoError(t, c.commit(ctx), "the sync goes on, as it does when a destination fails")
+	require.False(t, c.failedDestination("dest"), "delete-stale still runs on the destinations")
+	require.EqualError(t, c.failure(), "state backend: table cq_state: disk full")
+
+	require.NoError(t, c.add(stateRecord(t, "cq_state", stateEntry{"cursor", "2", 2})))
+	require.Empty(t, c.pending)
+	require.NoError(t, c.finish(ctx))
+	require.Equal(t, []string{"dest: flush 1", "backend: insert cq_state cursor=1", "backend: flush 1", "dest: flush 2"}, log.get())
+	require.NoError(t, c.close())
+}
+
+func TestCheckpointerReportsCommitFailuresWithHardErrors(t *testing.T) {
+	ctx := context.Background()
+	log := &eventLog{}
+	failing := openFlushingClient(t, serveFakePlugin(t, &fakeWritePlugin{name: "dest", log: log, flushFailure: "table items: disk full"}))
+	broken := openFlushingClient(t, serveFakePlugin(t, &fakeWritePlugin{name: "dest2", log: log, flushErr: errors.New("stream broke")}))
+	broken.name = "dest2"
+	c := newCheckpointer([]*flushingWriteClient{failing, broken}, nil, serveFakePlugin(t, &fakeWritePlugin{name: "backend", log: log}), true, "cq_state")
+
+	err := c.finish(ctx)
+	require.ErrorContains(t, err, "destination dest2")
+	require.ErrorContains(t, err, "stream broke")
+	require.ErrorContains(t, err, "destination dest: table items: disk full")
+}
+
+func TestCheckpointerWritesRecordsToBackendWithoutFlushSupport(t *testing.T) {
+	ctx := context.Background()
+	log := &eventLog{}
+	dest := openFlushingClient(t, serveFakePlugin(t, &fakeWritePlugin{name: "dest", log: log}))
+	backend := serveFakePlugin(t, &fakeWritePlugin{name: "backend", log: log})
+	c := newCheckpointer([]*flushingWriteClient{dest}, nil, backend, false, "cq_state")
+	c.maxRecordBytes = 1
+
+	require.NoError(t, c.add(stateRecord(t, "cq_state", stateEntry{"a", "1", 1}, stateEntry{"b", "1", 1}, stateEntry{"c", "1", 1})))
+	require.NoError(t, c.commit(ctx))
+	require.Equal(t, []string{
+		"dest: flush 1",
+		"backend: insert cq_state a=1",
+		"backend: insert cq_state b=1",
+		"backend: insert cq_state c=1",
+		"backend: close",
+	}, log.get(), "the records go in one write, which commits once it closes")
+	require.NoError(t, c.close())
+}
+
+func TestCheckpointerCountsEveryColumnWhenSplittingState(t *testing.T) {
+	ctx := context.Background()
+	log := &eventLog{}
+	dest := openFlushingClient(t, serveFakePlugin(t, &fakeWritePlugin{name: "dest", log: log}))
+	backend := serveFakePlugin(t, &fakeWritePlugin{name: "backend", log: log})
+	c := newCheckpointer([]*flushingWriteClient{dest}, nil, backend, true, "cq_state")
+	// a row takes 1 + 10 + 16 bytes, plus 8 for each of the 10 columns: two rows fit, but not three
+	c.maxRecordBytes = 220
+
+	columns := make(schema.ColumnList, 0, 10)
+	columns = append(columns,
+		schema.Column{Name: stateKeyColumn, Type: arrow.BinaryTypes.String},
+		schema.Column{Name: stateValueColumn, Type: arrow.BinaryTypes.String},
+		schema.Column{Name: stateVersionColumn, Type: arrow.PrimitiveTypes.Uint64},
+	)
+	for i := range 7 {
+		columns = append(columns, schema.Column{Name: fmt.Sprintf("extra%d", i), Type: arrow.BinaryTypes.String})
+	}
+	bldr := array.NewRecordBuilder(memory.DefaultAllocator, (&schema.Table{Name: "cq_state", Columns: columns}).ToArrowSchema())
+	defer bldr.Release()
+	for _, key := range []string{"a", "b", "c"} {
+		bldr.Field(0).(*array.StringBuilder).Append(key)
+		bldr.Field(1).(*array.StringBuilder).Append("0123456789")
+		bldr.Field(2).(*array.Uint64Builder).Append(1)
+		for i := 3; i < len(columns); i++ {
+			bldr.Field(i).AppendNull()
+		}
+	}
+	recordBytes, err := plugin.RecordToBytes(bldr.NewRecordBatch())
+	require.NoError(t, err)
+
+	require.NoError(t, c.add(recordBytes))
+	require.NoError(t, c.commit(ctx))
+	require.Equal(t, []string{
+		"dest: flush 1",
+		"backend: insert cq_state a=0123456789 b=0123456789",
+		"backend: insert cq_state c=0123456789",
+		"backend: flush 1",
+	}, log.get())
+	require.NoError(t, c.close())
+}
+
+type v3Discovery struct {
+	discoveryPb.UnimplementedDiscoveryServer
+}
+
+func (v3Discovery) GetVersions(context.Context, *discoveryPb.GetVersions_Request) (*discoveryPb.GetVersions_Response, error) {
+	return &discoveryPb.GetVersions_Response{Versions: []int32{3}}, nil
+}
+
+func startFakeSource(t *testing.T, source *fakeCheckpointSource) string {
+	t.Helper()
+	tableBytes, err := plugin.SchemaToBytes(checkpointItemsTable.ToArrowSchema())
+	require.NoError(t, err)
+	source.responses = append([]*plugin.Sync_Response{
+		{Message: &plugin.Sync_Response_MigrateTable{MigrateTable: &plugin.Sync_MessageMigrateTable{Table: tableBytes}}},
+	}, source.responses...)
+	return startFakeServer(t, func(s *grpc.Server) {
+		plugin.RegisterPluginServer(s, source)
+		discoveryPb.RegisterDiscoveryServer(s, v3Discovery{})
+	})
+}
+
+func TestSyncGoesOnWithOtherSourcesAfterFailedFlush(t *testing.T) {
+	log := &eventLog{}
+	first := &fakeCheckpointSource{responses: []*plugin.Sync_Response{itemsInsert(t, 1, 2), checkpointResponse(t, stateEntry{"cursor", "1", 1})}}
+	second := &fakeCheckpointSource{responses: []*plugin.Sync_Response{itemsInsert(t, 3)}}
+	destination := &fakeWritePlugin{name: "dest", log: log, supportsFlush: true, flushFailure: "table items: disk full"}
+	destinationAddress := startFakeServer(t, func(s *grpc.Server) {
+		plugin.RegisterPluginServer(s, destination)
+		discoveryPb.RegisterDiscoveryServer(s, v3Discovery{})
+	})
+	spec := fmt.Sprintf(`kind: source
+spec:
+  name: first
+  registry: grpc
+  path: %s
+  tables: ["*"]
+  destinations: ["dest"]
+  backend_options:
+    table_name: cq_state
+    connection: "@@plugins.dest.connection"
+---
+kind: source
+spec:
+  name: second
+  registry: grpc
+  path: %s
+  tables: ["*"]
+  destinations: ["dest"]
+---
+kind: destination
+spec:
+  name: dest
+  registry: grpc
+  path: %s
+`, startFakeSource(t, first), startFakeSource(t, second), destinationAddress)
+	specFile := path.Join(t.TempDir(), "spec.yml")
+	require.NoError(t, os.WriteFile(specFile, []byte(spec), 0o600))
+
+	cmd := NewCmdRoot()
+	cmd.SetArgs(append([]string{"sync", specFile}, testCommandArgs(t)...))
+	err := cmd.Execute()
+	require.ErrorAs(t, err, new(*stateNotSavedError))
+	require.ErrorContains(t, err, "source first: ")
+	require.ErrorContains(t, err, "destination dest: table items: disk full")
+
+	second.mu.Lock()
+	defer second.mu.Unlock()
+	require.NotNil(t, second.request, "the second source syncs, as the first one finished")
 }

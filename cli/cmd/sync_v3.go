@@ -489,7 +489,7 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 
 	sourceTables := map[string]bool{}
 
-	eg.Go(func() error {
+	receive := func() error {
 		// Close all transformation pipelines when the source is done
 		defer func() {
 			for _, pipeline := range pipelineByDestinationName {
@@ -504,7 +504,7 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 			r, err := recv()
 			if errors.Is(err, errCheckpointDue) {
 				if err := checkpoints.commit(gctx); err != nil {
-					return unlessFailedElsewhere(ctx, gctx, err)
+					return err
 				}
 				continue
 			}
@@ -512,7 +512,7 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 				if errors.Is(err, io.EOF) {
 					break
 				}
-				return receiveError(ctx, gctx, err)
+				return fmt.Errorf("unexpected error from sync client receive: %w", err)
 			}
 			syncResponseMsg := r.GetMessage()
 			switch m := syncResponseMsg.(type) {
@@ -638,20 +638,30 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 			}
 			if checkpoints != nil && checkpoints.due() {
 				if err := checkpoints.commit(gctx); err != nil {
-					return unlessFailedElsewhere(ctx, gctx, err)
+					return err
 				}
 			}
 		}
 		if checkpoints != nil {
 			if err := checkpoints.finish(gctx); err != nil {
-				return unlessFailedElsewhere(ctx, gctx, err)
+				return err
 			}
 			return checkpoints.close()
 		}
 		return nil
+	}
+	var receiveErr error
+	eg.Go(func() error {
+		// A failing pipeline cancels gctx, which then fails receive too. The pipeline's error explains why the sync
+		// failed, so receive does not report its own error first.
+		receiveErr = receive()
+		return nil
 	})
 	if err := eg.Wait(); err != nil { // wait for source & transformers to finish. If any fails, sync fails.
 		return err
+	}
+	if receiveErr != nil {
+		return receiveErr
 	}
 
 	err = syncClient.CloseSend()
@@ -694,12 +704,12 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 	}
 	syncTimeTook = time.Since(syncTime)
 	for i := range destinationsClients {
-		if checkpoints != nil && checkpoints.failedDestination(destinationSpecs[i].Name) {
-			// deleting the rows of earlier syncs would lose the ones whose replacements failed to write
-			log.Warn().Str("destination", destinationSpecs[i].Name).Msg("Skipping delete-stale, as the destination failed to write records")
-			continue
-		}
 		if destinationSpecs[i].WriteMode == specs.WriteModeOverwriteDeleteStale {
+			if checkpoints != nil && checkpoints.failedDestination(destinationSpecs[i].Name) {
+				// deleting the rows of earlier syncs would lose the ones whose replacements failed to write
+				log.Warn().Str("destination", destinationSpecs[i].Name).Msg("Skipping delete-stale, as the destination failed to write records")
+				continue
+			}
 			// Table names might have changed due to transformers
 			updatedTablesForDeleteStale := tableNameChanger.UpdateTableNames(destinationSpecs[i].Name, tablesForDeleteStale)
 			if err := deleteStale(writeClients[i], updatedTablesForDeleteStale, sourceName, syncTime); err != nil {
@@ -769,7 +779,10 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 
 	if checkpoints != nil {
 		if err := checkpoints.failure(); err != nil {
-			return fmt.Errorf("sync finished without saving its state, as destinations failed to write records: %w", err)
+			if !checkpoints.received {
+				log.Warn().Msg("The sync requested state checkpoints, but the source sent none, so it may save its state itself")
+			}
+			return &stateNotSavedError{err: err, checkpointed: checkpoints.received}
 		}
 	}
 

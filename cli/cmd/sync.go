@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"math"
 	"os"
@@ -425,6 +426,8 @@ func sync(cmd *cobra.Command, args []string) error {
 		transformerPluginClients = append(transformerPluginClients, transPluginClient)
 	}
 
+	// syncs that finished without saving their state, which do not stop the other sources
+	var stateNotSaved error
 	for _, source := range sources {
 		cl := sourcePluginClients.ClientByName(source.Name)
 		versions, err := cl.Versions(ctx)
@@ -535,7 +538,10 @@ func sync(cmd *cobra.Command, args []string) error {
 				tableDurations:            tableDurations.GetAll,
 			}
 			if err := syncConnectionV3(ctx, syncOptions); err != nil {
-				return fmt.Errorf("failed to sync v3 source %s: %w", cl.Name(), err)
+				if !errors.As(err, new(*stateNotSavedError)) {
+					return fmt.Errorf("failed to sync v3 source %s: %w", cl.Name(), err)
+				}
+				stateNotSaved = errors.Join(stateNotSaved, fmt.Errorf("source %s: %w", cl.Name(), err))
 			}
 
 		case 2:
@@ -568,7 +574,7 @@ func sync(cmd *cobra.Command, args []string) error {
 		}
 	}
 
-	return nil
+	return stateNotSaved
 }
 
 func filterPluginEnv(environ []string, pluginName, kind string) []string {
