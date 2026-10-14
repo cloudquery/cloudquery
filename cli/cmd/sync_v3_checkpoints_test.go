@@ -234,3 +234,64 @@ func TestCheckpointerIsDueAfterInterval(t *testing.T) {
 	c.lastCommit = time.Now().Add(-checkpointInterval)
 	require.True(t, c.due())
 }
+
+func TestCheckpointerCommitsWhileSourceIsIdle(t *testing.T) {
+	ctx := context.Background()
+	log := &eventLog{}
+	dest := openFlushingClient(t, serveFakePlugin(t, &fakeWritePlugin{name: "dest", log: log}))
+	backend := serveFakePlugin(t, &fakeWritePlugin{name: "backend", log: log})
+	c := newCheckpointer([]*flushingWriteClient{dest}, nil, backend, true, "cq_state")
+
+	responses := make(chan syncResult)
+	recv := c.receiver(ctx, func() (*plugin.Sync_Response, error) {
+		r := <-responses
+		return r.response, r.err
+	})
+
+	checkpoint := &plugin.Sync_Response{Message: &plugin.Sync_Response_Checkpoint{Checkpoint: &plugin.Sync_MessageCheckpoint{Record: stateRecord(t, "cq_state", stateEntry{"a", "1", 1})}}}
+	responses <- syncResult{response: checkpoint}
+	r, err := recv()
+	require.NoError(t, err)
+	require.NoError(t, c.add(r.GetCheckpoint().Record))
+	c.lastCommit = time.Now().Add(-checkpointInterval + 50*time.Millisecond)
+
+	received := make(chan error)
+	go func() {
+		_, err := recv()
+		received <- err
+	}()
+	require.Eventually(t, func() bool {
+		return slices.Equal(log.get(), []string{"dest: flush 1", "backend: insert cq_state a=1", "backend: flush 1"})
+	}, 5*time.Second, 10*time.Millisecond, "pending state is persisted while the source sends nothing")
+
+	responses <- syncResult{err: io.EOF}
+	require.ErrorIs(t, <-received, io.EOF)
+	require.NoError(t, c.close())
+}
+
+func TestCheckpointerSplitsLargeState(t *testing.T) {
+	ctx := context.Background()
+	log := &eventLog{}
+	dest := openFlushingClient(t, serveFakePlugin(t, &fakeWritePlugin{name: "dest", log: log}))
+	backend := serveFakePlugin(t, &fakeWritePlugin{name: "backend", log: log})
+	c := newCheckpointer([]*flushingWriteClient{dest}, nil, backend, true, "cq_state")
+	c.maxRecordBytes = 60
+
+	require.NoError(t, c.add(stateRecord(t, "cq_state",
+		stateEntry{"a", "0123456789", 1},
+		stateEntry{"b", "0123456789", 1},
+		stateEntry{"c", "0123456789", 1},
+		stateEntry{"d", strings.Repeat("x", 100), 1},
+		stateEntry{"e", "0123456789", 1},
+	)))
+	require.NoError(t, c.commit(ctx))
+	require.Equal(t, []string{
+		"dest: flush 1",
+		"backend: insert cq_state a=0123456789 b=0123456789",
+		"backend: insert cq_state c=0123456789",
+		"backend: insert cq_state d=" + strings.Repeat("x", 100),
+		"backend: insert cq_state e=0123456789",
+		"backend: flush 1",
+	}, log.get())
+	require.NoError(t, c.close())
+}

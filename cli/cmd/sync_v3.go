@@ -503,8 +503,12 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 				pipeline.Close()
 			}
 		}()
+		recv := syncClient.Recv
+		if checkpoints != nil {
+			recv = checkpoints.receiver(gctx, syncClient.Recv)
+		}
 		for {
-			r, err := syncClient.Recv()
+			r, err := recv()
 			if err != nil {
 				if errors.Is(err, io.EOF) {
 					break

@@ -23,6 +23,9 @@ import (
 // Checkpoints closer together than this are persisted together, to avoid flushing destinations too often.
 const checkpointInterval = 30 * time.Second
 
+// State is written to the backend in records of about this size, well within the 200 MiB gRPC message limit.
+const stateRecordMaxBytes = 64 * 1024 * 1024
+
 const (
 	stateKeyColumn     = "key"
 	stateValueColumn   = "value"
@@ -103,6 +106,8 @@ type checkpointer struct {
 	backendFlushes bool
 	backendStream  *flushingWriteClient
 	stateTable     string
+	// approximate size of each state record written to the backend
+	maxRecordBytes int
 
 	schema     *arrow.Schema
 	pending    map[string]stateRow
@@ -117,6 +122,7 @@ func newCheckpointer(destinations []*flushingWriteClient, pipelines []*transform
 		backend:        backend,
 		backendFlushes: backendFlushes,
 		stateTable:     stateTable,
+		maxRecordBytes: stateRecordMaxBytes,
 		pending:        make(map[string]stateRow),
 		persisted:      make(map[string]uint64),
 		lastCommit:     time.Now(),
@@ -176,6 +182,62 @@ func (c *checkpointer) due() bool {
 	return len(c.pending) > 0 && time.Since(c.lastCommit) >= checkpointInterval
 }
 
+type syncResult struct {
+	response *plugin.Sync_Response
+	err      error
+}
+
+// receiver wraps recv so that pending state is persisted when it falls due, even while the source sends nothing.
+// recv runs on its own goroutine; commits run on the caller's goroutine, between the messages it processes.
+func (c *checkpointer) receiver(ctx context.Context, recv func() (*plugin.Sync_Response, error)) func() (*plugin.Sync_Response, error) {
+	results := make(chan syncResult)
+	go func() {
+		for {
+			response, err := recv()
+			select {
+			case results <- syncResult{response: response, err: err}:
+			case <-ctx.Done():
+				return
+			}
+			if err != nil {
+				return
+			}
+		}
+	}()
+	return func() (*plugin.Sync_Response, error) {
+		for {
+			result, received, err := c.waitForResult(ctx, results)
+			if err != nil {
+				return nil, err
+			}
+			if received {
+				return result.response, result.err
+			}
+			if err := c.commit(ctx); err != nil {
+				return nil, err
+			}
+		}
+	}
+}
+
+// waitForResult returns the next result, or received=false once the pending state falls due.
+func (c *checkpointer) waitForResult(ctx context.Context, results <-chan syncResult) (result syncResult, received bool, err error) {
+	var due <-chan time.Time
+	if len(c.pending) > 0 {
+		timer := time.NewTimer(time.Until(c.lastCommit.Add(checkpointInterval)))
+		defer timer.Stop()
+		due = timer.C
+	}
+	select {
+	case result := <-results:
+		return result, true, nil
+	case <-due:
+		return syncResult{}, false, nil
+	case <-ctx.Done():
+		return syncResult{}, false, ctx.Err()
+	}
+}
+
 // commit persists the pending state after every destination commits the records sent so far.
 func (c *checkpointer) commit(ctx context.Context) error {
 	if len(c.pending) == 0 {
@@ -205,19 +267,27 @@ func (c *checkpointer) commit(ctx context.Context) error {
 }
 
 func (c *checkpointer) persist(ctx context.Context) error {
-	recordBytes, err := c.pendingRecord()
+	records, err := c.pendingRecords()
 	if err != nil {
 		return err
 	}
-	insert := &plugin.Write_Request{Message: &plugin.Write_Request_Insert{Insert: &plugin.Write_MessageInsert{Record: recordBytes}}}
+	inserts := make([]*plugin.Write_Request, len(records))
+	for i, recordBytes := range records {
+		inserts[i] = &plugin.Write_Request{Message: &plugin.Write_Request_Insert{Insert: &plugin.Write_MessageInsert{Record: recordBytes}}}
+	}
 
 	if !c.backendFlushes {
 		stream, err := c.backend.Write(ctx)
 		if err != nil {
 			return err
 		}
-		if err := stream.Send(insert); err != nil && !errors.Is(err, io.EOF) {
-			return err
+		for _, insert := range inserts {
+			if err := stream.Send(insert); err != nil {
+				if errors.Is(err, io.EOF) {
+					break
+				}
+				return err
+			}
 		}
 		_, err = stream.CloseAndRecv()
 		return err
@@ -230,20 +300,51 @@ func (c *checkpointer) persist(ctx context.Context) error {
 		}
 		c.backendStream = newFlushingWriteClient(stream)
 	}
-	if err := c.backendStream.Send(insert); err != nil && !errors.Is(err, io.EOF) {
-		return err
+	for _, insert := range inserts {
+		if err := c.backendStream.Send(insert); err != nil {
+			if errors.Is(err, io.EOF) {
+				break
+			}
+			return err
+		}
 	}
 	return c.backendStream.Flush()
 }
 
-func (c *checkpointer) pendingRecord() ([]byte, error) {
-	bldr := array.NewRecordBuilder(memory.DefaultAllocator, c.schema)
-	defer bldr.Release()
+// pendingRecords returns the pending state as records of about maxRecordBytes each.
+func (c *checkpointer) pendingRecords() ([][]byte, error) {
 	keys := make([]string, 0, len(c.pending))
 	for key := range c.pending {
 		keys = append(keys, key)
 	}
 	slices.Sort(keys)
+
+	var records [][]byte
+	for start := 0; start < len(keys); {
+		end, size := start, 0
+		for end < len(keys) && (end == start || size+c.rowBytes(keys[end]) <= c.maxRecordBytes) {
+			size += c.rowBytes(keys[end])
+			end++
+		}
+		record, err := c.stateRecord(keys[start:end])
+		if err != nil {
+			return nil, err
+		}
+		records = append(records, record)
+		start = end
+	}
+	return records, nil
+}
+
+// rowBytes approximates the size of a state row in a record.
+func (c *checkpointer) rowBytes(key string) int {
+	const versionAndOffsets = 16
+	return len(key) + len(c.pending[key].value) + versionAndOffsets
+}
+
+func (c *checkpointer) stateRecord(keys []string) ([]byte, error) {
+	bldr := array.NewRecordBuilder(memory.DefaultAllocator, c.schema)
+	defer bldr.Release()
 	for i, field := range c.schema.Fields() {
 		for _, key := range keys {
 			row := c.pending[key]
