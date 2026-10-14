@@ -15,12 +15,17 @@ import (
 	"github.com/apache/arrow-go/v18/arrow"
 	"github.com/apache/arrow-go/v18/arrow/array"
 	"github.com/apache/arrow-go/v18/arrow/memory"
+	"github.com/cloudquery/plugin-pb-go/managedplugin"
+	discoveryPb "github.com/cloudquery/plugin-pb-go/pb/discovery/v1"
 	"github.com/cloudquery/plugin-pb-go/pb/plugin/v3"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/stretchr/testify/require"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/test/bufconn"
+
+	"github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/transformerpipeline"
 )
 
 // eventLog records what the fake plugins received, in order.
@@ -43,9 +48,20 @@ func (l *eventLog) get() []string {
 
 type fakeWritePlugin struct {
 	plugin.UnimplementedPluginServer
-	name     string
-	log      *eventLog
-	flushErr error
+	name          string
+	log           *eventLog
+	flushErr      error
+	supportsFlush bool
+	// acknowledges flushes with this id instead of the requested one
+	flushID uint64
+}
+
+func (p *fakeWritePlugin) Init(context.Context, *plugin.Init_Request) (*plugin.Init_Response, error) {
+	return &plugin.Init_Response{SupportsFlush: p.supportsFlush}, nil
+}
+
+func (*fakeWritePlugin) Close(context.Context, *plugin.Close_Request) (*plugin.Close_Response, error) {
+	return &plugin.Close_Response{}, nil
 }
 
 func (p *fakeWritePlugin) record(req *plugin.Write_Request) error {
@@ -103,7 +119,11 @@ func (p *fakeWritePlugin) WriteStream(stream plugin.Plugin_WriteStreamServer) er
 			if p.flushErr != nil {
 				return p.flushErr
 			}
-			if err := stream.Send(&plugin.Write_Response{FlushId: flush.Id}); err != nil {
+			id := flush.Id
+			if p.flushID != 0 {
+				id = p.flushID
+			}
+			if err := stream.Send(&plugin.Write_Response{FlushId: id}); err != nil {
 				return err
 			}
 		}
@@ -131,7 +151,7 @@ func openFlushingClient(t *testing.T, client plugin.PluginClient) *flushingWrite
 	t.Helper()
 	stream, err := client.WriteStream(context.Background())
 	require.NoError(t, err)
-	return newFlushingWriteClient(stream)
+	return newFlushingWriteClient("dest", stream)
 }
 
 type stateEntry struct {
@@ -215,6 +235,7 @@ func TestCheckpointerKeepsStateWhenDestinationFlushFails(t *testing.T) {
 	c := newCheckpointer([]*flushingWriteClient{dest}, nil, backend, true, "cq_state")
 	require.NoError(t, c.add(stateRecord(t, "cq_state", stateEntry{"a", "1", 1})))
 	err := c.commit(ctx)
+	require.ErrorContains(t, err, "destination dest")
 	require.ErrorContains(t, err, "disk full")
 	for _, event := range log.get() {
 		require.False(t, strings.HasPrefix(event, "backend:"), "state must not be persisted: %s", event)
@@ -255,17 +276,15 @@ func TestCheckpointerCommitsWhileSourceIsIdle(t *testing.T) {
 	require.NoError(t, c.add(r.GetCheckpoint().Record))
 	c.lastCommit = time.Now().Add(-checkpointInterval + 50*time.Millisecond)
 
-	received := make(chan error)
-	go func() {
-		_, err := recv()
-		received <- err
-	}()
-	require.Eventually(t, func() bool {
-		return slices.Equal(log.get(), []string{"dest: flush 1", "backend: insert cq_state a=1", "backend: flush 1"})
-	}, 5*time.Second, 10*time.Millisecond, "pending state is persisted while the source sends nothing")
+	// the source sends nothing, so the receiver reports the pending state as due
+	_, err = recv()
+	require.ErrorIs(t, err, errCheckpointDue)
+	require.NoError(t, c.commit(ctx))
+	require.Equal(t, []string{"dest: flush 1", "backend: insert cq_state a=1", "backend: flush 1"}, log.get())
 
-	responses <- syncResult{err: io.EOF}
-	require.ErrorIs(t, <-received, io.EOF)
+	go func() { responses <- syncResult{err: io.EOF} }()
+	_, err = recv()
+	require.ErrorIs(t, err, io.EOF)
 	require.NoError(t, c.close())
 }
 
@@ -294,4 +313,265 @@ func TestCheckpointerSplitsLargeState(t *testing.T) {
 		"backend: flush 1",
 	}, log.get())
 	require.NoError(t, c.close())
+}
+
+func TestCheckpointerRejectsMismatchedFlushAcknowledgement(t *testing.T) {
+	log := &eventLog{}
+	dest := openFlushingClient(t, serveFakePlugin(t, &fakeWritePlugin{name: "dest", log: log, flushID: 7}))
+	require.ErrorContains(t, dest.Flush(), "destination acknowledged flush 7, expected 1")
+}
+
+func TestCheckpointerValidatesColumns(t *testing.T) {
+	stateTable := func(columns ...schema.Column) *schema.Table {
+		return &schema.Table{Name: "cq_state", Columns: columns}
+	}
+	key := schema.Column{Name: stateKeyColumn, Type: arrow.BinaryTypes.String}
+	value := schema.Column{Name: stateValueColumn, Type: arrow.BinaryTypes.String}
+	cases := []struct {
+		name  string
+		table *schema.Table
+		err   string
+	}{
+		{name: "no key", table: stateTable(value), err: `checkpoint has no "key" column`},
+		{name: "large string key", table: stateTable(schema.Column{Name: stateKeyColumn, Type: arrow.BinaryTypes.LargeString}, value), err: `checkpoint column "key" is large_utf8, expected utf8`},
+		{name: "int64 version", table: stateTable(key, value, schema.Column{Name: stateVersionColumn, Type: arrow.PrimitiveTypes.Int64}), err: `checkpoint column "version" is int64, expected uint64`},
+		{name: "no version", table: stateTable(key, value)},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			bldr := array.NewRecordBuilder(memory.DefaultAllocator, tc.table.ToArrowSchema())
+			defer bldr.Release()
+			for _, field := range bldr.Fields() {
+				field.AppendEmptyValue()
+			}
+			recordBytes, err := plugin.RecordToBytes(bldr.NewRecordBatch())
+			require.NoError(t, err)
+
+			c := newCheckpointer(nil, nil, nil, false, "cq_state")
+			err = c.add(recordBytes)
+			if tc.err == "" {
+				require.NoError(t, err)
+				return
+			}
+			require.EqualError(t, err, tc.err)
+		})
+	}
+}
+
+func TestCheckpointCommitError(t *testing.T) {
+	failed := errors.New("flush failed")
+	cancelled, cancel := context.WithCancel(context.Background())
+	cancel()
+
+	require.NoError(t, checkpointCommitError(context.Background(), context.Background(), transformerpipeline.ErrPipelineClosed), "the pipeline reports its own error")
+	require.NoError(t, checkpointCommitError(context.Background(), cancelled, context.Canceled), "another goroutine of the sync failed first")
+	require.ErrorIs(t, checkpointCommitError(cancelled, cancelled, context.Canceled), context.Canceled, "the sync was cancelled")
+	require.ErrorIs(t, checkpointCommitError(context.Background(), context.Background(), failed), failed)
+}
+
+func TestCheckpointOptionsStateWriter(t *testing.T) {
+	pg, pg2, backend := plugin.NewPluginClient(nil), plugin.NewPluginClient(nil), plugin.NewPluginClient(nil)
+	base := checkpointOptions{
+		backendConnection: "@@plugins.pg.connection",
+		destinationNames:  []string{"pg2", "pg"},
+		destinations:      []plugin.PluginClient{pg2, pg},
+		destinationsFlush: true,
+	}
+	cases := []struct {
+		name        string
+		change      func(*checkpointOptions)
+		wantWriter  plugin.PluginClient
+		wantFlushes bool
+		wantReason  string
+	}{
+		{name: "backend is a destination", wantWriter: pg, wantFlushes: true},
+		{name: "destination without flush", change: func(o *checkpointOptions) { o.destinationsFlush = false }, wantReason: "not all destinations support flushing"},
+		{name: "transformers", change: func(o *checkpointOptions) { o.destinationTransformers = true }, wantReason: "destinations use transformers"},
+		{
+			name: "separate backend",
+			change: func(o *checkpointOptions) {
+				o.backendConnection = "@@plugins.state.connection"
+				o.backend, o.backendFlush = backend, true
+			},
+			wantWriter:  backend,
+			wantFlushes: true,
+		},
+		{
+			name: "separate backend without flush",
+			change: func(o *checkpointOptions) {
+				o.backendConnection = "@@plugins.state.connection"
+				o.backend = backend
+			},
+			wantWriter: backend,
+		},
+		{name: "backend address", change: func(o *checkpointOptions) { o.backendConnection = "localhost:7777" }, wantReason: "the state backend is not a plugin of this sync"},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			o := base
+			if tc.change != nil {
+				tc.change(&o)
+			}
+			writer, flushes, reason := o.stateWriter()
+			require.Equal(t, tc.wantReason, reason)
+			require.Equal(t, tc.wantFlushes, flushes)
+			require.True(t, writer == tc.wantWriter, "unexpected state writer")
+		})
+	}
+}
+
+type fakeCheckpointSource struct {
+	plugin.UnimplementedPluginServer
+	discoveryPb.UnimplementedDiscoveryServer
+	responses []*plugin.Sync_Response
+
+	mu      gosync.Mutex
+	request *plugin.Sync_Request
+}
+
+func (*fakeCheckpointSource) Init(context.Context, *plugin.Init_Request) (*plugin.Init_Response, error) {
+	return &plugin.Init_Response{}, nil
+}
+
+func (s *fakeCheckpointSource) Sync(req *plugin.Sync_Request, stream plugin.Plugin_SyncServer) error {
+	s.mu.Lock()
+	s.request = req
+	s.mu.Unlock()
+	for _, res := range s.responses {
+		if err := stream.Send(res); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func startFakeServer(t *testing.T, register func(*grpc.Server)) string {
+	t.Helper()
+	listener, err := net.Listen("tcp", "127.0.0.1:0")
+	require.NoError(t, err)
+	server := grpc.NewServer()
+	register(server)
+	go func() { _ = server.Serve(listener) }()
+	t.Cleanup(server.Stop)
+	return listener.Addr().String()
+}
+
+func grpcPluginClient(t *testing.T, typ managedplugin.PluginType, name, address string) *managedplugin.Client {
+	t.Helper()
+	client, err := managedplugin.NewClient(context.Background(), typ, managedplugin.Config{Name: name, Registry: managedplugin.RegistryGrpc, Path: address})
+	require.NoError(t, err)
+	t.Cleanup(func() { _ = client.Terminate() })
+	return client
+}
+
+func itemsInsert(t *testing.T, ids ...int64) *plugin.Sync_Response {
+	t.Helper()
+	bldr := array.NewRecordBuilder(memory.DefaultAllocator, checkpointItemsTable.ToArrowSchema())
+	defer bldr.Release()
+	bldr.Field(0).(*array.Int64Builder).AppendValues(ids, nil)
+	recordBytes, err := plugin.RecordToBytes(bldr.NewRecordBatch())
+	require.NoError(t, err)
+	return &plugin.Sync_Response{Message: &plugin.Sync_Response_Insert{Insert: &plugin.Sync_MessageInsert{Record: recordBytes}}}
+}
+
+func checkpointResponse(t *testing.T, entries ...stateEntry) *plugin.Sync_Response {
+	t.Helper()
+	return &plugin.Sync_Response{Message: &plugin.Sync_Response_Checkpoint{Checkpoint: &plugin.Sync_MessageCheckpoint{Record: stateRecord(t, "cq_state", entries...)}}}
+}
+
+var checkpointItemsTable = &schema.Table{Name: "items", Columns: schema.ColumnList{{Name: "id", Type: arrow.PrimitiveTypes.Int64}}}
+
+// syncWithFakePlugins runs a sync from a fake source to a fake destination that is also the state backend.
+func syncWithFakePlugins(t *testing.T, destination *fakeWritePlugin, responses ...*plugin.Sync_Response) (*plugin.Sync_Request, error) {
+	t.Helper()
+	tableBytes, err := plugin.SchemaToBytes(checkpointItemsTable.ToArrowSchema())
+	require.NoError(t, err)
+	source := &fakeCheckpointSource{responses: append([]*plugin.Sync_Response{
+		{Message: &plugin.Sync_Response_MigrateTable{MigrateTable: &plugin.Sync_MessageMigrateTable{Table: tableBytes}}},
+	}, responses...)}
+	sourceAddress := startFakeServer(t, func(s *grpc.Server) {
+		plugin.RegisterPluginServer(s, source)
+		discoveryPb.RegisterDiscoveryServer(s, source)
+	})
+	destinationAddress := startFakeServer(t, func(s *grpc.Server) { plugin.RegisterPluginServer(s, destination) })
+
+	skipDependentTables := true
+	err = syncConnectionV3(context.Background(), syncV3Options{
+		source: v3source{
+			client: grpcPluginClient(t, managedplugin.PluginSource, "source", sourceAddress),
+			spec: specs.Source{
+				Metadata:            specs.Metadata{Name: "source", Path: sourceAddress},
+				Tables:              []string{"*"},
+				Destinations:        []string{"dest"},
+				SkipDependentTables: &skipDependentTables,
+				BackendOptions:      &specs.BackendOptions{TableName: "cq_state", Connection: "@@plugins.dest.connection"},
+			},
+		},
+		destinations: []v3destination{{
+			client: grpcPluginClient(t, managedplugin.PluginDestination, "dest", destinationAddress),
+			spec:   specs.Destination{Metadata: specs.Metadata{Name: "dest", Path: destinationAddress}, WriteMode: specs.WriteModeAppend},
+		}},
+		uid: "test",
+	})
+	source.mu.Lock()
+	defer source.mu.Unlock()
+	return source.request, err
+}
+
+func TestSyncPersistsCheckpointsAfterDestinationsFlush(t *testing.T) {
+	responses := func(t *testing.T) []*plugin.Sync_Response {
+		return []*plugin.Sync_Response{
+			itemsInsert(t, 1, 2, 3),
+			checkpointResponse(t, stateEntry{"cursor", "1", 1}),
+			itemsInsert(t, 4, 5),
+			checkpointResponse(t, stateEntry{"cursor", "2", 2}),
+		}
+	}
+
+	t.Run("each checkpoint", func(t *testing.T) {
+		interval := checkpointInterval
+		checkpointInterval = 0
+		t.Cleanup(func() { checkpointInterval = interval })
+		// repeat, as a flush that overtakes an insert on its way to the destination would show up only sometimes
+		for range 10 {
+			log := &eventLog{}
+			req, err := syncWithFakePlugins(t, &fakeWritePlugin{name: "dest", log: log, supportsFlush: true}, responses(t)...)
+			require.NoError(t, err)
+			require.True(t, req.SupportsCheckpoints)
+			require.Equal(t, []string{
+				"dest: insert items",
+				"dest: flush 1",
+				"dest: insert cq_state cursor=1",
+				"dest: flush 1",
+				"dest: insert items",
+				"dest: flush 2",
+				"dest: insert cq_state cursor=2",
+				"dest: flush 2",
+			}, log.get()[:8])
+		}
+	})
+
+	t.Run("coalesced", func(t *testing.T) {
+		log := &eventLog{}
+		_, err := syncWithFakePlugins(t, &fakeWritePlugin{name: "dest", log: log, supportsFlush: true}, responses(t)...)
+		require.NoError(t, err)
+		require.Equal(t, []string{
+			"dest: insert items",
+			"dest: insert items",
+			"dest: flush 1",
+			"dest: insert cq_state cursor=2",
+			"dest: flush 1",
+		}, log.get()[:5])
+	})
+
+	t.Run("destination without flush support", func(t *testing.T) {
+		log := &eventLog{}
+		req, err := syncWithFakePlugins(t, &fakeWritePlugin{name: "dest", log: log}, itemsInsert(t, 1), checkpointResponse(t, stateEntry{"cursor", "1", 1}))
+		require.ErrorContains(t, err, "source sent a state checkpoint, but checkpoints are not enabled for this sync")
+		require.False(t, req.SupportsCheckpoints)
+		for _, event := range log.get() {
+			require.NotContains(t, event, "flush")
+			require.NotContains(t, event, "cq_state")
+		}
+	})
 }

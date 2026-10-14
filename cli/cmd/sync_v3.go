@@ -8,7 +8,6 @@ import (
 	"io"
 	"slices"
 	"strconv"
-	"strings"
 	gosync "sync"
 	"sync/atomic"
 	"time"
@@ -301,34 +300,28 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 
 	// With checkpoints, the source sends its state on the sync stream and we persist it once the destinations commit
 	// the records synced before it.
-	var stateWriter plugin.PluginClient
-	stateWriterSupportsFlush := false
-	checkpointsDisabledReason := ""
-	switch {
-	case !isStateBackendEnabled:
-	case !destinationsSupportFlush:
-		checkpointsDisabledReason = "not all destinations support flushing"
-	case lo.SomeBy(lo.Values(transformersByDestination), func(ts []v3transformer) bool { return len(ts) > 0 }):
-		checkpointsDisabledReason = "destinations use transformers"
-	default:
-		for i, destinationSpec := range destinationSpecs {
-			if strings.Contains(sourceSpec.BackendOptions.Connection, "@@plugins."+destinationSpec.Name+".") {
-				stateWriter, stateWriterSupportsFlush = destinationsPbClients[i], true
-				break
-			}
+	var (
+		stateWriter              plugin.PluginClient
+		stateWriterSupportsFlush bool
+		checkpointsEnabled       bool
+	)
+	if isStateBackendEnabled {
+		var disabledReason string
+		stateWriter, stateWriterSupportsFlush, disabledReason = checkpointOptions{
+			backendConnection:       sourceSpec.BackendOptions.Connection,
+			destinationNames:        lo.Map(destinationSpecs, func(spec specs.Destination, _ int) string { return spec.Name }),
+			destinations:            destinationsPbClients,
+			destinationsFlush:       destinationsSupportFlush,
+			destinationTransformers: lo.SomeBy(lo.Values(transformersByDestination), func(ts []v3transformer) bool { return len(ts) > 0 }),
+			backend:                 backendPbClient,
+			backendFlush:            backendSupportsFlush,
+		}.stateWriter()
+		checkpointsEnabled = disabledReason == ""
+		if checkpointsEnabled {
+			log.Debug().Str("source", sourceSpec.Name).Msg("Requesting state checkpoints")
+		} else {
+			log.Debug().Str("source", sourceSpec.Name).Str("reason", disabledReason).Msg("State checkpoints disabled")
 		}
-		if stateWriter == nil && backend != nil {
-			stateWriter, stateWriterSupportsFlush = backendPbClient, backendSupportsFlush
-		}
-		if stateWriter == nil {
-			checkpointsDisabledReason = "the state backend is not a plugin of this sync"
-		}
-	}
-	checkpointsEnabled := isStateBackendEnabled && checkpointsDisabledReason == ""
-	if checkpointsEnabled {
-		log.Info().Str("source", sourceSpec.Name).Msg("State checkpoints enabled: state is persisted after destinations commit the records synced before it")
-	} else if isStateBackendEnabled {
-		log.Debug().Str("source", sourceSpec.Name).Str("reason", checkpointsDisabledReason).Msg("State checkpoints disabled")
 	}
 
 	// replace @@plugins.name.connection with the actual GRPC connection string from the client
@@ -358,7 +351,7 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 			if err != nil {
 				return err
 			}
-			client := newFlushingWriteClient(stream)
+			client := newFlushingWriteClient(destinationSpecs[i].Name, stream)
 			flushingWriteClients = append(flushingWriteClients, client)
 			writeClients[i] = client
 		} else {
@@ -509,6 +502,12 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 		}
 		for {
 			r, err := recv()
+			if errors.Is(err, errCheckpointDue) {
+				if err := checkpoints.commit(gctx); err != nil {
+					return checkpointCommitError(ctx, gctx, err)
+				}
+				continue
+			}
 			if err != nil {
 				if errors.Is(err, io.EOF) {
 					break
@@ -639,13 +638,13 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 			}
 			if checkpoints != nil && checkpoints.due() {
 				if err := checkpoints.commit(gctx); err != nil {
-					return err
+					return checkpointCommitError(ctx, gctx, err)
 				}
 			}
 		}
 		if checkpoints != nil {
 			if err := checkpoints.commit(gctx); err != nil {
-				return err
+				return checkpointCommitError(ctx, gctx, err)
 			}
 			return checkpoints.close()
 		}

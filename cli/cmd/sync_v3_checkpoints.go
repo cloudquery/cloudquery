@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"slices"
+	"strings"
 	gosync "sync"
 	"time"
 
@@ -14,6 +15,7 @@ import (
 	"github.com/apache/arrow-go/v18/arrow/memory"
 	"github.com/cloudquery/plugin-pb-go/pb/plugin/v3"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/rs/zerolog/log"
 	"golang.org/x/sync/errgroup"
 	"google.golang.org/grpc"
 
@@ -21,7 +23,11 @@ import (
 )
 
 // Checkpoints closer together than this are persisted together, to avoid flushing destinations too often.
-const checkpointInterval = 30 * time.Second
+// A variable so that tests can shorten it.
+var checkpointInterval = 30 * time.Second
+
+// errCheckpointDue is returned by the checkpointer's receiver when the pending state is due while the source is idle.
+var errCheckpointDue = errors.New("state checkpoint due")
 
 // State is written to the backend in records of about this size, well within the 200 MiB gRPC message limit.
 const stateRecordMaxBytes = 64 * 1024 * 1024
@@ -39,13 +45,14 @@ type writeClient interface {
 
 // flushingWriteClient is a WriteStream client. Like safeWriteClient, it is safe for concurrent use.
 type flushingWriteClient struct {
+	name        string
 	client      grpc.BidiStreamingClient[plugin.Write_Request, plugin.Write_Response]
 	mu          gosync.Mutex
 	lastFlushID uint64
 }
 
-func newFlushingWriteClient(client grpc.BidiStreamingClient[plugin.Write_Request, plugin.Write_Response]) *flushingWriteClient {
-	return &flushingWriteClient{client: client}
+func newFlushingWriteClient(name string, client grpc.BidiStreamingClient[plugin.Write_Request, plugin.Write_Response]) *flushingWriteClient {
+	return &flushingWriteClient{name: name, client: client}
 }
 
 func (s *flushingWriteClient) Send(req *plugin.Write_Request) error {
@@ -113,6 +120,7 @@ type checkpointer struct {
 	pending    map[string]stateRow
 	persisted  map[string]uint64
 	lastCommit time.Time
+	received   bool
 }
 
 func newCheckpointer(destinations []*flushingWriteClient, pipelines []*transformerpipeline.TransformerPipeline, backend plugin.PluginClient, backendFlushes bool, stateTable string) *checkpointer {
@@ -139,16 +147,25 @@ func (c *checkpointer) add(recordBytes []byte) error {
 	if tableName != c.stateTable {
 		return fmt.Errorf("checkpoint is for table %q, expected the state table %q", tableName, c.stateTable)
 	}
-	keys, ok := stateColumn[*array.String](record, stateKeyColumn)
-	if !ok {
-		return fmt.Errorf("checkpoint has no %s string column", stateKeyColumn)
+	keys, err := requiredStateColumn[*array.String](record, stateKeyColumn, arrow.BinaryTypes.String)
+	if err != nil {
+		return err
 	}
-	values, ok := stateColumn[*array.String](record, stateValueColumn)
-	if !ok {
-		return fmt.Errorf("checkpoint has no %s string column", stateValueColumn)
+	values, err := requiredStateColumn[*array.String](record, stateValueColumn, arrow.BinaryTypes.String)
+	if err != nil {
+		return err
 	}
-	versions, versioned := stateColumn[*array.Uint64](record, stateVersionColumn)
-
+	versioned := record.Schema().HasField(stateVersionColumn)
+	var versions *array.Uint64
+	if versioned {
+		if versions, err = requiredStateColumn[*array.Uint64](record, stateVersionColumn, arrow.PrimitiveTypes.Uint64); err != nil {
+			return err
+		}
+	}
+	if !c.received {
+		c.received = true
+		log.Info().Str("table", c.stateTable).Msg("Source sends state checkpoints: state is persisted after destinations commit the records synced before it")
+	}
 	c.schema = record.Schema()
 	for i := range int(record.NumRows()) {
 		row := stateRow{value: values.Value(i)}
@@ -177,6 +194,19 @@ func stateColumn[T arrow.Array](record arrow.RecordBatch, name string) (T, bool)
 	return col, ok
 }
 
+func requiredStateColumn[T arrow.Array](record arrow.RecordBatch, name string, typ arrow.DataType) (T, error) {
+	var zero T
+	indices := record.Schema().FieldIndices(name)
+	if len(indices) != 1 {
+		return zero, fmt.Errorf("checkpoint has no %q column", name)
+	}
+	col, ok := record.Column(indices[0]).(T)
+	if !ok || !arrow.TypeEqual(col.DataType(), typ) {
+		return zero, fmt.Errorf("checkpoint column %q is %s, expected %s", name, record.Column(indices[0]).DataType(), typ)
+	}
+	return col, nil
+}
+
 // due reports whether the pending state should be persisted now.
 func (c *checkpointer) due() bool {
 	return len(c.pending) > 0 && time.Since(c.lastCommit) >= checkpointInterval
@@ -187,8 +217,8 @@ type syncResult struct {
 	err      error
 }
 
-// receiver wraps recv so that pending state is persisted when it falls due, even while the source sends nothing.
-// recv runs on its own goroutine; commits run on the caller's goroutine, between the messages it processes.
+// receiver wraps recv to return errCheckpointDue when the pending state falls due while the source sends nothing,
+// so the caller commits between the messages it processes. recv runs on its own goroutine.
 func (c *checkpointer) receiver(ctx context.Context, recv func() (*plugin.Sync_Response, error)) func() (*plugin.Sync_Response, error) {
 	results := make(chan syncResult)
 	go func() {
@@ -205,18 +235,14 @@ func (c *checkpointer) receiver(ctx context.Context, recv func() (*plugin.Sync_R
 		}
 	}()
 	return func() (*plugin.Sync_Response, error) {
-		for {
-			result, received, err := c.waitForResult(ctx, results)
-			if err != nil {
-				return nil, err
-			}
-			if received {
-				return result.response, result.err
-			}
-			if err := c.commit(ctx); err != nil {
-				return nil, err
-			}
+		result, received, err := c.waitForResult(ctx, results)
+		if err != nil {
+			return nil, err
 		}
+		if !received {
+			return nil, errCheckpointDue
+		}
+		return result.response, result.err
 	}
 }
 
@@ -250,7 +276,12 @@ func (c *checkpointer) commit(ctx context.Context) error {
 	}
 	eg := errgroup.Group{}
 	for _, destination := range c.destinations {
-		eg.Go(destination.Flush)
+		eg.Go(func() error {
+			if err := destination.Flush(); err != nil {
+				return fmt.Errorf("destination %s: %w", destination.name, err)
+			}
+			return nil
+		})
 	}
 	if err := eg.Wait(); err != nil {
 		return fmt.Errorf("failed to flush destinations: %w", err)
@@ -298,7 +329,7 @@ func (c *checkpointer) persist(ctx context.Context) error {
 		if err != nil {
 			return err
 		}
-		c.backendStream = newFlushingWriteClient(stream)
+		c.backendStream = newFlushingWriteClient("state backend", stream)
 	}
 	for _, insert := range inserts {
 		if err := c.backendStream.Send(insert); err != nil {
@@ -372,4 +403,45 @@ func (c *checkpointer) close() error {
 	}
 	_, err := c.backendStream.CloseAndRecv()
 	return err
+}
+
+// checkpointCommitError returns nil when the commit failed because another goroutine of the sync failed first, so that
+// the sync reports that error instead.
+func checkpointCommitError(ctx, gctx context.Context, err error) error {
+	if errors.Is(err, transformerpipeline.ErrPipelineClosed) || (gctx.Err() != nil && ctx.Err() == nil) {
+		return nil
+	}
+	return err
+}
+
+// checkpointOptions decide whether a sync uses state checkpoints, and where the state is written.
+type checkpointOptions struct {
+	// backend_options.connection, before variables are replaced
+	backendConnection       string
+	destinationNames        []string
+	destinations            []plugin.PluginClient
+	destinationsFlush       bool
+	destinationTransformers bool
+	// backend plugin that is not a destination of the sync, if any
+	backend      plugin.PluginClient
+	backendFlush bool
+}
+
+// stateWriter returns the plugin that persists the state, and whether it supports flush, or why checkpoints are off.
+func (o checkpointOptions) stateWriter() (writer plugin.PluginClient, flushes bool, disabledReason string) {
+	switch {
+	case !o.destinationsFlush:
+		return nil, false, "not all destinations support flushing"
+	case o.destinationTransformers:
+		return nil, false, "destinations use transformers"
+	}
+	for i, name := range o.destinationNames {
+		if strings.Contains(o.backendConnection, "@@plugins."+name+".") {
+			return o.destinations[i], true, ""
+		}
+	}
+	if o.backend != nil {
+		return o.backend, o.backendFlush, ""
+	}
+	return nil, false, "the state backend is not a plugin of this sync"
 }
