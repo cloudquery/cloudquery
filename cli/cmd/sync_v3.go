@@ -643,7 +643,7 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 			}
 		}
 		if checkpoints != nil {
-			if err := checkpoints.commit(gctx); err != nil {
+			if err := checkpoints.finish(gctx); err != nil {
 				return unlessFailedElsewhere(ctx, gctx, err)
 			}
 			return checkpoints.close()
@@ -694,6 +694,11 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 	}
 	syncTimeTook = time.Since(syncTime)
 	for i := range destinationsClients {
+		if checkpoints != nil && checkpoints.failedDestination(destinationSpecs[i].Name) {
+			// deleting the rows of earlier syncs would lose the ones whose replacements failed to write
+			log.Warn().Str("destination", destinationSpecs[i].Name).Msg("Skipping delete-stale, as the destination failed to write records")
+			continue
+		}
 		if destinationSpecs[i].WriteMode == specs.WriteModeOverwriteDeleteStale {
 			// Table names might have changed due to transformers
 			updatedTablesForDeleteStale := tableNameChanger.UpdateTableNames(destinationSpecs[i].Name, tablesForDeleteStale)
@@ -759,6 +764,12 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 		}
 		if _, err := destinationsPbClients[i].Close(ctx, &plugin.Close_Request{}); err != nil {
 			return err
+		}
+	}
+
+	if checkpoints != nil {
+		if err := checkpoints.failure(); err != nil {
+			return fmt.Errorf("sync finished without saving its state, as destinations failed to write records: %w", err)
 		}
 	}
 

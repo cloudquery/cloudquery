@@ -56,6 +56,8 @@ type fakeWritePlugin struct {
 	flushID uint64
 	// returned by Write and WriteStream on the first insert
 	insertErr error
+	// reported in every flush response, as a destination does when it could not commit some records
+	flushFailure string
 }
 
 func (p *fakeWritePlugin) Init(context.Context, *plugin.Init_Request) (*plugin.Init_Response, error) {
@@ -84,6 +86,8 @@ func (p *fakeWritePlugin) record(req *plugin.Write_Request) error {
 		p.log.add(event)
 	case *plugin.Write_Request_Flush:
 		p.log.add(fmt.Sprintf("%s: flush %d", p.name, m.Flush.Id))
+	case *plugin.Write_Request_Delete:
+		p.log.add(fmt.Sprintf("%s: delete stale %s", p.name, m.Delete.TableName))
 	}
 	return nil
 }
@@ -131,7 +135,7 @@ func (p *fakeWritePlugin) WriteStream(stream plugin.Plugin_WriteStreamServer) er
 			if p.flushID != 0 {
 				id = p.flushID
 			}
-			if err := stream.Send(&plugin.Write_Response{FlushId: id}); err != nil {
+			if err := stream.Send(&plugin.Write_Response{FlushId: id, FlushError: p.flushFailure}); err != nil {
 				return err
 			}
 		}
@@ -530,6 +534,11 @@ func syncWithFakePlugins(t *testing.T, destination *fakeWritePlugin, responses .
 
 func syncWithFakeSource(t *testing.T, source *fakeCheckpointSource, destination *fakeWritePlugin, responses ...*plugin.Sync_Response) (*plugin.Sync_Request, error) {
 	t.Helper()
+	return syncWithFakeSourceMode(t, source, destination, specs.WriteModeAppend, responses...)
+}
+
+func syncWithFakeSourceMode(t *testing.T, source *fakeCheckpointSource, destination *fakeWritePlugin, writeMode specs.WriteMode, responses ...*plugin.Sync_Response) (*plugin.Sync_Request, error) {
+	t.Helper()
 	tableBytes, err := plugin.SchemaToBytes(checkpointItemsTable.ToArrowSchema())
 	require.NoError(t, err)
 	source.responses = append([]*plugin.Sync_Response{
@@ -555,7 +564,7 @@ func syncWithFakeSource(t *testing.T, source *fakeCheckpointSource, destination 
 		},
 		destinations: []v3destination{{
 			client: grpcPluginClient(t, managedplugin.PluginDestination, "dest", destinationAddress),
-			spec:   specs.Destination{Metadata: specs.Metadata{Name: "dest", Path: destinationAddress}, WriteMode: specs.WriteModeAppend},
+			spec:   specs.Destination{Metadata: specs.Metadata{Name: "dest", Path: destinationAddress}, WriteMode: writeMode},
 		}},
 		uid: "test",
 	})
@@ -733,4 +742,55 @@ func TestCheckpointerReportsBackendErrors(t *testing.T) {
 			require.ErrorContains(t, err, "disk full")
 		})
 	}
+}
+
+func TestCheckpointerStopsSavingStateAfterFailedFlush(t *testing.T) {
+	ctx := context.Background()
+	log := &eventLog{}
+	dest := openFlushingClient(t, serveFakePlugin(t, &fakeWritePlugin{name: "dest", log: log, flushFailure: "table items: disk full"}))
+	backend := serveFakePlugin(t, &fakeWritePlugin{name: "backend", log: log})
+	c := newCheckpointer([]*flushingWriteClient{dest}, nil, backend, true, "cq_state")
+
+	require.NoError(t, c.add(stateRecord(t, "cq_state", stateEntry{"cursor", "1", 1})))
+	require.NoError(t, c.commit(ctx), "the sync goes on after a failed flush")
+	require.True(t, c.failedDestination("dest"))
+	require.EqualError(t, c.failure(), "destination dest: table items: disk full")
+
+	require.NoError(t, c.add(stateRecord(t, "cq_state", stateEntry{"cursor", "2", 2})))
+	require.Empty(t, c.pending, "checkpoints after the failure are not kept")
+	c.lastCommit = time.Time{}
+	require.False(t, c.due())
+	require.NoError(t, c.commit(ctx))
+	require.NoError(t, c.finish(ctx))
+	require.Equal(t, []string{"dest: flush 1"}, log.get(), "no more flushes, and no state is saved")
+
+	// the stream is still usable
+	require.ErrorAs(t, dest.Flush(), new(*flushFailedError))
+}
+
+func TestSyncFinishesWithoutStateAfterFailedFlush(t *testing.T) {
+	interval := checkpointInterval
+	checkpointInterval = 0
+	t.Cleanup(func() { checkpointInterval = interval })
+
+	log := &eventLog{}
+	destination := &fakeWritePlugin{name: "dest", log: log, supportsFlush: true, flushFailure: "table items: disk full"}
+	_, err := syncWithFakeSourceMode(t, &fakeCheckpointSource{}, destination, specs.WriteModeOverwriteDeleteStale,
+		itemsInsert(t, 1, 2),
+		checkpointResponse(t, stateEntry{"cursor", "1", 1}),
+		itemsInsert(t, 3),
+		checkpointResponse(t, stateEntry{"cursor", "2", 2}),
+	)
+	require.ErrorContains(t, err, "sync finished without saving its state")
+	require.ErrorContains(t, err, "destination dest: table items: disk full")
+
+	var inserts int
+	for _, event := range log.get() {
+		require.NotContains(t, event, "cq_state", "no state is saved")
+		require.NotContains(t, event, "delete stale", "delete-stale is skipped on the failed destination")
+		if event == "dest: insert items" {
+			inserts++
+		}
+	}
+	require.Equal(t, 2, inserts, "the sync goes on after the failed flush")
 }
