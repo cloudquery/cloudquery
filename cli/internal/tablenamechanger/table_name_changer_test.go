@@ -49,6 +49,20 @@ func TestTableNameChanger(t *testing.T) {
 		}
 	})
 
+	t.Run("UpdateTableNamesForMultipleDestinations", func(t *testing.T) {
+		tnc := New(destinationSpecs)
+		require.NoError(t, tnc.LearnTableNameChange("dest1", "table1", createSchemaBytes(t, "table1")))
+		require.NoError(t, tnc.LearnTableNameChange("dest1", "table2", createSchemaBytes(t, "table2")))
+		require.NoError(t, tnc.LearnTableNameChange("dest2", "table1", createSchemaBytes(t, "renamed_table1")))
+		require.NoError(t, tnc.LearnTableNameChange("dest2", "table2", createSchemaBytes(t, "table2")))
+
+		tables := map[string]bool{"table1": true, "table2": true}
+
+		require.Equal(t, map[string]bool{"table1": true, "table2": true}, tnc.UpdateTableNames("dest1", tables))
+		require.Equal(t, map[string]bool{"renamed_table1": true, "table2": true}, tnc.UpdateTableNames("dest2", tables))
+		require.Equal(t, map[string]bool{"table1": true, "table2": true}, tables)
+	})
+
 	t.Run("UpdateTableName", func(t *testing.T) {
 		tests := []struct {
 			name            string
