@@ -1,0 +1,28 @@
+kind: "source"
+spec:
+  name: "test"
+  registry: "cloudquery"
+  path: "cloudquery/test"
+  version: "v4.7.0"
+  destinations: [test]
+  tables: ["test_some_table"]
+---
+kind: "destination"
+spec:
+  name: "test"
+  registry: "cloudquery"
+  path: "cloudquery/test"
+  version: "v2.7.0"
+  transformers: [rename]
+---
+kind: "transformer"
+spec:
+  name: "rename"
+  registry: "cloudquery"
+  path: "cloudquery/basic"
+  version: "v2.7.0"
+  spec:
+    transformations:
+      - kind: change_table_names
+        tables: ["*"]
+        new_table_name_template: "cq_sync_{{.OldName}}"

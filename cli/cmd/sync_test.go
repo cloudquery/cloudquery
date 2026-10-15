@@ -557,6 +557,32 @@ func TestSyncWithSummaryTable(t *testing.T) {
 	}
 }
 
+func TestSyncTableNameChanges(t *testing.T) {
+	_, filename, _, _ := runtime.Caller(0)
+	testConfig := path.Join(path.Dir(filename), "testdata", "transformer-change-table-names.yml")
+
+	tests := []struct {
+		name      string
+		extraArgs []string
+	}{
+		{name: "migrate"},
+		{name: "no_migrate", extraArgs: []string{"--no-migrate"}},
+	}
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			summaryPath := path.Join(t.TempDir(), "cloudquery-summary.jsonl")
+			argList := append([]string{"sync", testConfig, "--summary-location", summaryPath}, testCommandArgs(t)...)
+			cmd := NewCmdRoot()
+			cmd.SetArgs(append(argList, tc.extraArgs...))
+			require.NoError(t, cmd.Execute())
+
+			summaries := readSummaries(t, summaryPath)
+			require.Len(t, summaries, 1)
+			require.Equal(t, []string{"cq_sync_test_some_table"}, summaries[0].SourceTables)
+		})
+	}
+}
+
 func TestSyncCqDir(t *testing.T) {
 	_, filename, _, _ := runtime.Caller(0)
 	currentDir := path.Dir(filename)

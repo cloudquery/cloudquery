@@ -537,9 +537,6 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 				} else {
 					tablesForDeleteStale[table.Name] = true
 				}
-				if noMigrate {
-					continue
-				}
 				for i := range destinationsPbClients {
 					destinationName := destinationSpecs[i].Name
 					transformedSchemaBytes, err := transformSchemaForDestination(ctx, destinationTransformers[i], transformerPbClientsByDestination[destinationName], sc)
@@ -550,6 +547,10 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 					// Table name might have changed due to a transformation.
 					if err := tableNameChanger.LearnTableNameChange(destinationName, table.Name, transformedSchemaBytes); err != nil {
 						return err
+					}
+
+					if noMigrate {
+						continue
 					}
 
 					wr := &plugin.Write_Request{}
