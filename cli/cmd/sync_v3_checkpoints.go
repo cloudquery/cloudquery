@@ -17,6 +17,7 @@ import (
 	"github.com/cloudquery/plugin-pb-go/pb/plugin/v3"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/rs/zerolog/log"
+	"golang.org/x/sync/errgroup"
 	"google.golang.org/grpc"
 
 	"github.com/cloudquery/cloudquery/cli/v6/internal/transformerpipeline"
@@ -49,6 +50,10 @@ type flushingWriteClient struct {
 	client      grpc.BidiStreamingClient[plugin.Write_Request, plugin.Write_Response]
 	mu          gosync.Mutex
 	lastFlushID uint64
+	// the first failure the destination reported. The sync then fails because of it, so if the destination also ends
+	// the stream, as writers that stop on a failed write do, the client drops what the sync still sends.
+	failed *flushFailedError
+	ended  bool
 }
 
 func newFlushingWriteClient(name string, client grpc.BidiStreamingClient[plugin.Write_Request, plugin.Write_Response]) *flushingWriteClient {
@@ -58,21 +63,45 @@ func newFlushingWriteClient(name string, client grpc.BidiStreamingClient[plugin.
 func (s *flushingWriteClient) Send(req *plugin.Write_Request) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	return s.client.Send(req)
+	if s.ended {
+		return nil
+	}
+	err := s.client.Send(req)
+	if err != nil && s.failed != nil {
+		s.endAfterFailure(err)
+		return nil
+	}
+	return err
+}
+
+// endAfterFailure handles the end of the stream after the destination reported a failure, which the sync already fails
+// with.
+func (s *flushingWriteClient) endAfterFailure(err error) {
+	if errors.Is(err, io.EOF) {
+		// io.EOF means the stream ended, and Recv returns the reason
+		_, err = s.client.Recv()
+	}
+	s.ended = true
+	log.Warn().Err(err).Str("destination", s.name).Msg("Destination ended its write stream after it failed to write records, so it gets no more records in this sync")
 }
 
 // flushFailedError is a destination's report that it could not commit some messages sent before a flush.
 type flushFailedError struct {
 	reason string
+	// the tables whose messages may have been lost, or empty if any table's may have been
+	tables []string
 }
 
 func (e *flushFailedError) Error() string { return e.reason }
 
 // Flush returns once the destination commits every message sent before it. If the destination could not commit some
-// of them, it returns a *flushFailedError, and the stream stays usable.
+// of them, it returns a *flushFailedError, and so does every later Flush.
 func (s *flushingWriteClient) Flush() error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
+	if s.failed != nil {
+		return s.failed
+	}
 	s.lastFlushID++
 	err := s.client.Send(&plugin.Write_Request{
 		Message: &plugin.Write_Request_Flush{Flush: &plugin.Write_MessageFlush{Id: s.lastFlushID}},
@@ -89,7 +118,8 @@ func (s *flushingWriteClient) Flush() error {
 		return fmt.Errorf("destination acknowledged flush %d, expected %d", res.FlushId, s.lastFlushID)
 	}
 	if res.FlushError != "" {
-		return &flushFailedError{reason: res.FlushError}
+		s.failed = &flushFailedError{reason: res.FlushError, tables: res.FailedTables}
+		return s.failed
 	}
 	return nil
 }
@@ -97,16 +127,21 @@ func (s *flushingWriteClient) Flush() error {
 func (s *flushingWriteClient) CloseAndRecv() (*plugin.Write_Response, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	if err := s.client.CloseSend(); err != nil {
-		return nil, err
+	if s.ended {
+		return &plugin.Write_Response{}, nil
 	}
-	for {
-		if _, err := s.client.Recv(); err != nil {
-			if errors.Is(err, io.EOF) {
-				return &plugin.Write_Response{}, nil
-			}
-			return nil, err
-		}
+	err := s.client.CloseSend()
+	for err == nil {
+		_, err = s.client.Recv()
+	}
+	switch {
+	case errors.Is(err, io.EOF):
+		return &plugin.Write_Response{}, nil
+	case s.failed != nil:
+		s.endAfterFailure(err)
+		return &plugin.Write_Response{}, nil
+	default:
+		return nil, err
 	}
 }
 
@@ -257,7 +292,21 @@ func (e *stateNotSavedError) Error() string {
 	if e.checkpointed {
 		return fmt.Sprintf("sync finished without saving its state, as it failed to commit: %v", e.err)
 	}
-	return fmt.Sprintf("sync finished, but failed to commit, and the source sent no state checkpoints, so state it saved itself may be past the lost records: %v", e.err)
+	return fmt.Sprintf("sync finished, but failed to commit, and the source sent no state checkpoints: if it saves state itself, that state may be past the lost records: %v", e.err)
+}
+
+// waitPreferringGroup runs receive in eg, and returns the first error of eg's other goroutines before receive's: a
+// failing pipeline cancels the sync's context, which then fails receive too, and the pipeline's error explains why.
+func waitPreferringGroup(eg *errgroup.Group, receive func() error) error {
+	var receiveErr error
+	eg.Go(func() error {
+		receiveErr = receive()
+		return nil
+	})
+	if err := eg.Wait(); err != nil {
+		return err
+	}
+	return receiveErr
 }
 
 func (e *stateNotSavedError) Unwrap() error { return e.err }
@@ -266,6 +315,32 @@ func (e *stateNotSavedError) Unwrap() error { return e.err }
 func (c *checkpointer) failedDestination(name string) bool {
 	_, ok := c.failed[name]
 	return ok
+}
+
+// withoutFailedTables returns the tables the destination committed every record of, out of tables, so that delete-stale
+// does not delete the rows of earlier syncs whose replacements failed to write.
+func (c *checkpointer) withoutFailedTables(name string, tables map[string]bool) map[string]bool {
+	err, ok := c.failed[name]
+	if !ok {
+		return tables
+	}
+	var failed *flushFailedError
+	if !errors.As(err, &failed) || len(failed.tables) == 0 {
+		log.Warn().Str("destination", name).Msg("Skipping delete-stale, as the destination failed to write records")
+		return nil
+	}
+	kept := maps.Clone(tables)
+	var skipped []string
+	for _, table := range failed.tables {
+		if kept[table] {
+			skipped = append(skipped, table)
+		}
+		delete(kept, table)
+	}
+	if len(skipped) > 0 {
+		log.Warn().Str("destination", name).Strs("tables", skipped).Msg("Skipping delete-stale for tables the destination failed to write records to")
+	}
+	return kept
 }
 
 type syncResult struct {

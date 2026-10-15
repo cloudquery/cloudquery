@@ -22,6 +22,7 @@ import (
 	"github.com/cloudquery/plugin-pb-go/pb/plugin/v3"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/stretchr/testify/require"
+	"golang.org/x/sync/errgroup"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/test/bufconn"
@@ -62,6 +63,12 @@ type fakeWritePlugin struct {
 	flushFailure string
 	// reports flushFailure only from the flush with this id on
 	flushFailureFrom uint64
+	// reported with flushFailure
+	failedTables []string
+	// ends the stream with an error after reporting flushFailure, as writers that stop on a failed write do
+	endAfterFailure bool
+	// returned by WriteStream once its messages end
+	closeErr error
 }
 
 func (p *fakeWritePlugin) Init(context.Context, *plugin.Init_Request) (*plugin.Init_Response, error) {
@@ -120,7 +127,7 @@ func (p *fakeWritePlugin) WriteStream(stream plugin.Plugin_WriteStreamServer) er
 		req, err := stream.Recv()
 		if errors.Is(err, io.EOF) {
 			p.log.add(p.name + ": close")
-			return nil
+			return p.closeErr
 		}
 		if err != nil {
 			return err
@@ -142,9 +149,14 @@ func (p *fakeWritePlugin) WriteStream(stream plugin.Plugin_WriteStreamServer) er
 			res := &plugin.Write_Response{FlushId: id}
 			if flush.Id >= p.flushFailureFrom {
 				res.FlushError = p.flushFailure
+				res.FailedTables = p.failedTables
 			}
 			if err := stream.Send(res); err != nil {
 				return err
+			}
+			if res.FlushError != "" && p.endAfterFailure {
+				p.log.add(p.name + ": end")
+				return errors.New(res.FlushError)
 			}
 		}
 	}
@@ -287,7 +299,9 @@ func TestCheckpointerIsDueAfterInterval(t *testing.T) {
 }
 
 func TestCheckpointerCommitsWhileSourceIsIdle(t *testing.T) {
-	ctx := context.Background()
+	// fails the test instead of hanging it if the receiver stops returning
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
 	log := &eventLog{}
 	dest := openFlushingClient(t, serveFakePlugin(t, &fakeWritePlugin{name: "dest", log: log}))
 	backend := serveFakePlugin(t, &fakeWritePlugin{name: "backend", log: log})
@@ -295,12 +309,20 @@ func TestCheckpointerCommitsWhileSourceIsIdle(t *testing.T) {
 
 	responses := make(chan syncResult)
 	recv := c.receiver(ctx, func() (*plugin.Sync_Response, error) {
-		r := <-responses
-		return r.response, r.err
+		select {
+		case r := <-responses:
+			return r.response, r.err
+		case <-ctx.Done():
+			return nil, ctx.Err()
+		}
 	})
 
 	checkpoint := &plugin.Sync_Response{Message: &plugin.Sync_Response_Checkpoint{Checkpoint: &plugin.Sync_MessageCheckpoint{Record: stateRecord(t, "cq_state", stateEntry{"a", "1", 1})}}}
-	responses <- syncResult{response: checkpoint}
+	select {
+	case responses <- syncResult{response: checkpoint}:
+	case <-ctx.Done():
+		t.Fatal("the receiver did not read from the source")
+	}
 	r, err := recv()
 	require.NoError(t, err)
 	require.NoError(t, c.add(r.GetCheckpoint().Record))
@@ -312,7 +334,12 @@ func TestCheckpointerCommitsWhileSourceIsIdle(t *testing.T) {
 	require.NoError(t, c.commit(ctx))
 	require.Equal(t, []string{"dest: flush 1", "backend: insert cq_state a=1", "backend: flush 1"}, log.get())
 
-	go func() { responses <- syncResult{err: io.EOF} }()
+	go func() {
+		select {
+		case responses <- syncResult{err: io.EOF}:
+		case <-ctx.Done():
+		}
+	}()
 	_, err = recv()
 	require.ErrorIs(t, err, io.EOF)
 	require.NoError(t, c.close())
@@ -869,7 +896,7 @@ func TestSyncWithoutCheckpointsFromTheSourceWarnsThatItsStateMayBeAhead(t *testi
 	req, err := syncWithFakePlugins(t, destination, itemsInsert(t, 1, 2))
 	require.True(t, req.SupportsCheckpoints)
 	require.ErrorAs(t, err, new(*stateNotSavedError))
-	require.ErrorContains(t, err, "the source sent no state checkpoints, so state it saved itself may be past the lost records")
+	require.ErrorContains(t, err, "the source sent no state checkpoints: if it saves state itself, that state may be past the lost records")
 	require.ErrorContains(t, err, "destination dest: table items: disk full")
 }
 
@@ -1036,4 +1063,179 @@ spec:
 	second.mu.Lock()
 	defer second.mu.Unlock()
 	require.NotNil(t, second.request, "the second source syncs, as the first one finished")
+}
+
+func migrateResponse(t *testing.T, table *schema.Table) *plugin.Sync_Response {
+	t.Helper()
+	tableBytes, err := plugin.SchemaToBytes(table.ToArrowSchema())
+	require.NoError(t, err)
+	return &plugin.Sync_Response{Message: &plugin.Sync_Response_MigrateTable{MigrateTable: &plugin.Sync_MessageMigrateTable{Table: tableBytes}}}
+}
+
+func insertResponse(t *testing.T, table *schema.Table, ids ...int64) *plugin.Sync_Response {
+	t.Helper()
+	bldr := array.NewRecordBuilder(memory.DefaultAllocator, table.ToArrowSchema())
+	defer bldr.Release()
+	bldr.Field(0).(*array.Int64Builder).AppendValues(ids, nil)
+	recordBytes, err := plugin.RecordToBytes(bldr.NewRecordBatch())
+	require.NoError(t, err)
+	return &plugin.Sync_Response{Message: &plugin.Sync_Response_Insert{Insert: &plugin.Sync_MessageInsert{Record: recordBytes}}}
+}
+
+func TestSyncSkipsDeleteStaleOnlyForFailedTables(t *testing.T) {
+	interval := checkpointInterval
+	checkpointInterval = 0
+	t.Cleanup(func() { checkpointInterval = interval })
+
+	others := &schema.Table{Name: "others", Columns: schema.ColumnList{{Name: "id", Type: arrow.PrimitiveTypes.Int64}}}
+	log := &eventLog{}
+	destination := &fakeWritePlugin{name: "dest", log: log, supportsFlush: true, flushFailure: "table items: disk full", failedTables: []string{"items"}}
+	_, err := syncWithFakeSourceMode(t, &fakeCheckpointSource{}, destination, specs.WriteModeOverwriteDeleteStale,
+		migrateResponse(t, others),
+		itemsInsert(t, 1, 2),
+		insertResponse(t, others, 1),
+		checkpointResponse(t, stateEntry{"cursor", "1", 1}),
+	)
+	require.ErrorAs(t, err, new(*stateNotSavedError))
+	events := log.get()
+	require.Contains(t, events, "dest: delete stale others", "the destination committed every record of this table")
+	require.NotContains(t, events, "dest: delete stale items")
+}
+
+func TestSyncFinishesWhenADestinationEndsItsStreamAfterAFailure(t *testing.T) {
+	interval := checkpointInterval
+	checkpointInterval = 0
+	t.Cleanup(func() { checkpointInterval = interval })
+
+	log := &eventLog{}
+	ending := &fakeWritePlugin{name: "dest", log: log, supportsFlush: true, flushFailure: "table items: disk full", failedTables: []string{"items"}, endAfterFailure: true}
+	healthy := &fakeWritePlugin{name: "dest2", log: log, supportsFlush: true}
+	err := syncWithFakeDestinations(t, &fakeCheckpointSource{}, []*fakeWritePlugin{ending, healthy}, specs.WriteModeOverwriteDeleteStale,
+		itemsInsert(t, 1, 2),
+		checkpointResponse(t, stateEntry{"cursor", "1", 1}),
+		itemsInsert(t, 3),
+		checkpointResponse(t, stateEntry{"cursor", "2", 2}),
+	)
+	require.ErrorAs(t, err, new(*stateNotSavedError), "the end of the stream is not a new failure: %v", err)
+	require.ErrorContains(t, err, "destination dest: table items: disk full")
+
+	events := log.get()
+	require.Contains(t, events, "dest: end")
+	require.Contains(t, events, "dest2: delete stale items", "the other destination still runs delete-stale")
+	require.Contains(t, events, "dest2: close")
+	var inserts int
+	for _, event := range events {
+		if event == "dest2: insert items" {
+			inserts++
+		}
+	}
+	require.Equal(t, 2, inserts, "the sync goes on for the other destination")
+}
+
+func TestFlushingWriteClientAfterTheDestinationEndsItsStream(t *testing.T) {
+	log := &eventLog{}
+	dest := openFlushingClient(t, serveFakePlugin(t, &fakeWritePlugin{name: "dest", log: log, flushFailure: "table items: disk full", failedTables: []string{"items"}, endAfterFailure: true}))
+	err := dest.Flush()
+	var failed *flushFailedError
+	require.ErrorAs(t, err, &failed)
+	require.Equal(t, []string{"items"}, failed.tables)
+
+	insert := &plugin.Write_Request{Message: &plugin.Write_Request_Insert{Insert: &plugin.Write_MessageInsert{Record: stateRecord(t, "items", stateEntry{"x", "1", 1})}}}
+	require.Eventually(t, func() bool {
+		require.NoError(t, dest.Send(insert), "records for the failed destination are dropped")
+		dest.mu.Lock()
+		defer dest.mu.Unlock()
+		return dest.ended
+	}, 5*time.Second, 10*time.Millisecond)
+	require.Equal(t, failed, dest.Flush(), "the first failure is final")
+	_, err = dest.CloseAndRecv()
+	require.NoError(t, err)
+}
+
+func TestFlushingWriteClientReportsStreamErrorsWithoutAFailure(t *testing.T) {
+	dest := openFlushingClient(t, serveFakePlugin(t, &fakeWritePlugin{name: "dest", log: &eventLog{}, insertErr: errors.New("disk full")}))
+	insert := &plugin.Write_Request{Message: &plugin.Write_Request_Insert{Insert: &plugin.Write_MessageInsert{Record: stateRecord(t, "items", stateEntry{"x", "1", 1})}}}
+	require.NoError(t, dest.Send(insert))
+	_, err := dest.CloseAndRecv()
+	require.ErrorContains(t, err, "disk full")
+}
+
+func TestWaitPreferringGroup(t *testing.T) {
+	var eg errgroup.Group
+	pipelineErr := errors.New("destination failed")
+	received := make(chan struct{})
+	eg.Go(func() error {
+		// fails only after receive does, as a pipeline whose failure cancelled receive's context would
+		<-received
+		return pipelineErr
+	})
+	err := waitPreferringGroup(&eg, func() error {
+		defer close(received)
+		return context.Canceled
+	})
+	require.ErrorIs(t, err, pipelineErr)
+
+	require.EqualError(t, waitPreferringGroup(&errgroup.Group{}, func() error { return errors.New("bad record") }), "bad record")
+	require.NoError(t, waitPreferringGroup(&errgroup.Group{}, func() error { return nil }))
+}
+
+func TestSyncReportsUnsavedStateWhenALaterSourceFails(t *testing.T) {
+	first := &fakeCheckpointSource{responses: []*plugin.Sync_Response{itemsInsert(t, 1, 2), checkpointResponse(t, stateEntry{"cursor", "1", 1})}}
+	// without backend options, a checkpoint is a hard error
+	second := &fakeCheckpointSource{responses: []*plugin.Sync_Response{itemsInsert(t, 3), checkpointResponse(t, stateEntry{"cursor", "1", 1})}}
+	destination := &fakeWritePlugin{name: "dest", log: &eventLog{}, supportsFlush: true, flushFailure: "table items: disk full"}
+	destinationAddress := startFakeServer(t, func(s *grpc.Server) {
+		plugin.RegisterPluginServer(s, destination)
+		discoveryPb.RegisterDiscoveryServer(s, v3Discovery{})
+	})
+	spec := fmt.Sprintf(`kind: source
+spec:
+  name: first
+  registry: grpc
+  path: %s
+  tables: ["*"]
+  destinations: ["dest"]
+  backend_options:
+    table_name: cq_state
+    connection: "@@plugins.dest.connection"
+---
+kind: source
+spec:
+  name: second
+  registry: grpc
+  path: %s
+  tables: ["*"]
+  destinations: ["dest"]
+---
+kind: destination
+spec:
+  name: dest
+  registry: grpc
+  path: %s
+`, startFakeSource(t, first), startFakeSource(t, second), destinationAddress)
+	specFile := path.Join(t.TempDir(), "spec.yml")
+	require.NoError(t, os.WriteFile(specFile, []byte(spec), 0o600))
+
+	cmd := NewCmdRoot()
+	cmd.SetArgs(append([]string{"sync", specFile}, testCommandArgs(t)...))
+	err := cmd.Execute()
+	require.ErrorContains(t, err, "checkpoints are not enabled for this sync")
+	require.ErrorAs(t, err, new(*stateNotSavedError), "the first source's failure is not lost")
+	require.ErrorContains(t, err, "source first: ")
+}
+
+func TestFlushingWriteClientClosesAfterTheDestinationEndsItsStream(t *testing.T) {
+	dest := openFlushingClient(t, serveFakePlugin(t, &fakeWritePlugin{name: "dest", log: &eventLog{}, flushFailure: "table items: disk full", endAfterFailure: true}))
+	require.ErrorAs(t, dest.Flush(), new(*flushFailedError))
+	_, err := dest.CloseAndRecv()
+	require.NoError(t, err, "the sync already fails because of the reported failure")
+}
+
+func TestSyncClosesEveryDestinationWhenOneFailsToClose(t *testing.T) {
+	log := &eventLog{}
+	failing := &fakeWritePlugin{name: "dest", log: log, supportsFlush: true, closeErr: errors.New("commit failed")}
+	healthy := &fakeWritePlugin{name: "dest2", log: log, supportsFlush: true}
+	err := syncWithFakeDestinations(t, &fakeCheckpointSource{}, []*fakeWritePlugin{failing, healthy}, specs.WriteModeAppend, itemsInsert(t, 1))
+	require.ErrorContains(t, err, "commit failed")
+	require.Contains(t, log.get(), "dest2: close")
 }

@@ -26,7 +26,6 @@ func (c TableNameChanger) UpdateTableNames(destinationName string, tables map[st
 	newTables := make(map[string]bool, len(tables))
 	for oldTableName := range tables {
 		if newTableName, ok := c.tableNameChanges[destinationName][oldTableName]; ok {
-			delete(tables, oldTableName)
 			newTables[newTableName] = true
 		} else {
 			newTables[oldTableName] = true

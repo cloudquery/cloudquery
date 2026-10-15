@@ -650,18 +650,8 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 		}
 		return nil
 	}
-	var receiveErr error
-	eg.Go(func() error {
-		// A failing pipeline cancels gctx, which then fails receive too. The pipeline's error explains why the sync
-		// failed, so receive does not report its own error first.
-		receiveErr = receive()
-		return nil
-	})
-	if err := eg.Wait(); err != nil { // wait for source & transformers to finish. If any fails, sync fails.
+	if err := waitPreferringGroup(eg, receive); err != nil { // wait for source & transformers to finish. If any fails, sync fails.
 		return err
-	}
-	if receiveErr != nil {
-		return receiveErr
 	}
 
 	err = syncClient.CloseSend()
@@ -705,13 +695,11 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 	syncTimeTook = time.Since(syncTime)
 	for i := range destinationsClients {
 		if destinationSpecs[i].WriteMode == specs.WriteModeOverwriteDeleteStale {
-			if checkpoints != nil && checkpoints.failedDestination(destinationSpecs[i].Name) {
-				// deleting the rows of earlier syncs would lose the ones whose replacements failed to write
-				log.Warn().Str("destination", destinationSpecs[i].Name).Msg("Skipping delete-stale, as the destination failed to write records")
-				continue
-			}
 			// Table names might have changed due to transformers
 			updatedTablesForDeleteStale := tableNameChanger.UpdateTableNames(destinationSpecs[i].Name, tablesForDeleteStale)
+			if checkpoints != nil {
+				updatedTablesForDeleteStale = checkpoints.withoutFailedTables(destinationSpecs[i].Name, updatedTablesForDeleteStale)
+			}
 			if err := deleteStale(writeClients[i], updatedTablesForDeleteStale, sourceName, syncTime); err != nil {
 				return err
 			}
@@ -768,19 +756,28 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 		return metadataDataErrors
 	}
 
+	var closeErrs []error
 	for i := range destinationsClients {
 		if _, err := writeClients[i].CloseAndRecv(); err != nil {
-			return err
+			closeErrs = append(closeErrs, err)
 		}
 		if _, err := destinationsPbClients[i].Close(ctx, &plugin.Close_Request{}); err != nil {
-			return err
+			closeErrs = append(closeErrs, err)
 		}
+	}
+	if err := errors.Join(closeErrs...); err != nil {
+		return err
 	}
 
 	if checkpoints != nil {
 		if err := checkpoints.failure(); err != nil {
 			if !checkpoints.received {
-				log.Warn().Msg("The sync requested state checkpoints, but the source sent none, so it may save its state itself")
+				log.Warn().Msg("The sync requested state checkpoints, but the source sent none: it has no state, or saves it itself")
+			}
+			for i := range destinationSpecs {
+				if destinationSpecs[i].WriteMode == specs.WriteModeAppend {
+					log.Warn().Str("destination", destinationSpecs[i].Name).Msg("The next sync syncs again the records after the last saved state, so this destination, in append mode, gets them again")
+				}
 			}
 			return &stateNotSavedError{err: err, checkpointed: checkpoints.received}
 		}

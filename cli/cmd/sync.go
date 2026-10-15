@@ -175,7 +175,7 @@ func parseShard(cmd *cobra.Command) (*shard, error) {
 	return &shard{num: int32(num), total: int32(total)}, nil
 }
 
-func sync(cmd *cobra.Command, args []string) error {
+func sync(cmd *cobra.Command, args []string) (syncErr error) {
 	cqDir, err := cmd.Flags().GetString("cq-dir")
 	if err != nil {
 		return err
@@ -428,6 +428,9 @@ func sync(cmd *cobra.Command, args []string) error {
 
 	// syncs that finished without saving their state, which do not stop the other sources
 	var stateNotSaved error
+	defer func() {
+		syncErr = errors.Join(syncErr, stateNotSaved)
+	}()
 	for _, source := range sources {
 		cl := sourcePluginClients.ClientByName(source.Name)
 		versions, err := cl.Versions(ctx)
@@ -574,7 +577,7 @@ func sync(cmd *cobra.Command, args []string) error {
 		}
 	}
 
-	return stateNotSaved
+	return nil
 }
 
 func filterPluginEnv(environ []string, pluginName, kind string) []string {
