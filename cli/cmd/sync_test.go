@@ -2,21 +2,29 @@ package cmd
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
+	"errors"
+	"io"
 	"os"
 	"path"
 	"reflect"
 	"runtime"
 	"slices"
 	"strings"
+	gosync "sync"
 	"testing"
 
+	discoveryPb "github.com/cloudquery/plugin-pb-go/pb/discovery/v1"
+	pluginPb "github.com/cloudquery/plugin-pb-go/pb/plugin/v3"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
 	"github.com/google/uuid"
 	"github.com/samber/lo"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"google.golang.org/grpc"
 )
 
 func TestSync(t *testing.T) {
@@ -557,19 +565,75 @@ func TestSyncWithSummaryTable(t *testing.T) {
 	}
 }
 
+type recordingDestinationServer struct {
+	pluginPb.UnimplementedPluginServer
+	discoveryPb.UnimplementedDiscoveryServer
+	mu                gosync.Mutex
+	migratedTables    []string
+	deleteStaleTables []string
+}
+
+func (*recordingDestinationServer) GetVersions(context.Context, *discoveryPb.GetVersions_Request) (*discoveryPb.GetVersions_Response, error) {
+	return &discoveryPb.GetVersions_Response{Versions: []int32{3}}, nil
+}
+
+func (*recordingDestinationServer) Init(context.Context, *pluginPb.Init_Request) (*pluginPb.Init_Response, error) {
+	return &pluginPb.Init_Response{}, nil
+}
+
+func (*recordingDestinationServer) Close(context.Context, *pluginPb.Close_Request) (*pluginPb.Close_Response, error) {
+	return &pluginPb.Close_Response{}, nil
+}
+
+func (d *recordingDestinationServer) Write(stream grpc.ClientStreamingServer[pluginPb.Write_Request, pluginPb.Write_Response]) error {
+	for {
+		req, err := stream.Recv()
+		if errors.Is(err, io.EOF) {
+			return stream.SendAndClose(&pluginPb.Write_Response{})
+		}
+		if err != nil {
+			return err
+		}
+		if err := d.record(req); err != nil {
+			return err
+		}
+	}
+}
+
+func (d *recordingDestinationServer) record(req *pluginPb.Write_Request) error {
+	d.mu.Lock()
+	defer d.mu.Unlock()
+	switch m := req.Message.(type) {
+	case *pluginPb.Write_Request_MigrateTable:
+		sc, err := pluginPb.NewSchemaFromBytes(m.MigrateTable.Table)
+		if err != nil {
+			return err
+		}
+		tableName, _ := sc.Metadata().GetValue(schema.MetadataTableName)
+		d.migratedTables = append(d.migratedTables, tableName)
+	case *pluginPb.Write_Request_Delete:
+		d.deleteStaleTables = append(d.deleteStaleTables, m.Delete.TableName)
+	}
+	return nil
+}
+
 func TestSyncTableNameChanges(t *testing.T) {
 	_, filename, _, _ := runtime.Caller(0)
 	testConfig := path.Join(path.Dir(filename), "testdata", "transformer-change-table-names.yml")
 
 	tests := []struct {
-		name      string
-		extraArgs []string
+		name               string
+		extraArgs          []string
+		wantMigratedTables []string
 	}{
-		{name: "migrate"},
+		{name: "migrate", wantMigratedTables: []string{"cq_sync_test_some_table"}},
 		{name: "no_migrate", extraArgs: []string{"--no-migrate"}},
 	}
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
+			destination := &recordingDestinationServer{}
+			t.Setenv("CQ_TEST_DESTINATION_ADDRESS", startFakePluginServer(t, destination))
+
 			summaryPath := path.Join(t.TempDir(), "cloudquery-summary.jsonl")
 			argList := append([]string{"sync", testConfig, "--summary-location", summaryPath}, testCommandArgs(t)...)
 			cmd := NewCmdRoot()
@@ -579,6 +643,11 @@ func TestSyncTableNameChanges(t *testing.T) {
 			summaries := readSummaries(t, summaryPath)
 			require.Len(t, summaries, 1)
 			require.Equal(t, []string{"cq_sync_test_some_table"}, summaries[0].SourceTables)
+
+			destination.mu.Lock()
+			defer destination.mu.Unlock()
+			require.Equal(t, tc.wantMigratedTables, destination.migratedTables)
+			require.Equal(t, []string{"cq_sync_test_some_table"}, destination.deleteStaleTables)
 		})
 	}
 }

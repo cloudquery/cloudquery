@@ -10,9 +10,8 @@ spec:
 kind: "destination"
 spec:
   name: "test"
-  registry: "cloudquery"
-  path: "cloudquery/test"
-  version: "v2.7.0"
+  registry: "grpc"
+  path: ${CQ_TEST_DESTINATION_ADDRESS}
   transformers: [rename]
 ---
 kind: "transformer"
