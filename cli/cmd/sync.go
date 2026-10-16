@@ -541,7 +541,8 @@ func sync(cmd *cobra.Command, args []string) (syncErr error) {
 				tableDurations:            tableDurations.GetAll,
 			}
 			if err := syncConnectionV3(ctx, syncOptions); err != nil {
-				if !errors.As(err, new(*stateNotSavedError)) {
+				// only a sync that finished goes on with the next source: a joined state-not-saved error explains a failure
+				if _, finished := err.(*stateNotSavedError); !finished { //nolint:errorlint
 					return fmt.Errorf("failed to sync v3 source %s: %w", cl.Name(), err)
 				}
 				stateNotSaved = errors.Join(stateNotSaved, fmt.Errorf("source %s: %w", cl.Name(), err))

@@ -153,6 +153,8 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 	var exitReason = ExitReasonStopped
 	skippedFromDeleteStale := make(map[string]bool)
 	tablesForDeleteStale := make(map[string]bool)
+	// the parent of each relation, so that delete-stale can skip the relation tree of a table that failed to write
+	tableParents := make(map[string]string)
 
 	sourceSpec := source.spec
 	sourceClient := source.client
@@ -464,6 +466,7 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 	var checkpoints *checkpointer
 	if checkpointsEnabled {
 		checkpoints = newCheckpointer(flushingWriteClients, lo.Values(pipelineByDestinationName), stateWriter, stateWriterSupportsFlush, sourceSpec.BackendOptions.TableName)
+		defer func() { syncErr = checkpoints.withUnsavedState(syncErr) }()
 	}
 
 	// Add a ticker to update the progress bar every 100ms
@@ -590,6 +593,9 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 				}
 
 				sourceTables[table.Name] = true
+				if table.Parent != nil {
+					tableParents[table.Name] = table.Parent.Name
+				}
 				// This works since we sync and send migrate messages for parents before children
 				if isStateBackendEnabled && (table.IsIncremental || (table.Parent != nil && skippedFromDeleteStale[table.Parent.Name])) {
 					skippedFromDeleteStale[table.Name] = true
@@ -698,7 +704,7 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 			// Table names might have changed due to transformers
 			updatedTablesForDeleteStale := tableNameChanger.UpdateTableNames(destinationSpecs[i].Name, tablesForDeleteStale)
 			if checkpoints != nil {
-				updatedTablesForDeleteStale = checkpoints.withoutFailedTables(destinationSpecs[i].Name, updatedTablesForDeleteStale)
+				updatedTablesForDeleteStale = checkpoints.withoutFailedTables(destinationSpecs[i].Name, updatedTablesForDeleteStale, tableParents)
 			}
 			if err := deleteStale(writeClients[i], updatedTablesForDeleteStale, sourceName, syncTime); err != nil {
 				return err
@@ -775,7 +781,8 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 				log.Warn().Msg("The sync requested state checkpoints, but the source sent none: it has no state, or saves it itself")
 			}
 			for i := range destinationSpecs {
-				if destinationSpecs[i].WriteMode == specs.WriteModeAppend {
+				// a source that sent no checkpoints may have saved its state itself, and then does not sync the rows again
+				if checkpoints.received && destinationSpecs[i].WriteMode == specs.WriteModeAppend {
 					log.Warn().Str("destination", destinationSpecs[i].Name).Msg("The next sync syncs again the records after the last saved state, so this destination, in append mode, gets them again")
 				}
 			}
