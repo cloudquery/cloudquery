@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"math"
 	"os"
@@ -57,6 +58,7 @@ The summary contains the following fields:
 | ` + "`resources_per_table`" + `    | object   | Resource count per table                                          |
 | ` + "`errors_per_table`" + `       | object   | Error count per table                                             |
 | ` + "`durations_per_table_ms`" + ` | object   | Duration per table in milliseconds                                |
+| ` + "`state_error`" + `            | string   | Why the sync saved no incremental state (if it failed to commit)  |
 
 #### --invocation-id
 
@@ -174,7 +176,7 @@ func parseShard(cmd *cobra.Command) (*shard, error) {
 	return &shard{num: int32(num), total: int32(total)}, nil
 }
 
-func sync(cmd *cobra.Command, args []string) error {
+func sync(cmd *cobra.Command, args []string) (syncErr error) {
 	cqDir, err := cmd.Flags().GetString("cq-dir")
 	if err != nil {
 		return err
@@ -425,6 +427,11 @@ func sync(cmd *cobra.Command, args []string) error {
 		transformerPluginClients = append(transformerPluginClients, transPluginClient)
 	}
 
+	// syncs that finished without saving their state, which do not stop the other sources
+	var stateNotSaved error
+	defer func() {
+		syncErr = errors.Join(syncErr, stateNotSaved)
+	}()
 	for _, source := range sources {
 		cl := sourcePluginClients.ClientByName(source.Name)
 		versions, err := cl.Versions(ctx)
@@ -535,7 +542,11 @@ func sync(cmd *cobra.Command, args []string) error {
 				tableDurations:            tableDurations.GetAll,
 			}
 			if err := syncConnectionV3(ctx, syncOptions); err != nil {
-				return fmt.Errorf("failed to sync v3 source %s: %w", cl.Name(), err)
+				// only a sync that finished goes on with the next source: a joined state-not-saved error explains a failure
+				if _, finished := err.(*stateNotSavedError); !finished { //nolint:errorlint
+					return fmt.Errorf("failed to sync v3 source %s: %w", cl.Name(), err)
+				}
+				stateNotSaved = errors.Join(stateNotSaved, fmt.Errorf("source %s: %w", cl.Name(), err))
 			}
 
 		case 2:

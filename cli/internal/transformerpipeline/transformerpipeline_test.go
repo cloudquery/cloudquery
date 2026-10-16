@@ -156,3 +156,44 @@ func (reverserTransformer) Trailer() metadata.MD         { return metadata.MD{} 
 func (reverserTransformer) Context() context.Context     { return nil }
 func (reverserTransformer) SendMsg(m any) error          { return nil }
 func (reverserTransformer) RecvMsg(m any) error          { return nil }
+
+func TestWaitDeliveredWithoutTransformers(t *testing.T) {
+	var (
+		delivered []string
+		release   = make(chan struct{})
+	)
+	pipeline, _, err := New(context.Background(), nil)
+	require.NoError(t, err)
+	require.NoError(t, pipeline.OnOutput(func(output []byte) error {
+		<-release
+		delivered = append(delivered, string(output))
+		return nil
+	}))
+	go func() { _ = pipeline.RunBlocking() }()
+	defer pipeline.Close()
+
+	sent := make(chan struct{})
+	go func() {
+		defer close(sent)
+		for _, input := range []string{"a", "b", "c"} {
+			require.NoError(t, pipeline.Send([]byte(input)))
+		}
+	}()
+
+	waited := make(chan error)
+	go func() {
+		<-sent
+		waited <- pipeline.WaitDelivered(context.Background())
+	}()
+	for range 3 {
+		release <- struct{}{}
+	}
+	require.NoError(t, <-waited)
+	require.Equal(t, []string{"a", "b", "c"}, delivered)
+}
+
+func TestWaitDeliveredWithTransformers(t *testing.T) {
+	pipeline, _, err := New(context.Background(), []plugin.Plugin_TransformClient{newIdentityTransformer()})
+	require.NoError(t, err)
+	require.Error(t, pipeline.WaitDelivered(context.Background()))
+}

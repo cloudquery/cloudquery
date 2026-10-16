@@ -47,6 +47,7 @@ The summary contains the following fields:
 | `resources_per_table`    | object   | Resource count per table                                          |
 | `errors_per_table`       | object   | Error count per table                                             |
 | `durations_per_table_ms` | object   | Duration per table in milliseconds                                |
+| `state_error`            | string   | Why the sync saved no incremental state (if it failed to commit)  |
 
 ### --invocation-id
 
