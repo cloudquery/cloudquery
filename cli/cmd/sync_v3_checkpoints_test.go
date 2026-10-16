@@ -3,6 +3,7 @@ package cmd
 import (
 	"bytes"
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -586,6 +587,13 @@ func syncWithFakeSourceMode(t *testing.T, source *fakeCheckpointSource, destinat
 // backend.
 func syncWithFakeDestinations(t *testing.T, source *fakeCheckpointSource, destinations []*fakeWritePlugin, writeMode specs.WriteMode, responses ...*plugin.Sync_Response) error {
 	t.Helper()
+	return syncConnectionV3(context.Background(), fakeSyncOptions(t, source, destinations, writeMode, responses...))
+}
+
+// fakeSyncOptions returns the options of a sync from a fake source to fake destinations, the first of which is also the
+// state backend.
+func fakeSyncOptions(t *testing.T, source *fakeCheckpointSource, destinations []*fakeWritePlugin, writeMode specs.WriteMode, responses ...*plugin.Sync_Response) syncV3Options {
+	t.Helper()
 	tableBytes, err := plugin.SchemaToBytes(checkpointItemsTable.ToArrowSchema())
 	require.NoError(t, err)
 	source.responses = append([]*plugin.Sync_Response{
@@ -607,7 +615,7 @@ func syncWithFakeDestinations(t *testing.T, source *fakeCheckpointSource, destin
 	}
 
 	skipDependentTables := true
-	return syncConnectionV3(context.Background(), syncV3Options{
+	return syncV3Options{
 		source: v3source{
 			client: grpcPluginClient(t, managedplugin.PluginSource, "source", sourceAddress),
 			spec: specs.Source{
@@ -620,7 +628,7 @@ func syncWithFakeDestinations(t *testing.T, source *fakeCheckpointSource, destin
 		},
 		destinations: v3destinations,
 		uid:          "test",
-	})
+	}
 }
 
 func TestSyncPersistsCheckpointsAfterDestinationsFlush(t *testing.T) {
@@ -1543,4 +1551,36 @@ func TestSyncedTablesRoot(t *testing.T) {
 	require.Equal(t, "parent", tables.root("parent"))
 	require.Equal(t, "unrelated", tables.root("unrelated"))
 	require.Contains(t, []string{"a", "b"}, tables.root("a"), "a cycle of parents ends the walk")
+}
+
+func TestSyncSummaryTellsWhyNoStateWasSaved(t *testing.T) {
+	for _, tc := range []struct {
+		name         string
+		flushFailure string
+	}{
+		{name: "failure", flushFailure: "table items: disk full"},
+		{name: "success"},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			destination := &fakeWritePlugin{name: "dest", log: &eventLog{}, supportsFlush: true, flushFailure: tc.flushFailure}
+			opts := fakeSyncOptions(t, &fakeCheckpointSource{}, []*fakeWritePlugin{destination}, specs.WriteModeAppend,
+				itemsInsert(t, 1),
+				checkpointResponse(t, stateEntry{"cursor", "1", 1}),
+			)
+			opts.summaryLocation = path.Join(t.TempDir(), "summary.json")
+			err := syncConnectionV3(context.Background(), opts)
+
+			summaryBytes, readErr := os.ReadFile(opts.summaryLocation)
+			require.NoError(t, readErr)
+			var summary syncSummary
+			require.NoError(t, json.Unmarshal(summaryBytes, &summary))
+			if tc.flushFailure == "" {
+				require.NoError(t, err)
+				require.Empty(t, summary.StateError)
+				return
+			}
+			require.ErrorAs(t, err, new(*stateNotSavedError))
+			require.Equal(t, "destination dest: table items: disk full", summary.StateError)
+		})
+	}
 }

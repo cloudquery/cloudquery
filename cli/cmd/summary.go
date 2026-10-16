@@ -42,6 +42,7 @@ type syncSummary struct {
 	ResourcesPerTable   map[string]uint64 `json:"resources_per_table,omitempty"`
 	ErrorsPerTable      map[string]uint64 `json:"errors_per_table,omitempty"`
 	DurationsPerTableMs map[string]uint64 `json:"durations_per_table_ms,omitempty"`
+	StateError          string            `json:"state_error,omitempty"`
 }
 
 func persistSummary(filename string, summary syncSummary) error {

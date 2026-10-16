@@ -712,6 +712,13 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 		}
 	}
 
+	// why the sync saved no state, so that the summary tells a sync that lost records from one that crashed
+	var stateError string
+	if checkpoints != nil {
+		if err := checkpoints.failure(); err != nil {
+			stateError = err.Error()
+		}
+	}
 	for i := range destinationsClients {
 		m := destinationsClients[i].Metrics()
 		summary := syncSummary{
@@ -734,6 +741,7 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 			ResourcesPerTable:   resourcesPerTable,
 			ErrorsPerTable:      errorsPerTable,
 			DurationsPerTableMs: durationsPerTable,
+			StateError:          stateError,
 		}
 
 		if destinationSpecs[i].SyncGroupId != "" {
