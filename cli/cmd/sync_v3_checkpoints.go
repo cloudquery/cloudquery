@@ -341,13 +341,19 @@ type stateNotSavedError struct {
 	// whether the source sent checkpoints. A source that does not saves its state itself, which may then be past the
 	// records that were lost.
 	checkpointed bool
+	// the sync failed or was interrupted later, instead of finishing
+	stopped bool
 }
 
 func (e *stateNotSavedError) Error() string {
-	if e.checkpointed {
-		return fmt.Sprintf("sync finished without saving its state, as it failed to commit: %v", e.err)
+	ended := "sync finished"
+	if e.stopped {
+		ended = "sync stopped"
 	}
-	return fmt.Sprintf("sync finished, but failed to commit, and the source sent no state checkpoints: if it saves state itself, that state may be past the lost records: %v", e.err)
+	if e.checkpointed {
+		return fmt.Sprintf("%s without saving its state, as it failed to commit: %v", ended, e.err)
+	}
+	return fmt.Sprintf("%s, but failed to commit, and the source sent no state checkpoints: if it saves state itself, that state may be past the lost records: %v", ended, e.err)
 }
 
 // waitPreferringGroup runs receive in eg, and returns the first error of eg's other goroutines before receive's: a
@@ -366,15 +372,30 @@ func waitPreferringGroup(eg *errgroup.Group, receive func() error) error {
 
 func (e *stateNotSavedError) Unwrap() error { return e.err }
 
-// failedDestination reports whether the destination failed to commit records.
-func (c *checkpointer) failedDestination(name string) bool {
-	return c.failed[name]
+// syncedTables are the tables a source synced.
+type syncedTables struct {
+	names map[string]bool
+	// the parent of each relation
+	parents map[string]string
+}
+
+// root returns the top-level table of the relation tree table is in.
+func (t syncedTables) root(table string) string {
+	// bounded, as a source built with another SDK could send a cycle of parents
+	for range len(t.parents) {
+		parent, ok := t.parents[table]
+		if !ok {
+			break
+		}
+		table = parent
+	}
+	return table
 }
 
 // withoutFailedTables returns the tables of the relation trees the destination committed every record of, out of
 // tables, so that delete-stale neither deletes the rows of earlier syncs whose replacements failed to write, nor leaves
-// the rows of a tree inconsistent. parents maps each relation to its parent table.
-func (c *checkpointer) withoutFailedTables(name string, tables map[string]bool, parents map[string]string) map[string]bool {
+// the rows of a tree inconsistent.
+func (c *checkpointer) withoutFailedTables(name string, tables map[string]bool, synced syncedTables) map[string]bool {
 	var failed *flushFailedError
 	for _, destination := range c.destinations {
 		if destination.name == name {
@@ -384,18 +405,19 @@ func (c *checkpointer) withoutFailedTables(name string, tables map[string]bool, 
 	if failed == nil {
 		return tables
 	}
-	if failed.anyTable {
+	// a table the source did not sync may stand for any table, as the destination may name it differently
+	if failed.anyTable || slices.ContainsFunc(failed.tables, func(table string) bool { return !synced.names[table] }) {
 		log.Warn().Str("destination", name).Msg("Skipping delete-stale, as the destination failed to write records")
 		return nil
 	}
 	failedTrees := make(map[string]bool, len(failed.tables))
 	for _, table := range failed.tables {
-		failedTrees[rootTable(table, parents)] = true
+		failedTrees[synced.root(table)] = true
 	}
 	kept := make(map[string]bool, len(tables))
 	var skipped []string
 	for table, ok := range tables {
-		if failedTrees[rootTable(table, parents)] {
+		if failedTrees[synced.root(table)] {
 			skipped = append(skipped, table)
 			continue
 		}
@@ -408,14 +430,6 @@ func (c *checkpointer) withoutFailedTables(name string, tables map[string]bool, 
 	return kept
 }
 
-// rootTable returns the top-level table of the relation tree table is in.
-func rootTable(table string, parents map[string]string) string {
-	for parents[table] != "" {
-		table = parents[table]
-	}
-	return table
-}
-
 // withUnsavedState adds to err that the sync saved no state, if a destination or the state backend failed to commit
 // before err happened. A sync that finished returns a *stateNotSavedError of its own.
 func (c *checkpointer) withUnsavedState(err error) error {
@@ -423,7 +437,7 @@ func (c *checkpointer) withUnsavedState(err error) error {
 		return err
 	}
 	if failure := c.failure(); failure != nil {
-		return errors.Join(err, &stateNotSavedError{err: failure, checkpointed: c.received})
+		return errors.Join(err, &stateNotSavedError{err: failure, checkpointed: c.received, stopped: true})
 	}
 	return err
 }
@@ -554,8 +568,8 @@ func (c *checkpointer) flushDestinations() error {
 		}
 	}
 	if len(errs) > 0 {
-		// failures to commit records are part of why the sync fails
-		return errors.Join(append(errs, c.failure())...)
+		// the sync adds the failures to commit records to the error
+		return errors.Join(errs...)
 	}
 	if newFailures {
 		log.Error().Err(c.failure()).Msg("Destinations failed to write records, so the sync saves no more state, and fails once it finishes")

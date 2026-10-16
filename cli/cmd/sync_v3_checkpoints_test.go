@@ -795,7 +795,7 @@ func TestCheckpointerStopsSavingStateAfterFailedFlush(t *testing.T) {
 
 	require.NoError(t, c.add(stateRecord(t, "cq_state", stateEntry{"cursor", "1", 1})))
 	require.NoError(t, c.commit(ctx), "the sync goes on after a failed flush")
-	require.True(t, c.failedDestination("dest"))
+	require.Empty(t, c.withoutFailedTables("dest", map[string]bool{"items": true}, syncedTables{names: map[string]bool{"items": true}}), "delete-stale is skipped")
 	require.EqualError(t, c.failure(), "destination dest: table items: disk full")
 
 	require.NoError(t, c.add(stateRecord(t, "cq_state", stateEntry{"cursor", "2", 2})))
@@ -919,7 +919,7 @@ func TestCheckpointerStopsSavingStateAfterBackendFlushFails(t *testing.T) {
 
 	require.NoError(t, c.add(stateRecord(t, "cq_state", stateEntry{"cursor", "1", 1})))
 	require.NoError(t, c.commit(ctx), "the sync goes on, as it does when a destination fails")
-	require.False(t, c.failedDestination("dest"), "delete-stale still runs on the destinations")
+	require.Equal(t, map[string]bool{"items": true}, c.withoutFailedTables("dest", map[string]bool{"items": true}, syncedTables{names: map[string]bool{"items": true}}), "delete-stale still runs on the destinations")
 	require.EqualError(t, c.failure(), "state backend: table cq_state: disk full")
 
 	require.NoError(t, c.add(stateRecord(t, "cq_state", stateEntry{"cursor", "2", 2})))
@@ -940,7 +940,7 @@ func TestCheckpointerReportsCommitFailuresWithHardErrors(t *testing.T) {
 	err := c.finish(ctx)
 	require.ErrorContains(t, err, "destination dest2")
 	require.ErrorContains(t, err, "stream broke")
-	require.ErrorContains(t, err, "destination dest: table items: disk full")
+	require.EqualError(t, c.failure(), "destination dest: table items: disk full", "the sync adds the failure to the error")
 }
 
 func TestCheckpointerWritesRecordsToBackendWithoutFlushSupport(t *testing.T) {
@@ -1352,7 +1352,7 @@ func TestSyncKeepsUnsavedStateWithLaterErrors(t *testing.T) {
 		checkpointResponse(t, stateEntry{"cursor", "1", 1}),
 	)
 	require.ErrorContains(t, err, "commit failed")
-	require.ErrorContains(t, err, "sync finished without saving its state")
+	require.ErrorContains(t, err, "sync stopped without saving its state")
 	_, finished := err.(*stateNotSavedError) //nolint:errorlint
 	require.False(t, finished, "the later error still fails the sync, and stops the next sources")
 }
@@ -1443,7 +1443,7 @@ func TestSyncStopsAtAHardErrorJoinedWithUnsavedState(t *testing.T) {
 		namedSource{name: "second", source: second},
 	)
 	require.ErrorContains(t, err, "connection lost")
-	require.ErrorContains(t, err, "sync finished without saving its state")
+	require.ErrorContains(t, err, "sync stopped without saving its state")
 	require.False(t, synced(second), "a hard error stops the sync, even when it also saved no state")
 }
 
@@ -1471,4 +1471,76 @@ func TestSyncWarnsAppendModeDestinationsOnlyAboutRowsSyncedAgain(t *testing.T) {
 			require.Equal(t, tc.warns, strings.Contains(logs.String(), warning), logs.String())
 		})
 	}
+}
+
+func TestFlushingWriteClientFlushAfterTheStreamEnded(t *testing.T) {
+	dest := openFlushingClient(t, serveFakePlugin(t, &fakeWritePlugin{name: "dest", log: &eventLog{}, flushFailure: "table items: disk full", failedTables: []string{"items"}, endAfterFailure: true}))
+	var failed *flushFailedError
+	require.ErrorAs(t, dest.Flush(), &failed)
+	require.False(t, failed.anyTable)
+
+	// the next flush finds the stream ended
+	require.ErrorAs(t, dest.Flush(), &failed)
+	require.True(t, failed.anyTable, "records of any table may have been lost since")
+	require.ErrorContains(t, failed, "table items: disk full; write stream ended: ")
+}
+
+func TestSyncSkipsDeleteStaleForEveryTableWhenALaterFailureNamesNone(t *testing.T) {
+	interval := checkpointInterval
+	checkpointInterval = 0
+	t.Cleanup(func() { checkpointInterval = interval })
+
+	unrelated := &schema.Table{Name: "unrelated", Columns: schema.ColumnList{{Name: "id", Type: arrow.PrimitiveTypes.Int64}}}
+	for _, tc := range []struct {
+		name              string
+		failedTables      []string
+		laterFailure      string
+		laterFailedTables []string
+	}{
+		// as the streaming writer reports failed migrations and deletes
+		{name: "later failure without tables", failedTables: []string{"items"}, laterFailure: "migrate failed"},
+		{name: "table the source did not sync", failedTables: []string{"elsewhere"}},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			log := &eventLog{}
+			destination := &fakeWritePlugin{
+				name: "dest", log: log, supportsFlush: true,
+				flushFailure: "table items: disk full", failedTables: tc.failedTables,
+				laterFailure: tc.laterFailure, laterFailedTables: tc.laterFailedTables,
+			}
+			_, err := syncWithFakeSourceMode(t, &fakeCheckpointSource{}, destination, specs.WriteModeOverwriteDeleteStale,
+				migrateResponse(t, unrelated),
+				itemsInsert(t, 1, 2),
+				checkpointResponse(t, stateEntry{"cursor", "1", 1}),
+				insertResponse(t, unrelated, 1),
+			)
+			require.ErrorAs(t, err, new(*stateNotSavedError))
+			for _, event := range log.get() {
+				require.NotContains(t, event, "delete stale")
+			}
+		})
+	}
+}
+
+func TestSyncReportsAFailureOnceWithAHardFlushError(t *testing.T) {
+	interval := checkpointInterval
+	checkpointInterval = 0
+	t.Cleanup(func() { checkpointInterval = interval })
+
+	failing := &fakeWritePlugin{name: "dest", log: &eventLog{}, supportsFlush: true, flushFailure: "table items: disk full"}
+	broken := &fakeWritePlugin{name: "dest2", log: &eventLog{}, supportsFlush: true, flushErr: errors.New("stream broke")}
+	err := syncWithFakeDestinations(t, &fakeCheckpointSource{}, []*fakeWritePlugin{failing, broken}, specs.WriteModeAppend,
+		itemsInsert(t, 1),
+		checkpointResponse(t, stateEntry{"cursor", "1", 1}),
+	)
+	require.ErrorContains(t, err, "stream broke")
+	require.Equal(t, 1, strings.Count(err.Error(), "table items: disk full"), err.Error())
+}
+
+func TestSyncedTablesRoot(t *testing.T) {
+	tables := syncedTables{parents: map[string]string{"child": "parent", "grandchild": "child", "a": "b", "b": "a"}}
+	require.Equal(t, "parent", tables.root("grandchild"))
+	require.Equal(t, "parent", tables.root("parent"))
+	require.Equal(t, "unrelated", tables.root("unrelated"))
+	require.Contains(t, []string{"a", "b"}, tables.root("a"), "a cycle of parents ends the walk")
 }

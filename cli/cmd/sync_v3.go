@@ -704,7 +704,7 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 			// Table names might have changed due to transformers
 			updatedTablesForDeleteStale := tableNameChanger.UpdateTableNames(destinationSpecs[i].Name, tablesForDeleteStale)
 			if checkpoints != nil {
-				updatedTablesForDeleteStale = checkpoints.withoutFailedTables(destinationSpecs[i].Name, updatedTablesForDeleteStale, tableParents)
+				updatedTablesForDeleteStale = checkpoints.withoutFailedTables(destinationSpecs[i].Name, updatedTablesForDeleteStale, syncedTables{names: sourceTables, parents: tableParents})
 			}
 			if err := deleteStale(writeClients[i], updatedTablesForDeleteStale, sourceName, syncTime); err != nil {
 				return err
