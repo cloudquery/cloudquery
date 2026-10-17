@@ -232,13 +232,18 @@ func (f *fakeSourceServer) GetTables(context.Context, *pluginPb.GetTables_Reques
 	return &pluginPb.GetTables_Response{Tables: b}, nil
 }
 
-func startFakeSourceServer(t *testing.T, source *fakeSourceServer) string {
+type fakePluginServer interface {
+	pluginPb.PluginServer
+	discoveryPb.DiscoveryServer
+}
+
+func startFakePluginServer(t *testing.T, fake fakePluginServer) string {
 	t.Helper()
 	listener, err := net.Listen("tcp", "127.0.0.1:0")
 	require.NoError(t, err)
 	server := grpc.NewServer()
-	pluginPb.RegisterPluginServer(server, source)
-	discoveryPb.RegisterDiscoveryServer(server, source)
+	pluginPb.RegisterPluginServer(server, fake)
+	discoveryPb.RegisterDiscoveryServer(server, fake)
 	go func() { _ = server.Serve(listener) }()
 	t.Cleanup(server.Stop)
 	return listener.Addr().String()
@@ -265,8 +270,8 @@ func (r *recordingPluginStarter) newClient(ctx context.Context, typ managedplugi
 }
 
 func TestLoadUpgradeSourceTablesRegistryDispatch(t *testing.T) {
-	fromAddress := startFakeSourceServer(t, &fakeSourceServer{name: "semgrep", version: "v3.0.0", tables: schema.Tables{testTable("semgrep_old")}})
-	toAddress := startFakeSourceServer(t, &fakeSourceServer{name: "semgrep", version: "v3.1.0", tables: schema.Tables{testTable("semgrep_new")}})
+	fromAddress := startFakePluginServer(t, &fakeSourceServer{name: "semgrep", version: "v3.0.0", tables: schema.Tables{testTable("semgrep_old")}})
+	toAddress := startFakePluginServer(t, &fakeSourceServer{name: "semgrep", version: "v3.1.0", tables: schema.Tables{testTable("semgrep_new")}})
 
 	cases := []struct {
 		name           string
@@ -346,8 +351,8 @@ func TestLoadUpgradeSourceTablesRegistryDispatch(t *testing.T) {
 
 func TestLoadUpgradeSourceTablesUnknownReportedVersion(t *testing.T) {
 	starter := &recordingPluginStarter{
-		fromAddress: startFakeSourceServer(t, &fakeSourceServer{name: "semgrep", tables: schema.Tables{testTable("semgrep_old")}}),
-		toAddress:   startFakeSourceServer(t, &fakeSourceServer{name: "semgrep", tables: schema.Tables{testTable("semgrep_new")}}),
+		fromAddress: startFakePluginServer(t, &fakeSourceServer{name: "semgrep", tables: schema.Tables{testTable("semgrep_old")}}),
+		toAddress:   startFakePluginServer(t, &fakeSourceServer{name: "semgrep", tables: schema.Tables{testTable("semgrep_new")}}),
 		toVersion:   "v3.1.0",
 	}
 	sourceSpec := specs.Source{Metadata: specs.Metadata{Name: "semgrep", Registry: specs.RegistryLocal, Path: "/opt/plugins/semgrep"}}
@@ -359,8 +364,8 @@ func TestLoadUpgradeSourceTablesUnknownReportedVersion(t *testing.T) {
 }
 
 func TestLoadUpgradeSourceTablesErrors(t *testing.T) {
-	namedAddress := startFakeSourceServer(t, &fakeSourceServer{name: "semgrep", tables: schema.Tables{testTable("semgrep_old")}})
-	unnamedAddress := startFakeSourceServer(t, &fakeSourceServer{tables: schema.Tables{testTable("semgrep_old")}})
+	namedAddress := startFakePluginServer(t, &fakeSourceServer{name: "semgrep", tables: schema.Tables{testTable("semgrep_old")}})
+	unnamedAddress := startFakePluginServer(t, &fakeSourceServer{tables: schema.Tables{testTable("semgrep_old")}})
 	local := specs.Metadata{Name: "semgrep", Registry: specs.RegistryLocal, Path: "/opt/plugins/semgrep"}
 
 	cases := []struct {
