@@ -5,6 +5,14 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.48.1](https://github.com/cloudquery/cloudquery/compare/cli-v6.48.0...cli-v6.48.1) (2026-10-17)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.28.2 ([#23551](https://github.com/cloudquery/cloudquery/issues/23551)) ([c44b66d](https://github.com/cloudquery/cloudquery/commit/c44b66de1727a38e5033a2f851e32af01ba19e3a))
+* Run delete-stale on every overwrite-delete-stale destination ([#23548](https://github.com/cloudquery/cloudquery/issues/23548)) ([ab7923a](https://github.com/cloudquery/cloudquery/commit/ab7923abdf6142070d39e080fd0ef14abe21f23b))
+
 ## [6.48.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.47.0...cli-v6.48.0) (2026-10-12)
 
 
