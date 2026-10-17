@@ -11,7 +11,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/feature/s3/transfermanager v0.4.13
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.114.0
 	github.com/aws/aws-sdk-go-v2/service/sts v1.51.1
-	github.com/aws/smithy-go v1.28.2
+	github.com/aws/smithy-go v1.28.5
 	github.com/cloudquery/codegen v0.4.1
 	github.com/cloudquery/filetypes/v4 v4.9.0
 	github.com/cloudquery/plugin-sdk/v4 v4.98.0
