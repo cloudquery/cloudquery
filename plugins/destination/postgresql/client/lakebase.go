@@ -4,9 +4,11 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/spec"
+	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/resources/plugin"
 	"github.com/databricks/databricks-sdk-go"
 	"github.com/databricks/databricks-sdk-go/service/postgres"
 	"github.com/jackc/pgx/v5"
@@ -18,6 +20,13 @@ import (
 // are recycled well before expiry to ensure BeforeConnect mints a fresh token
 // (Databricks recommends a maximum connection lifetime of 45 minutes).
 const maxLakebaseConnLifetime = 45 * time.Minute
+
+// lakebaseApplicationName returns the application_name reported to Lakebase.
+// Databricks uses it for partner attribution and expects the format
+// CloudQuery_<product>/<version>.
+func lakebaseApplicationName() string {
+	return "CloudQuery_Lakebase/" + strings.TrimPrefix(internalPlugin.Version, "v")
+}
 
 // configureLakebase wires up Databricks Lakebase authentication on the given pool
 // config. It creates a Databricks workspace client and installs a BeforeConnect
@@ -31,6 +40,8 @@ func configureLakebase(pgxConfig *pgxpool.Config, lb *spec.LakebaseSpec) error {
 	if !checkTLS(pgxConfig.ConnConfig, tlsEncrypted) {
 		return errors.New("lakebase requires a TLS connection: set " + tlsEncrypted.hint() + " in `connection_string`")
 	}
+
+	pgxConfig.ConnConfig.RuntimeParams["application_name"] = lakebaseApplicationName()
 
 	w, err := databricks.NewWorkspaceClient(&databricks.Config{
 		Host:         lb.Host,

@@ -127,11 +127,15 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-go-${{ steps.setup-go.outputs.go-version }}-build-${{ needs.prepare.outputs.plugin_dir }}-
 
+      - name: Read CloudQuery CLI version
+        id: cloudquery-cli-version
+        if: needs.prepare.outputs.ui_dir_arg != ''
+        run: echo "version=$(tr -d '[:space:]' < "$GITHUB_WORKSPACE/.github/cloudquery-cli-version")" >> "$GITHUB_OUTPUT"
       - name: Setup CloudQuery
         if: needs.prepare.outputs.ui_dir_arg != ''
         uses: cloudquery/setup-cloudquery@757b19eb8496cf9e89a78de54f2c677253f54f6b # v5.0.3
         with:
-          version: v6.43.0
+          version: ${{ steps.cloudquery-cli-version.outputs.version }}
 
       - name: Build
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
@@ -253,10 +257,13 @@ jobs:
           rm -rf docs/tables.md
           java -jar app/build/libs/app.jar package -m ${{ steps.release-notes.outputs.result }} ${{ needs.prepare.outputs.plugin_version }} .
 
+      - name: Read CloudQuery CLI version
+        id: cloudquery-cli-version
+        run: echo "version=$(tr -d '[:space:]' < "$GITHUB_WORKSPACE/.github/cloudquery-cli-version")" >> "$GITHUB_OUTPUT"
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@757b19eb8496cf9e89a78de54f2c677253f54f6b # v5.0.3
         with:
-          version: v6.43.0
+          version: ${{ steps.cloudquery-cli-version.outputs.version }}
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
@@ -355,10 +362,13 @@ jobs:
           rm -rf docs/tables.md
           uv run python main.py package -m ${{ steps.release-notes.outputs.result }} ${{ needs.prepare.outputs.plugin_version }} .
 
+      - name: Read CloudQuery CLI version
+        id: cloudquery-cli-version
+        run: echo "version=$(tr -d '[:space:]' < "$GITHUB_WORKSPACE/.github/cloudquery-cli-version")" >> "$GITHUB_OUTPUT"
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@757b19eb8496cf9e89a78de54f2c677253f54f6b # v5.0.3
         with:
-          version: v6.43.0
+          version: ${{ steps.cloudquery-cli-version.outputs.version }}
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
@@ -454,10 +464,13 @@ jobs:
           rm -rf docs/tables.md
           pnpm run dev package -m ${{ steps.release-notes.outputs.result }} ${{ needs.prepare.outputs.plugin_version }} .
 
+      - name: Read CloudQuery CLI version
+        id: cloudquery-cli-version
+        run: echo "version=$(tr -d '[:space:]' < "$GITHUB_WORKSPACE/.github/cloudquery-cli-version")" >> "$GITHUB_OUTPUT"
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@757b19eb8496cf9e89a78de54f2c677253f54f6b # v5.0.3
         with:
-          version: v6.43.0
+          version: ${{ steps.cloudquery-cli-version.outputs.version }}
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
@@ -558,10 +571,13 @@ jobs:
           rm -rf docs/tables.md
           go run main.go package -m ${{ steps.release-notes.outputs.result }} ${{ needs.prepare.outputs.plugin_version }} .
 
+      - name: Read CloudQuery CLI version
+        id: cloudquery-cli-version
+        run: echo "version=$(tr -d '[:space:]' < "$GITHUB_WORKSPACE/.github/cloudquery-cli-version")" >> "$GITHUB_OUTPUT"
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@757b19eb8496cf9e89a78de54f2c677253f54f6b # v5.0.3
         with:
-          version: v6.43.0
+          version: ${{ steps.cloudquery-cli-version.outputs.version }}
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}

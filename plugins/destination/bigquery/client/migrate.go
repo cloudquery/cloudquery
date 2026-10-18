@@ -169,24 +169,14 @@ func schemasMatch(haveSchema, wantSchema bigquery.Schema) bool {
 // mergeSchemas merges the schema we want with the schema we have, to avoid
 // losing any existing data
 func mergeSchemas(haveSchema, wantSchema bigquery.Schema) (bigquery.Schema, error) {
-	haveMap := make(map[string]*bigquery.FieldSchema)
-	for _, f := range haveSchema {
-		haveMap[f.Name] = f
-	}
-	wantMap := make(map[string]*bigquery.FieldSchema)
-	for _, f := range wantSchema {
-		wantMap[f.Name] = f
-	}
+	haveMap := fieldsByName(haveSchema)
+	wantMap := fieldsByName(wantSchema)
 	merged := make(bigquery.Schema, 0, len(wantSchema))
 	// keep everything in the schema we have, as long as the types didn't change
 	// or an unknown column isn't required
 	for _, f := range haveSchema {
-		if want, ok := wantMap[f.Name]; ok {
-			if want.Type != f.Type {
-				return nil, fmt.Errorf("column %v changed type from %v to %v. Try dropping the column and re-running", f.Name, f.Type, want.Type)
-			}
-		} else if f.Required {
-			return nil, fmt.Errorf("column %v is required but not in new schema", f.Name)
+		if err := checkFieldMigration(f, wantMap[f.Name]); err != nil {
+			return nil, err
 		}
 		merged = append(merged, f)
 	}
@@ -197,6 +187,27 @@ func mergeSchemas(haveSchema, wantSchema bigquery.Schema) (bigquery.Schema, erro
 		}
 	}
 	return merged, nil
+}
+
+func fieldsByName(s bigquery.Schema) map[string]*bigquery.FieldSchema {
+	fields := make(map[string]*bigquery.FieldSchema, len(s))
+	for _, f := range s {
+		fields[f.Name] = f
+	}
+	return fields
+}
+
+func checkFieldMigration(have, want *bigquery.FieldSchema) error {
+	if want == nil {
+		if have.Required {
+			return fmt.Errorf("column %v is required but not in new schema", have.Name)
+		}
+		return nil
+	}
+	if want.Type != have.Type {
+		return fmt.Errorf("column %v changed type from %v to %v. Try dropping the column and re-running", have.Name, have.Type, want.Type)
+	}
+	return nil
 }
 
 func (c *Client) createTable(ctx context.Context, client *bigquery.Client, table *schema.Table) error {

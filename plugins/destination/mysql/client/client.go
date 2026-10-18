@@ -38,8 +38,11 @@ type Client struct {
 	maxIndexLength int
 }
 
-func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewClientOptions) (plugin.Client, error) {
+func New(ctx context.Context, logger zerolog.Logger, spec []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
 	c := &Client{logger: logger.With().Str("module", "mysql").Logger()}
+	if opts.NoConnection {
+		return c, nil
+	}
 	var err error
 
 	if err := json.Unmarshal(spec, &c.spec); err != nil {
@@ -145,6 +148,9 @@ func (c *Client) setMaxIndexLength(ctx context.Context) {
 }
 
 func (c *Client) Close(ctx context.Context) error {
+	if c.db == nil {
+		return errors.New("client already closed or not initialized")
+	}
 	if err := c.writer.Close(ctx); err != nil {
 		_ = c.db.Close()
 		return fmt.Errorf("failed to close writer: %w", err)

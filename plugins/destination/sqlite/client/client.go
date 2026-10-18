@@ -24,9 +24,12 @@ type Client struct {
 	spec   Spec
 }
 
-func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewClientOptions) (plugin.Client, error) {
+func New(ctx context.Context, logger zerolog.Logger, spec []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
 	c := &Client{
 		logger: logger.With().Str("module", "sqlite-dest").Logger(),
+	}
+	if opts.NoConnection {
+		return c, nil
 	}
 
 	if err := json.Unmarshal(spec, &c.spec); err != nil {

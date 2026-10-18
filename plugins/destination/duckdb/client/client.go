@@ -33,10 +33,13 @@ type Client struct {
 
 var _ plugin.Client = (*Client)(nil)
 
-func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewClientOptions) (plugin.Client, error) {
+func New(ctx context.Context, logger zerolog.Logger, spec []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
 	var err error
 	c := &Client{
 		logger: logger.With().Str("module", "duckdb-dest").Logger(),
+	}
+	if opts.NoConnection {
+		return c, nil
 	}
 	if err := json.Unmarshal(spec, &c.spec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)

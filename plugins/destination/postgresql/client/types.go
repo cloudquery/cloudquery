@@ -6,7 +6,15 @@ import (
 )
 
 func (c *Client) SchemaTypeToPg(t arrow.DataType) string {
-	switch c.pgType {
+	return c.pgType.schemaTypeToPg(t)
+}
+
+func (c *Client) PgToSchemaType(t string) arrow.DataType {
+	return c.pgType.pgToSchemaType(t)
+}
+
+func (p pgType) schemaTypeToPg(t arrow.DataType) string {
+	switch p {
 	case pgTypeCockroachDB:
 		return pgarrow.ArrowToCockroach(t)
 	case pgTypeCrateDB:
@@ -16,8 +24,8 @@ func (c *Client) SchemaTypeToPg(t arrow.DataType) string {
 	}
 }
 
-func (c *Client) PgToSchemaType(t string) arrow.DataType {
-	switch c.pgType {
+func (p pgType) pgToSchemaType(t string) arrow.DataType {
+	switch p {
 	case pgTypeCockroachDB:
 		return pgarrow.CockroachToArrow(t)
 	case pgTypeCrateDB:

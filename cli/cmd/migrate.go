@@ -3,6 +3,7 @@ package cmd
 import (
 	"errors"
 	"fmt"
+	"os"
 	"slices"
 	"strings"
 
@@ -80,7 +81,7 @@ func migrate(cmd *cobra.Command, args []string) error {
 	cqplatform.PropagatePluginCredential(dlToken)
 
 	pluginVersionWarner, _ := managedplugin.NewPluginVersionWarner(log.Logger, dlToken)
-	specs.WarnOnOutdatedVersions(ctx, pluginVersionWarner, sources, destinations, transformers)
+	specs.WarnOnOutdatedVersions(ctx, pluginVersionWarner, sources, destinations, transformers, specs.WithUpgradeCheckRecommendation(args, os.Stdout))
 
 	opts := []managedplugin.Option{
 		managedplugin.WithLogger(log.Logger),

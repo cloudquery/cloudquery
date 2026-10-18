@@ -1,10 +1,13 @@
 | File | Function | Coverage |
 | --- | --- | --- |
 | github.com/cloudquery/cloudquery/plugins/destination/gremlin/v2/client/append_from_string.go:27: | appendTimestampFromString | 77.8% |
-| github.com/cloudquery/cloudquery/plugins/destination/gremlin/v2/client/client.go:35: | New | 82.1% |
-| github.com/cloudquery/cloudquery/plugins/destination/gremlin/v2/client/client.go:80: | Close | 0.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/gremlin/v2/client/client.go:88: | getAuthInfo | 5.7% |
-| github.com/cloudquery/cloudquery/plugins/destination/gremlin/v2/client/client.go:142: | newSession | 92.3% |
+| github.com/cloudquery/cloudquery/plugins/destination/gremlin/v2/client/assess.go:16: | AssessTables | 100.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/gremlin/v2/client/assess.go:24: | assessTable | 90.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/gremlin/v2/client/assess.go:46: | tableFinding | 100.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/gremlin/v2/client/client.go:36: | New | 82.9% |
+| github.com/cloudquery/cloudquery/plugins/destination/gremlin/v2/client/client.go:84: | Close | 33.3% |
+| github.com/cloudquery/cloudquery/plugins/destination/gremlin/v2/client/client.go:95: | getAuthInfo | 5.7% |
+| github.com/cloudquery/cloudquery/plugins/destination/gremlin/v2/client/client.go:149: | newSession | 92.3% |
 | github.com/cloudquery/cloudquery/plugins/destination/gremlin/v2/client/delete_stale.go:12: | DeleteStale | 81.8% |
 | github.com/cloudquery/cloudquery/plugins/destination/gremlin/v2/client/logger.go:16: | Log | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/gremlin/v2/client/logger.go:25: | Logf | 100.0% |
@@ -25,4 +28,4 @@
 | github.com/cloudquery/cloudquery/plugins/destination/gremlin/v2/client/write.go:14: | WriteTableBatch | 86.8% |
 | github.com/cloudquery/cloudquery/plugins/destination/gremlin/v2/client/write.go:93: | Write | 60.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/gremlin/v2/main.go:17: | main | 0.0% |
-| total: | (statements) | 61.6% |
+| total: | (statements) | 63.1% |

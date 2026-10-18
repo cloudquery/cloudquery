@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/spec"
+	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/resources/plugin"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
@@ -31,6 +32,11 @@ func TestConfigureLakebase(t *testing.T) {
 			connString:      "postgres://u@localhost:5432/db?sslmode=require&pool_max_conn_lifetime=10m",
 			wantMaxLifetime: 10 * time.Minute,
 		},
+		{
+			name:            "overrides user-supplied application_name",
+			connString:      "postgres://u@localhost:5432/db?sslmode=require&application_name=custom",
+			wantMaxLifetime: maxLakebaseConnLifetime,
+		},
 	}
 
 	for _, tc := range cases {
@@ -53,6 +59,9 @@ func TestConfigureLakebase(t *testing.T) {
 			if cfg.BeforeConnect == nil {
 				t.Error("expected BeforeConnect callback to be set")
 			}
+			if got, want := cfg.ConnConfig.RuntimeParams["application_name"], lakebaseApplicationName(); got != want {
+				t.Errorf("application_name = %q, want %q", got, want)
+			}
 			if cfg.MaxConnLifetime != tc.wantMaxLifetime {
 				t.Errorf("MaxConnLifetime = %v, want %v", cfg.MaxConnLifetime, tc.wantMaxLifetime)
 			}
@@ -70,9 +79,9 @@ func TestConfigureLakebase_RequiresTLS(t *testing.T) {
 		{name: "verify-ca ok", connString: "postgres://u@localhost:5432/db?sslmode=verify-ca"},
 		{name: "verify-full ok", connString: "postgres://u@localhost:5432/db?sslmode=verify-full"},
 		{name: "disable rejected", connString: "postgres://u@localhost:5432/db?sslmode=disable", wantErr: true},
-		// allow connects in plaintext first, then falls back to TLS.
+		// allow connects in plaintext first, then falls back to TLS
 		{name: "allow rejected", connString: "postgres://u@localhost:5432/db?sslmode=allow", wantErr: true},
-		// prefer (the default when sslmode is unset) can fall back to plaintext.
+		// prefer (the default when sslmode is unset) can fall back to plaintext
 		{name: "prefer rejected", connString: "postgres://u@localhost:5432/db?sslmode=prefer", wantErr: true},
 		{name: "default (unset) rejected", connString: "postgres://u@localhost:5432/db", wantErr: true},
 	}
@@ -139,5 +148,15 @@ func TestConfigureLakebase_ChainsExistingBeforeConnect(t *testing.T) {
 	}
 	if got := connConfig.RuntimeParams["application_name"]; got != "existing-hook" {
 		t.Errorf("expected existing hook's changes to be preserved, application_name = %q", got)
+	}
+}
+
+func TestLakebaseApplicationName(t *testing.T) {
+	orig := internalPlugin.Version
+	t.Cleanup(func() { internalPlugin.Version = orig })
+
+	internalPlugin.Version = "v8.16.0"
+	if got, want := lakebaseApplicationName(), "CloudQuery_Lakebase/8.16.0"; got != want {
+		t.Errorf("lakebaseApplicationName() = %q, want %q", got, want)
 	}
 }

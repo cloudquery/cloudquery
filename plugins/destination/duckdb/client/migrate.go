@@ -31,29 +31,33 @@ type tableInfo struct {
 func (*Client) normalizeColumns(tables schema.Tables) schema.Tables {
 	normalized := make(schema.Tables, 0, len(tables))
 	for _, table := range tables {
-		normalizedTable := *table
-		normalizedTable.Columns = make(schema.ColumnList, len(table.Columns))
-		for i := range table.Columns {
-			normalizedColumn := table.Columns[i]
-			if keyListColumn(normalizedColumn) {
-				normalizedColumn.Type = duckDBToArrow("varchar")
-			}
-			// In DuckDB, a PK column must be NOT NULL, so we need to make sure that the schema we're comparing to has the same
-			// constraint.
-			if normalizedColumn.PrimaryKey {
-				normalizedColumn.NotNull = true
-			}
-			// Since multiple schema types can map to the same duckdb type we need to normalize them to avoid false positives when detecting schema changes
-			normalizedColumn.Type = duckDBToArrow(arrowToDuckDB(normalizedColumn.Type))
-			normalizedTable.Columns[i] = normalizedColumn
-		}
-		normalized = append(normalized, &normalizedTable)
+		normalized = append(normalized, normalizeTable(table))
 	}
 
 	return normalized
 }
 
-func (c *Client) nonAutoMigratableTables(tables schema.Tables, duckdbTables schema.Tables) map[string][]schema.TableColumnChange {
+func normalizeTable(table *schema.Table) *schema.Table {
+	normalizedTable := *table
+	normalizedTable.Columns = make(schema.ColumnList, len(table.Columns))
+	for i := range table.Columns {
+		normalizedColumn := table.Columns[i]
+		if keyListColumn(normalizedColumn) {
+			normalizedColumn.Type = duckDBToArrow("varchar")
+		}
+		// In DuckDB, a PK column must be NOT NULL, so we need to make sure that the schema we're comparing to has the same
+		// constraint.
+		if normalizedColumn.PrimaryKey {
+			normalizedColumn.NotNull = true
+		}
+		// Since multiple schema types can map to the same duckdb type we need to normalize them to avoid false positives when detecting schema changes
+		normalizedColumn.Type = duckDBToArrow(arrowToDuckDB(normalizedColumn.Type))
+		normalizedTable.Columns[i] = normalizedColumn
+	}
+	return &normalizedTable
+}
+
+func (*Client) nonAutoMigratableTables(tables schema.Tables, duckdbTables schema.Tables) map[string][]schema.TableColumnChange {
 	result := make(map[string][]schema.TableColumnChange)
 	for _, t := range tables {
 		duckdbTable := duckdbTables.Get(t.Name)
@@ -61,7 +65,7 @@ func (c *Client) nonAutoMigratableTables(tables schema.Tables, duckdbTables sche
 			continue
 		}
 		changes := t.GetChanges(duckdbTable)
-		if !c.canAutoMigrate(changes) {
+		if !canAutoMigrate(changes) {
 			result[t.Name] = changes
 		}
 	}
@@ -79,7 +83,7 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table, chan
 	return nil
 }
 
-func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
+func canAutoMigrate(changes []schema.TableColumnChange) bool {
 	for _, change := range changes {
 		if change.Type == schema.TableColumnChangeTypeAdd && (change.Current.PrimaryKey || change.Current.NotNull) {
 			return false
@@ -150,7 +154,7 @@ func (c *Client) MigrateTables(ctx context.Context, msgs message.WriteMigrateTab
 		}
 
 		changes := table.GetChanges(duckdb)
-		if c.canAutoMigrate(changes) {
+		if canAutoMigrate(changes) {
 			c.logger.Info().Str("table", table.Name).Msg("Table exists, auto-migrating")
 			if err := c.autoMigrateTable(ctx, table, changes); err != nil {
 				return err

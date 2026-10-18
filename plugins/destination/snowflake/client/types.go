@@ -39,6 +39,10 @@ func SchemaTypeToSnowflake(t arrow.DataType) string {
 	}
 }
 
+func effectiveType(t arrow.DataType) arrow.DataType {
+	return SnowflakeToSchemaType(SchemaTypeToSnowflake(t))
+}
+
 func SnowflakeToSchemaType(t string) arrow.DataType {
 	t = strings.ToLower(strings.TrimSpace(t))
 	if strings.HasSuffix(t, "[]") {

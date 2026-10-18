@@ -99,10 +99,13 @@ jobs:
         run: npm ci
         working-directory: ${{ matrix.plugin.ui }}
 
+      - name: Read CloudQuery CLI version
+        id: cloudquery-cli-version
+        run: echo "version=$(tr -d '[:space:]' < "$GITHUB_WORKSPACE/.github/cloudquery-cli-version")" >> "$GITHUB_OUTPUT"
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@757b19eb8496cf9e89a78de54f2c677253f54f6b # v5.0.3
         with:
-          version: v6.43.0
+          version: ${{ steps.cloudquery-cli-version.outputs.version }}
 
       - name: Build UI for ${{ matrix.plugin.dir }}
         working-directory: ${{ matrix.plugin.ui }}

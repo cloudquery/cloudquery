@@ -4,6 +4,7 @@ import (
 	"context"
 	"crypto/tls"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -32,9 +33,12 @@ type Client struct {
 
 var AnonT = gremlingo.T__
 
-func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewClientOptions) (plugin.Client, error) {
+func New(ctx context.Context, logger zerolog.Logger, spec []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
 	c := &Client{
 		logger: logger.With().Str("module", "gremlin").Logger(),
+	}
+	if opts.NoConnection {
+		return c, nil
 	}
 	if err := json.Unmarshal(spec, &c.spec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal gremlin spec: %w", err)
@@ -78,6 +82,9 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewCl
 }
 
 func (c *Client) Close(ctx context.Context) error {
+	if c.client == nil {
+		return errors.New("client already closed or not initialized")
+	}
 	defer c.client.Close()
 	if err := c.writer.Close(ctx); err != nil {
 		return fmt.Errorf("failed to close writer: %w", err)

@@ -1,6 +1,7 @@
 package client
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -33,7 +34,7 @@ func New(ctx context.Context, logger zerolog.Logger, s []byte, opts plugin.NewCl
 	c := &Client{
 		logger: logger.With().Str("module", "azb").Logger(),
 	}
-	if opts.NoConnection {
+	if opts.NoConnection && isEmptySpec(s) {
 		return c, nil
 	}
 
@@ -50,6 +51,11 @@ func New(ctx context.Context, logger zerolog.Logger, s []byte, opts plugin.NewCl
 		return nil, fmt.Errorf("failed to create filetypes client: %w", err)
 	}
 	c.Client = filetypesClient
+
+	if opts.NoConnection {
+		return c, nil
+	}
+
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create Azure credential: %w", err)
@@ -77,6 +83,14 @@ func New(ctx context.Context, logger zerolog.Logger, s []byte, opts plugin.NewCl
 	return c, nil
 }
 
+func isEmptySpec(s []byte) bool {
+	trimmed := bytes.TrimSpace(s)
+	return len(trimmed) == 0 || bytes.Equal(trimmed, []byte("null"))
+}
+
 func (c *Client) Close(ctx context.Context) error {
+	if c.writer == nil {
+		return nil
+	}
 	return c.writer.Close(ctx)
 }

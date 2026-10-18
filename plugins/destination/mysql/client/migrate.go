@@ -39,7 +39,7 @@ func (*Client) normalizeColumn(col schema.Column) schema.Column {
 	})
 }
 
-func (c *Client) nonAutoMigratableTables(tables schema.Tables, mysqlTables schema.Tables) map[string][]schema.TableColumnChange {
+func (*Client) nonAutoMigratableTables(tables schema.Tables, mysqlTables schema.Tables) map[string][]schema.TableColumnChange {
 	result := make(map[string][]schema.TableColumnChange)
 	for _, t := range tables {
 		mysqlTable := mysqlTables.Get(t.Name)
@@ -47,14 +47,14 @@ func (c *Client) nonAutoMigratableTables(tables schema.Tables, mysqlTables schem
 			continue
 		}
 		changes := mysqlTable.GetChanges(t)
-		if !c.canAutoMigrate(changes) {
+		if !canAutoMigrate(changes) {
 			result[t.Name] = changes
 		}
 	}
 	return result
 }
 
-func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
+func canAutoMigrate(changes []schema.TableColumnChange) bool {
 	for _, change := range changes {
 		switch change.Type {
 		case schema.TableColumnChangeTypeAdd:
@@ -136,7 +136,7 @@ func (c *Client) MigrateTables(ctx context.Context, msgs message.WriteMigrateTab
 			}
 		} else {
 			changes := table.GetChanges(mysql)
-			if c.canAutoMigrate(changes) {
+			if canAutoMigrate(changes) {
 				c.logger.Info().Str("table", table.Name).Msg("Table exists, auto-migrating")
 				if err := c.autoMigrateTable(ctx, table, changes); err != nil {
 					return err
