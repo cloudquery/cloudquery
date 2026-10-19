@@ -20,6 +20,8 @@ const (
 func main() {
 	p := plugin.NewPlugin(internalPlugin.Name, internalPlugin.Version, client.New,
 		plugin.WithKind(internalPlugin.Kind),
+		// Write passes the messages to an SDK writer, which commits every batch before acknowledging a flush.
+		plugin.WithFlushSupport(),
 		plugin.WithTeam(internalPlugin.Team),
 		plugin.WithJSONSchema(spec.JSONSchema),
 		plugin.WithConnectionTester(client.ConnectionTester),

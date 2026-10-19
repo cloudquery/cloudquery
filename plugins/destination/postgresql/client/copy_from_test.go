@@ -35,7 +35,7 @@ func TestPgPluginCopyFrom(t *testing.T) {
 	forceCopyFrom(t)
 
 	ctx := context.Background()
-	p := plugin.NewPlugin("postgresql", "development", New)
+	p := plugin.NewPlugin("postgresql", "development", New, plugin.WithFlushSupport())
 	b, err := json.Marshal(&spec.Spec{
 		ConnectionString: getTestConnection(),
 		PgxLogLevel:      spec.LogLevel(tracelog.LogLevelError),
