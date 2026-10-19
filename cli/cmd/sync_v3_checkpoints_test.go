@@ -28,7 +28,9 @@ import (
 	"github.com/stretchr/testify/require"
 	"golang.org/x/sync/errgroup"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/credentials/insecure"
+	"google.golang.org/grpc/status"
 	"google.golang.org/grpc/test/bufconn"
 
 	"github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0"
@@ -498,6 +500,8 @@ type fakeCheckpointSource struct {
 	idle bool
 	// keeps the stream open without sending more, until closed
 	release chan struct{}
+	// returned once the responses are sent, as a source that fails after its last checkpoint does
+	err error
 
 	mu      gosync.Mutex
 	request *plugin.Sync_Request
@@ -525,7 +529,7 @@ func (s *fakeCheckpointSource) Sync(req *plugin.Sync_Request, stream plugin.Plug
 		case <-stream.Context().Done():
 		}
 	}
-	return nil
+	return s.err
 }
 
 func startFakeServer(t *testing.T, register func(*grpc.Server)) string {
@@ -1580,7 +1584,34 @@ func TestSyncSummaryTellsWhyNoStateWasSaved(t *testing.T) {
 				return
 			}
 			require.ErrorAs(t, err, new(*stateNotSavedError))
-			require.Equal(t, "destination dest: table items: disk full", summary.StateError)
+			require.Equal(t, err.Error(), summary.StateError, "the summary gives the exit error")
 		})
 	}
+}
+
+func TestSyncSavesTheStateBeforeASourceError(t *testing.T) {
+	// the checkpoint is not due yet, so only the end of the sync commits it
+	log := &eventLog{}
+	source := &fakeCheckpointSource{err: status.Error(codes.Internal, "failed to finish sync")}
+	_, err := syncWithFakeSource(t, source, &fakeWritePlugin{name: "dest", log: log, supportsFlush: true},
+		itemsInsert(t, 1, 2),
+		checkpointResponse(t, stateEntry{"cursor", "1", 1}),
+	)
+	require.ErrorContains(t, err, "failed to finish sync")
+	require.Contains(t, log.get(), "dest: insert cq_state cursor=1", "the checkpoint covers records the source sent before it failed")
+	require.Contains(t, log.get(), "dest: close", "the state stream ends")
+}
+
+func TestSyncSummaryWarnsAboutSourcesThatSaveTheirOwnState(t *testing.T) {
+	destination := &fakeWritePlugin{name: "dest", log: &eventLog{}, supportsFlush: true, flushFailure: "table items: disk full"}
+	opts := fakeSyncOptions(t, &fakeCheckpointSource{}, []*fakeWritePlugin{destination}, specs.WriteModeAppend, itemsInsert(t, 1))
+	opts.summaryLocation = path.Join(t.TempDir(), "summary.json")
+	err := syncConnectionV3(context.Background(), opts)
+	require.ErrorAs(t, err, new(*stateNotSavedError))
+
+	summaryBytes, readErr := os.ReadFile(opts.summaryLocation)
+	require.NoError(t, readErr)
+	var summary syncSummary
+	require.NoError(t, json.Unmarshal(summaryBytes, &summary))
+	require.Contains(t, summary.StateError, "if it saves state itself, that state may be past the lost records")
 }

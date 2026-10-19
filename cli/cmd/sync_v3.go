@@ -515,7 +515,12 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 				if errors.Is(err, io.EOF) {
 					break
 				}
-				return fmt.Errorf("unexpected error from sync client receive: %w", err)
+				err = fmt.Errorf("unexpected error from sync client receive: %w", err)
+				if checkpoints != nil && gctx.Err() == nil {
+					// a checkpoint covers only the records sent before it, so a later source error leaves it valid
+					err = errors.Join(err, checkpoints.finish(gctx), checkpoints.close())
+				}
+				return err
 			}
 			syncResponseMsg := r.GetMessage()
 			switch m := syncResponseMsg.(type) {
@@ -712,11 +717,11 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 		}
 	}
 
-	// why the sync saved no state, so that the summary tells a sync that lost records from one that crashed
+	// why the sync stopped saving state, so that the summary tells a sync that lost records from one that crashed
 	var stateError string
 	if checkpoints != nil {
 		if err := checkpoints.failure(); err != nil {
-			stateError = err.Error()
+			stateError = (&stateNotSavedError{err: err, checkpointed: checkpoints.received}).Error()
 		}
 	}
 	for i := range destinationsClients {
