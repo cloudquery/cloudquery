@@ -25,11 +25,7 @@ func New(destinationSpecs []specs.Destination) *TableNameChanger {
 func (c TableNameChanger) UpdateTableNames(destinationName string, tables map[string]bool) map[string]bool {
 	newTables := make(map[string]bool, len(tables))
 	for oldTableName := range tables {
-		if newTableName, ok := c.tableNameChanges[destinationName][oldTableName]; ok {
-			newTables[newTableName] = true
-		} else {
-			newTables[oldTableName] = true
-		}
+		newTables[c.UpdateTableName(destinationName, oldTableName)] = true
 	}
 	return newTables
 }
