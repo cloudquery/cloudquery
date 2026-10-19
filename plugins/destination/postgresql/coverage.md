@@ -71,7 +71,8 @@
 | github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/insert_embeddings.go:282: | sanitizeIdentifiers | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/insert_embeddings.go:290: | makeSlice | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/insert_embeddings.go:298: | makePlaceholders | 0.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/lakebase.go:26: | configureLakebase | 77.8% |
+| github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/lakebase.go:27: | lakebaseApplicationName | 100.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/lakebase.go:35: | configureLakebase | 81.8% |
 | github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/list_tables.go:78: | listTables | 92.9% |
 | github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/messages.go:8: | tablesFromMessages | 90.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/migrate.go:20: | MigrateTableBatch | 73.5% |
@@ -137,4 +138,4 @@
 | github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/pgarrow/to_pg.go:10: | ArrowToPg10 | 60.7% |
 | github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/pgarrow/to_pg.go:72: | ArrowToCockroach | 57.1% |
 | github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/pgarrow/to_pg.go:131: | ArrowToCrateDB | 0.0% |
-| total: | (statements) | 69.2% |
+| total: | (statements) | 69.3% |
