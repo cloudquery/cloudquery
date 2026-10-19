@@ -5,6 +5,21 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.49.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.48.0...cli-v6.49.0) (2026-10-19)
+
+
+### Features
+
+* Persist source state only after destinations commit the synced records ([#23546](https://github.com/cloudquery/cloudquery/issues/23546)) ([1ad79a6](https://github.com/cloudquery/cloudquery/commit/1ad79a690a0e4ac01d5afdbf9f6806793af76b63))
+
+
+### Bug Fixes
+
+* Apply transformer table name changes with --no-migrate ([#23550](https://github.com/cloudquery/cloudquery/issues/23550)) ([dbd349e](https://github.com/cloudquery/cloudquery/commit/dbd349e1a905d9ce2f56f9047cb7530cf26f8301))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.28.2 ([#23551](https://github.com/cloudquery/cloudquery/issues/23551)) ([c44b66d](https://github.com/cloudquery/cloudquery/commit/c44b66de1727a38e5033a2f851e32af01ba19e3a))
+* Fix nil pointer dereference in getDockerToken on request creation failure ([#23276](https://github.com/cloudquery/cloudquery/issues/23276)) ([5b4f2ee](https://github.com/cloudquery/cloudquery/commit/5b4f2ee40e3eca886571fb742c46f32188c1a870))
+* Run delete-stale on every overwrite-delete-stale destination ([#23548](https://github.com/cloudquery/cloudquery/issues/23548)) ([ab7923a](https://github.com/cloudquery/cloudquery/commit/ab7923abdf6142070d39e080fd0ef14abe21f23b))
+
 ## [6.48.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.47.0...cli-v6.48.0) (2026-10-12)
 
 
