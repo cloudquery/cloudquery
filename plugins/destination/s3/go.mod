@@ -14,7 +14,7 @@ require (
 	github.com/aws/smithy-go v1.28.5
 	github.com/cloudquery/codegen v0.4.1
 	github.com/cloudquery/filetypes/v4 v4.9.0
-	github.com/cloudquery/plugin-sdk/v4 v4.98.0
+	github.com/cloudquery/plugin-sdk/v4 v4.99.0
 	github.com/google/go-cmp v0.7.0
 	github.com/google/uuid v1.6.0
 	github.com/invopop/jsonschema v0.14.0
@@ -38,8 +38,8 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.11.7 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.14.6 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.20.6 // indirect
-	github.com/aws/aws-sdk-go-v2/service/licensemanager v1.47.0 // indirect
-	github.com/aws/aws-sdk-go-v2/service/marketplacemetering v1.45.0 // indirect
+	github.com/aws/aws-sdk-go-v2/service/licensemanager v1.47.4 // indirect
+	github.com/aws/aws-sdk-go-v2/service/marketplacemetering v1.46.1 // indirect
 	github.com/aws/aws-sdk-go-v2/service/signin v1.10.4 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sso v1.38.4 // indirect
 	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.43.4 // indirect
@@ -48,7 +48,7 @@ require (
 	github.com/cenkalti/backoff/v5 v5.0.3 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/cloudquery/cloudquery-api-go v1.14.13 // indirect
-	github.com/cloudquery/plugin-pb-go v1.27.24 // indirect
+	github.com/cloudquery/plugin-pb-go v1.28.2 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/getsentry/sentry-go v0.49.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect

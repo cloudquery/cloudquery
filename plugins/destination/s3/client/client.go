@@ -195,6 +195,12 @@ func isEmptySpec(s []byte) bool {
 	return len(trimmed) == 0 || bytes.Equal(trimmed, []byte("null"))
 }
 
+// SupportsFlush reports whether flushes can end objects early. Without {{UUID}} in the path, every object of a table
+// gets the same key, so a flush would make the next object overwrite the uploaded one.
+func (c *Client) SupportsFlush() bool {
+	return c.spec.PathContainsUUID()
+}
+
 func (c *Client) Close(ctx context.Context) error {
 	if c.writer == nil {
 		return nil
