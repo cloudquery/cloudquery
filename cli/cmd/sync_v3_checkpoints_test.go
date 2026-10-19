@@ -87,6 +87,7 @@ func (p *fakeWritePlugin) Init(context.Context, *plugin.Init_Request) (*plugin.I
 }
 
 func (p *fakeWritePlugin) Close(context.Context, *plugin.Close_Request) (*plugin.Close_Response, error) {
+	p.log.add(p.name + ": close plugin")
 	return &plugin.Close_Response{}, p.closeRPCErr
 }
 
@@ -119,6 +120,9 @@ func (p *fakeWritePlugin) Write(stream plugin.Plugin_WriteServer) error {
 		req, err := stream.Recv()
 		if errors.Is(err, io.EOF) {
 			p.log.add(p.name + ": close")
+			if p.closeErr != nil {
+				return p.closeErr
+			}
 			return stream.SendAndClose(&plugin.Write_Response{})
 		}
 		if err != nil {
@@ -1262,12 +1266,19 @@ func TestFlushingWriteClientClosesAfterTheDestinationEndsItsStream(t *testing.T)
 }
 
 func TestSyncClosesEveryDestinationWhenOneFailsToClose(t *testing.T) {
-	log := &eventLog{}
-	failing := &fakeWritePlugin{name: "dest", log: log, supportsFlush: true, closeErr: errors.New("commit failed")}
-	healthy := &fakeWritePlugin{name: "dest2", log: log, supportsFlush: true}
-	err := syncWithFakeDestinations(t, &fakeCheckpointSource{}, []*fakeWritePlugin{failing, healthy}, specs.WriteModeAppend, itemsInsert(t, 1))
-	require.ErrorContains(t, err, "commit failed")
-	require.Contains(t, log.get(), "dest2: close")
+	for _, flush := range []bool{true, false} {
+		t.Run(fmt.Sprintf("flush=%t", flush), func(t *testing.T) {
+			log := &eventLog{}
+			failing := &fakeWritePlugin{name: "dest", log: log, supportsFlush: flush, closeErr: errors.New("commit failed")}
+			healthy := &fakeWritePlugin{name: "dest2", log: log, supportsFlush: flush}
+			err := syncWithFakeDestinations(t, &fakeCheckpointSource{}, []*fakeWritePlugin{failing, healthy}, specs.WriteModeAppend, itemsInsert(t, 1))
+			require.ErrorContains(t, err, "commit failed")
+			events := log.get()
+			for _, event := range []string{"dest: close", "dest: close plugin", "dest2: close", "dest2: close plugin"} {
+				require.Contains(t, events, event, "every destination is closed")
+			}
+		})
+	}
 }
 
 func TestSyncSkipsDeleteStaleForTablesThatFailAfterTheFirstFailure(t *testing.T) {
@@ -1343,13 +1354,21 @@ func TestSyncReportsStreamErrorsAfterAFailure(t *testing.T) {
 		flushFailure: "table items: disk full", failedTables: []string{"items"},
 		closeErr: errors.New("table others: commit failed"),
 	}
-	_, err := syncWithFakeSourceMode(t, &fakeCheckpointSource{}, destination, specs.WriteModeAppend,
+	opts := fakeSyncOptions(t, &fakeCheckpointSource{}, []*fakeWritePlugin{destination}, specs.WriteModeAppend,
 		itemsInsert(t, 1, 2),
 		checkpointResponse(t, stateEntry{"cursor", "1", 1}),
 	)
+	opts.summaryLocation = path.Join(t.TempDir(), "summary.json")
+	err := syncConnectionV3(context.Background(), opts)
 	require.ErrorAs(t, err, new(*stateNotSavedError))
 	require.ErrorContains(t, err, "table items: disk full")
 	require.ErrorContains(t, err, "table others: commit failed", "a later loss is not hidden behind the first failure")
+
+	summaryBytes, readErr := os.ReadFile(opts.summaryLocation)
+	require.NoError(t, readErr)
+	var summary syncSummary
+	require.NoError(t, json.Unmarshal(summaryBytes, &summary))
+	require.Equal(t, err.Error(), summary.StateError, "the summary has the failures reported as the streams close")
 }
 
 func TestSyncKeepsUnsavedStateWithLaterErrors(t *testing.T) {

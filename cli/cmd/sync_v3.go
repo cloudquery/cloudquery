@@ -718,12 +718,16 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 	}
 
 	// why the sync stopped saving state, so that the summary tells a sync that lost records from one that crashed
-	var stateError string
-	if checkpoints != nil {
-		if err := checkpoints.failure(); err != nil {
-			stateError = (&stateNotSavedError{err: err, checkpointed: checkpoints.received}).Error()
+	stateError := func() string {
+		if checkpoints == nil {
+			return ""
 		}
+		if err := checkpoints.failure(); err != nil {
+			return (&stateNotSavedError{err: err, checkpointed: checkpoints.received}).Error()
+		}
+		return ""
 	}
+	summaries := make([]syncSummary, len(destinationsClients))
 	for i := range destinationsClients {
 		m := destinationsClients[i].Metrics()
 		summary := syncSummary{
@@ -746,7 +750,7 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 			ResourcesPerTable:   resourcesPerTable,
 			ErrorsPerTable:      errorsPerTable,
 			DurationsPerTableMs: durationsPerTable,
-			StateError:          stateError,
+			StateError:          stateError(),
 		}
 
 		if destinationSpecs[i].SyncGroupId != "" {
@@ -758,11 +762,7 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 			summary.ShardTotal = lo.ToPtr(int(shard.total))
 		}
 
-		if err := persistSummary(summaryLocation, summary); err != nil {
-			log.Warn().Err(err).Msg("Failed to persist sync summary")
-		}
-
-		log.Info().Interface("summary", summary).Msg("Sync summary")
+		summaries[i] = summary
 		if !destinationSpecs[i].SyncSummary {
 			continue
 		}
@@ -771,18 +771,31 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 			metadataDataErrors = errors.Join(metadataDataErrors, err)
 		}
 	}
-	if metadataDataErrors != nil {
-		return metadataDataErrors
-	}
 
 	var closeErrs []error
-	for i := range destinationsClients {
-		if _, err := writeClients[i].CloseAndRecv(); err != nil {
-			closeErrs = append(closeErrs, err)
+	if metadataDataErrors == nil {
+		for i := range destinationsClients {
+			if _, err := writeClients[i].CloseAndRecv(); err != nil {
+				closeErrs = append(closeErrs, err)
+			}
+			if _, err := destinationsPbClients[i].Close(ctx, &plugin.Close_Request{}); err != nil {
+				closeErrs = append(closeErrs, err)
+			}
 		}
-		if _, err := destinationsPbClients[i].Close(ctx, &plugin.Close_Request{}); err != nil {
-			closeErrs = append(closeErrs, err)
+	}
+
+	// the summary files and logs come once the streams are closed, so that state_error also has failures reported as
+	// they close
+	finalStateError := stateError()
+	for _, summary := range summaries {
+		summary.StateError = finalStateError
+		if err := persistSummary(summaryLocation, summary); err != nil {
+			log.Warn().Err(err).Msg("Failed to persist sync summary")
 		}
+		log.Info().Interface("summary", summary).Msg("Sync summary")
+	}
+	if metadataDataErrors != nil {
+		return metadataDataErrors
 	}
 	if err := errors.Join(closeErrs...); err != nil {
 		return err
