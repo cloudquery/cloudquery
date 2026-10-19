@@ -320,9 +320,9 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 		}.stateWriter()
 		checkpointsEnabled = disabledReason == ""
 		if checkpointsEnabled {
-			log.Debug().Str("source", sourceSpec.Name).Msg("Requesting state checkpoints")
+			log.Info().Str("source", sourceSpec.Name).Msg("Requesting state checkpoints, so the state is saved after destinations commit the records synced before it")
 		} else {
-			log.Debug().Str("source", sourceSpec.Name).Str("reason", disabledReason).Msg("State checkpoints disabled")
+			log.Info().Str("source", sourceSpec.Name).Str("reason", disabledReason).Msg("State checkpoints are off, so the source saves its state itself")
 		}
 	}
 
