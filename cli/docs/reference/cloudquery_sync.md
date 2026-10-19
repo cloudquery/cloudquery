@@ -9,6 +9,15 @@ Sync resources from configured source plugins to destinations
 
 Sync resources from configured source plugins to destinations
 
+## Incremental State
+
+For a source with `backend_options`, the CLI saves the incremental state only after every destination commits the records synced before it. This needs a source integration that sends state checkpoints, and destination integrations that support flushing: their changelogs say when they do. Otherwise the source saves its state itself, as before. The sync log says whether the CLI requested state checkpoints, or why not.
+
+If a destination or the state backend fails to commit records, the CLI saves no more state for that source, finishes the sync and exits with an error, which the sync summary also gives as `state_error`. Then:
+
+- The next sync syncs again every record after the last saved state, so destinations in append mode get those records again.
+- Delete-stale is skipped for the tables that failed and their related tables, or for every table if the destination does not say which tables failed.
+
 ## Flag Details
 
 ### --summary-location
@@ -47,6 +56,7 @@ The summary contains the following fields:
 | `resources_per_table`    | object   | Resource count per table                                          |
 | `errors_per_table`       | object   | Error count per table                                             |
 | `durations_per_table_ms` | object   | Duration per table in milliseconds                                |
+| `state_error`            | string   | Why the sync stopped saving state (if it failed to commit)        |
 
 ### --invocation-id
 

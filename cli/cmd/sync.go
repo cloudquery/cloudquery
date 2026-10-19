@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"math"
 	"os"
@@ -20,6 +21,15 @@ import (
 const (
 	syncShort = "Sync resources from configured source plugins to destinations"
 	syncLong  = `Sync resources from configured source plugins to destinations
+
+### Incremental State
+
+For a source with ` + "`backend_options`" + `, the CLI saves the incremental state only after every destination commits the records synced before it. This needs a source integration that sends state checkpoints, and destination integrations that support flushing: their changelogs say when they do. Otherwise the source saves its state itself, as before. The sync log says whether the CLI requested state checkpoints, or why not.
+
+If a destination or the state backend fails to commit records, the CLI saves no more state for that source, finishes the sync and exits with an error, which the sync summary also gives as ` + "`state_error`" + `. Then:
+
+- The next sync syncs again every record after the last saved state, so destinations in append mode get those records again.
+- Delete-stale is skipped for the tables that failed and their related tables, or for every table if the destination does not say which tables failed.
 
 ### Flag Details
 
@@ -57,6 +67,7 @@ The summary contains the following fields:
 | ` + "`resources_per_table`" + `    | object   | Resource count per table                                          |
 | ` + "`errors_per_table`" + `       | object   | Error count per table                                             |
 | ` + "`durations_per_table_ms`" + ` | object   | Duration per table in milliseconds                                |
+| ` + "`state_error`" + `            | string   | Why the sync stopped saving state (if it failed to commit)        |
 
 #### --invocation-id
 
@@ -174,7 +185,7 @@ func parseShard(cmd *cobra.Command) (*shard, error) {
 	return &shard{num: int32(num), total: int32(total)}, nil
 }
 
-func sync(cmd *cobra.Command, args []string) error {
+func sync(cmd *cobra.Command, args []string) (syncErr error) {
 	cqDir, err := cmd.Flags().GetString("cq-dir")
 	if err != nil {
 		return err
@@ -425,6 +436,11 @@ func sync(cmd *cobra.Command, args []string) error {
 		transformerPluginClients = append(transformerPluginClients, transPluginClient)
 	}
 
+	// syncs that finished without saving their state, which do not stop the other sources
+	var stateNotSaved error
+	defer func() {
+		syncErr = errors.Join(syncErr, stateNotSaved)
+	}()
 	for _, source := range sources {
 		cl := sourcePluginClients.ClientByName(source.Name)
 		versions, err := cl.Versions(ctx)
@@ -535,7 +551,11 @@ func sync(cmd *cobra.Command, args []string) error {
 				tableDurations:            tableDurations.GetAll,
 			}
 			if err := syncConnectionV3(ctx, syncOptions); err != nil {
-				return fmt.Errorf("failed to sync v3 source %s: %w", cl.Name(), err)
+				// only a sync that finished goes on with the next source: a joined state-not-saved error explains a failure
+				if _, finished := err.(*stateNotSavedError); !finished { //nolint:errorlint
+					return fmt.Errorf("failed to sync v3 source %s: %w", cl.Name(), err)
+				}
+				stateNotSaved = errors.Join(stateNotSaved, fmt.Errorf("source %s: %w", cl.Name(), err))
 			}
 
 		case 2:

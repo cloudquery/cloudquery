@@ -42,6 +42,7 @@ type syncSummary struct {
 	ResourcesPerTable   map[string]uint64 `json:"resources_per_table,omitempty"`
 	ErrorsPerTable      map[string]uint64 `json:"errors_per_table,omitempty"`
 	DurationsPerTableMs map[string]uint64 `json:"durations_per_table_ms,omitempty"`
+	StateError          string            `json:"state_error,omitempty"`
 }
 
 func persistSummary(filename string, summary syncSummary) error {
@@ -119,7 +120,7 @@ func generateSummaryTable() (*schema.Table, error) {
 	return t[0], nil
 }
 
-func migrateSummaryTable(writeClient safeWriteClient, destTransformer *transformer.RecordTransformer, spec specs.Destination) error {
+func migrateSummaryTable(writeClient writeClient, destTransformer *transformer.RecordTransformer, spec specs.Destination) error {
 	if !spec.SyncSummary {
 		return nil
 	}
@@ -147,7 +148,7 @@ func migrateSummaryTable(writeClient safeWriteClient, destTransformer *transform
 	return nil
 }
 
-func sendSummary(writeClient safeWriteClient, destinationSpec specs.Destination, destinationsClient *managedplugin.Client, destinationTransformer *transformer.RecordTransformer, summary *syncSummary, noMigrate bool) error {
+func sendSummary(writeClient writeClient, destinationSpec specs.Destination, destinationsClient *managedplugin.Client, destinationTransformer *transformer.RecordTransformer, summary *syncSummary, noMigrate bool) error {
 	summaryTable, err := generateSummaryTable()
 	if err != nil {
 		return err

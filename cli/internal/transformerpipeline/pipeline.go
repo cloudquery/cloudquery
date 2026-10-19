@@ -30,12 +30,23 @@ var (
 type TransformerPipeline struct {
 	clientWrappers []clientWrapper
 	eg             *errgroup.Group
+
+	// without transformers, every sent record is delivered to the output
+	passthrough bool
+	sent        atomic.Int64
+	delivered   atomic.Int64
+	onDelivered chan struct{}
 }
 
 func New(ctx context.Context, transformClients []plugin.Plugin_TransformClient) (*TransformerPipeline, context.Context, error) {
 	var (
 		eg, gctx = errgroup.WithContext(ctx)
-		tp       = &TransformerPipeline{clientWrappers: make([]clientWrapper, len(transformClients)), eg: eg}
+		tp       = &TransformerPipeline{
+			clientWrappers: make([]clientWrapper, len(transformClients)),
+			eg:             eg,
+			passthrough:    len(transformClients) == 0,
+			onDelivered:    make(chan struct{}, 1),
+		}
 	)
 
 	// Make sure there's at least one transformer
@@ -91,6 +102,9 @@ func (lp *TransformerPipeline) Send(data []byte) error {
 	for {
 		select {
 		case err := <-sendCh:
+			if err == nil {
+				lp.sent.Add(1)
+			}
 			return err
 		case <-time.After(1 * time.Second): // Check if pipeline is closed every second
 			if lp.clientWrappers[0].isClosed.Load() {
@@ -110,8 +124,35 @@ func (lp *TransformerPipeline) OnOutput(fn func([]byte) error) error {
 			// Our undocumented convention is that destination errors are unrecoverable. Thus, at this
 			// point we close the pipeline.
 			lp.Close()
+			return err
 		}
-		return err
+		lp.delivered.Add(1)
+		select {
+		case lp.onDelivered <- struct{}{}:
+		default:
+		}
+		return nil
+	}
+	return nil
+}
+
+// WaitDelivered returns once every record sent so far has been passed to the OnOutput callback.
+// Only pipelines without transformers support it, as transformers may not output a record for each input.
+func (lp *TransformerPipeline) WaitDelivered(ctx context.Context) error {
+	if !lp.passthrough {
+		return errors.New("cannot wait for records to pass through transformers")
+	}
+	target := lp.sent.Load()
+	for lp.delivered.Load() < target {
+		select {
+		case <-lp.onDelivered:
+		case <-ctx.Done():
+			return ctx.Err()
+		case <-time.After(1 * time.Second): // Check if pipeline is closed every second
+			if lp.clientWrappers[0].isClosed.Load() {
+				return ErrPipelineClosed
+			}
+		}
 	}
 	return nil
 }
