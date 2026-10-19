@@ -46,12 +46,12 @@ github.com/clipperhouse/uax29/v2 v2.7.0 h1:+gs4oBZ2gPfVrKPthwbMzWZDaAFPGYK72F0NJ
 github.com/clipperhouse/uax29/v2 v2.7.0/go.mod h1:EFJ2TJMRUaplDxHKj1qAEhCtQPW2tJSwu5BF98AuoVM=
 github.com/cloudquery/cloudquery-api-go v1.14.13 h1:+lu1mLKqVSwrc02eqf9vfqGj9c0RowtJowx3VCBueoY=
 github.com/cloudquery/cloudquery-api-go v1.14.13/go.mod h1:u4uzOBEss9hJZco/tULIZuObqiBD748kejlxZ2AqOxs=
-github.com/cloudquery/cloudquery/cli/v6 v6.48.0 h1:Hb10PeH+ng19J5sVSWIcghYT1eUcu1Osv1zNpjNQqFA=
-github.com/cloudquery/cloudquery/cli/v6 v6.48.0/go.mod h1:5TEMx3/IFte40ulEkecjl+jCYAsRY5ugCEnKuLip+TA=
+github.com/cloudquery/cloudquery/cli/v6 v6.49.0 h1:hOYD435IqvKOhjokyuv7st8CUZJfOsmzPqWpcqHv5Lk=
+github.com/cloudquery/cloudquery/cli/v6 v6.49.0/go.mod h1:s88H2j3xU70e1qyMDzgfoDFo5fqfkc1+lJ+xtcW+QR4=
 github.com/cloudquery/codegen v0.4.1 h1:c9D18N925tUvnDeGHIl3JWKj37TyII9daHufkf8hU+Y=
 github.com/cloudquery/codegen v0.4.1/go.mod h1:QWIOD6R1aCa+YM+th+9Qt9lZw+ztdJR9JDEMLWyazwM=
-github.com/cloudquery/plugin-pb-go v1.28.1 h1:ybmzSjSsptntiUeh1PCOuxYqpdtHRgYC3CaFDLtNNic=
-github.com/cloudquery/plugin-pb-go v1.28.1/go.mod h1:06VOdOlk5Y64CahAxQnmGy6l7PXJYm3SAwNxpEWPwn4=
+github.com/cloudquery/plugin-pb-go v1.28.2 h1:SIIg/0WbdHedM/yOon/9x6tSq0wr6uBjMhEI4WSPNOI=
+github.com/cloudquery/plugin-pb-go v1.28.2/go.mod h1:06VOdOlk5Y64CahAxQnmGy6l7PXJYm3SAwNxpEWPwn4=
 github.com/cloudquery/plugin-sdk/v4 v4.98.0 h1:mghjLE1ubwVbch56WHgeu6Riec5wkFqGsgo4fDP52OY=
 github.com/cloudquery/plugin-sdk/v4 v4.98.0/go.mod h1:hjRfyspLbB6djHN8h+ieWP2lw4gfoHjZtorhkf0xC3Y=
 github.com/containerd/errdefs v1.0.0 h1:tg5yIfIlQIrxYtu9ajqY42W3lpS19XqdxRQeEwYG8PI=
