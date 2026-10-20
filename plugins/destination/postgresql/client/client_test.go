@@ -84,7 +84,7 @@ var safeMigrations = plugin.SafeMigrations{
 
 func TestPgPlugin(t *testing.T) {
 	ctx := context.Background()
-	p := plugin.NewPlugin("postgresql", "development", New)
+	p := plugin.NewPlugin("postgresql", "development", New, plugin.WithFlushSupport())
 	s := &spec.Spec{
 		ConnectionString: getTestConnection(),
 		PgxLogLevel:      spec.LogLevel(tracelog.LogLevelTrace),

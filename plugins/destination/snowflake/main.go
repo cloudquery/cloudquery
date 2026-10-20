@@ -27,6 +27,8 @@ func main() {
 			{OS: plugin.GoOSDarwin, Arch: plugin.GoArchArm64},
 		}),
 		plugin.WithKind(internalPlugin.Kind),
+		// Write passes the messages to an SDK writer, which commits every batch before acknowledging a flush.
+		plugin.WithFlushSupport(),
 		plugin.WithTeam(internalPlugin.Team),
 		plugin.WithJSONSchema(client.JSONSchema),
 		plugin.WithConnectionTester(client.NewConnectionTester(client.New)),

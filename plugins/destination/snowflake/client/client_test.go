@@ -92,7 +92,7 @@ func parseSnowflakePrivateKey(t *testing.T, pemStr string) *rsa.PrivateKey {
 func TestPlugin(t *testing.T) {
 	dsn := snowflakeTestDSN(t)
 	ctx := context.Background()
-	p := plugin.NewPlugin("snowflake", "development", New)
+	p := plugin.NewPlugin("snowflake", "development", New, plugin.WithFlushSupport())
 	spec := &Spec{
 		ConnectionString: dsn,
 	}

@@ -17,6 +17,12 @@ This is useful in various use-cases, especially in data lakes where you can quer
 
 The S3 destination utilizes batching, and supports `batch_size`, `batch_size_bytes` and `batch_timeout` options (see below).
 
+## State Checkpoints
+
+With CLI v6.49.0 or later and a source that sends state checkpoints, the S3 destination uploads every open object before the CLI saves the source's incremental state. It supports this only when `path` contains `{{UUID}}`, because each checkpoint ends the open objects and the next objects need new keys. With `no_rotate: true` or a `path` without `{{UUID}}`, the CLI turns off state checkpoints for every destination of the sync, and the source saves its state itself, as before.
+
+Checkpoints end objects before they reach `batch_size`, `batch_size_bytes` or `batch_timeout`, so a sync can write more, smaller objects.
+
 ## S3 Spec
 
 This is the (nested) spec used by the CSV destination Plugin.

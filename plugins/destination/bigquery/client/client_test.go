@@ -14,7 +14,7 @@ import (
 func TestPlugin(t *testing.T) {
 	ctx := context.Background()
 
-	p := plugin.NewPlugin("bigquery", "development", New)
+	p := plugin.NewPlugin("bigquery", "development", New, plugin.WithFlushSupport())
 	spec := &Spec{
 		ProjectID:        os.Getenv("BIGQUERY_PROJECT_ID"),
 		DatasetID:        os.Getenv("BIGQUERY_DATASET_ID"),
