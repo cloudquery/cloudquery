@@ -15,7 +15,7 @@ spec:
   name: "postgresql"
   path: "cloudquery/postgresql"
   registry: "cloudquery"
-  version: "v8.18.0" # latest version of postgresql plugin
+  version: "v8.19.0" # latest version of postgresql plugin
   write_mode: "append"
   spec:
     connection_string: "postgres://localhost:1/unreachable"
