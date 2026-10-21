@@ -1,5 +1,21 @@
 # Changelog
 
+## [4.9.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v4.8.0...plugins-destination-bigquery-v4.9.0) (2026-10-21)
+
+
+### Features
+
+* Support flushing writes for state checkpoints ([#23564](https://github.com/cloudquery/cloudquery/issues/23564)) ([46825f9](https://github.com/cloudquery/cloudquery/commit/46825f956639a8b5c7626f4dad55acecd75566ff))
+
+
+### Bug Fixes
+
+* **deps:** Update go module directive to v1.27.3 ([#23580](https://github.com/cloudquery/cloudquery/issues/23580)) ([9d1c1b3](https://github.com/cloudquery/cloudquery/commit/9d1c1b37650263b7081296a5a5a0a77fbf8abf93))
+* **deps:** Update module cloud.google.com/go/bigquery to v1.85.0 ([#23526](https://github.com/cloudquery/cloudquery/issues/23526)) ([ba46510](https://github.com/cloudquery/cloudquery/commit/ba4651039c98b08a8bf861ab414ed1f85c7d1671))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.99.0 ([#23567](https://github.com/cloudquery/cloudquery/issues/23567)) ([e42450d](https://github.com/cloudquery/cloudquery/commit/e42450d1d35ee7d5c15af590ee7189088a2bb0e7))
+* **deps:** Update module google.golang.org/api to v0.300.0 ([#23528](https://github.com/cloudquery/cloudquery/issues/23528)) ([ea6cf01](https://github.com/cloudquery/cloudquery/commit/ea6cf01fc298da327d0cb2a8bf9ec3fa97c0b5c3))
+* **deps:** Update module google.golang.org/api to v0.301.0 ([#23558](https://github.com/cloudquery/cloudquery/issues/23558)) ([b2f999e](https://github.com/cloudquery/cloudquery/commit/b2f999eb05d793ac34d315fdbe2c213ff03f20f1))
+
 ## [4.8.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v4.7.11...plugins-destination-bigquery-v4.8.0) (2026-10-08)
 
 
