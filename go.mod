@@ -2,7 +2,7 @@ module github.com/cloudquery/cloudquery/v6
 
 go 1.27.3
 
-require github.com/cloudquery/cloudquery/cli/v6 v6.49.0
+require github.com/cloudquery/cloudquery/cli/v6 v6.49.1
 
 require (
 	github.com/Masterminds/semver v1.5.0 // indirect
@@ -21,7 +21,7 @@ require (
 	github.com/clipperhouse/uax29/v2 v2.7.0 // indirect
 	github.com/cloudquery/cloudquery-api-go v1.14.13 // indirect
 	github.com/cloudquery/plugin-pb-go v1.28.2 // indirect
-	github.com/cloudquery/plugin-sdk/v4 v4.98.0 // indirect
+	github.com/cloudquery/plugin-sdk/v4 v4.99.0 // indirect
 	github.com/containerd/errdefs v1.0.0 // indirect
 	github.com/containerd/errdefs/pkg v0.3.0 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.6 // indirect
