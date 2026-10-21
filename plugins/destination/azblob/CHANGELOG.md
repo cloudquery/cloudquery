@@ -1,5 +1,14 @@
 # Changelog
 
+## [4.6.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-azblob-v4.6.1...plugins-destination-azblob-v4.6.2) (2026-10-21)
+
+
+### Bug Fixes
+
+* **deps:** Update go module directive to v1.27.3 ([#23580](https://github.com/cloudquery/cloudquery/issues/23580)) ([9d1c1b3](https://github.com/cloudquery/cloudquery/commit/9d1c1b37650263b7081296a5a5a0a77fbf8abf93))
+* **deps:** Update module github.com/Azure/azure-sdk-for-go/sdk/storage/azblob to v1.8.2 ([#23524](https://github.com/cloudquery/cloudquery/issues/23524)) ([91018b0](https://github.com/cloudquery/cloudquery/commit/91018b00a363dd9e0ecc332d27844ace064fd0b6))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.99.0 ([#23567](https://github.com/cloudquery/cloudquery/issues/23567)) ([e42450d](https://github.com/cloudquery/cloudquery/commit/e42450d1d35ee7d5c15af590ee7189088a2bb0e7))
+
 ## [4.6.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-azblob-v4.6.0...plugins-destination-azblob-v4.6.1) (2026-10-09)
 
 
