@@ -1,5 +1,20 @@
 # Changelog
 
+## [7.12.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.11.1...plugins-destination-s3-v7.12.0) (2026-10-21)
+
+
+### Features
+
+* Support flushing writes for state checkpoints ([#23564](https://github.com/cloudquery/cloudquery/issues/23564)) ([46825f9](https://github.com/cloudquery/cloudquery/commit/46825f956639a8b5c7626f4dad55acecd75566ff))
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#23523](https://github.com/cloudquery/cloudquery/issues/23523)) ([501308e](https://github.com/cloudquery/cloudquery/commit/501308eec0a674b8c8263aa24e3d226ab4c1f8c2))
+* **deps:** Update aws-sdk-go-v2 monorepo ([#23556](https://github.com/cloudquery/cloudquery/issues/23556)) ([a3f76b2](https://github.com/cloudquery/cloudquery/commit/a3f76b2a0eb77d7fcc04c5666757b22de945703d))
+* **deps:** Update go module directive to v1.27.3 ([#23580](https://github.com/cloudquery/cloudquery/issues/23580)) ([9d1c1b3](https://github.com/cloudquery/cloudquery/commit/9d1c1b37650263b7081296a5a5a0a77fbf8abf93))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.99.0 ([#23567](https://github.com/cloudquery/cloudquery/issues/23567)) ([e42450d](https://github.com/cloudquery/cloudquery/commit/e42450d1d35ee7d5c15af590ee7189088a2bb0e7))
+
 ## [7.11.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.11.0...plugins-destination-s3-v7.11.1) (2026-10-09)
 
 
