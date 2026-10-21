@@ -1,5 +1,19 @@
 # Changelog
 
+## [8.19.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.18.0...plugins-destination-postgresql-v8.19.0) (2026-10-21)
+
+
+### Features
+
+* Support flushing writes for state checkpoints ([#23564](https://github.com/cloudquery/cloudquery/issues/23564)) ([46825f9](https://github.com/cloudquery/cloudquery/commit/46825f956639a8b5c7626f4dad55acecd75566ff))
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#23555](https://github.com/cloudquery/cloudquery/issues/23555)) ([8d4a3d9](https://github.com/cloudquery/cloudquery/commit/8d4a3d944e130d5399907afe312f6373e883ba29))
+* **deps:** Update go module directive to v1.27.3 ([#23580](https://github.com/cloudquery/cloudquery/issues/23580)) ([9d1c1b3](https://github.com/cloudquery/cloudquery/commit/9d1c1b37650263b7081296a5a5a0a77fbf8abf93))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.99.0 ([#23567](https://github.com/cloudquery/cloudquery/issues/23567)) ([e42450d](https://github.com/cloudquery/cloudquery/commit/e42450d1d35ee7d5c15af590ee7189088a2bb0e7))
+
 ## [8.18.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.17.0...plugins-destination-postgresql-v8.18.0) (2026-10-13)
 
 
