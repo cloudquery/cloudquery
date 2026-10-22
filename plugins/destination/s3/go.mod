@@ -13,7 +13,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sts v1.51.4
 	github.com/aws/smithy-go v1.28.5
 	github.com/cloudquery/codegen v0.4.1
-	github.com/cloudquery/filetypes/v4 v4.9.0
+	github.com/cloudquery/filetypes/v4 v4.9.1
 	github.com/cloudquery/plugin-sdk/v4 v4.99.0
 	github.com/google/go-cmp v0.7.0
 	github.com/google/uuid v1.6.0
