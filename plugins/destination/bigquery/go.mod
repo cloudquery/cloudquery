@@ -14,7 +14,7 @@ require (
 	github.com/rs/zerolog v1.35.1
 	github.com/samber/lo v1.53.0
 	github.com/stretchr/testify v1.12.1
-	golang.org/x/sync v0.23.0
+	golang.org/x/sync v0.24.0
 	google.golang.org/api v0.301.0
 )
 
