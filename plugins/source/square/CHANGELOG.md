@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.36](https://github.com/cloudquery/cloudquery/compare/plugins-source-square-v1.3.35...plugins-source-square-v1.3.36) (2026-10-22)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency pyarrow to v23.0.1 [SECURITY] ([#23588](https://github.com/cloudquery/cloudquery/issues/23588)) ([6bf0413](https://github.com/cloudquery/cloudquery/commit/6bf0413b420602e60fe476b73509cd52dda4cc59))
+
 ## [1.3.35](https://github.com/cloudquery/cloudquery/compare/plugins-source-square-v1.3.34...plugins-source-square-v1.3.35) (2026-10-22)
 
 
