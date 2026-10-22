@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.6.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-file-v5.6.2...plugins-destination-file-v5.6.3) (2026-10-22)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.9.1 ([#23589](https://github.com/cloudquery/cloudquery/issues/23589)) ([a91de28](https://github.com/cloudquery/cloudquery/commit/a91de2849d345c2efbd8af92372753fa5bb4eab2))
+
 ## [5.6.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-file-v5.6.1...plugins-destination-file-v5.6.2) (2026-10-21)
 
 
