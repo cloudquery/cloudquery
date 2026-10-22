@@ -34,7 +34,7 @@ jobs:
           package_json_file: './plugins/source/airtable/package.json'
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
-          node-version: '24'
+          node-version: '24.22.1'
           cache: 'pnpm'
           cache-dependency-path: './plugins/source/airtable/pnpm-lock.yaml'
 
