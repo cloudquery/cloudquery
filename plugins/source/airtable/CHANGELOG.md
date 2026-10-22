@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.14](https://github.com/cloudquery/cloudquery/compare/plugins-source-airtable-v2.3.13...plugins-source-airtable-v2.3.14) (2026-10-22)
+
+
+### Bug Fixes
+
+* Build Airtable plugin with Node.js 24.22.1 ([#23586](https://github.com/cloudquery/cloudquery/issues/23586)) ([2736221](https://github.com/cloudquery/cloudquery/commit/2736221c5d6a106471a737312c1a8aa6a868f136))
+
 ## [2.3.13](https://github.com/cloudquery/cloudquery/compare/plugins-source-airtable-v2.3.12...plugins-source-airtable-v2.3.13) (2026-10-21)
 
 
