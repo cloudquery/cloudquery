@@ -1,4 +1,4 @@
-FROM node:24-slim AS builder
+FROM node:24.22.1-slim AS builder
 
 WORKDIR /app
 
@@ -12,7 +12,7 @@ COPY . .
 
 RUN pnpm run build
 
-FROM node:24-slim AS final
+FROM node:24.22.1-slim AS final
 
 WORKDIR /app
 
