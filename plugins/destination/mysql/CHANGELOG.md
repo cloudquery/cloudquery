@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.7.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mysql-v5.7.1...plugins-destination-mysql-v5.7.2) (2026-10-24)
+
+
+### Bug Fixes
+
+* **deps:** Update golang.org/x/exp digest to f0251eb ([#23598](https://github.com/cloudquery/cloudquery/issues/23598)) ([94a6e34](https://github.com/cloudquery/cloudquery/commit/94a6e3436577fd2d855f6f89fe60c4f7ce2ee67c))
+
 ## [5.7.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mysql-v5.7.0...plugins-destination-mysql-v5.7.1) (2026-10-21)
 
 
