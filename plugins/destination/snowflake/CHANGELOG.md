@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.4.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v5.4.0...plugins-destination-snowflake-v5.4.1) (2026-10-24)
+
+
+### Bug Fixes
+
+* **deps:** Update module golang.org/x/sync to v0.24.0 ([#23600](https://github.com/cloudquery/cloudquery/issues/23600)) ([b87ce6e](https://github.com/cloudquery/cloudquery/commit/b87ce6ec86c2fcb5a4f58f07241516b6bd29afff))
+
 ## [5.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v5.3.0...plugins-destination-snowflake-v5.4.0) (2026-10-21)
 
 
