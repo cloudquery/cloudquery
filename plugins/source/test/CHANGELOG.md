@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.8.23](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v4.8.22...plugins-source-test-v4.8.23) (2026-10-24)
+
+
+### Bug Fixes
+
+* **deps:** Update golang.org/x/exp digest to f0251eb ([#23598](https://github.com/cloudquery/cloudquery/issues/23598)) ([94a6e34](https://github.com/cloudquery/cloudquery/commit/94a6e3436577fd2d855f6f89fe60c4f7ce2ee67c))
+
 ## [4.8.22](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v4.8.21...plugins-source-test-v4.8.22) (2026-10-21)
 
 
