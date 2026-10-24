@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.37](https://github.com/cloudquery/cloudquery/compare/plugins-source-square-v1.3.36...plugins-source-square-v1.3.37) (2026-10-24)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency black to v26.10.1 [SECURITY] ([#23612](https://github.com/cloudquery/cloudquery/issues/23612)) ([8dc8b61](https://github.com/cloudquery/cloudquery/commit/8dc8b613106e731e8a88b318bfb6d6026a6514e8))
+
 ## [1.3.36](https://github.com/cloudquery/cloudquery/compare/plugins-source-square-v1.3.35...plugins-source-square-v1.3.36) (2026-10-22)
 
 
