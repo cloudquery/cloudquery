@@ -1,7 +1,7 @@
 | File | Function | Coverage |
 | --- | --- | --- |
 | github.com/cloudquery/cloudquery/plugins/destination/firehose/v2/client/assess.go:24: | assessTable | 100.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/firehose/v2/client/assess.go:60: | assessTypeChange | 90.3% |
+| github.com/cloudquery/cloudquery/plugins/destination/firehose/v2/client/assess.go:60: | assessTypeChange | 88.5% |
 | github.com/cloudquery/cloudquery/plugins/destination/firehose/v2/client/assess.go:97: | tableCategory | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/firehose/v2/client/client.go:37: | New | 16.7% |
 | github.com/cloudquery/cloudquery/plugins/destination/firehose/v2/client/client.go:70: | Close | 0.0% |
@@ -17,4 +17,4 @@
 | github.com/cloudquery/cloudquery/plugins/destination/firehose/v2/client/write.go:116: | sendBatch | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/firehose/v2/client/write.go:133: | getFailedRecords | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/firehose/v2/main.go:18: | main | 0.0% |
-| total: | (statements) | 38.5% |
+| total: | (statements) | 40.3% |
