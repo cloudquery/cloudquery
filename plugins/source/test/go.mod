@@ -5,7 +5,7 @@ go 1.27.3
 require (
 	github.com/apache/arrow-go/v18 v18.8.0
 	github.com/cloudquery/codegen v0.4.1
-	github.com/cloudquery/plugin-sdk/v4 v4.99.0
+	github.com/cloudquery/plugin-sdk/v4 v4.99.1
 	github.com/rs/zerolog v1.35.1
 	golang.org/x/exp v0.0.0-20261014143641-f0251eb4aa3e
 )
@@ -24,7 +24,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.13.21 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.14.6 // indirect
 	github.com/aws/aws-sdk-go-v2/service/licensemanager v1.47.4 // indirect
-	github.com/aws/aws-sdk-go-v2/service/marketplacemetering v1.46.1 // indirect
+	github.com/aws/aws-sdk-go-v2/service/marketplacemetering v1.46.2 // indirect
 	github.com/aws/aws-sdk-go-v2/service/signin v1.10.4 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sso v1.38.4 // indirect
 	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.43.4 // indirect
