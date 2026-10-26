@@ -239,7 +239,7 @@ func (*Client) nonAutoMigratableTables(tables schema.Tables, pgTables schema.Tab
 
 func (c *Client) dropTable(ctx context.Context, tableName string) error {
 	c.logger.Info().Str("table", tableName).Msg("Dropping table")
-	sql := "drop table " + tableName
+	sql := "drop table " + pgx.Identifier{tableName}.Sanitize()
 	if _, err := c.conn.Exec(ctx, sql); err != nil {
 		return fmt.Errorf("failed to drop table %s: %w", tableName, err)
 	}
@@ -269,19 +269,7 @@ func (c *Client) migrateToCQID(ctx context.Context, table *schema.Table, _ schem
 		return fmt.Errorf("failed to begin transaction: %w", err)
 	}
 
-	defer func() {
-		if err == nil {
-			err = tx.Commit(ctx)
-			if err != nil {
-				c.logger.Error().Err(err).Msg("failed to commit transaction")
-			}
-		}
-		if err != nil {
-			if rollbackErr := tx.Rollback(ctx); rollbackErr != nil {
-				c.logger.Error().Err(rollbackErr).Str("table", tableName).Msg("Failed to rollback transaction")
-			}
-		}
-	}()
+	defer func() { err = c.finalizeTx(ctx, tx, tableName, err) }()
 
 	// Drop existing primary key
 	_, err = tx.Exec(ctx, "ALTER TABLE "+sanitizedTableName+" DROP CONSTRAINT "+sanitizedPKName)
@@ -299,17 +287,7 @@ func (c *Client) migrateToCQID(ctx context.Context, table *schema.Table, _ schem
 	// CockroachDB doesn't support dropping NOT NULL constraints in the same transaction as the primary key is changed
 	// So we have to alter the PK in one transaction and then drop the old NOT NULL constraints in another transaction
 	if c.pgType == pgTypeCockroachDB {
-		if err == nil {
-			err = tx.Commit(ctx)
-			if err != nil {
-				c.logger.Error().Err(err).Msg("failed to commit transaction")
-			}
-		}
-		if err != nil {
-			if rollbackErr := tx.Rollback(ctx); rollbackErr != nil {
-				c.logger.Error().Err(rollbackErr).Str("table", tableName).Msg("Failed to rollback transaction")
-			}
-		}
+		err = c.finalizeTx(ctx, tx, tableName, err)
 		tx, err = conn.BeginTx(ctx, pgx.TxOptions{
 			IsoLevel: pgx.Serializable,
 		})
@@ -337,11 +315,33 @@ func (c *Client) migrateToCQID(ctx context.Context, table *schema.Table, _ schem
 	return nil
 }
 
+// finalizeTx commits tx when err is nil and rolls it back otherwise. A nil tx
+// (BeginTx failed, e.g. the second CockroachDB transaction in migrateToCQID) is
+// safe: the incoming error is propagated as-is instead of panicking on the
+// rollback.
+func (c *Client) finalizeTx(ctx context.Context, tx pgx.Tx, tableName string, err error) error {
+	if tx == nil {
+		return err
+	}
+	if err == nil {
+		err = tx.Commit(ctx)
+		if err != nil {
+			c.logger.Error().Err(err).Msg("failed to commit transaction")
+		}
+	}
+	if err != nil {
+		if rollbackErr := tx.Rollback(ctx); rollbackErr != nil {
+			c.logger.Error().Err(rollbackErr).Str("table", tableName).Msg("Failed to rollback transaction")
+		}
+	}
+	return err
+}
+
 func (c *Client) addColumn(ctx context.Context, tableName string, column schema.Column) error {
 	c.logger.Info().Str("table", tableName).Str("column", column.Name).Msg("Column doesn't exist, creating")
 	columnName := pgx.Identifier{column.Name}.Sanitize()
 	columnType := c.SchemaTypeToPg(column.Type)
-	sql := "alter table " + tableName + " add column " + columnName + " " + columnType
+	sql := "alter table " + pgx.Identifier{tableName}.Sanitize() + " add column " + columnName + " " + columnType
 	if _, err := c.conn.Exec(ctx, sql); err != nil {
 		return fmt.Errorf("failed to add column %s on table %s: %w", column.Name, tableName, err)
 	}

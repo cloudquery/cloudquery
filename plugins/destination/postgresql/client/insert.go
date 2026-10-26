@@ -211,7 +211,11 @@ func (c *Client) upsertCrateDB(table *schema.Table) string {
 		return sb.String()
 	}
 	pks := table.PrimaryKeys()
-	sb.WriteString(fmt.Sprintf(" on conflict (%s) ", strings.Join(pks, ",")))
+	sanitizedPKs := make([]string, 0, len(pks))
+	for _, pk := range pks {
+		sanitizedPKs = append(sanitizedPKs, pgx.Identifier{pk}.Sanitize())
+	}
+	sb.WriteString(fmt.Sprintf(" on conflict (%s) ", strings.Join(sanitizedPKs, ",")))
 
 	sb.WriteString(" do update set ")
 	cols := make([]string, 0, len(columns)-len(pks))
