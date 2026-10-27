@@ -246,6 +246,18 @@ func (c *Client) dropTable(ctx context.Context, tableName string) error {
 	return nil
 }
 
+// cqIDConstraintSQLs builds the ALTER TABLE statements that move the primary
+// key onto the _cq_id column. pkName comes straight from information_schema and
+// defaults to "<table>_pkey", so it inherits any hostile or mixed-case table
+// name and must be quoted exactly like the table name.
+func cqIDConstraintSQLs(sanitizedTableName, pkName string) (dropStmt, addStmt string) {
+	sanitizedPKName := pgx.Identifier{pkName}.Sanitize()
+	dropStmt = "ALTER TABLE " + sanitizedTableName + " DROP CONSTRAINT " + sanitizedPKName
+	addStmt = "ALTER TABLE " + sanitizedTableName + " ADD CONSTRAINT " + sanitizedPKName +
+		" PRIMARY KEY (" + pgx.Identifier{schema.CqIDColumn.Name}.Sanitize() + ")"
+	return dropStmt, addStmt
+}
+
 func (c *Client) migrateToCQID(ctx context.Context, table *schema.Table, _ schema.Column) (err error) {
 	// Steps:
 	// acquire connection
@@ -257,7 +269,7 @@ func (c *Client) migrateToCQID(ctx context.Context, table *schema.Table, _ schem
 	defer conn.Release()
 	tableName := table.Name
 	sanitizedTableName := pgx.Identifier{tableName}.Sanitize()
-	sanitizedPKName, err := c.getPKName(ctx, tableName)
+	pkName, err := c.getPKName(ctx, tableName)
 	if err != nil {
 		return fmt.Errorf("failed to get primary key name: %w", err)
 	}
@@ -271,14 +283,15 @@ func (c *Client) migrateToCQID(ctx context.Context, table *schema.Table, _ schem
 
 	defer func() { err = c.finalizeTx(ctx, tx, tableName, err) }()
 
+	dropPKStmt, addPKStmt := cqIDConstraintSQLs(sanitizedTableName, pkName)
 	// Drop existing primary key
-	_, err = tx.Exec(ctx, "ALTER TABLE "+sanitizedTableName+" DROP CONSTRAINT "+sanitizedPKName)
+	_, err = tx.Exec(ctx, dropPKStmt)
 	if err != nil {
 		c.logger.Error().Err(err).Str("table", tableName).Msg("Failed to drop primary key")
 		return err
 	}
 	// Create new Primary Key with CQID
-	_, err = tx.Exec(ctx, "ALTER TABLE "+sanitizedTableName+" ADD CONSTRAINT "+sanitizedPKName+" PRIMARY KEY ("+pgx.Identifier{schema.CqIDColumn.Name}.Sanitize()+")")
+	_, err = tx.Exec(ctx, addPKStmt)
 	if err != nil {
 		c.logger.Error().Err(err).Str("table", tableName).Msg("Failed to create new primary key on _cq_id")
 		return err
@@ -287,7 +300,14 @@ func (c *Client) migrateToCQID(ctx context.Context, table *schema.Table, _ schem
 	// CockroachDB doesn't support dropping NOT NULL constraints in the same transaction as the primary key is changed
 	// So we have to alter the PK in one transaction and then drop the old NOT NULL constraints in another transaction
 	if c.pgType == pgTypeCockroachDB {
-		err = c.finalizeTx(ctx, tx, tableName, err)
+		// CockroachDB often reports DDL failures at COMMIT. Surface that error
+		// instead of overwriting it with the next BeginTx, and clear tx so the
+		// deferred finalizeTx doesn't roll back the already-closed transaction.
+		commitErr := c.finalizeTx(ctx, tx, tableName, nil)
+		tx = nil
+		if commitErr != nil {
+			return commitErr
+		}
 		tx, err = conn.BeginTx(ctx, pgx.TxOptions{
 			IsoLevel: pgx.Serializable,
 		})

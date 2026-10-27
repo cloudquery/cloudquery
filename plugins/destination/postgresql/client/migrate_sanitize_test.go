@@ -71,6 +71,27 @@ func TestUpsertCrateDBSanitizesPrimaryKeyNames(t *testing.T) {
 	require.NotContains(t, sql, " on conflict ("+maliciousPK+") ")
 }
 
+func TestMigrateToCQIDQuotesPKConstraintName(t *testing.T) {
+	// Postgres names the default PK "<table>_pkey", so a hostile table name
+	// lands in the constraint name that getPKName reads back from
+	// information_schema. It must be quoted like any other identifier.
+	maliciousTable := `evil"; drop table users; --`
+	pkName := maliciousTable + `_pkey`
+
+	dropStmt, addStmt := cqIDConstraintSQLs(pgx.Identifier{maliciousTable}.Sanitize(), pkName)
+
+	quotedPK := pgx.Identifier{pkName}.Sanitize()
+	require.Contains(t, dropStmt, " DROP CONSTRAINT "+quotedPK)
+	require.NotContains(t, dropStmt, " DROP CONSTRAINT "+pkName)
+	require.Contains(t, addStmt, " ADD CONSTRAINT "+quotedPK+" PRIMARY KEY ")
+	require.NotContains(t, addStmt, " ADD CONSTRAINT "+pkName+" ")
+
+	// A normal name stays readable.
+	dropStmt, addStmt = cqIDConstraintSQLs(`"docs"`, "docs_pkey")
+	require.Equal(t, `ALTER TABLE "docs" DROP CONSTRAINT "docs_pkey"`, dropStmt)
+	require.Equal(t, `ALTER TABLE "docs" ADD CONSTRAINT "docs_pkey" PRIMARY KEY ("_cq_id")`, addStmt)
+}
+
 // fakeTx implements pgx.Tx for finalizeTx tests; all methods except Commit and
 // Rollback panic through the embedded nil interface, which is fine because
 // finalizeTx never calls them.
