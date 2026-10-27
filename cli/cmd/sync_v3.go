@@ -696,6 +696,8 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 		return acc
 	}, map[string]uint64{})
 
+	mt = syncMetrics(sourceSpec.Name, resourcesPerTable, errorsPerTable)
+
 	durationsPerTable := map[string]uint64{}
 	if syncOptions.tableDurations != nil {
 		data := syncOptions.tableDurations()
@@ -844,6 +846,22 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 type SyncRunTableProgressValue struct {
 	Errors int64 `json:"errors"`
 	Rows   int64 `json:"rows"`
+}
+
+// syncMetrics rebuilds the metrics payload for the analytics sync summary from the
+// per-table counters collected during the run. v3 sources have no GetMetrics RPC, unlike
+// v1 and v2, so these counters are the only record of what a sync moved.
+func syncMetrics(sourceName string, resourcesPerTable, errorsPerTable map[string]uint64) metrics.Metrics {
+	tableClient := make(map[string]map[string]*metrics.TableClientMetrics, len(resourcesPerTable))
+	for tableName, resources := range resourcesPerTable {
+		tableClient[tableName] = map[string]*metrics.TableClientMetrics{
+			sourceName: {
+				Resources: resources,
+				Errors:    errorsPerTable[tableName],
+			},
+		}
+	}
+	return metrics.Metrics{TableClient: tableClient}
 }
 
 func hintSelectMessage(destinationSpecs []specs.Destination, statsPerTable *utils.ConcurrentMap[string, SyncRunTableProgressValue], sourceTables map[string]bool) {
