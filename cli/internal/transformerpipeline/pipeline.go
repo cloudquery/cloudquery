@@ -90,10 +90,12 @@ func (lp *TransformerPipeline) Send(data []byte) error {
 		return ErrPipelineClosed
 	}
 
-	sendCh := make(chan error)
+	sendCh := make(chan error, 1)
 
 	// Send can block forever (e.g. if grpc buffer is full), so we run it asynchronously
-	// and check if pipeline is closed every second.
+	// and check if pipeline is closed every second. The channel is buffered so the
+	// goroutine can always hand back its result, even after Send gave up on waiting
+	// because the pipeline closed.
 	go func() {
 		err := lp.clientWrappers[0].client.Send(&plugin.Transform_Request{Record: data})
 		sendCh <- err
@@ -181,13 +183,32 @@ func (s *clientWrapper) startBlocking() error {
 
 	// Recv can block forever (e.g. if transformer decides to), so
 	// we run it asynchronously and check if pipeline is closed every second.
+	// done is closed when this function returns, which is the only way the
+	// goroutine below can abandon a pending hand-off instead of parking on it
+	// for the rest of the process.
+	done := make(chan struct{})
+	defer close(done)
+
 	go func() {
 		for {
+			if s.isClosed.Load() {
+				return
+			}
+
 			data, err := s.client.Recv()
 			if err != nil {
-				errCh <- err
-			} else {
-				recvCh <- &plugin.Transform_Request{Record: data.Record}
+				select {
+				case errCh <- err:
+				case <-done:
+					return
+				}
+				continue
+			}
+
+			select {
+			case recvCh <- &plugin.Transform_Request{Record: data.Record}:
+			case <-done:
+				return
 			}
 		}
 	}()
