@@ -211,9 +211,9 @@ func (c *Client) upsertCrateDB(table *schema.Table) string {
 		return sb.String()
 	}
 	pks := table.PrimaryKeys()
-	sanitizedPKs := make([]string, 0, len(pks))
-	for _, pk := range pks {
-		sanitizedPKs = append(sanitizedPKs, pgx.Identifier{pk}.Sanitize())
+	sanitizedPKs := make([]string, len(pks))
+	for i := range pks {
+		sanitizedPKs[i] = pgx.Identifier{pks[i]}.Sanitize()
 	}
 	sb.WriteString(fmt.Sprintf(" on conflict (%s) ", strings.Join(sanitizedPKs, ",")))
 
