@@ -344,15 +344,15 @@ func (c *Client) finalizeTx(ctx context.Context, tx pgx.Tx, tableName string, er
 		return err
 	}
 	if err == nil {
-		err = tx.Commit(ctx)
-		if err != nil {
-			c.logger.Error().Err(err).Msg("failed to commit transaction")
+		if err = tx.Commit(ctx); err != nil {
+			c.logger.Error().Err(err).Str("table", tableName).Msg("failed to commit transaction")
 		}
+		// pgx closes the transaction inside Commit even when it fails, so a
+		// rollback here would only return ErrTxClosed and log noise.
+		return err
 	}
-	if err != nil {
-		if rollbackErr := tx.Rollback(ctx); rollbackErr != nil {
-			c.logger.Error().Err(rollbackErr).Str("table", tableName).Msg("Failed to rollback transaction")
-		}
+	if rollbackErr := tx.Rollback(ctx); rollbackErr != nil {
+		c.logger.Error().Err(rollbackErr).Str("table", tableName).Msg("Failed to rollback transaction")
 	}
 	return err
 }

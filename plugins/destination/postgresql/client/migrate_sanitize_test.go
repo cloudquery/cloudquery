@@ -135,13 +135,15 @@ func TestFinalizeTx(t *testing.T) {
 		require.False(t, tx.rolledBack)
 	})
 
-	t.Run("commit failure falls through to rollback", func(t *testing.T) {
+	t.Run("commit failure returns without rollback", func(t *testing.T) {
+		// pgx closes the transaction inside Commit even on failure, so a
+		// rollback would only return ErrTxClosed and log noise.
 		commitErr := errors.New("commit failed")
 		tx := &fakeTx{commitErr: commitErr}
 		err := c.finalizeTx(ctx, tx, "some_table", nil)
 		require.ErrorIs(t, err, commitErr)
 		require.True(t, tx.committed)
-		require.True(t, tx.rolledBack)
+		require.False(t, tx.rolledBack)
 	})
 
 	t.Run("prior error triggers rollback", func(t *testing.T) {
