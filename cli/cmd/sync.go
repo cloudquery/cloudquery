@@ -570,11 +570,11 @@ func sync(cmd *cobra.Command, args []string) (syncErr error) {
 				}
 				destinationsVersions = append(destinationsVersions, versions)
 			}
-			if err := syncConnectionV2(ctx, cl, destinationClientsForSource, *source, destinationForSourceSpec, invocationUUID.String(), noMigrate, destinationsVersions); err != nil {
+			if err := syncConnectionV2(ctx, cl, destinationClientsForSource, *source, destinationForSourceSpec, noMigrate, destinationsVersions); err != nil {
 				return fmt.Errorf("failed to sync v2 source %s: %w", cl.Name(), err)
 			}
 		case 1:
-			if err := syncConnectionV1(ctx, cl, destinationClientsForSource, *source, destinationForSourceSpec, invocationUUID.String(), noMigrate); err != nil {
+			if err := syncConnectionV1(ctx, cl, destinationClientsForSource, *source, destinationForSourceSpec, noMigrate); err != nil {
 				return fmt.Errorf("failed to sync v1 source %s: %w", cl.Name(), err)
 			}
 		case 0:
