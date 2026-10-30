@@ -114,23 +114,20 @@ func tables(cmd *cobra.Command, args []string) error {
 			fmt.Println(err)
 		}
 	}()
+	sourceVersions, err := sourceProtocolVersions(ctx, sources, sourceClients)
+	if err != nil {
+		return err
+	}
 	for _, source := range specReader.Sources {
 		cl := sourceClients.ClientByName(source.Name)
 		outputPath := path.Join(outputDir, source.Name)
 		fmt.Printf("Generating docs for %q to directory %q\n", source.Name, outputPath)
-		versions, err := cl.Versions(ctx)
-		if err != nil {
-			return fmt.Errorf("failed to get versions for %s. Error: %w", source.Name, err)
-		}
-		maxVersion := findMaxCommonVersion(versions, []int{1, 2, 3})
-		switch maxVersion {
+		switch maxVersion := sourceVersions[source.Name]; maxVersion {
 		case 3:
 			if err := tablesV3(ctx, cl, source, outputPath, format, filter); err != nil {
 				return err
 			}
 			fmt.Printf("Done generating docs for %q to directory %q\n", source.Name, outputPath)
-		case 2, 1:
-			return errUnsupportedSourceProtocol(source.Name, maxVersion)
 		default:
 			return fmt.Errorf("unsupported version %d for %s", maxVersion, source.Name)
 		}

@@ -728,7 +728,7 @@ func TestUnsupportedSourceProtocolVersionsFailBeforeAnySourceRuns(t *testing.T) 
 	testConfig := path.Join(path.Dir(filename), "testdata", "source-protocol-versions-mixed.yml")
 	want := errors.Join(errUnsupportedSourceProtocol("test-v2", 2), errUnsupportedSourceProtocol("test-v1", 1)).Error()
 
-	for _, command := range []string{"sync", "migrate"} {
+	for _, command := range []string{"sync", "migrate", "tables"} {
 		t.Run(command, func(t *testing.T) {
 			t.Setenv("CQ_TEST_SOURCE_V3_ADDRESS", startFakePluginServer(t, &protocolVersionsServer{versions: []int32{3}}))
 			t.Setenv("CQ_TEST_SOURCE_V2_ADDRESS", startFakePluginServer(t, &protocolVersionsServer{versions: []int32{2}}))
