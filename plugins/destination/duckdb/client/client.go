@@ -50,7 +50,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte, opts plugin.Ne
 		return nil, fmt.Errorf("failed to create batch writer: %w", err)
 	}
 
-	c.connector, err = duckdb.NewConnector(amendConnectionString(c.spec.ConnectionString), nil)
+	c.connector, err = duckdb.NewConnector(amendConnectionString(c.spec.ConnectionString), useUTC)
 	if err != nil {
 		return nil, err
 	}
@@ -100,7 +100,7 @@ func TestConnection(ctx context.Context, _ zerolog.Logger, specBytes []byte) err
 	}
 	s.SetDefaults()
 
-	connector, err := duckdb.NewConnector(amendConnectionString(s.ConnectionString), nil)
+	connector, err := duckdb.NewConnector(amendConnectionString(s.ConnectionString), useUTC)
 	if err != nil {
 		return err
 	}
@@ -141,4 +141,9 @@ func amendConnectionString(s string) string {
 	s += fmt.Sprintf("custom_user_agent=%s_%s_%s/%s(%s_%s)",
 		internalPlugin.Team, internalPlugin.Kind, internalPlugin.Name, strings.TrimPrefix(internalPlugin.Version, "v"), runtime.GOOS, runtime.GOARCH)
 	return s
+}
+
+func useUTC(execer driver.ExecerContext) error {
+	_, err := execer.ExecContext(context.Background(), "SET TimeZone = 'UTC'", nil)
+	return err
 }
