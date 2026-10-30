@@ -36,10 +36,6 @@ func TestSync(t *testing.T) {
 		summary []syncSummary
 	}{
 		{
-			name:   "sync_success_sourcev1_destv0",
-			config: "sync-success-sourcev1-destv0.yml",
-		},
-		{
 			name:   "multiple_sources",
 			config: "multiple-sources.yml",
 			summary: []syncSummary{
@@ -100,10 +96,6 @@ func TestSync(t *testing.T) {
 					},
 				},
 			},
-		},
-		{
-			name:   "multiple_destinations",
-			config: "multiple-destinations.yml",
 		},
 		{
 			name:   "multiple_destinations_multiple_batching_writers",
@@ -655,7 +647,7 @@ func TestSyncTableNameChanges(t *testing.T) {
 func TestSyncCqDir(t *testing.T) {
 	_, filename, _, _ := runtime.Caller(0)
 	currentDir := path.Dir(filename)
-	testConfig := path.Join(currentDir, "testdata", "sync-success-sourcev1-destv0.yml")
+	testConfig := path.Join(currentDir, "testdata", "multiple-sources.yml")
 
 	cmd := NewCmdRoot()
 	baseArgs := testCommandArgs(t)
@@ -689,6 +681,63 @@ func TestFindMaxCommonVersion(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			got := findMaxCommonVersion(tc.givePlugin, tc.giveCLI)
 			assert.Equal(t, tc.want, got)
+		})
+	}
+}
+
+type protocolVersionsServer struct {
+	pluginPb.UnimplementedPluginServer
+	discoveryPb.UnimplementedDiscoveryServer
+	versions []int32
+}
+
+func (s *protocolVersionsServer) GetVersions(context.Context, *discoveryPb.GetVersions_Request) (*discoveryPb.GetVersions_Response, error) {
+	return &discoveryPb.GetVersions_Response{Versions: s.versions}, nil
+}
+
+func TestUnsupportedSourceProtocolVersions(t *testing.T) {
+	_, filename, _, _ := runtime.Caller(0)
+	testConfig := path.Join(path.Dir(filename), "testdata", "source-protocol-versions.yml")
+
+	tests := []struct {
+		name    string
+		command string
+		version int32
+	}{
+		{name: "sync_v1", command: "sync", version: 1},
+		{name: "sync_v2", command: "sync", version: 2},
+		{name: "migrate_v1", command: "migrate", version: 1},
+		{name: "migrate_v2", command: "migrate", version: 2},
+		{name: "tables_v1", command: "tables", version: 1},
+		{name: "tables_v2", command: "tables", version: 2},
+	}
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			t.Setenv("CQ_TEST_SOURCE_ADDRESS", startFakePluginServer(t, &protocolVersionsServer{versions: []int32{tc.version}}))
+			t.Setenv("CQ_TEST_DESTINATION_ADDRESS", startFakePluginServer(t, &protocolVersionsServer{versions: []int32{3}}))
+
+			cmd := NewCmdRoot()
+			cmd.SetArgs(append([]string{tc.command, testConfig}, testCommandArgs(t)...))
+			require.EqualError(t, cmd.Execute(), errUnsupportedSourceProtocol("test", int(tc.version)).Error())
+		})
+	}
+}
+
+func TestUnsupportedSourceProtocolVersionsFailBeforeAnySourceRuns(t *testing.T) {
+	_, filename, _, _ := runtime.Caller(0)
+	testConfig := path.Join(path.Dir(filename), "testdata", "source-protocol-versions-mixed.yml")
+	want := errors.Join(errUnsupportedSourceProtocol("test-v2", 2), errUnsupportedSourceProtocol("test-v1", 1)).Error()
+
+	for _, command := range []string{"sync", "migrate"} {
+		t.Run(command, func(t *testing.T) {
+			t.Setenv("CQ_TEST_SOURCE_V3_ADDRESS", startFakePluginServer(t, &protocolVersionsServer{versions: []int32{3}}))
+			t.Setenv("CQ_TEST_SOURCE_V2_ADDRESS", startFakePluginServer(t, &protocolVersionsServer{versions: []int32{2}}))
+			t.Setenv("CQ_TEST_SOURCE_V1_ADDRESS", startFakePluginServer(t, &protocolVersionsServer{versions: []int32{1}}))
+			t.Setenv("CQ_TEST_DESTINATION_ADDRESS", startFakePluginServer(t, &protocolVersionsServer{versions: []int32{3}}))
+
+			cmd := NewCmdRoot()
+			cmd.SetArgs(append([]string{command, testConfig}, testCommandArgs(t)...))
+			require.EqualError(t, cmd.Execute(), want)
 		})
 	}
 }

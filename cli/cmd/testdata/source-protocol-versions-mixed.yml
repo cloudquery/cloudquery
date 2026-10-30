@@ -1,0 +1,29 @@
+kind: "source"
+spec:
+  name: "test-v3"
+  registry: "grpc"
+  path: ${CQ_TEST_SOURCE_V3_ADDRESS}
+  destinations: [test]
+  tables: ["*"]
+---
+kind: "source"
+spec:
+  name: "test-v2"
+  registry: "grpc"
+  path: ${CQ_TEST_SOURCE_V2_ADDRESS}
+  destinations: [test]
+  tables: ["*"]
+---
+kind: "source"
+spec:
+  name: "test-v1"
+  registry: "grpc"
+  path: ${CQ_TEST_SOURCE_V1_ADDRESS}
+  destinations: [test]
+  tables: ["*"]
+---
+kind: "destination"
+spec:
+  name: "test"
+  registry: "grpc"
+  path: ${CQ_TEST_DESTINATION_ADDRESS}

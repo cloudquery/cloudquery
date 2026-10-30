@@ -21,6 +21,8 @@ const (
 	defaultAnalyticsHost = "analyticsv1.cloudquery.io:443"
 )
 
+type ExitReason string
+
 const (
 	ExitReasonUnset     ExitReason = ""
 	ExitReasonStopped   ExitReason = "stopped"

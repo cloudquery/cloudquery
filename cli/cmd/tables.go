@@ -122,18 +122,15 @@ func tables(cmd *cobra.Command, args []string) error {
 		if err != nil {
 			return fmt.Errorf("failed to get versions for %s. Error: %w", source.Name, err)
 		}
-		maxVersion := findMaxCommonVersion(versions, []int{2, 3})
+		maxVersion := findMaxCommonVersion(versions, []int{1, 2, 3})
 		switch maxVersion {
 		case 3:
 			if err := tablesV3(ctx, cl, source, outputPath, format, filter); err != nil {
 				return err
 			}
 			fmt.Printf("Done generating docs for %q to directory %q\n", source.Name, outputPath)
-		case 2:
-			if err := tablesV2(ctx, cl, outputPath, format); err != nil {
-				return err
-			}
-			fmt.Printf("Done generating docs for %q to directory %q\n", source.Name, outputPath)
+		case 2, 1:
+			return errUnsupportedSourceProtocol(source.Name, maxVersion)
 		default:
 			return fmt.Errorf("unsupported version %d for %s", maxVersion, source.Name)
 		}
