@@ -54,15 +54,18 @@ func (r *Registry) UnmarshalJSON(data []byte) (err error) {
 
 func (Registry) JSONSchemaExtend(sc *jsonschema.Schema) {
 	sc.Type = "string"
-	sc.Enum = make([]any, len(AllRegistries))
+	sc.Enum = make([]any, 0, len(AllRegistries))
 	for i, k := range AllRegistries {
-		sc.Enum[i] = k
+		if Registry(i) == RegistryGitHub {
+			continue
+		}
+		sc.Enum = append(sc.Enum, k)
 	}
 }
 
 // NeedVersion has to be in sync with Metadata.JSONSchemaExtend
 func (r Registry) NeedVersion() bool {
-	return r == RegistryGitHub || r == RegistryCloudQuery
+	return r == RegistryCloudQuery
 }
 
 func RegistryFromString(s string) (Registry, error) {

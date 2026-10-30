@@ -86,6 +86,7 @@ func TestRegistry_JSONSchemaExtend(t *testing.T) {
 		},
 		{
 			Name: "github",
+			Err:  true,
 			Spec: `"github"`,
 		},
 		{

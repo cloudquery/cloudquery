@@ -359,7 +359,7 @@ type newPluginClientFunc func(ctx context.Context, typ managedplugin.PluginType,
 const upgradeUnknownVersion = "unknown"
 
 func upgradeVersionSelectsBinary(registry specs.Registry) bool {
-	return registry == specs.RegistryCloudQuery || registry == specs.RegistryGitHub
+	return registry == specs.RegistryCloudQuery
 }
 
 func loadUpgradeSourceTables(ctx context.Context, sourceSpec specs.Source, target upgradeTarget, newClient newPluginClientFunc, opts ...managedplugin.Option) (from, to upgradeSourceTables, err error) {
