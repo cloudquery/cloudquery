@@ -5,6 +5,7 @@ import (
 	"io"
 	"slices"
 	"strings"
+	"sync"
 )
 
 var allowedEnvPrefixes = []string{
@@ -20,6 +21,7 @@ var allowedEnvPrefixes = []string{
 const minRedactingLength = 4
 
 type SecretAwareRedactor struct {
+	mu      sync.RWMutex
 	secrets map[string]string
 }
 
@@ -32,6 +34,8 @@ func (s *SecretAwareRedactor) RedactStr(msg string) string {
 }
 
 func (s *SecretAwareRedactor) RedactBytes(msg []byte) []byte {
+	s.mu.RLock()
+	defer s.mu.RUnlock()
 	for v, k := range s.secrets {
 		msg = bytes.ReplaceAll(msg, []byte(v), []byte(k))
 	}
@@ -39,6 +43,8 @@ func (s *SecretAwareRedactor) RedactBytes(msg []byte) []byte {
 }
 
 func (s *SecretAwareRedactor) AddSecretEnv(envs []string) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
 	for _, v := range envs {
 		if slices.ContainsFunc(allowedEnvPrefixes, func(prefix string) bool { return strings.HasPrefix(v, prefix) }) {
 			continue

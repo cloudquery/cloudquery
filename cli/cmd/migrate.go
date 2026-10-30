@@ -144,6 +144,10 @@ func migrate(cmd *cobra.Command, args []string) error {
 			fmt.Println(err)
 		}
 	}()
+	sourceVersions, err := sourceProtocolVersions(ctx, sources, managedSourceClients)
+	if err != nil {
+		return err
+	}
 	destinationPluginClients, err := managedplugin.NewClients(ctx, managedplugin.PluginDestination, destinationPluginConfigs, opts...)
 	if err != nil {
 		return enrichClientError(destinationPluginClients, destinationRegInferred, err)
@@ -164,11 +168,7 @@ func migrate(cmd *cobra.Command, args []string) error {
 	}()
 	for _, source := range sources {
 		cl := managedSourceClients.ClientByName(source.Name)
-		versions, err := cl.Versions(ctx)
-		if err != nil {
-			return fmt.Errorf("failed to get source versions: %w", err)
-		}
-		maxVersion := findMaxCommonVersion(versions, []int{3, 2, 1, 0})
+		maxVersion := sourceVersions[source.Name]
 
 		var destinationClientsForSource []*managedplugin.Client
 		var destinationForSourceSpec []specs.Destination
@@ -205,25 +205,6 @@ func migrate(cmd *cobra.Command, args []string) error {
 			}
 			if err := migrateConnectionV3(ctx, migrateOptions); err != nil {
 				return fmt.Errorf("failed to migrate v3 source %s: %w", cl.Name(), err)
-			}
-		case 2:
-			destinationsVersions := make([][]int, 0, len(destinationClientsForSource))
-			for _, destination := range destinationClientsForSource {
-				versions, err := destination.Versions(ctx)
-				if err != nil {
-					return fmt.Errorf("failed to get destination versions: %w", err)
-				}
-				if !slices.Contains(versions, 1) {
-					return fmt.Errorf("destination plugin %[1]s does not support CloudQuery SDK version 1. Please upgrade to a newer version of the %[1]s destination plugin", destination.Name())
-				}
-				destinationsVersions = append(destinationsVersions, versions)
-			}
-			if err := migrateConnectionV2(ctx, cl, destinationClientsForSource, *source, destinationForSourceSpec, destinationsVersions); err != nil {
-				return fmt.Errorf("failed to migrate source %v@%v: %w", source.Name, source.Version, err)
-			}
-		case 1:
-			if err := migrateConnectionV1(ctx, cl, destinationClientsForSource, *source, destinationForSourceSpec); err != nil {
-				return fmt.Errorf("failed to migrate source %v@%v: %w", source.Name, source.Version, err)
 			}
 		case 0:
 			return errors.New("please upgrade your source or use a CLI version between v3.0.1 and v3.5.3")

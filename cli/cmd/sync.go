@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"math"
@@ -148,6 +149,27 @@ func findMaxCommonVersion(pluginSupported []int, cliSupported []int) int {
 		return -2
 	}
 	return maxCommon
+}
+
+func errUnsupportedSourceProtocol(name string, version int) error {
+	return fmt.Errorf("please upgrade source %v or use an older CLI version, <= v6.50.0: it uses plugin protocol v%d and this CLI requires protocol v3 (plugin-sdk v4 or later)", name, version)
+}
+
+func sourceProtocolVersions(ctx context.Context, sources []*specs.Source, clients managedplugin.Clients) (map[string]int, error) {
+	maxVersions := make(map[string]int, len(sources))
+	var unsupported error
+	for _, source := range sources {
+		versions, err := clients.ClientByName(source.Name).Versions(ctx)
+		if err != nil {
+			return nil, fmt.Errorf("failed to get source versions: %w", err)
+		}
+		maxVersion := findMaxCommonVersion(versions, []int{0, 1, 2, 3})
+		if maxVersion == 1 || maxVersion == 2 {
+			unsupported = errors.Join(unsupported, errUnsupportedSourceProtocol(source.Name, maxVersion))
+		}
+		maxVersions[source.Name] = maxVersion
+	}
+	return maxVersions, unsupported
 }
 
 func parseShard(cmd *cobra.Command) (*shard, error) {
@@ -354,6 +376,10 @@ func sync(cmd *cobra.Command, args []string) (syncErr error) {
 		}
 		sourcePluginClients = append(sourcePluginClients, sourcePluginClient)
 	}
+	sourceVersions, err := sourceProtocolVersions(ctx, sources, sourcePluginClients)
+	if err != nil {
+		return err
+	}
 
 	destinationPluginClients := make(managedplugin.Clients, 0)
 	defer func() {
@@ -443,11 +469,7 @@ func sync(cmd *cobra.Command, args []string) (syncErr error) {
 	}()
 	for _, source := range sources {
 		cl := sourcePluginClients.ClientByName(source.Name)
-		versions, err := cl.Versions(ctx)
-		if err != nil {
-			return fmt.Errorf("failed to get source versions: %w", err)
-		}
-		maxVersion := findMaxCommonVersion(versions, []int{0, 1, 2, 3})
+		maxVersion := sourceVersions[source.Name]
 
 		var destinationClientsForSource []*managedplugin.Client
 		var destinationForSourceSpec []specs.Destination
@@ -558,25 +580,6 @@ func sync(cmd *cobra.Command, args []string) (syncErr error) {
 				stateNotSaved = errors.Join(stateNotSaved, fmt.Errorf("source %s: %w", cl.Name(), err))
 			}
 
-		case 2:
-			destinationsVersions := make([][]int, 0, len(destinationClientsForSource))
-			for _, destination := range destinationClientsForSource {
-				versions, err := destination.Versions(ctx)
-				if err != nil {
-					return fmt.Errorf("failed to get destination versions: %w", err)
-				}
-				if !slices.Contains(versions, 1) {
-					return fmt.Errorf("destination plugin %[1]s does not support CloudQuery SDK version 1. Please upgrade to a newer version of the %[1]s destination plugin", destination.Name())
-				}
-				destinationsVersions = append(destinationsVersions, versions)
-			}
-			if err := syncConnectionV2(ctx, cl, destinationClientsForSource, *source, destinationForSourceSpec, noMigrate, destinationsVersions); err != nil {
-				return fmt.Errorf("failed to sync v2 source %s: %w", cl.Name(), err)
-			}
-		case 1:
-			if err := syncConnectionV1(ctx, cl, destinationClientsForSource, *source, destinationForSourceSpec, noMigrate); err != nil {
-				return fmt.Errorf("failed to sync v1 source %s: %w", cl.Name(), err)
-			}
 		case 0:
 			return fmt.Errorf("please upgrade source %v or use an older CLI version, between v3.0.1 and v3.5.3", source.Name)
 		case -1:

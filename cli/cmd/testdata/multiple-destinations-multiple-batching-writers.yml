@@ -2,9 +2,9 @@ kind: "source"
 spec:
   name: "test"
   path: "cloudquery/test"
-  registry: "github"
+  registry: "cloudquery"
   destinations: ["test1", "test2", "test3"]
-  version: "v2.0.3" # v2 source
+  version: "v4.7.0"
   tables: ["*"]
 ---
 kind: "destination"
