@@ -152,7 +152,7 @@ func findMaxCommonVersion(pluginSupported []int, cliSupported []int) int {
 }
 
 func errUnsupportedSourceProtocol(name string, version int) error {
-	return fmt.Errorf("please upgrade source %v or use an older CLI version, <= v6.49.2: it uses plugin protocol v%d and this CLI requires protocol v3 (plugin-sdk v4 or later)", name, version)
+	return fmt.Errorf("please upgrade source %v or use an older CLI version, <= v6.50.0: it uses plugin protocol v%d and this CLI requires protocol v3 (plugin-sdk v4 or later)", name, version)
 }
 
 func sourceProtocolVersions(ctx context.Context, sources []*specs.Source, clients managedplugin.Clients) (map[string]int, error) {
