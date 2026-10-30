@@ -86,7 +86,7 @@ func TestCallbackHandler(t *testing.T) {
 
 	call := func(token, origin string) *httptest.ResponseRecorder {
 		var got string
-		h := callbackHandler("https://accounts.cloudquery.io", func(t string) { got = t })
+		h := callbackHandler("https://accounts.cloudquery.io", "platform.example.com", func(t string) { got = t })
 		w := httptest.NewRecorder()
 		h(w, httptest.NewRequest(http.MethodGet, "/callback?token="+token+"&origin="+neturl.QueryEscape(origin), nil))
 		require.Equal(t, token, got)
@@ -101,6 +101,13 @@ func TestCallbackHandler(t *testing.T) {
 		require.Equal(t, "https://acme.cloudquery.io/success-close", w.Header().Get("Location"))
 	})
 
+	t.Run("platform token returns to the tenant host given with --host", func(t *testing.T) {
+		w := call(platformToken, "https://platform.example.com")
+
+		require.Equal(t, http.StatusSeeOther, w.Code)
+		require.Equal(t, "https://platform.example.com/success-close", w.Header().Get("Location"))
+	})
+
 	t.Run("loopback origin is allowed for local development", func(t *testing.T) {
 		w := call(platformToken, "http://localhost:4040")
 
@@ -112,6 +119,9 @@ func TestCallbackHandler(t *testing.T) {
 		for _, origin := range []string{
 			"",
 			"http://evil.example.com",
+			"https://evil.example.com",
+			"https://cloudquery.io.evil.example.com",
+			"http://acme.cloudquery.io",
 			"https://acme.cloudquery.io/path",
 			"javascript:alert(1)",
 			"//evil.example.com",
