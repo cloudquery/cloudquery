@@ -21,12 +21,6 @@ func TestInstall(t *testing.T) {
 		wantTransformerFiles int
 	}{
 		{
-			name:            "sync_success_sourcev1_destv0",
-			config:          "sync-success-sourcev1-destv0.yml",
-			wantSourceFiles: 2,
-			wantDestFiles:   2,
-		},
-		{
 			name:            "multiple_sources",
 			config:          "multiple-sources.yml",
 			wantSourceFiles: 2,

@@ -17,7 +17,6 @@ import (
 
 	"github.com/cloudquery/plugin-sdk/v4/configtype"
 	"github.com/ghodss/yaml"
-	"github.com/rs/zerolog/log"
 )
 
 type SpecReader struct {
@@ -139,12 +138,6 @@ func (r *SpecReader) loadSpecsFromFile(path string) error {
 			if err := source.Validate(r.relaxed); err != nil {
 				return fmt.Errorf("failed to validate source %s: %w", source.Name, err)
 			}
-			if source.Registry == RegistryGitHub {
-				log.Warn().
-					Str("name", source.Name).
-					Str("kind", "source").
-					Msg("registry: github is deprecated & will be removed in future releases")
-			}
 			r.sourcesMap[source.Name] = source
 			r.Sources = append(r.Sources, source)
 		case KindDestination:
@@ -157,12 +150,6 @@ func (r *SpecReader) loadSpecsFromFile(path string) error {
 			if err := destination.Validate(); err != nil {
 				return fmt.Errorf("failed to validate destination %s: %w", destination.Name, err)
 			}
-			if destination.Registry == RegistryGitHub {
-				log.Warn().
-					Str("name", destination.Name).
-					Str("kind", "destination").
-					Msg("registry: github is deprecated & will be removed in future releases")
-			}
 			r.destinationsMap[destination.Name] = destination
 			r.Destinations = append(r.Destinations, destination)
 		case KindTransformer:
@@ -174,12 +161,6 @@ func (r *SpecReader) loadSpecsFromFile(path string) error {
 			transformer.SetDefaults()
 			if err := transformer.Validate(); err != nil {
 				return fmt.Errorf("failed to validate transformer %s: %w", transformer.Name, err)
-			}
-			if transformer.Registry == RegistryGitHub {
-				log.Warn().
-					Str("name", transformer.Name).
-					Str("kind", "transformer").
-					Msg("registry: github is deprecated & will be removed in future releases")
 			}
 			r.transformersMap[transformer.Name] = transformer
 			r.Transformers = append(r.Transformers, transformer)

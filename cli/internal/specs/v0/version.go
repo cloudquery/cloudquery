@@ -61,8 +61,7 @@ func warnIfOutdated(ctx context.Context, p *managedplugin.PluginVersionWarner, k
 		return nil, nil, false
 	}
 	// N.B.: warning is best-effort; we ignore errors, but the function still logs errors with Debug logs
-	// We only check for outdated plugins if the registry is cloudquery or github and the org is cloudquery
-	if plugin.Registry != RegistryCloudQuery && (plugin.Registry != RegistryGitHub || org != "cloudquery") {
+	if plugin.Registry != RegistryCloudQuery {
 		return nil, nil, false
 	}
 	usingVersion, err = semver.NewVersion(plugin.Version)

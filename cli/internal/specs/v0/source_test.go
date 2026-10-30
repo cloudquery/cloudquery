@@ -156,7 +156,7 @@ spec:
 		},
 	},
 	{
-		"success github",
+		"github registry is rejected",
 		`kind: source
 spec:
   name: test
@@ -166,19 +166,8 @@ spec:
   destinations: ["test"]
   tables: ["test"]
 `,
-		"",
-		&Source{
-			Metadata: Metadata{
-				Name:     "test",
-				Registry: RegistryGitHub,
-				Path:     "cloudquery/test",
-				Version:  "v1.1.0",
-			},
-			Destinations:        []string{"test"},
-			Tables:              []string{"test"},
-			Spec:                map[string]any{},
-			SkipDependentTables: &boolTrue,
-		},
+		"registry: github is no longer supported, use registry: cloudquery for plugins on CloudQuery Hub (requires `cloudquery login` or CLOUDQUERY_API_KEY), or download the plugin binary and use registry: local",
+		nil,
 	}}
 
 func TestSourceUnmarshalSpecValidate(t *testing.T) {
