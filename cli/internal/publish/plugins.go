@@ -25,9 +25,9 @@ import (
 	"github.com/docker/distribution/manifest/schema2"
 	distributionclient "github.com/docker/distribution/registry/client"
 	"github.com/docker/distribution/registry/client/auth/challenge"
-	"github.com/docker/docker/api/types/image"
-	"github.com/docker/docker/api/types/registry"
-	"github.com/docker/docker/client"
+	"github.com/moby/moby/api/pkg/authconfig"
+	"github.com/moby/moby/api/types/registry"
+	"github.com/moby/moby/client"
 	"github.com/opencontainers/go-digest"
 	ocispec "github.com/opencontainers/image-spec/specs-go/v1"
 	"github.com/schollz/progressbar/v3"
@@ -364,11 +364,9 @@ func loadDockerImage(ctx context.Context, cli *client.Client, imagePath string) 
 	if err != nil {
 		return fmt.Errorf("failed to load image: %v", err)
 	}
-	if resp.Body == nil {
-		return errors.New("failed to load image: response body is nil")
-	}
+	defer resp.Close()
 
-	respString, err := getResponseAsString(resp.Body)
+	respString, err := getResponseAsString(resp)
 	if err != nil {
 		return fmt.Errorf("failed to get response as string: %w", err)
 	}
@@ -383,7 +381,7 @@ func loadDockerImage(ctx context.Context, cli *client.Client, imagePath string) 
 	return nil
 }
 
-func pushImage(ctx context.Context, dockerClient *client.Client, t TargetBuild, opts image.PushOptions, progress bool) error {
+func pushImage(ctx context.Context, dockerClient *client.Client, t TargetBuild, opts client.ImagePushOptions, progress bool) error {
 	fmt.Printf("Pushing %s\n", t.DockerImageTag)
 	opts.Platform = &ocispec.Platform{
 		OS:           t.OS,
@@ -588,7 +586,7 @@ func PublishToDockerRegistry(ctx context.Context, token, distDir string, pkgJSON
 
 	// Loading and pushing the images is done via the Docker Go SDK
 	additionalHeaders := map[string]string{"X-Meta-Plugin-Version": pkgJSON.Version, "X-Meta-User-Team-Name": pkgJSON.Team}
-	dockerClient, err := client.NewClientWithOpts(client.FromEnv, client.WithHTTPHeaders(additionalHeaders), client.WithAPIVersionNegotiation())
+	dockerClient, err := client.New(client.FromEnv, client.WithHTTPHeaders(additionalHeaders))
 	if err != nil {
 		return fmt.Errorf("failed to create Docker client: %v", err)
 	}
@@ -609,11 +607,11 @@ func PublishToDockerRegistry(ctx context.Context, token, distDir string, pkgJSON
 		Username: username,
 		Password: password,
 	}
-	encodedAuth, err := registry.EncodeAuthConfig(authConfig)
+	encodedAuth, err := authconfig.Encode(authConfig)
 	if err != nil {
 		return fmt.Errorf("failed to encode Docker auth config: %v", err)
 	}
-	opts := image.PushOptions{
+	opts := client.ImagePushOptions{
 		RegistryAuth: encodedAuth,
 	}
 	for _, t := range pkgJSON.SupportedTargets {
