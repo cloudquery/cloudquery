@@ -79,17 +79,8 @@ func transformSourceV2DestV3Resource(originalResourceBytes []byte, recordTransfo
 }
 
 // nolint:dupl
-func syncConnectionV2(ctx context.Context, sourceClient *managedplugin.Client, destinationsClients managedplugin.Clients, sourceSpec specs.Source, destinationSpecs []specs.Destination, uid string, noMigrate bool, destinationsVersions [][]int) error {
+func syncConnectionV2(ctx context.Context, sourceClient *managedplugin.Client, destinationsClients managedplugin.Clients, sourceSpec specs.Source, destinationSpecs []specs.Destination, noMigrate bool, destinationsVersions [][]int) error {
 	var mt metrics.Metrics
-	var exitReason = ExitReasonStopped
-	defer func() {
-		if oldAnalyticsClient != nil {
-			log.Info().Msg("Sending sync summary to " + oldAnalyticsClient.Host())
-			if err := oldAnalyticsClient.SendSyncMetrics(context.Background(), sourceSpec, destinationSpecs, uid, &mt, exitReason); err != nil {
-				log.Warn().Err(err).Msg("Failed to send sync summary")
-			}
-		}
-	}()
 	// https://github.com/golang/go/issues/41087
 	syncTime := time.Now().UTC().Truncate(time.Microsecond)
 	destinationStrings := make([]string, len(destinationsClients))
@@ -264,7 +255,6 @@ func syncConnectionV2(ctx context.Context, sourceClient *managedplugin.Client, d
 		log.Warn().Err(err).Msg("Failed to finish progress bar")
 	}
 	syncTimeTook := time.Since(syncTime)
-	exitReason = ExitReasonCompleted
 	fmt.Printf("Sync completed successfully. Resources: %d, Errors: %d, Panics: %d, Time: %s\n", mt.TotalResources(), mt.TotalErrors(), mt.TotalPanics(), syncTimeTook.Truncate(time.Second).String())
 	return nil
 }
