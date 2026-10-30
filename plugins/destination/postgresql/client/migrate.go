@@ -246,10 +246,6 @@ func (c *Client) dropTable(ctx context.Context, tableName string) error {
 	return nil
 }
 
-// cqIDConstraintSQLs builds the ALTER TABLE statements that move the primary
-// key onto the _cq_id column. pkName comes straight from information_schema and
-// defaults to "<table>_pkey", so it inherits any hostile or mixed-case table
-// name and must be quoted exactly like the table name.
 func cqIDConstraintSQLs(sanitizedTableName, pkName string) (dropStmt, addStmt string) {
 	sanitizedPKName := pgx.Identifier{pkName}.Sanitize()
 	dropStmt = "ALTER TABLE " + sanitizedTableName + " DROP CONSTRAINT " + sanitizedPKName
@@ -335,10 +331,6 @@ func (c *Client) migrateToCQID(ctx context.Context, table *schema.Table, _ schem
 	return nil
 }
 
-// finalizeTx commits tx when err is nil and rolls it back otherwise. A nil tx
-// (BeginTx failed, e.g. the second CockroachDB transaction in migrateToCQID) is
-// safe: the incoming error is propagated as-is instead of panicking on the
-// rollback.
 func (c *Client) finalizeTx(ctx context.Context, tx pgx.Tx, tableName string, err error) error {
 	if tx == nil {
 		return err
@@ -347,8 +339,6 @@ func (c *Client) finalizeTx(ctx context.Context, tx pgx.Tx, tableName string, er
 		if err = tx.Commit(ctx); err != nil {
 			c.logger.Error().Err(err).Str("table", tableName).Msg("failed to commit transaction")
 		}
-		// pgx closes the transaction inside Commit even when it fails, so a
-		// rollback here would only return ErrTxClosed and log noise.
 		return err
 	}
 	if rollbackErr := tx.Rollback(ctx); rollbackErr != nil {

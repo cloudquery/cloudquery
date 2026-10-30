@@ -13,8 +13,6 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-// recordingExecPool captures every SQL string sent through Exec so tests can
-// assert on identifier quoting without a live database.
 type recordingExecPool struct {
 	MockDBPool
 	execSQL []string
