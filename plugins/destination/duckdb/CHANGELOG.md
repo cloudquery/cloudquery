@@ -1,5 +1,13 @@
 # Changelog
 
+## [6.4.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v6.4.1...plugins-destination-duckdb-v6.4.2) (2026-10-28)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.99.1 ([#23622](https://github.com/cloudquery/cloudquery/issues/23622)) ([2427faa](https://github.com/cloudquery/cloudquery/commit/2427faa717b7c5bc291e205de401d5f04dfc68d1))
+* Store DuckDB timestamps in UTC regardless of machine time zone ([#23645](https://github.com/cloudquery/cloudquery/issues/23645)) ([7242bf4](https://github.com/cloudquery/cloudquery/commit/7242bf4353ef9e7d960ec65319a5a8f23431a7b3))
+
 ## [6.4.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v6.4.0...plugins-destination-duckdb-v6.4.1) (2026-10-21)
 
 
