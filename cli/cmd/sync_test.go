@@ -908,3 +908,29 @@ func readSummaries(t *testing.T, filename string) []syncSummary {
 	}
 	return summaries
 }
+
+func TestSyncMetrics(t *testing.T) {
+	mt := syncMetrics(
+		"cloudquery/test",
+		map[string]uint64{"test_some_table": 1, "test_sub_table": 10, "test_paid_table": 1},
+		map[string]uint64{"test_some_table": 0, "test_sub_table": 4, "test_paid_table": 1},
+	)
+
+	require.Equal(t, uint64(12), mt.TotalResources())
+	require.Equal(t, uint64(5), mt.TotalErrors())
+	require.Equal(t, uint64(0), mt.TotalPanics())
+
+	require.Len(t, mt.TableClient, 3)
+	require.Equal(t, uint64(10), mt.TableClient["test_sub_table"]["cloudquery/test"].Resources)
+	require.Equal(t, uint64(4), mt.TableClient["test_sub_table"]["cloudquery/test"].Errors)
+	require.Equal(t, uint64(1), mt.TableClient["test_paid_table"]["cloudquery/test"].Resources)
+	require.Equal(t, uint64(1), mt.TableClient["test_paid_table"]["cloudquery/test"].Errors)
+}
+
+func TestSyncMetricsWithoutTables(t *testing.T) {
+	mt := syncMetrics("cloudquery/test", map[string]uint64{}, map[string]uint64{})
+
+	require.NotNil(t, mt.TableClient)
+	require.Empty(t, mt.TableClient)
+	require.Equal(t, uint64(0), mt.TotalResources())
+}
