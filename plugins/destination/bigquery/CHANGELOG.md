@@ -1,5 +1,16 @@
 # Changelog
 
+## [4.9.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v4.9.0...plugins-destination-bigquery-v4.9.1) (2026-10-31)
+
+
+### Bug Fixes
+
+* **deps:** Update module cloud.google.com/go/bigquery to v1.86.0 ([#23663](https://github.com/cloudquery/cloudquery/issues/23663)) ([e8905c3](https://github.com/cloudquery/cloudquery/commit/e8905c3e936477b4bfe3c1fa3977ac3513966c7f))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.99.1 ([#23622](https://github.com/cloudquery/cloudquery/issues/23622)) ([2427faa](https://github.com/cloudquery/cloudquery/commit/2427faa717b7c5bc291e205de401d5f04dfc68d1))
+* **deps:** Update module golang.org/x/sync to v0.24.0 ([#23600](https://github.com/cloudquery/cloudquery/issues/23600)) ([b87ce6e](https://github.com/cloudquery/cloudquery/commit/b87ce6ec86c2fcb5a4f58f07241516b6bd29afff))
+* **deps:** Update module google.golang.org/api to v0.304.0 ([#23617](https://github.com/cloudquery/cloudquery/issues/23617)) ([b33cc53](https://github.com/cloudquery/cloudquery/commit/b33cc532187bfe642156cdb0903c65eeb03ec558))
+* **deps:** Update module google.golang.org/api to v0.308.0 ([#23665](https://github.com/cloudquery/cloudquery/issues/23665)) ([ade5fad](https://github.com/cloudquery/cloudquery/commit/ade5fadd31e8dc727a415b34ea07a9a6406f75a4))
+
 ## [4.9.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v4.8.0...plugins-destination-bigquery-v4.9.0) (2026-10-21)
 
 
