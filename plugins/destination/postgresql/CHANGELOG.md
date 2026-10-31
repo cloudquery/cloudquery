@@ -1,5 +1,15 @@
 # Changelog
 
+## [8.19.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.19.0...plugins-destination-postgresql-v8.19.1) (2026-10-31)
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#23660](https://github.com/cloudquery/cloudquery/issues/23660)) ([cd08d71](https://github.com/cloudquery/cloudquery/commit/cd08d71987cfe9ceaf9dd401eda07daf4fc69015))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.99.1 ([#23622](https://github.com/cloudquery/cloudquery/issues/23622)) ([2427faa](https://github.com/cloudquery/cloudquery/commit/2427faa717b7c5bc291e205de401d5f04dfc68d1))
+* **deps:** Update module golang.org/x/sync to v0.24.0 ([#23600](https://github.com/cloudquery/cloudquery/issues/23600)) ([b87ce6e](https://github.com/cloudquery/cloudquery/commit/b87ce6ec86c2fcb5a4f58f07241516b6bd29afff))
+* Sanitize identifiers in postgresql destination DDL, guard nil tx rollback ([#23640](https://github.com/cloudquery/cloudquery/issues/23640)) ([400b98a](https://github.com/cloudquery/cloudquery/commit/400b98a513ac6931c2ed1456db1506a40060b15e))
+
 ## [8.19.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.18.0...plugins-destination-postgresql-v8.19.0) (2026-10-21)
 
 
