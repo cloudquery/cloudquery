@@ -59,23 +59,23 @@ func reverseTransform(builder array.Builder, val any) error {
 	case *array.BooleanBuilder:
 		builder.Append(val.(bool))
 	case *array.Int8Builder:
-		v, err := toInt64(val)
+		v, err := toInt8(val)
 		if err != nil {
 			return err
 		}
-		builder.Append(int8(v))
+		builder.Append(v)
 	case *array.Int16Builder:
-		v, err := toInt64(val)
+		v, err := toInt16(val)
 		if err != nil {
 			return err
 		}
-		builder.Append(int16(v))
+		builder.Append(v)
 	case *array.Int32Builder:
-		v, err := toInt64(val)
+		v, err := toInt32(val)
 		if err != nil {
 			return err
 		}
-		builder.Append(int32(v))
+		builder.Append(v)
 	case *array.Int64Builder:
 		v, err := toInt64(val)
 		if err != nil {
@@ -83,23 +83,23 @@ func reverseTransform(builder array.Builder, val any) error {
 		}
 		builder.Append(v)
 	case *array.Uint8Builder:
-		v, err := toUint64(val)
+		v, err := toUint8(val)
 		if err != nil {
 			return err
 		}
-		builder.Append(uint8(v))
+		builder.Append(v)
 	case *array.Uint16Builder:
-		v, err := toUint64(val)
+		v, err := toUint16(val)
 		if err != nil {
 			return err
 		}
-		builder.Append(uint16(v))
+		builder.Append(v)
 	case *array.Uint32Builder:
-		v, err := toUint64(val)
+		v, err := toUint32(val)
 		if err != nil {
 			return err
 		}
-		builder.Append(uint32(v))
+		builder.Append(v)
 	case *array.Uint64Builder:
 		v, err := toUint64(val)
 		if err != nil {
