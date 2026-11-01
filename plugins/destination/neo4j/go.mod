@@ -6,7 +6,7 @@ require (
 	github.com/apache/arrow-go/v18 v18.8.0
 	github.com/cloudquery/codegen v0.4.1
 	github.com/cloudquery/plugin-sdk/v4 v4.99.1
-	github.com/goccy/go-json v0.10.6
+	github.com/goccy/go-json v0.11.2
 	github.com/neo4j/neo4j-go-driver/v6 v6.3.0
 	github.com/rs/zerolog v1.35.1
 	github.com/stretchr/testify v1.12.1
