@@ -14,7 +14,7 @@ require (
 	github.com/distribution/reference v0.6.0
 	github.com/docker/distribution v2.8.3+incompatible
 	github.com/fatih/color v1.19.0
-	github.com/getsentry/sentry-go v0.49.0
+	github.com/getsentry/sentry-go v0.50.0
 	github.com/ghodss/yaml v1.0.0
 	github.com/google/go-cmp v0.7.0
 	github.com/google/uuid v1.6.0
