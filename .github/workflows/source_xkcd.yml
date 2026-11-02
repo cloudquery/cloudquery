@@ -58,7 +58,7 @@ jobs:
         run: echo "version=$(tr -d '[:space:]' < "$GITHUB_WORKSPACE/.github/cloudquery-cli-version")" >> "$GITHUB_OUTPUT"
       - name: Setup CloudQuery
         if: github.event_name == 'pull_request'
-        uses: cloudquery/setup-cloudquery@757b19eb8496cf9e89a78de54f2c677253f54f6b # v5.0.3
+        uses: cloudquery/setup-cloudquery@77d0ae10d00d0eaf349d7babde43bf5978250142 # v5.0.4
         with:
           version: ${{ steps.cloudquery-cli-version.outputs.version }}
       - name: gen

@@ -33,7 +33,7 @@ jobs:
 
       # Needed for shell escape
       - name: Use Node.js LTS
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
           node-version: 'lts/*'
 
@@ -74,7 +74,7 @@ jobs:
           go run main.go package -m ${{"{{"}} steps.release-notes.outputs.result {{"}}"}} ${{"{{"}} steps.semver_parser.outputs.fullversion {{"}}"}} .
 
       - name: Setup CloudQuery
-        uses: cloudquery/setup-cloudquery@757b19eb8496cf9e89a78de54f2c677253f54f6b # v5.0.3
+        uses: cloudquery/setup-cloudquery@77d0ae10d00d0eaf349d7babde43bf5978250142 # v5.0.4
         with:
           version: v6.42.2
 
