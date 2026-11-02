@@ -7,12 +7,12 @@ require (
 	github.com/apache/tinkerpop/gremlin-go/v3 v3.8.2
 	github.com/aws/aws-sdk-go-v2 v1.47.4
 	github.com/aws/aws-sdk-go-v2/config v1.33.10
-	github.com/cenkalti/backoff/v7 v7.0.0
+	github.com/cenkalti/backoff/v7 v7.0.2
 	github.com/cloudquery/codegen v0.4.1
 	github.com/cloudquery/plugin-sdk/v4 v4.99.1
-	github.com/goccy/go-json v0.10.6
+	github.com/goccy/go-json v0.11.2
 	github.com/invopop/jsonschema v0.14.0
-	github.com/pb33f/ordered-map/v2 v2.3.1
+	github.com/pb33f/ordered-map/v2 v2.3.2
 	github.com/rs/zerolog v1.35.1
 	github.com/stretchr/testify v1.12.1
 )
@@ -60,6 +60,7 @@ require (
 	github.com/mattn/go-isatty v0.0.24 // indirect
 	github.com/nicksnyder/go-i18n/v2 v2.5.0 // indirect
 	github.com/oapi-codegen/runtime v1.7.0 // indirect
+	github.com/pb33f/go-yaml v0.1.0 // indirect
 	github.com/pierrec/lz4/v4 v4.1.29 // indirect
 	github.com/samber/lo v1.53.0 // indirect
 	github.com/santhosh-tekuri/jsonschema/v6 v6.0.3 // indirect
@@ -82,7 +83,6 @@ require (
 	go.opentelemetry.io/otel/trace v1.46.0 // indirect
 	go.opentelemetry.io/proto/otlp v1.11.0 // indirect
 	go.yaml.in/yaml/v3 v3.0.5 // indirect
-	go.yaml.in/yaml/v4 v4.0.0-rc.2 // indirect
 	golang.org/x/exp v0.0.0-20260908205506-85c1c2202aba // indirect
 	golang.org/x/mod v0.41.0 // indirect
 	golang.org/x/net v0.59.0 // indirect

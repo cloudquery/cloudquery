@@ -11,6 +11,7 @@
 | github.com/cloudquery/cloudquery/plugins/destination/duckdb/v5/client/client.go:93: | TestConnection | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/duckdb/v5/client/client.go:116: | exec | 87.5% |
 | github.com/cloudquery/cloudquery/plugins/destination/duckdb/v5/client/client.go:130: | amendConnectionString | 28.6% |
+| github.com/cloudquery/cloudquery/plugins/destination/duckdb/v5/client/client.go:146: | useUTC | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/duckdb/v5/client/delete_stale.go:14: | DeleteStale | 94.1% |
 | github.com/cloudquery/cloudquery/plugins/destination/duckdb/v5/client/migrate.go:31: | normalizeColumns | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/duckdb/v5/client/migrate.go:40: | normalizeTable | 100.0% |
