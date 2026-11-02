@@ -2,7 +2,7 @@ FROM node:26.13.0-slim AS builder
 
 WORKDIR /app
 
-RUN corepack enable
+RUN npm install --global corepack@latest && corepack enable
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
@@ -16,7 +16,7 @@ FROM node:26.13.0-slim AS final
 
 WORKDIR /app
 
-RUN corepack enable
+RUN npm install --global corepack@latest && corepack enable
 
 COPY --from=builder ./app/dist ./dist
 
