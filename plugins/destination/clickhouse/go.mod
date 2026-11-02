@@ -3,27 +3,27 @@ module github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8
 go 1.27.3
 
 require (
-	github.com/ClickHouse/clickhouse-go/v2 v2.48.0
+	github.com/ClickHouse/clickhouse-go/v2 v2.49.0
 	github.com/apache/arrow-go/v18 v18.8.0
 	github.com/avast/retry-go/v5 v5.0.0
 	github.com/cloudquery/codegen v0.4.1
-	github.com/cloudquery/plugin-sdk/v4 v4.99.0
-	github.com/goccy/go-json v0.10.6
+	github.com/cloudquery/plugin-sdk/v4 v4.99.1
+	github.com/goccy/go-json v0.11.2
 	github.com/google/uuid v1.6.0
 	github.com/invopop/jsonschema v0.14.0
 	github.com/rs/zerolog v1.35.1
 	github.com/samber/lo v1.53.0
 	github.com/samber/slog-zerolog/v2 v2.9.2
-	github.com/shopspring/decimal v1.4.0
+	github.com/shopspring/decimal v1.6.0
 	github.com/stretchr/testify v1.12.1
-	golang.org/x/exp v0.0.0-20260908205506-85c1c2202aba
-	golang.org/x/sync v0.23.0
+	golang.org/x/exp v0.0.0-20261014143641-f0251eb4aa3e
+	golang.org/x/sync v0.24.0
 )
 
 require (
 	github.com/ClickHouse/ch-go v0.74.0 // indirect
 	github.com/adrg/xdg v0.5.3 // indirect
-	github.com/andybalholm/brotli v1.2.3 // indirect
+	github.com/andybalholm/brotli v1.2.6 // indirect
 	github.com/apache/arrow/go/v13 v13.0.0 // indirect
 	github.com/apapsch/go-jsonmerge/v2 v2.0.0 // indirect
 	github.com/aws/aws-sdk-go-v2 v1.47.3 // indirect
@@ -36,7 +36,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.13.21 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.14.6 // indirect
 	github.com/aws/aws-sdk-go-v2/service/licensemanager v1.47.4 // indirect
-	github.com/aws/aws-sdk-go-v2/service/marketplacemetering v1.46.1 // indirect
+	github.com/aws/aws-sdk-go-v2/service/marketplacemetering v1.46.2 // indirect
 	github.com/aws/aws-sdk-go-v2/service/signin v1.10.4 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sso v1.38.4 // indirect
 	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.43.4 // indirect
@@ -92,12 +92,12 @@ require (
 	go.opentelemetry.io/proto/otlp v1.11.0 // indirect
 	go.yaml.in/yaml/v3 v3.0.5 // indirect
 	go.yaml.in/yaml/v4 v4.0.0-rc.2 // indirect
-	golang.org/x/mod v0.41.0 // indirect
-	golang.org/x/net v0.59.0 // indirect
-	golang.org/x/sys v0.48.0 // indirect
-	golang.org/x/telemetry v0.0.0-20260908163034-4bcc4b2ee518 // indirect
-	golang.org/x/text v0.42.0 // indirect
-	golang.org/x/tools v0.50.0 // indirect
+	golang.org/x/mod v0.42.0 // indirect
+	golang.org/x/net v0.61.0 // indirect
+	golang.org/x/sys v0.49.0 // indirect
+	golang.org/x/telemetry v0.0.0-20261009151841-97e8ea77aa2a // indirect
+	golang.org/x/text v0.43.0 // indirect
+	golang.org/x/tools v0.52.0 // indirect
 	golang.org/x/xerrors v0.0.0-20240903120638-7835f813f4da // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20260819154853-08b0e4226688 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20260819154853-08b0e4226688 // indirect

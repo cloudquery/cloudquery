@@ -8,7 +8,7 @@
 | github.com/cloudquery/cloudquery/plugins/destination/bigquery/v4/client/assess.go:93: | columnFinding | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/bigquery/v4/client/assess.go:108: | columnChange | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/bigquery/v4/client/assess.go:122: | optionalTypeName | 100.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/bigquery/v4/client/client.go:31: | New | 45.8% |
+| github.com/cloudquery/cloudquery/plugins/destination/bigquery/v4/client/client.go:31: | New | 42.1% |
 | github.com/cloudquery/cloudquery/plugins/destination/bigquery/v4/client/client.go:73: | Close | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/bigquery/v4/client/client.go:80: | bqClient | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/bigquery/v4/client/client.go:101: | validateCreds | 0.0% |
@@ -66,4 +66,4 @@
 | github.com/cloudquery/cloudquery/plugins/destination/bigquery/v4/client/write.go:57: | WriteTableBatch | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/bigquery/v4/client/write.go:100: | getValueForBigQuery | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/bigquery/v4/main.go:19: | main | 0.0% |
-| total: | (statements) | 24.8% |
+| total: | (statements) | 25.5% |

@@ -17,7 +17,6 @@ import (
 	"github.com/cloudquery/cloudquery-api-go/config"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/platform"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
-	"github.com/cloudquery/plugin-pb-go/metrics"
 	"github.com/cloudquery/plugin-pb-go/pb/plugin/v3"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/ghodss/yaml"
@@ -149,8 +148,6 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 		cqColumnsNotNull          = syncOptions.cqColumnsNotNull
 	)
 
-	var mt metrics.Metrics
-	var exitReason = ExitReasonStopped
 	skippedFromDeleteStale := make(map[string]bool)
 	tablesForDeleteStale := make(map[string]bool)
 	// the parent of each relation, so that delete-stale can skip the relation tree of a table that failed to write
@@ -199,14 +196,6 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 		})
 	}()
 
-	defer func() {
-		if oldAnalyticsClient != nil {
-			log.Info().Msg("Sending sync summary to " + oldAnalyticsClient.Host())
-			if err := oldAnalyticsClient.SendSyncMetrics(context.Background(), sourceSpec, destinationSpecs, uid, &mt, exitReason); err != nil {
-				log.Warn().Err(err).Msg("Failed to send sync summary")
-			}
-		}
-	}()
 	// https://github.com/golang/go/issues/41087
 	syncTime := time.Now().UTC().Truncate(time.Microsecond)
 	sourceName := sourceSpec.Name
@@ -818,8 +807,6 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 	}
 
 	atomic.StoreInt64(&isComplete, 1)
-
-	exitReason = ExitReasonCompleted
 
 	msg := "Sync completed successfully"
 	if sourceErrors > 0 {

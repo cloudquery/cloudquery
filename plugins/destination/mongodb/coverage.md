@@ -7,10 +7,10 @@
 | github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/assess.go:78: | columnFinding | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/assess.go:93: | isPrimaryKey | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/client.go:30: | oidcCredential | 100.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/client.go:43: | New | 54.8% |
+| github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/client.go:43: | New | 56.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/client.go:94: | Close | 33.3% |
 | github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/delete_stale.go:11: | DeleteStale | 0.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/json_numbers.go:13: | unmarshalNestedJSON | 90.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/json_numbers.go:13: | unmarshalNestedJSON | 83.3% |
 | github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/json_numbers.go:25: | convertJSONNumbers | 50.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/migrate.go:14: | MigrateTables | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/migrate.go:23: | migrateTable | 0.0% |
@@ -42,7 +42,7 @@
 | github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/spec/spec.go:81: | Validate | 93.3% |
 | github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/test_connection.go:20: | NewConnectionTester | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/transaction.go:8: | runWrite | 0.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/uint64.go:13: | getRegistry | 90.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/uint64.go:13: | getRegistry | 85.7% |
 | github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/unsigned.go:10: | reinterpretUnsigned | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/write.go:20: | transformArr | 22.2% |
 | github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/write.go:85: | parseTypeSchema | 83.3% |
@@ -55,4 +55,4 @@
 | github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/write.go:205: | WriteTableBatch | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/write.go:224: | Write | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/main.go:18: | main | 0.0% |
-| total: | (statements) | 35.8% |
+| total: | (statements) | 39.0% |

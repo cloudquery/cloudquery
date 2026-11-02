@@ -1,14 +1,14 @@
 | File | Function | Coverage |
 | --- | --- | --- |
 | github.com/cloudquery/cloudquery/plugins/destination/mysql/v5/client/assess.go:21: | AssessTables | 100.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/mysql/v5/client/assess.go:29: | assessTable | 96.2% |
+| github.com/cloudquery/cloudquery/plugins/destination/mysql/v5/client/assess.go:29: | assessTable | 95.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/mysql/v5/client/assess.go:63: | tableFinding | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/mysql/v5/client/assess.go:72: | columnFinding | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/mysql/v5/client/assess.go:94: | columnsStoredUnchanged | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/mysql/v5/client/assess.go:110: | unchangedColumnFinding | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/mysql/v5/client/assess.go:126: | mySQLColumnType | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/mysql/v5/client/assess.go:134: | autoMigrationBehavior | 100.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/mysql/v5/client/client.go:41: | New | 72.5% |
+| github.com/cloudquery/cloudquery/plugins/destination/mysql/v5/client/client.go:41: | New | 71.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/mysql/v5/client/client.go:92: | validateConnection | 27.3% |
 | github.com/cloudquery/cloudquery/plugins/destination/mysql/v5/client/client.go:110: | getVersion | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/mysql/v5/client/client.go:130: | setMaxIndexLength | 0.0% |
@@ -43,7 +43,7 @@
 | github.com/cloudquery/cloudquery/plugins/destination/mysql/v5/client/transformer.go:65: | transformRecord | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/mysql/v5/client/types.go:14: | isUnsigned | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/mysql/v5/client/types.go:18: | parseStringValue | 75.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/mysql/v5/client/types.go:26: | getPrecisionAndScale | 89.5% |
+| github.com/cloudquery/cloudquery/plugins/destination/mysql/v5/client/types.go:26: | getPrecisionAndScale | 86.7% |
 | github.com/cloudquery/cloudquery/plugins/destination/mysql/v5/client/types.go:50: | mySQLTypeToArrowType | 39.4% |
 | github.com/cloudquery/cloudquery/plugins/destination/mysql/v5/client/types.go:106: | arrowTypeToMySqlStr | 22.2% |
 | github.com/cloudquery/cloudquery/plugins/destination/mysql/v5/client/write.go:14: | getInsertQueryBuild | 0.0% |
@@ -54,4 +54,4 @@
 | github.com/cloudquery/cloudquery/plugins/destination/mysql/v5/client/write.go:125: | Write | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/mysql/v5/client/write.go:135: | WriteTableBatch | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/mysql/v5/main.go:17: | main | 0.0% |
-| total: | (statements) | 23.7% |
+| total: | (statements) | 21.6% |

@@ -1,15 +1,15 @@
 | File | Function | Coverage |
 | --- | --- | --- |
 | github.com/cloudquery/cloudquery/plugins/destination/file/v5/client/assess.go:26: | assessTable | 100.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/file/v5/client/client.go:29: | New | 84.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/file/v5/client/client.go:29: | New | 77.8% |
 | github.com/cloudquery/cloudquery/plugins/destination/file/v5/client/client.go:68: | isEmptySpec | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/file/v5/client/client.go:73: | Close | 100.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/file/v5/client/read.go:14: | Read | 81.2% |
+| github.com/cloudquery/cloudquery/plugins/destination/file/v5/client/read.go:14: | Read | 75.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/file/v5/client/spec/gen/main.go:14: | main | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/file/v5/client/spec/gen/main.go:24: | currDir | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/file/v5/client/spec/schema.go:10: | JSONSchemaExtend | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/file/v5/client/spec/spec.go:64: | SetDefaults | 68.8% |
-| github.com/cloudquery/cloudquery/plugins/destination/file/v5/client/spec/spec.go:93: | Validate | 87.5% |
+| github.com/cloudquery/cloudquery/plugins/destination/file/v5/client/spec/spec.go:93: | Validate | 85.7% |
 | github.com/cloudquery/cloudquery/plugins/destination/file/v5/client/spec/spec.go:122: | ReplacePathVariables | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/file/v5/client/spec/spec.go:137: | PathContainsUUID | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/file/v5/client/spec/spec.go:141: | batchingEnabled | 100.0% |
@@ -17,4 +17,4 @@
 | github.com/cloudquery/cloudquery/plugins/destination/file/v5/client/write.go:18: | WriteTable | 76.2% |
 | github.com/cloudquery/cloudquery/plugins/destination/file/v5/client/write.go:57: | Write | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/file/v5/main.go:18: | main | 0.0% |
-| total: | (statements) | 50.8% |
+| total: | (statements) | 49.4% |

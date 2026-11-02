@@ -3,25 +3,25 @@ module github.com/cloudquery/cloudquery/plugins/destination/azblob/v4
 go 1.27.3
 
 require (
-	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.14.1
+	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.15.0
 	github.com/Azure/azure-sdk-for-go/sdk/storage/azblob v1.8.2
 	github.com/apache/arrow-go/v18 v18.8.0
 	github.com/cloudquery/codegen v0.4.1
 	github.com/cloudquery/filetypes/v4 v4.9.1
-	github.com/cloudquery/plugin-sdk/v4 v4.99.0
+	github.com/cloudquery/plugin-sdk/v4 v4.99.1
 	github.com/google/go-cmp v0.7.0
 	github.com/google/uuid v1.6.0
 	github.com/invopop/jsonschema v0.14.0
-	github.com/pb33f/ordered-map/v2 v2.3.1
+	github.com/pb33f/ordered-map/v2 v2.3.2
 	github.com/rs/zerolog v1.35.1
 	github.com/stretchr/testify v1.12.1
 )
 
 require (
-	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.23.2 // indirect
-	github.com/Azure/azure-sdk-for-go/sdk/internal v1.12.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.23.3 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/internal v1.13.0 // indirect
 	github.com/Azure/azure-sdk-for-go/sdk/storage/internal v0.1.0 // indirect
-	github.com/AzureAD/microsoft-authentication-library-for-go v1.8.0 // indirect
+	github.com/AzureAD/microsoft-authentication-library-for-go v1.10.1 // indirect
 	github.com/adrg/xdg v0.5.3 // indirect
 	github.com/andybalholm/brotli v1.2.3 // indirect
 	github.com/apache/arrow/go/v13 v13.0.0-20230731205701-112f94971882 // indirect
@@ -37,7 +37,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.13.21 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.14.6 // indirect
 	github.com/aws/aws-sdk-go-v2/service/licensemanager v1.47.4 // indirect
-	github.com/aws/aws-sdk-go-v2/service/marketplacemetering v1.46.1 // indirect
+	github.com/aws/aws-sdk-go-v2/service/marketplacemetering v1.46.2 // indirect
 	github.com/aws/aws-sdk-go-v2/service/signin v1.10.4 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sso v1.38.4 // indirect
 	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.43.4 // indirect
@@ -68,6 +68,7 @@ require (
 	github.com/mattn/go-colorable v0.1.14 // indirect
 	github.com/mattn/go-isatty v0.0.24 // indirect
 	github.com/oapi-codegen/runtime v1.7.0 // indirect
+	github.com/pb33f/go-yaml v0.1.0 // indirect
 	github.com/pierrec/lz4/v4 v4.1.29 // indirect
 	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c // indirect
 	github.com/samber/lo v1.53.0 // indirect
@@ -91,7 +92,6 @@ require (
 	go.opentelemetry.io/otel/trace v1.46.0 // indirect
 	go.opentelemetry.io/proto/otlp v1.11.0 // indirect
 	go.yaml.in/yaml/v3 v3.0.5 // indirect
-	go.yaml.in/yaml/v4 v4.0.0-rc.2 // indirect
 	golang.org/x/crypto v0.57.0 // indirect
 	golang.org/x/exp v0.0.0-20260908205506-85c1c2202aba // indirect
 	golang.org/x/mod v0.41.0 // indirect

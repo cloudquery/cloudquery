@@ -4,11 +4,11 @@ go 1.27.3
 
 require (
 	github.com/apache/arrow-go/v18 v18.8.0
-	github.com/cenkalti/backoff/v7 v7.0.0
+	github.com/cenkalti/backoff/v7 v7.0.2
 	github.com/cloudquery/codegen v0.4.1
-	github.com/cloudquery/plugin-sdk/v4 v4.99.0
-	github.com/duckdb/duckdb-go/v2 v2.10505.0
-	github.com/goccy/go-json v0.10.6
+	github.com/cloudquery/plugin-sdk/v4 v4.99.1
+	github.com/duckdb/duckdb-go/v2 v2.20000.0
+	github.com/goccy/go-json v0.11.2
 	github.com/google/uuid v1.6.0
 	github.com/rs/zerolog v1.35.1
 	github.com/stretchr/testify v1.12.1
@@ -30,7 +30,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.13.21 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.14.6 // indirect
 	github.com/aws/aws-sdk-go-v2/service/licensemanager v1.47.4 // indirect
-	github.com/aws/aws-sdk-go-v2/service/marketplacemetering v1.46.1 // indirect
+	github.com/aws/aws-sdk-go-v2/service/marketplacemetering v1.46.2 // indirect
 	github.com/aws/aws-sdk-go-v2/service/signin v1.10.4 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sso v1.38.4 // indirect
 	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.43.4 // indirect
@@ -43,12 +43,7 @@ require (
 	github.com/cloudquery/cloudquery-api-go v1.14.13 // indirect
 	github.com/cloudquery/plugin-pb-go v1.28.2 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
-	github.com/duckdb/duckdb-go-bindings v0.10505.0 // indirect
-	github.com/duckdb/duckdb-go-bindings/lib/darwin-amd64 v0.10505.0 // indirect
-	github.com/duckdb/duckdb-go-bindings/lib/darwin-arm64 v0.10505.0 // indirect
-	github.com/duckdb/duckdb-go-bindings/lib/linux-amd64 v0.10505.0 // indirect
-	github.com/duckdb/duckdb-go-bindings/lib/linux-arm64 v0.10505.0 // indirect
-	github.com/duckdb/duckdb-go-bindings/lib/windows-amd64 v0.10505.0 // indirect
+	github.com/duckdb/duckdb-go-bindings v0.20000.0 // indirect
 	github.com/getsentry/sentry-go v0.49.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/go-logr/logr v1.4.4 // indirect
@@ -75,6 +70,11 @@ require (
 	github.com/stoewer/go-strcase v1.3.1 // indirect
 	github.com/thoas/go-funk v0.9.3 // indirect
 	github.com/zeebo/xxh3 v1.1.0 // indirect
+	go.duckdb.org/libduckdb/darwin-amd64 v0.20000.0 // indirect
+	go.duckdb.org/libduckdb/darwin-arm64 v0.20000.0 // indirect
+	go.duckdb.org/libduckdb/linux-amd64 v0.20000.0 // indirect
+	go.duckdb.org/libduckdb/linux-arm64 v0.20000.0 // indirect
+	go.duckdb.org/libduckdb/windows-amd64 v0.20000.0 // indirect
 	go.opentelemetry.io/auto/sdk v1.2.1 // indirect
 	go.opentelemetry.io/otel v1.46.0 // indirect
 	go.opentelemetry.io/otel/exporters/otlp/otlplog/otlploghttp v0.22.0 // indirect

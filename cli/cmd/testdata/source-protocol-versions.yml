@@ -1,0 +1,13 @@
+kind: "source"
+spec:
+  name: "test"
+  registry: "grpc"
+  path: ${CQ_TEST_SOURCE_ADDRESS}
+  destinations: [test]
+  tables: ["*"]
+---
+kind: "destination"
+spec:
+  name: "test"
+  registry: "grpc"
+  path: ${CQ_TEST_DESTINATION_ADDRESS}
