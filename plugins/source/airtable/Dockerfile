@@ -1,8 +1,8 @@
-FROM node:24.22.2-slim AS builder
+FROM node:26.13.0-slim AS builder
 
 WORKDIR /app
 
-RUN corepack enable
+RUN npm install --global corepack@0.36.0 && corepack enable
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
@@ -12,11 +12,11 @@ COPY . .
 
 RUN pnpm run build
 
-FROM node:24.22.2-slim AS final
+FROM node:26.13.0-slim AS final
 
 WORKDIR /app
 
-RUN corepack enable
+RUN npm install --global corepack@0.36.0 && corepack enable
 
 COPY --from=builder ./app/dist ./dist
 
