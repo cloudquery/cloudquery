@@ -49,7 +49,7 @@ jobs:
       - name: golangci-lint
         uses: golangci/golangci-lint-action@ba0d7d2ec06a0ea1cb5fa41b2e4a3ab91d21278a # v9
         with:
-          version: v2.14.0
+          version: v2.15.0
           working-directory: plugins/source/hackernews
           args: '--config ../../.golangci.yml'
       - name: Read CloudQuery CLI version
@@ -58,7 +58,7 @@ jobs:
         run: echo "version=$(tr -d '[:space:]' < "$GITHUB_WORKSPACE/.github/cloudquery-cli-version")" >> "$GITHUB_OUTPUT"
       - name: Setup CloudQuery
         if: github.event_name == 'pull_request'
-        uses: cloudquery/setup-cloudquery@757b19eb8496cf9e89a78de54f2c677253f54f6b # v5.0.3
+        uses: cloudquery/setup-cloudquery@3b6ae9d08be7cca123e33ac7f0f74730be212861 # v5.0.5
         with:
           version: ${{ steps.cloudquery-cli-version.outputs.version }}
       - name: gen

@@ -20,15 +20,9 @@ import (
 	"github.com/cloudquery/cloudquery/cli/v6/internal/hub"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/publish/images"
 	"github.com/distribution/reference"
-	"github.com/docker/distribution"
-	"github.com/docker/distribution/manifest/manifestlist"
-	"github.com/docker/distribution/manifest/schema2"
-	distributionclient "github.com/docker/distribution/registry/client"
-	"github.com/docker/distribution/registry/client/auth/challenge"
 	"github.com/moby/moby/api/pkg/authconfig"
 	"github.com/moby/moby/api/types/registry"
 	"github.com/moby/moby/client"
-	"github.com/opencontainers/go-digest"
 	ocispec "github.com/opencontainers/image-spec/specs-go/v1"
 	"github.com/schollz/progressbar/v3"
 )
@@ -443,13 +437,13 @@ func getDockerToken(ctx context.Context, ref reference.Named, version, team, use
 	if challengeHeader == "" {
 		return "", errors.New("client: missing WWW-Authenticate header")
 	}
-	challenges := challenge.ResponseChallenges(challengeRes)
-	if len(challenges) != 1 {
-		return "", fmt.Errorf("client: expected 1 challenge header, got %d. Header value %q", len(challenges), challengeHeader)
+	challenge, err := parseBearerChallenge(challengeHeader)
+	if err != nil {
+		return "", fmt.Errorf("client: %w", err)
 	}
-	realm := challenges[0].Parameters["realm"]
-	service := challenges[0].Parameters["service"]
-	scope := challenges[0].Parameters["scope"]
+	realm := challenge["realm"]
+	service := challenge["service"]
+	scope := challenge["scope"]
 	if realm == "" || service == "" || scope == "" {
 		return "", fmt.Errorf("client: could not parse challenge header %q", challengeHeader)
 	}
@@ -495,18 +489,6 @@ func getManifestParams(target string) (imageName reference.Named, repository str
 	return imageName, repository, nil
 }
 
-func getManifestService(ctx context.Context, imageName reference.Named, repository string, registryAuth string, insecureSkipVerify bool) (distribution.ManifestService, error) {
-	repo, err := distributionclient.NewRepository(imageName, "https://"+repository, newTransportWithRegistryAuth(insecureSkipVerify, registryAuth))
-	if err != nil {
-		return nil, fmt.Errorf("failed to create Docker repository: %v", err)
-	}
-	manifestService, err := repo.Manifests(ctx)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create Docker manifest: %v", err)
-	}
-	return manifestService, nil
-}
-
 func getTagsFromTargets(targets []TargetBuild) ([]reference.NamedTagged, error) {
 	namedTags := make([]reference.NamedTagged, len(targets))
 	for i, t := range targets {
@@ -521,63 +503,6 @@ func getTagsFromTargets(targets []TargetBuild) ([]reference.NamedTagged, error) 
 		namedTags[i] = nameWithTag
 	}
 	return namedTags, nil
-}
-
-func getManifestList(ctx context.Context, manifestService distribution.ManifestService, pkgJSON PackageJSONV1) (*manifestlist.DeserializedManifestList, error) {
-	namedTags, err := getTagsFromTargets(pkgJSON.SupportedTargets)
-	if err != nil {
-		return nil, err
-	}
-
-	descriptors := make([]manifestlist.ManifestDescriptor, 0)
-	for i, namedTag := range namedTags {
-		buildTarget := pkgJSON.SupportedTargets[i]
-		manifest, err := manifestService.Get(ctx, "", distribution.WithTag(namedTag.Tag()), distribution.WithManifestMediaTypes([]string{schema2.MediaTypeManifest}))
-		if err != nil {
-			return nil, fmt.Errorf("failed to create Docker manifest: %v", err)
-		}
-		mediaType, canonical, err := manifest.Payload()
-		if err != nil {
-			return nil, fmt.Errorf("failed to create Docker manifest: %v", err)
-		}
-		manifestDesc := manifestlist.ManifestDescriptor{
-			Descriptor: distribution.Descriptor{
-				Digest:    digest.FromBytes(canonical),
-				Size:      int64(len(canonical)),
-				MediaType: mediaType},
-			Platform: manifestlist.PlatformSpec{OS: buildTarget.OS, Architecture: buildTarget.Arch},
-		}
-		descriptors = append(descriptors, manifestDesc)
-	}
-	list, err := manifestlist.FromDescriptors(descriptors)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create Docker manifest: %v", err)
-	}
-	return list, nil
-}
-
-func pushManifest(ctx context.Context, pkgJSON PackageJSONV1, dockerToken string, insecureSkipVerify bool) error {
-	imageName, repository, err := getManifestParams(pkgJSON.SupportedTargets[0].DockerImageTag)
-	if err != nil {
-		return err
-	}
-
-	manifestService, err := getManifestService(ctx, imageName, repository, dockerToken, insecureSkipVerify)
-	if err != nil {
-		return err
-	}
-
-	manifestList, err := getManifestList(ctx, manifestService, pkgJSON)
-	if err != nil {
-		return err
-	}
-
-	digest, err := manifestService.Put(ctx, manifestList, distribution.WithTag(pkgJSON.Version))
-	if err != nil {
-		return fmt.Errorf("failed to create Docker manifest: %v", err)
-	}
-	fmt.Println("Created manifest:", digest.String())
-	return nil
 }
 
 func PublishToDockerRegistry(ctx context.Context, token, distDir string, pkgJSON PackageJSONV1, popts Opts) error {

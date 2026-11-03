@@ -133,7 +133,7 @@ jobs:
         run: echo "version=$(tr -d '[:space:]' < "$GITHUB_WORKSPACE/.github/cloudquery-cli-version")" >> "$GITHUB_OUTPUT"
       - name: Setup CloudQuery
         if: needs.prepare.outputs.ui_dir_arg != ''
-        uses: cloudquery/setup-cloudquery@757b19eb8496cf9e89a78de54f2c677253f54f6b # v5.0.3
+        uses: cloudquery/setup-cloudquery@3b6ae9d08be7cca123e33ac7f0f74730be212861 # v5.0.5
         with:
           version: ${{ steps.cloudquery-cli-version.outputs.version }}
 
@@ -144,7 +144,7 @@ jobs:
 
       - name: Use Node.js LTS
         if: needs.prepare.outputs.ui_dir_arg != ''
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
           node-version: "lts/*"
           cache: "npm"
@@ -168,7 +168,7 @@ jobs:
 
       - name: Upload build artifacts
         if: needs.prepare.outputs.ui_dir_arg != ''
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with:
           name: build_dir
           path: ${{ needs.prepare.outputs.ui_build_dir }}
@@ -188,12 +188,12 @@ jobs:
 
       - name: Download build artifacts
         if: needs.prepare.outputs.ui_dir_arg != ''
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
         with:
           name: build_dir
           path: ${{ needs.prepare.outputs.ui_build_dir }}
 
-      - uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6
+      - uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6
         with:
           distribution: "temurin"
           java-version: "20"
@@ -202,7 +202,7 @@ jobs:
 
       # Needed for shell escape
       - name: Use Node.js LTS
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
           node-version: "lts/*"
 
@@ -261,7 +261,7 @@ jobs:
         id: cloudquery-cli-version
         run: echo "version=$(tr -d '[:space:]' < "$GITHUB_WORKSPACE/.github/cloudquery-cli-version")" >> "$GITHUB_OUTPUT"
       - name: Setup CloudQuery
-        uses: cloudquery/setup-cloudquery@757b19eb8496cf9e89a78de54f2c677253f54f6b # v5.0.3
+        uses: cloudquery/setup-cloudquery@3b6ae9d08be7cca123e33ac7f0f74730be212861 # v5.0.5
         with:
           version: ${{ steps.cloudquery-cli-version.outputs.version }}
 
@@ -298,16 +298,16 @@ jobs:
 
       - name: Download build artifacts
         if: needs.prepare.outputs.ui_dir_arg != ''
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
         with:
           name: build_dir
           path: ${{ needs.prepare.outputs.ui_build_dir }}
 
       - name: Install uv
-        uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+        uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e # v10.3.2
 
       - name: Set up Python
-        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7
         with:
           python-version: "3.14"
 
@@ -317,7 +317,7 @@ jobs:
 
       # Needed for shell escape
       - name: Use Node.js LTS
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
           node-version: "lts/*"
 
@@ -366,7 +366,7 @@ jobs:
         id: cloudquery-cli-version
         run: echo "version=$(tr -d '[:space:]' < "$GITHUB_WORKSPACE/.github/cloudquery-cli-version")" >> "$GITHUB_OUTPUT"
       - name: Setup CloudQuery
-        uses: cloudquery/setup-cloudquery@757b19eb8496cf9e89a78de54f2c677253f54f6b # v5.0.3
+        uses: cloudquery/setup-cloudquery@3b6ae9d08be7cca123e33ac7f0f74730be212861 # v5.0.5
         with:
           version: ${{ steps.cloudquery-cli-version.outputs.version }}
 
@@ -403,7 +403,7 @@ jobs:
 
       - name: Download build artifacts
         if: needs.prepare.outputs.ui_dir_arg != ''
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
         with:
           name: build_dir
           path: ${{ needs.prepare.outputs.ui_build_dir }}
@@ -413,7 +413,7 @@ jobs:
           package_json_file: ${{ needs.prepare.outputs.plugin_dir }}/package.json
 
       - name: Use Node.js LTS
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
           node-version: "lts/*"
           cache: "pnpm"
@@ -468,7 +468,7 @@ jobs:
         id: cloudquery-cli-version
         run: echo "version=$(tr -d '[:space:]' < "$GITHUB_WORKSPACE/.github/cloudquery-cli-version")" >> "$GITHUB_OUTPUT"
       - name: Setup CloudQuery
-        uses: cloudquery/setup-cloudquery@757b19eb8496cf9e89a78de54f2c677253f54f6b # v5.0.3
+        uses: cloudquery/setup-cloudquery@3b6ae9d08be7cca123e33ac7f0f74730be212861 # v5.0.5
         with:
           version: ${{ steps.cloudquery-cli-version.outputs.version }}
 
@@ -507,7 +507,7 @@ jobs:
 
       - name: Download build artifacts
         if: needs.prepare.outputs.ui_dir_arg != ''
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
         with:
           name: build_dir
           path: ${{ needs.prepare.outputs.ui_build_dir }}
@@ -530,7 +530,7 @@ jobs:
 
       # Needed for shell escape
       - name: Use Node.js LTS
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
           node-version: "lts/*"
 
@@ -575,7 +575,7 @@ jobs:
         id: cloudquery-cli-version
         run: echo "version=$(tr -d '[:space:]' < "$GITHUB_WORKSPACE/.github/cloudquery-cli-version")" >> "$GITHUB_OUTPUT"
       - name: Setup CloudQuery
-        uses: cloudquery/setup-cloudquery@757b19eb8496cf9e89a78de54f2c677253f54f6b # v5.0.3
+        uses: cloudquery/setup-cloudquery@3b6ae9d08be7cca123e33ac7f0f74730be212861 # v5.0.5
         with:
           version: ${{ steps.cloudquery-cli-version.outputs.version }}
 
