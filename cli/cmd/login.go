@@ -78,7 +78,9 @@ func newCmdLogin() *cobra.Command {
 
 const successClosePath = "/success-close"
 
-func callbackHandler(accountsURL string, onToken func(string)) http.HandlerFunc {
+var trustedTenantDomains = []string{"cloudquery.io", "mycloudquery.com"}
+
+func callbackHandler(accountsURL, tenantHost string, onToken func(string)) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		query := r.URL.Query()
 		token := query.Get("token")
@@ -86,7 +88,7 @@ func callbackHandler(accountsURL string, onToken func(string)) http.HandlerFunc 
 
 		if platform.IsPlatformToken(token) {
 			origin := query.Get("origin")
-			if target := tenantSuccessURL(origin); target != "" {
+			if target := tenantSuccessURL(origin, tenantHost); target != "" {
 				http.Redirect(w, r, target, http.StatusSeeOther)
 				return
 			}
@@ -102,16 +104,42 @@ func callbackHandler(accountsURL string, onToken func(string)) http.HandlerFunc 
 	}
 }
 
-func tenantSuccessURL(origin string) string {
+func tenantSuccessURL(origin, tenantHost string) string {
 	u, err := neturl.Parse(origin)
 	if err != nil || u.Host == "" || u.Path != "" || u.RawQuery != "" || u.Fragment != "" {
 		return ""
 	}
-	if u.Scheme != "https" && !(u.Scheme == "http" && isLoopbackHost(u.Hostname())) {
+	isLocal := u.Scheme == "http" && isLoopbackHost(u.Hostname())
+	isTrustedTenant := u.Scheme == "https" && isTrustedTenantHost(u.Host, tenantHost)
+	if !isLocal && !isTrustedTenant {
 		return ""
 	}
 
 	return u.String() + successClosePath
+}
+
+func isTrustedTenantHost(host, tenantHost string) bool {
+	host = strings.ToLower(host)
+	if tenantHost != "" && host == strings.ToLower(tenantHost) {
+		return true
+	}
+	for _, domain := range trustedTenantDomains {
+		if strings.HasSuffix(host, "."+domain) {
+			return true
+		}
+	}
+	return false
+}
+
+func tenantHostFromFlag(host string) string {
+	if !strings.Contains(host, "://") {
+		return host
+	}
+	u, err := neturl.Parse(host)
+	if err != nil {
+		return ""
+	}
+	return u.Host
 }
 
 func isLoopbackHost(host string) bool {
@@ -149,7 +177,8 @@ func runLogin(ctx context.Context, cmd *cobra.Command) (err error) {
 	refreshToken := ""
 	gotToken := make(chan struct{})
 	var once gosync.Once
-	mux.HandleFunc("/callback", callbackHandler(accountsURL, func(token string) {
+	host, _ := cmd.Flags().GetString("host")
+	mux.HandleFunc("/callback", callbackHandler(accountsURL, tenantHostFromFlag(host), func(token string) {
 		once.Do(func() {
 			refreshToken = token
 			close(gotToken)
@@ -182,7 +211,7 @@ func runLogin(ctx context.Context, cmd *cobra.Command) (err error) {
 	}
 
 	url := accountsURL + "?returnTo=" + localServerURL + "/callback"
-	if host, _ := cmd.Flags().GetString("host"); host != "" {
+	if host != "" {
 		url = tenantLoginURL(host, localServerURL+"/callback")
 	}
 	if err := browser.OpenURL(url); err != nil {
