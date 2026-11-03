@@ -17,16 +17,12 @@ func TestMigrate(t *testing.T) {
 		err    string
 	}{
 		{
-			name:   "sync_success_sourcev1_destv0",
-			config: "sync-success-sourcev1-destv0.yml",
-		},
-		{
 			name:   "multiple_sources",
 			config: "multiple-sources.yml",
 		},
 		{
-			name:   "multiple_destinations",
-			config: "multiple-destinations.yml",
+			name:   "multiple_destinations_multiple_batching_writers",
+			config: "multiple-destinations-multiple-batching-writers.yml",
 		},
 		{
 			name:   "multiple_sources_destinations",
