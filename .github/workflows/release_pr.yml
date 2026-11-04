@@ -6,7 +6,7 @@ on:
 
 concurrency:
   group: release-please-main
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 permissions:
   contents: read
@@ -24,7 +24,27 @@ jobs:
           private-key: ${{ secrets.CQ_APP_PRIVATE_KEY }}
           permission-contents: write
           permission-pull-requests: write
+          # Tagging a commit whose .github/workflows matches no branch tip needs this permission.
+          # A release commit ends up there when a workflow change lands on main before it is tagged.
+          permission-workflows: write
       - uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5
         id: release
         with:
           token: ${{ steps.app-token.outputs.token }}
+
+  # A separate job, so the Slack action never shares a runner with the release token.
+  notify-failure:
+    needs: release-pr
+    if: failure()
+    permissions: {}
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    steps:
+      - name: Slack Notify
+        uses: ravsamhq/notify-slack-action@0670a0482d2a919531ba3b219e0c535fe4fcc791
+        with:
+          status: failure
+          notification_title: 'release-please failed on main, releases are blocked'
+          footer: '<{run_url}|View run>'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.ALERTS_INTEGRATIONS_SLACK_WEBHOOK_URL }}
