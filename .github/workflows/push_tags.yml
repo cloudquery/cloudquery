@@ -39,7 +39,10 @@ jobs:
           TAGS: ${{ inputs.tags }}
         run: |
           for tag in $TAGS; do
-            gh api "repos/$GITHUB_REPOSITORY/git/refs" -f "ref=refs/tags/$tag" -f "sha=$GITHUB_SHA" --silent
+            if ! gh api "repos/$GITHUB_REPOSITORY/git/refs" -f "ref=refs/tags/$tag" -f "sha=$GITHUB_SHA" --silent; then
+              existing=$(gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/$tag" --jq .object.sha)
+              [ "$existing" = "$GITHUB_SHA" ] || exit 1
+            fi
           done
 
   notify-failure:

@@ -14,7 +14,7 @@ jobs:
     timeout-minutes: 30
     outputs:
       version: ${{ steps.split.outputs.version }}
-      prerelease: ${{ steps.semver_parser.outputs.prerelease }}
+      published: ${{ steps.published.outputs.published }}
     permissions:
       contents: write
     runs-on: ubuntu-latest
@@ -91,6 +91,11 @@ jobs:
           # A custom token is required for publishing to Homebrew
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
 
+      - name: Mark release published
+        id: published
+        if: steps.semver_parser.outputs.prerelease == ''
+        run: echo "published=true" >> "$GITHUB_OUTPUT"
+
       - name: Generate GitHub App token for frontend
         id: frontend-app-token
         uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3
@@ -140,7 +145,7 @@ jobs:
   push-tags:
     permissions: {}
     needs: release-scaffold
-    if: needs.release-scaffold.outputs.prerelease == ''
+    if: always() && needs.release-scaffold.outputs.published == 'true'
     uses: ./.github/workflows/push_tags.yml
     with:
       tags: scaffold/${{ needs.release-scaffold.outputs.version }}
