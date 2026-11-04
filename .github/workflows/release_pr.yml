@@ -24,15 +24,12 @@ jobs:
           private-key: ${{ secrets.CQ_APP_PRIVATE_KEY }}
           permission-contents: write
           permission-pull-requests: write
-          # Tagging a commit whose .github/workflows matches no branch tip needs this permission.
-          # A release commit ends up there when a workflow change lands on main before it is tagged.
           permission-workflows: write
       - uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5
         id: release
         with:
           token: ${{ steps.app-token.outputs.token }}
 
-  # A separate job, so the Slack action never shares a runner with the release token.
   notify-failure:
     needs: release-pr
     if: failure()
