@@ -12,6 +12,9 @@ permissions:
 jobs:
   release-cli:
     timeout-minutes: 30
+    outputs:
+      version: ${{ steps.split.outputs.version }}
+      published: ${{ steps.published.outputs.published }}
     permissions:
       contents: write
       packages: write
@@ -102,11 +105,10 @@ jobs:
           # A custom token is required for publishing to Homebrew
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
 
-      - name: Push Tag Without `cli-` component and tag prefixed with `cli/`
+      - name: Mark release published
+        id: published
         if: steps.semver_parser.outputs.prerelease == ''
-        run: |
-          git tag ${{ steps.split.outputs.version }} && git push origin ${{ steps.split.outputs.version }}
-          git tag cli/${{ steps.split.outputs.version }} && git push origin cli/${{ steps.split.outputs.version }}
+        run: echo "published=true" >> "$GITHUB_OUTPUT"
 
       - name: Generate GitHub App token for frontend
         id: frontend-app-token
@@ -158,3 +160,16 @@ jobs:
           footer: "<{repo_url}|{repo}>"
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.ALERTS_INTEGRATIONS_SLACK_WEBHOOK_URL }}
+
+  push-tags:
+    permissions: {}
+    needs: release-cli
+    if: always() && needs.release-cli.outputs.published == 'true'
+    uses: ./.github/workflows/push_tags.yml
+    with:
+      tags: ${{ needs.release-cli.outputs.version }} cli/${{ needs.release-cli.outputs.version }}
+      notification_title: "Failed to push tags ${{ needs.release-cli.outputs.version }} and cli/${{ needs.release-cli.outputs.version }}"
+    secrets:
+      CQ_APP_ID: ${{ secrets.CQ_APP_ID }}
+      CQ_APP_PRIVATE_KEY: ${{ secrets.CQ_APP_PRIVATE_KEY }}
+      ALERTS_INTEGRATIONS_SLACK_WEBHOOK_URL: ${{ secrets.ALERTS_INTEGRATIONS_SLACK_WEBHOOK_URL }}

@@ -85,7 +85,7 @@ jobs:
   publish-plugin-to-hub:
     timeout-minutes: 60
     permissions:
-      contents: write
+      contents: read
       pull-requests: write
     runs-on: ubuntu-latest
     container:
@@ -173,11 +173,6 @@ jobs:
         run: |
           cloudquery plugin publish --finalize ${{ needs.prepare.outputs.ui_dir_arg }}
 
-      - name: Push Tag prefixed with plugin directory
-        if: needs.prepare.outputs.prerelease == ''
-        run: |
-          git tag ${{ needs.prepare.outputs.plugin_dir }}/${{ needs.prepare.outputs.plugin_version }} && git push origin ${{ needs.prepare.outputs.plugin_dir }}/${{ needs.prepare.outputs.plugin_version }}
-
       - name: Comment on release PR
         if: needs.prepare.outputs.prerelease == ''
         continue-on-error: true
@@ -198,3 +193,18 @@ jobs:
           footer: "<{repo_url}|{repo}>"
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.ALERTS_INTEGRATIONS_SLACK_WEBHOOK_URL }}
+
+  push-tags:
+    permissions: {}
+    needs:
+      - prepare
+      - publish-plugin-to-hub
+    if: needs.prepare.outputs.prerelease == ''
+    uses: ./.github/workflows/push_tags.yml
+    with:
+      tags: ${{ needs.prepare.outputs.plugin_dir }}/${{ needs.prepare.outputs.plugin_version }}
+      notification_title: "Failed to push tag ${{ needs.prepare.outputs.plugin_dir }}/${{ needs.prepare.outputs.plugin_version }}"
+    secrets:
+      CQ_APP_ID: ${{ secrets.CQ_APP_ID }}
+      CQ_APP_PRIVATE_KEY: ${{ secrets.CQ_APP_PRIVATE_KEY }}
+      ALERTS_INTEGRATIONS_SLACK_WEBHOOK_URL: ${{ secrets.ALERTS_INTEGRATIONS_SLACK_WEBHOOK_URL }}
