@@ -10,7 +10,7 @@ require (
 	github.com/cloudquery/cloudquery-api-go v1.14.13
 	github.com/cloudquery/codegen v0.4.1
 	github.com/cloudquery/plugin-pb-go v1.28.3
-	github.com/cloudquery/plugin-sdk/v4 v4.99.1
+	github.com/cloudquery/plugin-sdk/v4 v4.100.0
 	github.com/distribution/reference v0.6.0
 	github.com/fatih/color v1.19.0
 	github.com/getsentry/sentry-go v0.50.0
@@ -84,7 +84,7 @@ require (
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-viper/mapstructure/v2 v2.5.0 // indirect
 	github.com/gobwas/glob v0.2.3 // indirect
-	github.com/goccy/go-json v0.10.6 // indirect
+	github.com/goccy/go-json v0.11.2 // indirect
 	github.com/golang/snappy v1.0.0 // indirect
 	github.com/google/flatbuffers v25.12.19+incompatible // indirect
 	github.com/google/go-tpm v0.9.8 // indirect
