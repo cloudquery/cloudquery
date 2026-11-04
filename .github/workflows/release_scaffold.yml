@@ -12,6 +12,9 @@ permissions:
 jobs:
   release-scaffold:
     timeout-minutes: 30
+    outputs:
+      version: ${{ steps.split.outputs.version }}
+      published: ${{ steps.published.outputs.published }}
     permissions:
       contents: write
     runs-on: ubuntu-latest
@@ -88,10 +91,10 @@ jobs:
           # A custom token is required for publishing to Homebrew
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
 
-      - name: Push Tag prefixed with `scaffold/`
+      - name: Mark release published
+        id: published
         if: steps.semver_parser.outputs.prerelease == ''
-        run: |
-          git tag scaffold/${{ steps.split.outputs.version }} && git push origin scaffold/${{ steps.split.outputs.version }}
+        run: echo "published=true" >> "$GITHUB_OUTPUT"
 
       - name: Generate GitHub App token for frontend
         id: frontend-app-token
@@ -138,3 +141,16 @@ jobs:
           footer: "<{repo_url}|{repo}>"
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.ALERTS_INTEGRATIONS_SLACK_WEBHOOK_URL }}
+
+  push-tags:
+    permissions: {}
+    needs: release-scaffold
+    if: always() && needs.release-scaffold.outputs.published == 'true'
+    uses: ./.github/workflows/push_tags.yml
+    with:
+      tags: scaffold/${{ needs.release-scaffold.outputs.version }}
+      notification_title: "Failed to push tag scaffold/${{ needs.release-scaffold.outputs.version }}"
+    secrets:
+      CQ_APP_ID: ${{ secrets.CQ_APP_ID }}
+      CQ_APP_PRIVATE_KEY: ${{ secrets.CQ_APP_PRIVATE_KEY }}
+      ALERTS_INTEGRATIONS_SLACK_WEBHOOK_URL: ${{ secrets.ALERTS_INTEGRATIONS_SLACK_WEBHOOK_URL }}
