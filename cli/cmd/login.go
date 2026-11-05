@@ -88,8 +88,8 @@ func callbackHandler(accountsURL, tenantHost string, onToken func(string)) http.
 
 		if platform.IsPlatformToken(token) {
 			origin := query.Get("origin")
-			if target := tenantSuccessURL(origin, tenantHost); target != "" {
-				http.Redirect(w, r, target, http.StatusSeeOther)
+			if isValidRedirect(origin, tenantHost) {
+				http.Redirect(w, r, tenantSuccessURL(origin), http.StatusSeeOther)
 				return
 			}
 			if origin != "" {
@@ -104,18 +104,22 @@ func callbackHandler(accountsURL, tenantHost string, onToken func(string)) http.
 	}
 }
 
-func tenantSuccessURL(origin, tenantHost string) string {
+func isValidRedirect(origin, tenantHost string) bool {
 	u, err := neturl.Parse(origin)
 	if err != nil || u.Host == "" || u.Path != "" || u.RawQuery != "" || u.Fragment != "" {
-		return ""
+		return false
 	}
 	isLocal := u.Scheme == "http" && isLoopbackHost(u.Hostname())
 	isTrustedTenant := u.Scheme == "https" && isTrustedTenantHost(u.Host, tenantHost)
-	if !isLocal && !isTrustedTenant {
+	return isLocal || isTrustedTenant
+}
+
+func tenantSuccessURL(origin string) string {
+	u, err := neturl.Parse(origin)
+	if err != nil {
 		return ""
 	}
-
-	return u.String() + successClosePath
+	return (&neturl.URL{Scheme: u.Scheme, Host: u.Host, Path: successClosePath}).String()
 }
 
 func isTrustedTenantHost(host, tenantHost string) bool {

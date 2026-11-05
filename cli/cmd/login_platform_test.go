@@ -115,6 +115,13 @@ func TestCallbackHandler(t *testing.T) {
 		require.Equal(t, "http://localhost:4040/success-close", w.Header().Get("Location"))
 	})
 
+	t.Run("user info in a trusted origin is dropped from the redirect", func(t *testing.T) {
+		w := call(platformToken, "https://user:pass@acme.cloudquery.io")
+
+		require.Equal(t, http.StatusSeeOther, w.Code)
+		require.Equal(t, "https://acme.cloudquery.io/success-close", w.Header().Get("Location"))
+	})
+
 	t.Run("untrusted origins fall back to plain text, never a redirect", func(t *testing.T) {
 		for _, origin := range []string{
 			"",
