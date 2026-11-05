@@ -25,7 +25,7 @@ func main() {
 		plugin.WithTeam(internalPlugin.Team),
 		plugin.WithJSONSchema(spec.JSONSchema),
 	)
-	if err := serve.Plugin(p, serve.WithDestinationV0V1Server()).Serve(context.Background()); err != nil {
+	if err := serve.Plugin(p).Serve(context.Background()); err != nil {
 		log.Fatal(err)
 	}
 }

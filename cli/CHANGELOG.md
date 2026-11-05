@@ -5,6 +5,26 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.50.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.49.2...cli-v6.50.0) (2026-11-02)
+
+
+### Features
+
+* Drop support for source plugins on protocol v1 and v2 ([#23654](https://github.com/cloudquery/cloudquery/issues/23654)) ([2739b66](https://github.com/cloudquery/cloudquery/commit/2739b66301f32613528b0e23dd1326fbde9abef2))
+* Remove legacy sync summary analytics client ([#23653](https://github.com/cloudquery/cloudquery/issues/23653)) ([d21b5f6](https://github.com/cloudquery/cloudquery/commit/d21b5f68727a53bee8ae552368370247b3af8c93))
+
+
+### Bug Fixes
+
+* **deps:** Update alpine Docker tag to v3.24.3 ([#23668](https://github.com/cloudquery/cloudquery/issues/23668)) ([bc42892](https://github.com/cloudquery/cloudquery/commit/bc42892a605ef4bb50cce64185887b2c016dbeba))
+* **deps:** Update module github.com/cenkalti/backoff/v7 to v7.0.2 ([#23674](https://github.com/cloudquery/cloudquery/issues/23674)) ([92218f0](https://github.com/cloudquery/cloudquery/commit/92218f0f478e0cc7200981905af58fc8cfd454c1))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.99.1 ([#23622](https://github.com/cloudquery/cloudquery/issues/23622)) ([2427faa](https://github.com/cloudquery/cloudquery/commit/2427faa717b7c5bc291e205de401d5f04dfc68d1))
+* **deps:** Update module github.com/getsentry/sentry-go to v0.50.0 ([#23691](https://github.com/cloudquery/cloudquery/issues/23691)) ([449eb75](https://github.com/cloudquery/cloudquery/commit/449eb75560e99431b565fc78e413a662cf963088))
+* **deps:** Update module github.com/pb33f/ordered-map/v2 to v2.3.2 ([#23676](https://github.com/cloudquery/cloudquery/issues/23676)) ([62e3584](https://github.com/cloudquery/cloudquery/commit/62e3584c4c84857e558f2227eb276f1e3c9aaed3))
+* **deps:** Update module github.com/yuin/goldmark/v2 to v2.1.8 ([#23679](https://github.com/cloudquery/cloudquery/issues/23679)) ([25e00ee](https://github.com/cloudquery/cloudquery/commit/25e00ee5bf3e92e08941b900b769b687cc77305b))
+* **deps:** Update opentelemetry-go monorepo ([#23697](https://github.com/cloudquery/cloudquery/issues/23697)) ([682ee5b](https://github.com/cloudquery/cloudquery/commit/682ee5b4e65046c4899a7bd62e008cf6bc160d72))
+* Move from github.com/docker/docker to github.com/moby/moby client modules ([#23647](https://github.com/cloudquery/cloudquery/issues/23647)) ([0afa5d6](https://github.com/cloudquery/cloudquery/commit/0afa5d6f81ce5dd303f5c17ac989025aca562da3))
+
 ## [6.49.2](https://github.com/cloudquery/cloudquery/compare/cli-v6.49.1...cli-v6.49.2) (2026-10-22)
 
 
