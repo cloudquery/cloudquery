@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"encoding/base64"
+	"net"
 	"net/http"
 	"net/http/httptest"
 	neturl "net/url"
@@ -81,14 +82,52 @@ func TestSetTeamOnPlatformLoginWithoutTeamClaimClearsStaleTeam(t *testing.T) {
 	require.Empty(t, team)
 }
 
+func TestNewCallbackListenerBindsLoopbackOnly(t *testing.T) {
+	listener, err := newCallbackListener()
+	require.NoError(t, err)
+	t.Cleanup(func() { _ = listener.Close() })
+
+	addr := listener.Addr().(*net.TCPAddr)
+	require.True(t, addr.IP.Equal(net.IPv4(127, 0, 0, 1)), "listening on %s", addr)
+	require.NotZero(t, addr.Port)
+}
+
+func TestCloudLoginURLCarriesCallbackState(t *testing.T) {
+	returnTo := callbackURL(&net.TCPAddr{IP: net.IPv4(127, 0, 0, 1), Port: 1234}, "STATE")
+	require.Equal(t, "http://127.0.0.1:1234/callback?state=STATE", returnTo)
+
+	loginURL, err := neturl.Parse(cloudLoginURL("https://accounts.cloudquery.io", returnTo))
+	require.NoError(t, err)
+	require.Equal(t, "accounts.cloudquery.io", loginURL.Host)
+	require.Equal(t, returnTo, loginURL.Query().Get("returnTo"))
+}
+
+func TestCallbackHandlerRejectsMissingOrWrongState(t *testing.T) {
+	for _, query := range []string{
+		"token=attacker-token",
+		"token=attacker-token&state=",
+		"token=attacker-token&state=WRONG",
+		"token=attacker-token&state=STATE2",
+	} {
+		called := false
+		h := callbackHandler("https://accounts.cloudquery.io", "", "STATE", func(string) { called = true })
+		w := httptest.NewRecorder()
+		h(w, httptest.NewRequest(http.MethodGet, "/callback?"+query, nil))
+
+		require.Equal(t, http.StatusForbidden, w.Code, "query %q", query)
+		require.Empty(t, w.Header().Get("Location"), "query %q", query)
+		require.False(t, called, "query %q", query)
+	}
+}
+
 func TestCallbackHandler(t *testing.T) {
 	platformToken := mintPlatformTestToken(t, "acme")
 
 	call := func(token, origin string) *httptest.ResponseRecorder {
 		var got string
-		h := callbackHandler("https://accounts.cloudquery.io", "platform.example.com", func(t string) { got = t })
+		h := callbackHandler("https://accounts.cloudquery.io", "platform.example.com", "STATE", func(t string) { got = t })
 		w := httptest.NewRecorder()
-		h(w, httptest.NewRequest(http.MethodGet, "/callback?token="+token+"&origin="+neturl.QueryEscape(origin), nil))
+		h(w, httptest.NewRequest(http.MethodGet, "/callback?state=STATE&token="+token+"&origin="+neturl.QueryEscape(origin), nil))
 		require.Equal(t, token, got)
 
 		return w
