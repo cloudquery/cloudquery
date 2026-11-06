@@ -4,7 +4,7 @@ go 1.27.3
 
 require (
 	github.com/apache/arrow-go/v18 v18.8.0
-	github.com/cloudquery/plugin-sdk/v4 v4.100.0
+	github.com/cloudquery/plugin-sdk/v4 v4.100.1
 	github.com/rs/zerolog v1.35.1
 )
 
@@ -33,7 +33,7 @@ require (
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/cloudquery/cloudquery-api-go v1.14.13 // indirect
 	github.com/cloudquery/codegen v0.4.1 // indirect
-	github.com/cloudquery/plugin-pb-go v1.28.3 // indirect
+	github.com/cloudquery/plugin-pb-go v1.29.0 // indirect
 	github.com/getsentry/sentry-go v0.50.0 // indirect
 	github.com/go-logr/logr v1.4.4 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
