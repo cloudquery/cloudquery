@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"os"
 	"slices"
@@ -78,10 +77,9 @@ func newCmdUpgradeCheck() *cobra.Command {
 	return cmd
 }
 
-func upgradeCheck(cmd *cobra.Command, args []string) (upgradeCheckError error) {
+func upgradeCheck(cmd *cobra.Command, args []string) error {
 	var event analytics.UpgradeCheckEvent
 	defer func() {
-		event.Outcome, event.Error = upgradeCheckOutcome(upgradeCheckError)
 		analytics.TrackUpgradeCheckCompleted(cmd.Context(), invocationUUID.UUID, event)
 	}()
 
@@ -228,23 +226,6 @@ func knownUpgradeVersion(version, fallback string) string {
 		return fallback
 	}
 	return version
-}
-
-func upgradeCheckOutcome(err error) (outcome string, checkError error) {
-	if err == nil {
-		return "no_action_needed", nil
-	}
-	var exitCodeError *ExitCodeError
-	if !errors.As(err, &exitCodeError) {
-		return "", err
-	}
-	switch exitCodeError.Code {
-	case upgradeExitActionNeeded:
-		return "action_needed", nil
-	case upgradeExitUnknown:
-		return "unknown", nil
-	}
-	return "", err
 }
 
 func upgradeExitError(cmd *cobra.Command, exitCode int) error {

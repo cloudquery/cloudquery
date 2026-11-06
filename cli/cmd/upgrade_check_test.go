@@ -894,28 +894,6 @@ func TestUnknownTableFindingsUseTransformedTableNames(t *testing.T) {
 	require.Equal(t, []string{"renamed_test_kept", "renamed_test_added"}, []string{findings[0].TableName, findings[1].TableName})
 }
 
-func TestUpgradeCheckOutcome(t *testing.T) {
-	failure := errors.New("failed to start source")
-	tests := []struct {
-		name        string
-		err         error
-		wantOutcome string
-		wantErr     error
-	}{
-		{name: "no action needed", wantOutcome: "no_action_needed"},
-		{name: "action needed", err: &ExitCodeError{Code: upgradeExitActionNeeded}, wantOutcome: "action_needed"},
-		{name: "unknown", err: &ExitCodeError{Code: upgradeExitUnknown}, wantOutcome: "unknown"},
-		{name: "error", err: failure, wantErr: failure},
-	}
-	for _, tc := range tests {
-		t.Run(tc.name, func(t *testing.T) {
-			outcome, err := upgradeCheckOutcome(tc.err)
-			require.Equal(t, tc.wantOutcome, outcome)
-			require.Equal(t, tc.wantErr, err)
-		})
-	}
-}
-
 func TestKnownUpgradeVersion(t *testing.T) {
 	require.Equal(t, "v2.0.0", knownUpgradeVersion("v2.0.0", "v1.0.0"))
 	require.Equal(t, "v1.0.0", knownUpgradeVersion(upgradeUnknownVersion, "v1.0.0"))

@@ -2,7 +2,7 @@ package analytics
 
 import (
 	"context"
-	"errors"
+	"reflect"
 	"testing"
 
 	cqapi "github.com/cloudquery/cloudquery-api-go"
@@ -156,69 +156,40 @@ func TestTrackUpgradeCheckCompleted(t *testing.T) {
 		DestinationPaths: []string{"cloudquery/postgresql"},
 		FromVersion:      "v32.0.0",
 		ToVersion:        "v33.1.0",
-		Outcome:          "action_needed",
 	})
 
 	track := trackedMessage(t, fake, "upgrade_check_completed")
-	if track.UserId != cachedSyncEventDetails.user.ID.String() {
-		t.Errorf("got user %q, want %q", track.UserId, cachedSyncEventDetails.user.ID)
+	if track.UserId != "" {
+		t.Errorf("got user id %q, want none", track.UserId)
 	}
-	want := map[string]any{
+	if track.AnonymousId != invocationUUID.String() {
+		t.Errorf("got anonymous id %q, want %q", track.AnonymousId, invocationUUID)
+	}
+	want := rudderstack.Properties{
 		"invocation_uuid":   invocationUUID,
-		"team":              "acme",
 		"environment":       "cli",
-		"user_id":           cachedSyncEventDetails.user.ID.String(),
+		"team":              "acme",
+		"$groups":           rudderstack.Properties{"team": "acme"},
 		"source_path":       "cloudquery/aws",
+		"destination_paths": []string{"cloudquery/postgresql"},
 		"from_version":      "v32.0.0",
 		"to_version":        "v33.1.0",
-		"upgrade_available": true,
-		"outcome":           "action_needed",
-		"status":            "success",
 	}
-	for key, value := range want {
-		if got := track.Properties[key]; got != value {
-			t.Errorf("got %s %v, want %v", key, got, value)
-		}
-	}
-	if paths, ok := track.Properties["destination_paths"].([]string); !ok || len(paths) != 1 || paths[0] != "cloudquery/postgresql" {
-		t.Errorf("got destination_paths %v, want [cloudquery/postgresql]", track.Properties["destination_paths"])
-	}
-	if _, ok := track.Properties["user_email"]; ok {
-		t.Error("got property user_email, want it absent")
-	}
-}
-
-func TestTrackUpgradeCheckCompletedWithError(t *testing.T) {
-	fake := withFakeClient(t)
-
-	TrackUpgradeCheckCompleted(context.Background(), uuid.New(), UpgradeCheckEvent{
-		SourcePath: "cloudquery/aws",
-		ToVersion:  "v33.1.0",
-		Error:      errors.New("failed to start source"),
-	})
-
-	props := trackedProperties(t, fake, "upgrade_check_completed")
-	if got := props["status"]; got != "error" {
-		t.Errorf("got status %v, want error", got)
-	}
-	if _, ok := props["outcome"]; ok {
-		t.Error("got property outcome, want it absent")
-	}
-	if available, ok := props["upgrade_available"].(bool); !ok || available {
-		t.Errorf("got upgrade_available %v, want false", props["upgrade_available"])
+	if !reflect.DeepEqual(track.Properties, want) {
+		t.Errorf("got properties %v, want %v", track.Properties, want)
 	}
 }
 
 func TestUpgradeCheckPropsWithoutLogin(t *testing.T) {
-	props := getUpgradeCheckProps(uuid.New(), UpgradeCheckEvent{Outcome: "no_action_needed"}, nil)
+	props := getUpgradeCheckProps(uuid.New(), UpgradeCheckEvent{SourcePath: "cloudquery/aws"}, nil)
 
-	for _, key := range []string{"team", "user_id", "user_email", "environment", "$groups"} {
+	for _, key := range []string{"team", "$groups"} {
 		if _, ok := props[key]; ok {
 			t.Errorf("got property %q, want it absent", key)
 		}
 	}
-	if got := props["outcome"]; got != "no_action_needed" {
-		t.Errorf("got outcome %v, want no_action_needed", got)
+	if got := props["source_path"]; got != "cloudquery/aws" {
+		t.Errorf("got source_path %v, want cloudquery/aws", got)
 	}
 }
 
@@ -238,22 +209,4 @@ func TestTrackUpgradeCheckCompletedWithoutTelemetry(t *testing.T) {
 	client = nil
 
 	TrackUpgradeCheckCompleted(context.Background(), uuid.New(), UpgradeCheckEvent{})
-}
-
-func TestIsUpgrade(t *testing.T) {
-	tests := []struct {
-		from, to string
-		want     bool
-	}{
-		{from: "v1.0.0", to: "v1.1.0", want: true},
-		{from: "v1.1.0", to: "v1.1.0", want: false},
-		{from: "v2.0.0", to: "v1.9.0", want: false},
-		{from: "unknown", to: "v1.0.0", want: false},
-		{from: "v1.0.0", to: "", want: false},
-	}
-	for _, tc := range tests {
-		if got := isUpgrade(tc.from, tc.to); got != tc.want {
-			t.Errorf("isUpgrade(%q, %q) = %v, want %v", tc.from, tc.to, got, tc.want)
-		}
-	}
 }
