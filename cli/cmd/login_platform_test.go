@@ -104,6 +104,64 @@ func TestCloudLoginURLCarriesCallbackState(t *testing.T) {
 	require.Equal(t, returnTo, loginURL.Query().Get("returnTo"))
 }
 
+func TestLoginCallbackRoundTrip(t *testing.T) {
+	for _, tc := range []struct {
+		name          string
+		host          string
+		loginHost     string
+		returnToParam string
+		token         string
+		wantLocation  string
+	}{
+		{
+			name:          "cloud login",
+			loginHost:     "accounts.cloudquery.io",
+			returnToParam: "returnTo",
+			token:         "firebase-refresh-token",
+			wantLocation:  "https://accounts.cloudquery.io/success-close",
+		},
+		{
+			name:          "platform login with --host",
+			host:          "acme.mycloudquery.com",
+			loginHost:     "acme.mycloudquery.com",
+			returnToParam: "cliReturnTo",
+			token:         mintPlatformTestToken(t, "acme"),
+			wantLocation:  "https://acme.mycloudquery.com/success-close",
+		},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			listener, err := newCallbackListener()
+			require.NoError(t, err)
+			var got string
+			handler, loginURL := newLoginCallback("https://accounts.cloudquery.io", tc.host, listener.Addr(), func(token string) { got = token })
+			srv := httptest.NewUnstartedServer(handler)
+			srv.Listener = listener
+			srv.Start()
+			t.Cleanup(srv.Close)
+
+			login, err := neturl.Parse(loginURL)
+			require.NoError(t, err)
+			require.Equal(t, tc.loginHost, login.Host)
+
+			callback, err := neturl.Parse(login.Query().Get(tc.returnToParam))
+			require.NoError(t, err)
+			query := callback.Query()
+			query.Set("token", tc.token)
+			query.Set("origin", "https://"+tc.loginHost)
+			callback.RawQuery = query.Encode()
+
+			client := &http.Client{CheckRedirect: func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse }}
+			resp, err := client.Get(callback.String())
+			require.NoError(t, err)
+			t.Cleanup(func() { _ = resp.Body.Close() })
+
+			require.Equal(t, http.StatusSeeOther, resp.StatusCode)
+			require.Equal(t, tc.wantLocation, resp.Header.Get("Location"))
+			require.Equal(t, tc.token, got)
+		})
+	}
+}
+
 func TestCallbackHandlerRejectsMissingOrWrongState(t *testing.T) {
 	for _, query := range []string{
 		"token=attacker-token",
