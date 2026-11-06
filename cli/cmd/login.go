@@ -98,6 +98,7 @@ func callbackHandler(accountsURL, tenantHost, state string, onToken func(string)
 	return func(w http.ResponseWriter, r *http.Request) {
 		query := r.URL.Query()
 		if subtle.ConstantTimeCompare([]byte(query.Get("state")), []byte(state)) != 1 {
+			fmt.Fprintln(os.Stderr, "warning: rejected a login callback with a missing or wrong state value, still waiting for the browser login to finish")
 			http.Error(w, "invalid login state", http.StatusForbidden)
 			return
 		}

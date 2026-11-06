@@ -2,10 +2,12 @@ package cmd
 
 import (
 	"encoding/base64"
+	"io"
 	"net"
 	"net/http"
 	"net/http/httptest"
 	neturl "net/url"
+	"os"
 	"testing"
 
 	"github.com/cloudquery/cloudquery-api-go/config"
@@ -112,12 +114,30 @@ func TestCallbackHandlerRejectsMissingOrWrongState(t *testing.T) {
 		called := false
 		h := callbackHandler("https://accounts.cloudquery.io", "", "STATE", func(string) { called = true })
 		w := httptest.NewRecorder()
-		h(w, httptest.NewRequest(http.MethodGet, "/callback?"+query, nil))
+		stderr := captureStderr(t, func() {
+			h(w, httptest.NewRequest(http.MethodGet, "/callback?"+query, nil))
+		})
 
 		require.Equal(t, http.StatusForbidden, w.Code, "query %q", query)
 		require.Empty(t, w.Header().Get("Location"), "query %q", query)
 		require.False(t, called, "query %q", query)
+		require.Contains(t, stderr, "rejected a login callback with a missing or wrong state value", "query %q", query)
 	}
+}
+
+func captureStderr(t *testing.T, fn func()) string {
+	t.Helper()
+	r, w, err := os.Pipe()
+	require.NoError(t, err)
+	oldStderr := os.Stderr
+	os.Stderr = w
+	defer func() { os.Stderr = oldStderr }()
+
+	fn()
+	require.NoError(t, w.Close())
+	out, err := io.ReadAll(r)
+	require.NoError(t, err)
+	return string(out)
 }
 
 func TestCallbackHandler(t *testing.T) {
