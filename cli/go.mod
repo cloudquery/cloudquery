@@ -10,7 +10,7 @@ require (
 	github.com/cloudquery/cloudquery-api-go v1.14.13
 	github.com/cloudquery/codegen v0.4.1
 	github.com/cloudquery/plugin-pb-go v1.29.0
-	github.com/cloudquery/plugin-sdk/v4 v4.100.0
+	github.com/cloudquery/plugin-sdk/v4 v4.100.1
 	github.com/distribution/reference v0.6.0
 	github.com/fatih/color v1.19.0
 	github.com/getsentry/sentry-go v0.50.0
