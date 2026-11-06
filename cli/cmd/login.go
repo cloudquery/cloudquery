@@ -2,6 +2,8 @@ package cmd
 
 import (
 	"context"
+	"crypto/rand"
+	"crypto/subtle"
 	"errors"
 	"fmt"
 	"io"
@@ -80,9 +82,42 @@ const successClosePath = "/success-close"
 
 var trustedTenantDomains = []string{"cloudquery.io", "mycloudquery.com"}
 
-func callbackHandler(accountsURL, tenantHost string, onToken func(string)) http.HandlerFunc {
+func newCallbackListener() (net.Listener, error) {
+	return net.Listen("tcp", "127.0.0.1:0")
+}
+
+func newLoginCallback(accountsURL, host string, listenerAddr net.Addr, onToken func(string)) (handler http.Handler, loginURL string) {
+	state := rand.Text()
+	mux := http.NewServeMux()
+	mux.HandleFunc("/callback", callbackHandler(accountsURL, tenantHostFromFlag(host), state, onToken))
+	mux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		fmt.Fprint(w, "OK")
+	})
+
+	returnTo := callbackURL(listenerAddr, state)
+	if host != "" {
+		return mux, tenantLoginURL(host, returnTo)
+	}
+	return mux, cloudLoginURL(accountsURL, returnTo)
+}
+
+func callbackURL(listenerAddr net.Addr, state string) string {
+	return "http://" + listenerAddr.String() + "/callback?state=" + neturl.QueryEscape(state)
+}
+
+func cloudLoginURL(accountsURL, callbackURL string) string {
+	return accountsURL + "?returnTo=" + neturl.QueryEscape(callbackURL)
+}
+
+func callbackHandler(accountsURL, tenantHost, state string, onToken func(string)) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		query := r.URL.Query()
+		if subtle.ConstantTimeCompare([]byte(query.Get("state")), []byte(state)) != 1 {
+			fmt.Fprintln(os.Stderr, "warning: rejected a login callback with a missing or wrong state value, still waiting for the browser login to finish")
+			http.Error(w, "invalid login state", http.StatusForbidden)
+			return
+		}
 		token := query.Get("token")
 		onToken(token)
 
@@ -177,27 +212,22 @@ func waitForServer(ctx context.Context, url string) error {
 func runLogin(ctx context.Context, cmd *cobra.Command) (err error) {
 	accountsURL := env.GetEnvOrDefault("CLOUDQUERY_ACCOUNTS_URL", defaultAccountsURL)
 
-	mux := http.NewServeMux()
 	refreshToken := ""
 	gotToken := make(chan struct{})
 	var once gosync.Once
 	host, _ := cmd.Flags().GetString("host")
-	mux.HandleFunc("/callback", callbackHandler(accountsURL, tenantHostFromFlag(host), func(token string) {
+	listener, err := newCallbackListener()
+	if err != nil {
+		return fmt.Errorf("failed to listen: %w", err)
+	}
+	handler, url := newLoginCallback(accountsURL, host, listener.Addr(), func(token string) {
 		once.Do(func() {
 			refreshToken = token
 			close(gotToken)
 		})
-	}))
-	mux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusOK)
-		fmt.Fprint(w, "OK")
 	})
-	listener, err := net.Listen("tcp", ":0")
-	if err != nil {
-		return fmt.Errorf("failed to listen: %w", err)
-	}
 	server := http.Server{
-		Handler: mux,
+		Handler: handler,
 		Addr:    listener.Addr().String(),
 	}
 
@@ -209,15 +239,10 @@ func runLogin(ctx context.Context, cmd *cobra.Command) (err error) {
 			}
 		}
 	}()
-	localServerURL := "http://localhost:" + strconv.Itoa(listener.Addr().(*net.TCPAddr).Port)
-	if err := waitForServer(ctx, localServerURL+"/health"); err != nil {
+	if err := waitForServer(ctx, "http://"+listener.Addr().String()+"/health"); err != nil {
 		return err
 	}
 
-	url := accountsURL + "?returnTo=" + localServerURL + "/callback"
-	if host != "" {
-		url = tenantLoginURL(host, localServerURL+"/callback")
-	}
 	if err := browser.OpenURL(url); err != nil {
 		fmt.Printf("Failed to open browser. Please open %s manually and paste the token below:\n", url)
 
