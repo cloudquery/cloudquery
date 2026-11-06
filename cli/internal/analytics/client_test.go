@@ -2,6 +2,7 @@ package analytics
 
 import (
 	"context"
+	"reflect"
 	"testing"
 
 	cqapi "github.com/cloudquery/cloudquery-api-go"
@@ -38,7 +39,13 @@ func withFakeClient(t *testing.T) *fakeClient {
 	return fake
 }
 
-func trackedProperties(t *testing.T, fake *fakeClient) rudderstack.Properties {
+func trackedProperties(t *testing.T, fake *fakeClient, event string) rudderstack.Properties {
+	t.Helper()
+
+	return trackedMessage(t, fake, event).Properties
+}
+
+func trackedMessage(t *testing.T, fake *fakeClient, event string) rudderstack.Track {
 	t.Helper()
 
 	if len(fake.messages) != 1 {
@@ -48,10 +55,10 @@ func trackedProperties(t *testing.T, fake *fakeClient) rudderstack.Properties {
 	if !ok {
 		t.Fatalf("got %T, want a Track message", fake.messages[0])
 	}
-	if track.Event != "sync_run_completed" {
-		t.Fatalf("got event %q, want sync_run_completed", track.Event)
+	if track.Event != event {
+		t.Fatalf("got event %q, want %s", track.Event, event)
 	}
-	return track.Properties
+	return track
 }
 
 func TestTrackSyncCompletedWithIDSummaries(t *testing.T) {
@@ -65,7 +72,7 @@ func TestTrackSyncCompletedWithIDSummaries(t *testing.T) {
 		},
 	})
 
-	props := trackedProperties(t, fake)
+	props := trackedProperties(t, fake, "sync_run_completed")
 	if got := props["account_id_count"]; got != 2 {
 		t.Errorf("got account_id_count %v, want 2", got)
 	}
@@ -95,7 +102,7 @@ func TestTrackSyncCompletedWithoutIDSummaries(t *testing.T) {
 
 	TrackSyncCompleted(context.Background(), uuid.New(), SyncFinishedEvent{ResourceCount: 10})
 
-	props := trackedProperties(t, fake)
+	props := trackedProperties(t, fake, "sync_run_completed")
 	for _, key := range []string{"account_id_hashes", "account_id_count", "account_ids_truncated", "account_id_count_is_floor", "repository_id_hashes"} {
 		if _, ok := props[key]; ok {
 			t.Errorf("got property %q, want it absent", key)
@@ -138,4 +145,68 @@ func TestIdentityForInternalTeam(t *testing.T) {
 	if _, _, _, ok := Identity(context.Background()); ok {
 		t.Error("got ok true, want false for an internal team")
 	}
+}
+
+func TestTrackUpgradeCheckCompleted(t *testing.T) {
+	fake := withFakeClient(t)
+	invocationUUID := uuid.New()
+
+	TrackUpgradeCheckCompleted(context.Background(), invocationUUID, UpgradeCheckEvent{
+		SourcePath:       "cloudquery/aws",
+		DestinationPaths: []string{"cloudquery/postgresql"},
+		FromVersion:      "v32.0.0",
+		ToVersion:        "v33.1.0",
+	})
+
+	track := trackedMessage(t, fake, "upgrade_check_completed")
+	if track.UserId != "" {
+		t.Errorf("got user id %q, want none", track.UserId)
+	}
+	if track.AnonymousId != invocationUUID.String() {
+		t.Errorf("got anonymous id %q, want %q", track.AnonymousId, invocationUUID)
+	}
+	want := rudderstack.Properties{
+		"invocation_uuid":   invocationUUID,
+		"environment":       "cli",
+		"team":              "acme",
+		"$groups":           rudderstack.Properties{"team": "acme"},
+		"source_path":       "cloudquery/aws",
+		"destination_paths": []string{"cloudquery/postgresql"},
+		"from_version":      "v32.0.0",
+		"to_version":        "v33.1.0",
+	}
+	if !reflect.DeepEqual(track.Properties, want) {
+		t.Errorf("got properties %v, want %v", track.Properties, want)
+	}
+}
+
+func TestUpgradeCheckPropsWithoutLogin(t *testing.T) {
+	props := getUpgradeCheckProps(uuid.New(), UpgradeCheckEvent{SourcePath: "cloudquery/aws"}, nil)
+
+	for _, key := range []string{"team", "$groups"} {
+		if _, ok := props[key]; ok {
+			t.Errorf("got property %q, want it absent", key)
+		}
+	}
+	if got := props["source_path"]; got != "cloudquery/aws" {
+		t.Errorf("got source_path %v, want cloudquery/aws", got)
+	}
+}
+
+func TestTrackUpgradeCheckCompletedForInternalTeam(t *testing.T) {
+	fake := withFakeClient(t)
+	cachedSyncEventDetails.isCurrentTeamInternal = true
+
+	TrackUpgradeCheckCompleted(context.Background(), uuid.New(), UpgradeCheckEvent{})
+
+	if len(fake.messages) != 0 {
+		t.Errorf("got %d messages, want 0 for an internal team", len(fake.messages))
+	}
+}
+
+func TestTrackUpgradeCheckCompletedWithoutTelemetry(t *testing.T) {
+	withFakeClient(t)
+	client = nil
+
+	TrackUpgradeCheckCompleted(context.Background(), uuid.New(), UpgradeCheckEvent{})
 }

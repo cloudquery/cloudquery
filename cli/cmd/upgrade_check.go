@@ -8,6 +8,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/cloudquery/cloudquery/cli/v6/internal/analytics"
 	cqplatform "github.com/cloudquery/cloudquery/cli/v6/internal/platform"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
@@ -77,6 +78,11 @@ func newCmdUpgradeCheck() *cobra.Command {
 }
 
 func upgradeCheck(cmd *cobra.Command, args []string) error {
+	var event analytics.UpgradeCheckEvent
+	defer func() {
+		analytics.TrackUpgradeCheckCompleted(cmd.Context(), invocationUUID.UUID, event)
+	}()
+
 	cqDir, err := cmd.Flags().GetString("cq-dir")
 	if err != nil {
 		return err
@@ -89,6 +95,7 @@ func upgradeCheck(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return err
 	}
+	event.ToVersion = toVersion
 	toPath, err := cmd.Flags().GetString("to-path")
 	if err != nil {
 		return err
@@ -123,6 +130,7 @@ func upgradeCheck(cmd *cobra.Command, args []string) error {
 		return err
 	}
 	sourceSpec, destinationSpecs, transformersForDestination := loaded.source, loaded.destinations, loaded.transformersForDestination
+	event.SourcePath, event.FromVersion, event.DestinationPaths = sourceSpec.Path, sourceSpec.Version, upgradeDestinationPaths(destinationSpecs)
 	dlToken, teamName := loaded.downloadToken, loaded.teamName
 
 	opts := []managedplugin.Option{
@@ -145,6 +153,8 @@ func upgradeCheck(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return err
 	}
+	event.FromVersion = knownUpgradeVersion(from.Version, event.FromVersion)
+	event.ToVersion = knownUpgradeVersion(to.Version, event.ToVersion)
 	var reports []upgradeReport
 	exitCode := 0
 	err = upgradeReports(ctx, *sourceSpec, destinationSpecs, transformersForDestination, cqColumnsNotNull, from, to, func(report upgradeReport) error {
@@ -201,6 +211,21 @@ func upgradeReports(ctx context.Context, sourceSpec specs.Source, destinationSpe
 		}
 	}
 	return nil
+}
+
+func upgradeDestinationPaths(destinationSpecs []*specs.Destination) []string {
+	paths := make([]string, len(destinationSpecs))
+	for i, destinationSpec := range destinationSpecs {
+		paths[i] = destinationSpec.Path
+	}
+	return paths
+}
+
+func knownUpgradeVersion(version, fallback string) string {
+	if version == "" || version == upgradeUnknownVersion {
+		return fallback
+	}
+	return version
 }
 
 func upgradeExitError(cmd *cobra.Command, exitCode int) error {
