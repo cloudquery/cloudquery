@@ -132,6 +132,11 @@ func TestCallbackHandler(t *testing.T) {
 			"https://acme.cloudquery.io/path",
 			"javascript:alert(1)",
 			"//evil.example.com",
+			"https://acme.cloudquery.io@evil.example.com",
+			"https://acme.cloudquery.io:443@evil.example.com",
+			"https://evil.example.com\\.cloudquery.io",
+			"https://evil.example.com%2F.cloudquery.io",
+			"https://evil.example.com:443.cloudquery.io",
 		} {
 			w := call(platformToken, origin)
 
