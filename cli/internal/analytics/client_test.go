@@ -2,6 +2,7 @@ package analytics
 
 import (
 	"context"
+	"errors"
 	"testing"
 
 	cqapi "github.com/cloudquery/cloudquery-api-go"
@@ -38,7 +39,13 @@ func withFakeClient(t *testing.T) *fakeClient {
 	return fake
 }
 
-func trackedProperties(t *testing.T, fake *fakeClient) rudderstack.Properties {
+func trackedProperties(t *testing.T, fake *fakeClient, event string) rudderstack.Properties {
+	t.Helper()
+
+	return trackedMessage(t, fake, event).Properties
+}
+
+func trackedMessage(t *testing.T, fake *fakeClient, event string) rudderstack.Track {
 	t.Helper()
 
 	if len(fake.messages) != 1 {
@@ -48,10 +55,10 @@ func trackedProperties(t *testing.T, fake *fakeClient) rudderstack.Properties {
 	if !ok {
 		t.Fatalf("got %T, want a Track message", fake.messages[0])
 	}
-	if track.Event != "sync_run_completed" {
-		t.Fatalf("got event %q, want sync_run_completed", track.Event)
+	if track.Event != event {
+		t.Fatalf("got event %q, want %s", track.Event, event)
 	}
-	return track.Properties
+	return track
 }
 
 func TestTrackSyncCompletedWithIDSummaries(t *testing.T) {
@@ -65,7 +72,7 @@ func TestTrackSyncCompletedWithIDSummaries(t *testing.T) {
 		},
 	})
 
-	props := trackedProperties(t, fake)
+	props := trackedProperties(t, fake, "sync_run_completed")
 	if got := props["account_id_count"]; got != 2 {
 		t.Errorf("got account_id_count %v, want 2", got)
 	}
@@ -95,7 +102,7 @@ func TestTrackSyncCompletedWithoutIDSummaries(t *testing.T) {
 
 	TrackSyncCompleted(context.Background(), uuid.New(), SyncFinishedEvent{ResourceCount: 10})
 
-	props := trackedProperties(t, fake)
+	props := trackedProperties(t, fake, "sync_run_completed")
 	for _, key := range []string{"account_id_hashes", "account_id_count", "account_ids_truncated", "account_id_count_is_floor", "repository_id_hashes"} {
 		if _, ok := props[key]; ok {
 			t.Errorf("got property %q, want it absent", key)
@@ -137,5 +144,116 @@ func TestIdentityForInternalTeam(t *testing.T) {
 
 	if _, _, _, ok := Identity(context.Background()); ok {
 		t.Error("got ok true, want false for an internal team")
+	}
+}
+
+func TestTrackUpgradeCheckCompleted(t *testing.T) {
+	fake := withFakeClient(t)
+	invocationUUID := uuid.New()
+
+	TrackUpgradeCheckCompleted(context.Background(), invocationUUID, UpgradeCheckEvent{
+		SourcePath:       "cloudquery/aws",
+		DestinationPaths: []string{"cloudquery/postgresql"},
+		FromVersion:      "v32.0.0",
+		ToVersion:        "v33.1.0",
+		Outcome:          "action_needed",
+	})
+
+	track := trackedMessage(t, fake, "upgrade_check_completed")
+	if track.UserId != cachedSyncEventDetails.user.ID.String() {
+		t.Errorf("got user %q, want %q", track.UserId, cachedSyncEventDetails.user.ID)
+	}
+	want := map[string]any{
+		"invocation_uuid":   invocationUUID,
+		"team":              "acme",
+		"environment":       "cli",
+		"user_id":           cachedSyncEventDetails.user.ID.String(),
+		"source_path":       "cloudquery/aws",
+		"from_version":      "v32.0.0",
+		"to_version":        "v33.1.0",
+		"upgrade_available": true,
+		"outcome":           "action_needed",
+		"status":            "success",
+	}
+	for key, value := range want {
+		if got := track.Properties[key]; got != value {
+			t.Errorf("got %s %v, want %v", key, got, value)
+		}
+	}
+	if paths, ok := track.Properties["destination_paths"].([]string); !ok || len(paths) != 1 || paths[0] != "cloudquery/postgresql" {
+		t.Errorf("got destination_paths %v, want [cloudquery/postgresql]", track.Properties["destination_paths"])
+	}
+	if _, ok := track.Properties["user_email"]; ok {
+		t.Error("got property user_email, want it absent")
+	}
+}
+
+func TestTrackUpgradeCheckCompletedWithError(t *testing.T) {
+	fake := withFakeClient(t)
+
+	TrackUpgradeCheckCompleted(context.Background(), uuid.New(), UpgradeCheckEvent{
+		SourcePath: "cloudquery/aws",
+		ToVersion:  "v33.1.0",
+		Error:      errors.New("failed to start source"),
+	})
+
+	props := trackedProperties(t, fake, "upgrade_check_completed")
+	if got := props["status"]; got != "error" {
+		t.Errorf("got status %v, want error", got)
+	}
+	if _, ok := props["outcome"]; ok {
+		t.Error("got property outcome, want it absent")
+	}
+	if available, ok := props["upgrade_available"].(bool); !ok || available {
+		t.Errorf("got upgrade_available %v, want false", props["upgrade_available"])
+	}
+}
+
+func TestUpgradeCheckPropsWithoutLogin(t *testing.T) {
+	props := getUpgradeCheckProps(uuid.New(), UpgradeCheckEvent{Outcome: "no_action_needed"}, nil)
+
+	for _, key := range []string{"team", "user_id", "user_email", "environment", "$groups"} {
+		if _, ok := props[key]; ok {
+			t.Errorf("got property %q, want it absent", key)
+		}
+	}
+	if got := props["outcome"]; got != "no_action_needed" {
+		t.Errorf("got outcome %v, want no_action_needed", got)
+	}
+}
+
+func TestTrackUpgradeCheckCompletedForInternalTeam(t *testing.T) {
+	fake := withFakeClient(t)
+	cachedSyncEventDetails.isCurrentTeamInternal = true
+
+	TrackUpgradeCheckCompleted(context.Background(), uuid.New(), UpgradeCheckEvent{})
+
+	if len(fake.messages) != 0 {
+		t.Errorf("got %d messages, want 0 for an internal team", len(fake.messages))
+	}
+}
+
+func TestTrackUpgradeCheckCompletedWithoutTelemetry(t *testing.T) {
+	withFakeClient(t)
+	client = nil
+
+	TrackUpgradeCheckCompleted(context.Background(), uuid.New(), UpgradeCheckEvent{})
+}
+
+func TestIsUpgrade(t *testing.T) {
+	tests := []struct {
+		from, to string
+		want     bool
+	}{
+		{from: "v1.0.0", to: "v1.1.0", want: true},
+		{from: "v1.1.0", to: "v1.1.0", want: false},
+		{from: "v2.0.0", to: "v1.9.0", want: false},
+		{from: "unknown", to: "v1.0.0", want: false},
+		{from: "v1.0.0", to: "", want: false},
+	}
+	for _, tc := range tests {
+		if got := isUpgrade(tc.from, tc.to); got != tc.want {
+			t.Errorf("isUpgrade(%q, %q) = %v, want %v", tc.from, tc.to, got, tc.want)
+		}
 	}
 }

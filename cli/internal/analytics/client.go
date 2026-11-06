@@ -4,6 +4,7 @@ import (
 	"context"
 	"time"
 
+	"github.com/Masterminds/semver"
 	cqapi "github.com/cloudquery/cloudquery-api-go"
 	cqauth "github.com/cloudquery/cloudquery-api-go/auth"
 	internalAuth "github.com/cloudquery/cloudquery/cli/v6/internal/auth"
@@ -344,6 +345,86 @@ func TrackInitCompleted(ctx context.Context, invocationUUID uuid.UUID, event Ini
 	_ = client.Enqueue(rudderstack.Track{
 		AnonymousId: invocationUUID.String(),
 		Event:       "init_completed",
+		Properties:  props,
+	})
+}
+
+type UpgradeCheckEvent struct {
+	SourcePath       string
+	DestinationPaths []string
+	FromVersion      string
+	ToVersion        string
+	Outcome          string
+	Error            error
+}
+
+func isUpgrade(fromVersion, toVersion string) bool {
+	from, err := semver.NewVersion(fromVersion)
+	if err != nil {
+		return false
+	}
+	to, err := semver.NewVersion(toVersion)
+	if err != nil {
+		return false
+	}
+	return to.GreaterThan(from)
+}
+
+func getUpgradeCheckProps(invocationUUID uuid.UUID, event UpgradeCheckEvent, details *eventDetails) rudderstack.Properties {
+	status := "success"
+	if event.Error != nil {
+		status = "error"
+	}
+
+	props := rudderstack.NewProperties().
+		Set("invocation_uuid", invocationUUID).
+		Set("source_path", event.SourcePath).
+		Set("destination_paths", event.DestinationPaths).
+		Set("from_version", event.FromVersion).
+		Set("to_version", event.ToVersion).
+		Set("upgrade_available", isUpgrade(event.FromVersion, event.ToVersion)).
+		Set("status", status)
+
+	if event.Outcome != "" {
+		props.Set("outcome", event.Outcome)
+	}
+
+	if details != nil {
+		userID, _ := getUserIDEmail(details.user, details.currentTeam)
+
+		props.Set("team", details.currentTeam).
+			Set("$groups", rudderstack.NewProperties().
+				Set("team", details.currentTeam)).
+			Set("environment", details.environment).
+			Set("user_id", userID)
+	}
+
+	return props
+}
+
+func TrackUpgradeCheckCompleted(ctx context.Context, invocationUUID uuid.UUID, event UpgradeCheckEvent) {
+	if client == nil {
+		return
+	}
+
+	details := getSyncEventDetails(ctx)
+	if details != nil && details.isCurrentTeamInternal {
+		return
+	}
+
+	props := getUpgradeCheckProps(invocationUUID, event, details)
+	if details != nil {
+		_ = client.Enqueue(rudderstack.Track{
+			UserId:     details.user.ID.String(),
+			Event:      "upgrade_check_completed",
+			Properties: props,
+		})
+		return
+	}
+
+	_ = client.Enqueue(rudderstack.Track{
+		AnonymousId: invocationUUID.String(),
+		Event:       "upgrade_check_completed",
 		Properties:  props,
 	})
 }
