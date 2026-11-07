@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.3.37](https://github.com/cloudquery/cloudquery/compare/plugins-source-square-v1.3.36...plugins-source-square-v1.3.37) (2026-11-07)
+
+
+### Bug Fixes
+
+* **deps:** Fix open Dependabot alerts in the CLI and Python plugins ([#23710](https://github.com/cloudquery/cloudquery/issues/23710)) ([7837903](https://github.com/cloudquery/cloudquery/commit/783790341d37f6031f837f0cb1abdec1cbe1e13f))
+* **deps:** Update dependency black to v26.10.1 [SECURITY] ([#23612](https://github.com/cloudquery/cloudquery/issues/23612)) ([8dc8b61](https://github.com/cloudquery/cloudquery/commit/8dc8b613106e731e8a88b318bfb6d6026a6514e8))
+* **deps:** Update ghcr.io/astral-sh/uv Docker tag to v0.13.6 ([#23685](https://github.com/cloudquery/cloudquery/issues/23685)) ([3fbd7c0](https://github.com/cloudquery/cloudquery/commit/3fbd7c014c41c0ef0212c97d6cda1df2ea85f0df))
+
 ## [1.3.36](https://github.com/cloudquery/cloudquery/compare/plugins-source-square-v1.3.35...plugins-source-square-v1.3.36) (2026-10-22)
 
 
