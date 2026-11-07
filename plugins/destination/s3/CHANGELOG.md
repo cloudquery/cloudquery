@@ -1,5 +1,21 @@
 # Changelog
 
+## [7.13.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.12.1...plugins-destination-s3-v7.13.0) (2026-11-07)
+
+
+### Features
+
+* Drop support for source plugins on protocol v1 and v2 (plugin-sdk v3 and older) ([#23705](https://github.com/cloudquery/cloudquery/issues/23705)) ([16e0c4d](https://github.com/cloudquery/cloudquery/commit/16e0c4d4e68843cdb3648dd281b7098b7a56e949))
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#23661](https://github.com/cloudquery/cloudquery/issues/23661)) ([40b7a90](https://github.com/cloudquery/cloudquery/commit/40b7a90e94e866cba414db7261219ee9d70b66c0))
+* **deps:** Update aws-sdk-go-v2 monorepo ([#23731](https://github.com/cloudquery/cloudquery/issues/23731)) ([4f8f065](https://github.com/cloudquery/cloudquery/commit/4f8f065b1947134894c83ac7b583cbe24e8cfdd0))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.100.1 ([#23725](https://github.com/cloudquery/cloudquery/issues/23725)) ([c90bb25](https://github.com/cloudquery/cloudquery/commit/c90bb25d6f4147365685e80c27a3699488174a6b))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.99.1 ([#23622](https://github.com/cloudquery/cloudquery/issues/23622)) ([2427faa](https://github.com/cloudquery/cloudquery/commit/2427faa717b7c5bc291e205de401d5f04dfc68d1))
+* **deps:** Update module github.com/pb33f/ordered-map/v2 to v2.3.2 ([#23676](https://github.com/cloudquery/cloudquery/issues/23676)) ([62e3584](https://github.com/cloudquery/cloudquery/commit/62e3584c4c84857e558f2227eb276f1e3c9aaed3))
+
 ## [7.12.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.12.0...plugins-destination-s3-v7.12.1) (2026-10-22)
 
 
