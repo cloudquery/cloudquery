@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.6.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-xkcd-v1.6.1...plugins-source-xkcd-v1.6.2) (2026-11-07)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.100.0 ([#23719](https://github.com/cloudquery/cloudquery/issues/23719)) ([d952904](https://github.com/cloudquery/cloudquery/commit/d95290441b4195038468a74128c5ea01d0c8ae98))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.100.1 ([#23725](https://github.com/cloudquery/cloudquery/issues/23725)) ([c90bb25](https://github.com/cloudquery/cloudquery/commit/c90bb25d6f4147365685e80c27a3699488174a6b))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.99.1 ([#23622](https://github.com/cloudquery/cloudquery/issues/23622)) ([2427faa](https://github.com/cloudquery/cloudquery/commit/2427faa717b7c5bc291e205de401d5f04dfc68d1))
+* **deps:** Update module golang.org/x/sync to v0.24.0 ([#23600](https://github.com/cloudquery/cloudquery/issues/23600)) ([b87ce6e](https://github.com/cloudquery/cloudquery/commit/b87ce6ec86c2fcb5a4f58f07241516b6bd29afff))
+
 ## [1.6.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-xkcd-v1.6.0...plugins-source-xkcd-v1.6.1) (2026-10-21)
 
 
