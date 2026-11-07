@@ -132,7 +132,7 @@ func TestWarnOnOutdatedVersionsDoesNotRecommendUpgradeCheckForNonCloudQuerySourc
 	newHubServer(t, map[string]string{"/plugins/community/source/aws": "v32.0.0"})
 	warner, err := managedplugin.NewPluginVersionWarner(zerolog.Nop(), "")
 	require.NoError(t, err)
-	sources := []*Source{{Metadata: Metadata{Name: "aws", Path: "community/aws", Registry: RegistryGitHub, Version: "v30.1.0"}}}
+	sources := []*Source{{Metadata: Metadata{Name: "aws", Path: "community/aws", Registry: RegistryLocal, Version: "v30.1.0"}}}
 
 	var output bytes.Buffer
 	WarnOnOutdatedVersions(context.Background(), warner, sources, nil, nil, WithUpgradeCheckRecommendation([]string{"config.yml"}, &output))

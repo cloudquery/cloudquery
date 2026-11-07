@@ -86,11 +86,12 @@ func TestMetadata_JSONSchemaExtend(t *testing.T) {
 		},
 		{
 			Name: "github registry without version",
-			Err:  true, // this requires version
+			Err:  true,
 			Spec: `{"name":"a","path":"b","registry":"github"}`,
 		},
 		{
 			Name: "github registry with version",
+			Err:  true,
 			Spec: `{"name":"a","path":"b","registry":"github","version":"v0"}`,
 		},
 		{

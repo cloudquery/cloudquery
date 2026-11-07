@@ -22,8 +22,8 @@ cloudquery plugin install ./directory ./aws.yml ./pg.yml
 `
 )
 
-func newCmdPluginInstall(deprecated bool) *cobra.Command {
-	cmd := &cobra.Command{
+func newCmdPluginInstall() *cobra.Command {
+	return &cobra.Command{
 		Use:     "install [files or directories]",
 		Short:   pluginInstallShort,
 		Long:    pluginInstallShort,
@@ -31,10 +31,6 @@ func newCmdPluginInstall(deprecated bool) *cobra.Command {
 		Args:    cobra.MinimumNArgs(1),
 		RunE:    installPlugin,
 	}
-	if deprecated {
-		cmd.Deprecated = "use `cloudquery plugin install` instead"
-	}
-	return cmd
 }
 
 func installPlugin(cmd *cobra.Command, args []string) error {
@@ -158,5 +154,5 @@ func enrichClientError(clientsList managedplugin.Clients, inferredList []bool, e
 		return err
 	}
 
-	return fmt.Errorf("%w. Hint: make sure to use the latest plugin version from www.cloudquery.io/hub or to keep using an outdated version add `registry: github` to your configuration", err)
+	return fmt.Errorf("%w. Hint: make sure to use the latest plugin version from www.cloudquery.io/hub", err)
 }

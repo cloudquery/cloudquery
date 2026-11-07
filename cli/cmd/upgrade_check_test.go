@@ -293,15 +293,6 @@ func TestLoadUpgradeSourceTablesRegistryDispatch(t *testing.T) {
 			wantFromVer:    "v3.0.0",
 		},
 		{
-			name:           "github registry starts the same path at both versions",
-			metadata:       specs.Metadata{Name: "semgrep", Registry: specs.RegistryGitHub, Path: "cloudquery/semgrep", Version: "v3.0.0"},
-			wantFromConfig: managedplugin.Config{Name: "semgrep", Registry: managedplugin.RegistryGithub, Path: "cloudquery/semgrep", Version: "v3.0.0"},
-			wantToConfig:   managedplugin.Config{Name: "semgrep", Registry: managedplugin.RegistryGithub, Path: "cloudquery/semgrep", Version: "v3.1.0"},
-			wantFrom:       upgradeSourceOrigin{Registry: specs.RegistryGitHub, Path: "cloudquery/semgrep"},
-			wantTo:         upgradeSourceOrigin{Registry: specs.RegistryGitHub, Path: "cloudquery/semgrep"},
-			wantFromVer:    "v3.0.0",
-		},
-		{
 			name:           "local registry starts the configured binary and the inferred hub plugin",
 			metadata:       specs.Metadata{Name: "semgrep-prod", Registry: specs.RegistryLocal, Path: "/opt/plugins/semgrep"},
 			wantFromConfig: managedplugin.Config{Name: "semgrep-prod", Registry: managedplugin.RegistryLocal, Path: "/opt/plugins/semgrep"},
@@ -461,10 +452,8 @@ func TestUpgradeCheckSource(t *testing.T) {
 }
 
 func TestUpgradeAuthSources(t *testing.T) {
-	for _, registry := range []specs.Registry{specs.RegistryCloudQuery, specs.RegistryGitHub} {
-		sourceSpec := specs.Source{Metadata: specs.Metadata{Name: "semgrep", Registry: registry}}
-		require.Equal(t, []*specs.Source{&sourceSpec}, upgradeAuthSources(sourceSpec))
-	}
+	cloudQuerySource := specs.Source{Metadata: specs.Metadata{Name: "semgrep", Registry: specs.RegistryCloudQuery}}
+	require.Equal(t, []*specs.Source{&cloudQuerySource}, upgradeAuthSources(cloudQuerySource))
 	for _, registry := range []specs.Registry{specs.RegistryLocal, specs.RegistryGRPC, specs.RegistryDocker} {
 		sourceSpec := specs.Source{Metadata: specs.Metadata{Name: "semgrep", Registry: registry}}
 		sources := upgradeAuthSources(sourceSpec)
