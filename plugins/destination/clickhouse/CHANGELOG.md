@@ -1,5 +1,22 @@
 # Changelog
 
+## [8.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v8.3.1...plugins-destination-clickhouse-v8.4.0) (2026-11-07)
+
+
+### Features
+
+* Drop support for source plugins on protocol v1 and v2 (plugin-sdk v3 and older) ([#23705](https://github.com/cloudquery/cloudquery/issues/23705)) ([16e0c4d](https://github.com/cloudquery/cloudquery/commit/16e0c4d4e68843cdb3648dd281b7098b7a56e949))
+
+
+### Bug Fixes
+
+* **deps:** Update golang.org/x/exp digest to f0251eb ([#23598](https://github.com/cloudquery/cloudquery/issues/23598)) ([94a6e34](https://github.com/cloudquery/cloudquery/commit/94a6e3436577fd2d855f6f89fe60c4f7ce2ee67c))
+* **deps:** Update module github.com/ClickHouse/clickhouse-go/v2 to v2.49.0 ([#23688](https://github.com/cloudquery/cloudquery/issues/23688)) ([21fb359](https://github.com/cloudquery/cloudquery/commit/21fb359ec8f23be54a430841267a1cbd6fb61e5c))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.100.1 ([#23725](https://github.com/cloudquery/cloudquery/issues/23725)) ([c90bb25](https://github.com/cloudquery/cloudquery/commit/c90bb25d6f4147365685e80c27a3699488174a6b))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.99.1 ([#23622](https://github.com/cloudquery/cloudquery/issues/23622)) ([2427faa](https://github.com/cloudquery/cloudquery/commit/2427faa717b7c5bc291e205de401d5f04dfc68d1))
+* **deps:** Update module github.com/goccy/go-json to v0.11.2 ([#23692](https://github.com/cloudquery/cloudquery/issues/23692)) ([749ef68](https://github.com/cloudquery/cloudquery/commit/749ef68bef47d20e68cdfb852558f4f813e0aa1d))
+* **deps:** Update module github.com/shopspring/decimal to v1.6.0 ([#23693](https://github.com/cloudquery/cloudquery/issues/23693)) ([f8d8608](https://github.com/cloudquery/cloudquery/commit/f8d860838e96f6ff1277ced9c0291d0b0da50b70))
+
 ## [8.3.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v8.3.0...plugins-destination-clickhouse-v8.3.1) (2026-10-21)
 
 
