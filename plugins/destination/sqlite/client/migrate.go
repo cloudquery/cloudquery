@@ -11,8 +11,15 @@ import (
 )
 
 const (
-	sqlTableInfo = "PRAGMA table_info('%s');"
+	sqlTableInfo = "PRAGMA table_info(%s);"
 )
+
+// sqlStringLiteral quotes s as a SQL string literal, doubling embedded single
+// quotes so a table name cannot break out of the PRAGMA argument. SQLite does
+// not accept bound parameters in PRAGMA statements.
+func sqlStringLiteral(s string) string {
+	return "'" + strings.ReplaceAll(s, "'", "''") + "'"
+}
 
 type columnInfo struct {
 	index        int
@@ -246,7 +253,7 @@ func (c *Client) createTableIfNotExist(table *schema.Table) error {
 
 func (c *Client) getTableInfo(tableName string) (*tableInfo, error) {
 	info := tableInfo{}
-	rows, err := c.db.Query(fmt.Sprintf(sqlTableInfo, tableName))
+	rows, err := c.db.Query(fmt.Sprintf(sqlTableInfo, sqlStringLiteral(tableName)))
 	if err != nil {
 		return nil, err
 	}

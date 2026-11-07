@@ -10,9 +10,15 @@ import (
 )
 
 const (
-	sqlTableInfo      = "PRAGMA table_info('%s');"
+	sqlTableInfo      = "PRAGMA table_info(%s);"
 	isColumnUniqueSQL = "select count(*) from duckdb_constraints where table_name = $1 and constraint_type = 'UNIQUE' and constraint_column_names=[$2]"
 )
+
+// sqlStringLiteral quotes s as a SQL string literal, doubling embedded single
+// quotes so a table name cannot break out of the PRAGMA argument.
+func sqlStringLiteral(s string) string {
+	return "'" + strings.ReplaceAll(s, "'", "''") + "'"
+}
 
 type columnInfo struct {
 	index        int
@@ -246,7 +252,7 @@ func (c *Client) isColumnUnique(ctx context.Context, tableName string, columName
 
 func (c *Client) getTableInfo(ctx context.Context, tableName string) (*schema.Table, error) {
 	info := tableInfo{}
-	rows, err := c.db.QueryContext(ctx, fmt.Sprintf(sqlTableInfo, tableName))
+	rows, err := c.db.QueryContext(ctx, fmt.Sprintf(sqlTableInfo, sqlStringLiteral(tableName)))
 	if err != nil {
 		if strings.Contains(err.Error(), fmt.Sprintf("Table with name %s does not exist!", tableName)) {
 			// Table doesn't exist
