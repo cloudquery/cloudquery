@@ -1,5 +1,23 @@
 # Changelog
 
+## [2.10.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gremlin-v2.9.1...plugins-destination-gremlin-v2.10.0) (2026-11-07)
+
+
+### Features
+
+* Drop support for source plugins on protocol v1 and v2 (plugin-sdk v3 and older) ([#23705](https://github.com/cloudquery/cloudquery/issues/23705)) ([16e0c4d](https://github.com/cloudquery/cloudquery/commit/16e0c4d4e68843cdb3648dd281b7098b7a56e949))
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#23658](https://github.com/cloudquery/cloudquery/issues/23658)) ([69adcde](https://github.com/cloudquery/cloudquery/commit/69adcdef4d54b5a6665d5af6e68e3560212a8e04))
+* **deps:** Update aws-sdk-go-v2 monorepo ([#23728](https://github.com/cloudquery/cloudquery/issues/23728)) ([30f3c3b](https://github.com/cloudquery/cloudquery/commit/30f3c3bc2d8cd0394e53147834f8771e141c5693))
+* **deps:** Update module github.com/cenkalti/backoff/v7 to v7.0.2 ([#23674](https://github.com/cloudquery/cloudquery/issues/23674)) ([92218f0](https://github.com/cloudquery/cloudquery/commit/92218f0f478e0cc7200981905af58fc8cfd454c1))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.100.1 ([#23725](https://github.com/cloudquery/cloudquery/issues/23725)) ([c90bb25](https://github.com/cloudquery/cloudquery/commit/c90bb25d6f4147365685e80c27a3699488174a6b))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.99.1 ([#23622](https://github.com/cloudquery/cloudquery/issues/23622)) ([2427faa](https://github.com/cloudquery/cloudquery/commit/2427faa717b7c5bc291e205de401d5f04dfc68d1))
+* **deps:** Update module github.com/goccy/go-json to v0.11.2 ([#23692](https://github.com/cloudquery/cloudquery/issues/23692)) ([749ef68](https://github.com/cloudquery/cloudquery/commit/749ef68bef47d20e68cdfb852558f4f813e0aa1d))
+* **deps:** Update module github.com/pb33f/ordered-map/v2 to v2.3.2 ([#23676](https://github.com/cloudquery/cloudquery/issues/23676)) ([62e3584](https://github.com/cloudquery/cloudquery/commit/62e3584c4c84857e558f2227eb276f1e3c9aaed3))
+
 ## [2.9.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gremlin-v2.9.0...plugins-destination-gremlin-v2.9.1) (2026-10-21)
 
 
