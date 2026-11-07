@@ -1,5 +1,21 @@
 # Changelog
 
+## [5.5.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v5.4.0...plugins-destination-snowflake-v5.5.0) (2026-11-07)
+
+
+### Features
+
+* Drop support for source plugins on protocol v1 and v2 (plugin-sdk v3 and older) ([#23705](https://github.com/cloudquery/cloudquery/issues/23705)) ([16e0c4d](https://github.com/cloudquery/cloudquery/commit/16e0c4d4e68843cdb3648dd281b7098b7a56e949))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.100.1 ([#23725](https://github.com/cloudquery/cloudquery/issues/23725)) ([c90bb25](https://github.com/cloudquery/cloudquery/commit/c90bb25d6f4147365685e80c27a3699488174a6b))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.99.1 ([#23622](https://github.com/cloudquery/cloudquery/issues/23622)) ([2427faa](https://github.com/cloudquery/cloudquery/commit/2427faa717b7c5bc291e205de401d5f04dfc68d1))
+* **deps:** Update module github.com/goccy/go-json to v0.11.2 ([#23692](https://github.com/cloudquery/cloudquery/issues/23692)) ([749ef68](https://github.com/cloudquery/cloudquery/commit/749ef68bef47d20e68cdfb852558f4f813e0aa1d))
+* **deps:** Update module github.com/snowflakedb/gosnowflake/v2 to v2.3.0 ([#23694](https://github.com/cloudquery/cloudquery/issues/23694)) ([eaf0b2c](https://github.com/cloudquery/cloudquery/commit/eaf0b2cae70f930a0a7f65f58cfc6c4b96a4f91d))
+* **deps:** Update module golang.org/x/sync to v0.24.0 ([#23600](https://github.com/cloudquery/cloudquery/issues/23600)) ([b87ce6e](https://github.com/cloudquery/cloudquery/commit/b87ce6ec86c2fcb5a4f58f07241516b6bd29afff))
+
 ## [5.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v5.3.0...plugins-destination-snowflake-v5.4.0) (2026-10-21)
 
 
