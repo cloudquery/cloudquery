@@ -1,5 +1,20 @@
 # Changelog
 
+## [4.7.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-azblob-v4.6.3...plugins-destination-azblob-v4.7.0) (2026-11-07)
+
+
+### Features
+
+* Drop support for source plugins on protocol v1 and v2 (plugin-sdk v3 and older) ([#23705](https://github.com/cloudquery/cloudquery/issues/23705)) ([16e0c4d](https://github.com/cloudquery/cloudquery/commit/16e0c4d4e68843cdb3648dd281b7098b7a56e949))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/Azure/azure-sdk-for-go/sdk/azidentity to v1.15.0 ([#23616](https://github.com/cloudquery/cloudquery/issues/23616)) ([d32b279](https://github.com/cloudquery/cloudquery/commit/d32b279c24e4159d901f266fb13d06c7edfab2ef))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.100.1 ([#23725](https://github.com/cloudquery/cloudquery/issues/23725)) ([c90bb25](https://github.com/cloudquery/cloudquery/commit/c90bb25d6f4147365685e80c27a3699488174a6b))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.99.1 ([#23622](https://github.com/cloudquery/cloudquery/issues/23622)) ([2427faa](https://github.com/cloudquery/cloudquery/commit/2427faa717b7c5bc291e205de401d5f04dfc68d1))
+* **deps:** Update module github.com/pb33f/ordered-map/v2 to v2.3.2 ([#23676](https://github.com/cloudquery/cloudquery/issues/23676)) ([62e3584](https://github.com/cloudquery/cloudquery/commit/62e3584c4c84857e558f2227eb276f1e3c9aaed3))
+
 ## [4.6.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-azblob-v4.6.2...plugins-destination-azblob-v4.6.3) (2026-10-22)
 
 
