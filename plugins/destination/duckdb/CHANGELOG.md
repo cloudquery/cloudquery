@@ -1,5 +1,20 @@
 # Changelog
 
+## [6.5.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v6.4.2...plugins-destination-duckdb-v6.5.0) (2026-11-07)
+
+
+### Features
+
+* Drop support for source plugins on protocol v1 and v2 (plugin-sdk v3 and older) ([#23705](https://github.com/cloudquery/cloudquery/issues/23705)) ([16e0c4d](https://github.com/cloudquery/cloudquery/commit/16e0c4d4e68843cdb3648dd281b7098b7a56e949))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cenkalti/backoff/v7 to v7.0.2 ([#23674](https://github.com/cloudquery/cloudquery/issues/23674)) ([92218f0](https://github.com/cloudquery/cloudquery/commit/92218f0f478e0cc7200981905af58fc8cfd454c1))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.100.1 ([#23725](https://github.com/cloudquery/cloudquery/issues/23725)) ([c90bb25](https://github.com/cloudquery/cloudquery/commit/c90bb25d6f4147365685e80c27a3699488174a6b))
+* **deps:** Update module github.com/duckdb/duckdb-go/v2 to v2.20000.0 ([#23690](https://github.com/cloudquery/cloudquery/issues/23690)) ([2cfb790](https://github.com/cloudquery/cloudquery/commit/2cfb790567c1a8d0be2d65ee7ef1f6887d4d7898))
+* **deps:** Update module github.com/goccy/go-json to v0.11.2 ([#23692](https://github.com/cloudquery/cloudquery/issues/23692)) ([749ef68](https://github.com/cloudquery/cloudquery/commit/749ef68bef47d20e68cdfb852558f4f813e0aa1d))
+
 ## [6.4.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v6.4.1...plugins-destination-duckdb-v6.4.2) (2026-10-28)
 
 
