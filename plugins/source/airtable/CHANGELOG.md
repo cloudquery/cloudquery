@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.3.15](https://github.com/cloudquery/cloudquery/compare/plugins-source-airtable-v2.3.14...plugins-source-airtable-v2.3.15) (2026-11-07)
+
+
+### Bug Fixes
+
+* **deps:** Update eslint packages (major) ([#23701](https://github.com/cloudquery/cloudquery/issues/23701)) ([c13f46f](https://github.com/cloudquery/cloudquery/commit/c13f46f8ee8cfc4e953174406726457d1992e58a))
+* **deps:** Update Node.js to v24.22.2 ([#23681](https://github.com/cloudquery/cloudquery/issues/23681)) ([ee1e7f2](https://github.com/cloudquery/cloudquery/commit/ee1e7f2700853594f1a669387d5dddba4ec049aa))
+* **deps:** Update pnpm to v12.15.0 ([#23699](https://github.com/cloudquery/cloudquery/issues/23699)) ([baae84c](https://github.com/cloudquery/cloudquery/commit/baae84ce4aa258c798609527ef34018315aafb66))
+* **deps:** Update vulnerable Airtable plugin dependencies ([#23722](https://github.com/cloudquery/cloudquery/issues/23722)) ([22b12a2](https://github.com/cloudquery/cloudquery/commit/22b12a224ffe142b70a86162aa8da65941b96d20))
+
 ## [2.3.14](https://github.com/cloudquery/cloudquery/compare/plugins-source-airtable-v2.3.13...plugins-source-airtable-v2.3.14) (2026-10-22)
 
 
