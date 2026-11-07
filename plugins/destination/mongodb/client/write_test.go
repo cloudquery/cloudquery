@@ -46,7 +46,8 @@ func TestTransformRecord_ConvertsNestedTimestampsUsingTypeSchema(t *testing.T) {
 		},
 	}
 
-	docs := (&Client{}).transformRecord(table, rec)
+	docs, err := (&Client{}).transformRecord(table, rec)
+	require.NoError(t, err)
 	require.Len(t, docs, 1)
 
 	statuses := docs[0].(bson.M)["status_container_statuses"].([]any)
@@ -82,7 +83,9 @@ func TestTransformRecord_OnlyConvertsTimestampTypedLeaves(t *testing.T) {
 		TypeSchema: `{"finishedAt":"timestamp[us, tz=UTC]","version":"utf8"}`,
 	}}}
 
-	data := (&Client{}).transformRecord(table, rec)[0].(bson.M)["data"].(map[string]any)
+	docs, err := (&Client{}).transformRecord(table, rec)
+	require.NoError(t, err)
+	data := docs[0].(bson.M)["data"].(map[string]any)
 	_, isTime := data["finishedAt"].(time.Time)
 	require.True(t, isTime, "timestamp-typed leaf should convert")
 	require.Equal(t, "2026-01-02T00:00:00Z", data["version"], "utf8-typed date-looking string must stay a string")
@@ -100,7 +103,9 @@ func TestTransformRecord_NoTypeSchemaLeavesValuesUnchanged(t *testing.T) {
 	defer rec.Release()
 
 	table := &schema.Table{Columns: schema.ColumnList{{Name: "data", Type: types.ExtensionTypes.JSON}}}
-	data := (&Client{}).transformRecord(table, rec)[0].(bson.M)["data"].(map[string]any)
+	docs, err := (&Client{}).transformRecord(table, rec)
+	require.NoError(t, err)
+	data := docs[0].(bson.M)["data"].(map[string]any)
 	require.Equal(t, "2026-06-13T08:36:36Z", data["finishedAt"])
 }
 
@@ -121,6 +126,34 @@ func TestTransformRecord_HandlesNullNestedValues(t *testing.T) {
 		TypeSchema: `[{"lastState":{"terminated":{"finishedAt":"timestamp[us, tz=UTC]"}}}]`,
 	}}}
 
-	statuses := (&Client{}).transformRecord(table, rec)[0].(bson.M)["status_container_statuses"].([]any)
+	docs, err := (&Client{}).transformRecord(table, rec)
+	require.NoError(t, err)
+	statuses := docs[0].(bson.M)["status_container_statuses"].([]any)
 	require.Nil(t, statuses[0].(map[string]any)["lastState"].(map[string]any)["terminated"])
+}
+
+func TestTransformArr_ReturnsErrorForInvalidJSON(t *testing.T) {
+	jb := types.NewJSONBuilder(memory.DefaultAllocator)
+	jb.AppendBytes([]byte(`{"x":`))
+	arr := jb.NewJSONArray()
+	defer arr.Release()
+
+	_, err := transformArr(arr)
+	require.ErrorContains(t, err, "failed to transform JSON value at row 0")
+}
+
+func TestTransformRecord_ReturnsErrorForInvalidJSON(t *testing.T) {
+	jb := types.NewJSONBuilder(memory.DefaultAllocator)
+	jb.AppendBytes([]byte(`{"x":`))
+	arr := jb.NewJSONArray()
+	defer arr.Release()
+
+	sc := arrow.NewSchema([]arrow.Field{{Name: "data", Type: types.ExtensionTypes.JSON}}, nil)
+	rec := array.NewRecordBatch(sc, []arrow.Array{arr}, 1)
+	defer rec.Release()
+
+	table := &schema.Table{Columns: schema.ColumnList{{Name: "data", Type: types.ExtensionTypes.JSON}}}
+	docs, err := (&Client{}).transformRecord(table, rec)
+	require.ErrorContains(t, err, `failed to transform column "data"`)
+	require.Nil(t, docs)
 }
