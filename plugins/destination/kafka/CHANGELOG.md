@@ -1,5 +1,21 @@
 # Changelog
 
+## [5.9.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-kafka-v5.8.3...plugins-destination-kafka-v5.9.0) (2026-11-07)
+
+
+### Features
+
+* Drop support for source plugins on protocol v1 and v2 (plugin-sdk v3 and older) ([#23705](https://github.com/cloudquery/cloudquery/issues/23705)) ([16e0c4d](https://github.com/cloudquery/cloudquery/commit/16e0c4d4e68843cdb3648dd281b7098b7a56e949))
+
+
+### Bug Fixes
+
+* **deps:** Update confluentinc/cp-kafka Docker tag to v8.4.0 ([#23684](https://github.com/cloudquery/cloudquery/issues/23684)) ([c681760](https://github.com/cloudquery/cloudquery/commit/c68176066a4aa681a3dba85d8f4b16d1cc0ccc1c))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.100.1 ([#23725](https://github.com/cloudquery/cloudquery/issues/23725)) ([c90bb25](https://github.com/cloudquery/cloudquery/commit/c90bb25d6f4147365685e80c27a3699488174a6b))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.99.1 ([#23622](https://github.com/cloudquery/cloudquery/issues/23622)) ([2427faa](https://github.com/cloudquery/cloudquery/commit/2427faa717b7c5bc291e205de401d5f04dfc68d1))
+* **deps:** Update module github.com/IBM/sarama to v1.61.1 ([#23675](https://github.com/cloudquery/cloudquery/issues/23675)) ([73186a0](https://github.com/cloudquery/cloudquery/commit/73186a040c5dacac647854940d9aae491699cb23))
+* **deps:** Update module github.com/pb33f/ordered-map/v2 to v2.3.2 ([#23676](https://github.com/cloudquery/cloudquery/issues/23676)) ([62e3584](https://github.com/cloudquery/cloudquery/commit/62e3584c4c84857e558f2227eb276f1e3c9aaed3))
+
 ## [5.8.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-kafka-v5.8.2...plugins-destination-kafka-v5.8.3) (2026-10-22)
 
 
