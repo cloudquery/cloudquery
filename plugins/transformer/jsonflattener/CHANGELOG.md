@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.1.23](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-jsonflattener-v2.1.22...plugins-transformer-jsonflattener-v2.1.23) (2026-11-07)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.100.0 ([#23719](https://github.com/cloudquery/cloudquery/issues/23719)) ([d952904](https://github.com/cloudquery/cloudquery/commit/d95290441b4195038468a74128c5ea01d0c8ae98))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.100.1 ([#23725](https://github.com/cloudquery/cloudquery/issues/23725)) ([c90bb25](https://github.com/cloudquery/cloudquery/commit/c90bb25d6f4147365685e80c27a3699488174a6b))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.99.1 ([#23622](https://github.com/cloudquery/cloudquery/issues/23622)) ([2427faa](https://github.com/cloudquery/cloudquery/commit/2427faa717b7c5bc291e205de401d5f04dfc68d1))
+* **deps:** Update module github.com/goccy/go-json to v0.11.2 ([#23692](https://github.com/cloudquery/cloudquery/issues/23692)) ([749ef68](https://github.com/cloudquery/cloudquery/commit/749ef68bef47d20e68cdfb852558f4f813e0aa1d))
+
 ## [2.1.22](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-jsonflattener-v2.1.21...plugins-transformer-jsonflattener-v2.1.22) (2026-10-21)
 
 
