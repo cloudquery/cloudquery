@@ -1,5 +1,25 @@
 # Changelog
 
+## [8.20.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.19.0...plugins-destination-postgresql-v8.20.0) (2026-11-07)
+
+
+### Features
+
+* Drop support for source plugins on protocol v1 and v2 (plugin-sdk v3 and older) ([#23705](https://github.com/cloudquery/cloudquery/issues/23705)) ([16e0c4d](https://github.com/cloudquery/cloudquery/commit/16e0c4d4e68843cdb3648dd281b7098b7a56e949))
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#23660](https://github.com/cloudquery/cloudquery/issues/23660)) ([cd08d71](https://github.com/cloudquery/cloudquery/commit/cd08d71987cfe9ceaf9dd401eda07daf4fc69015))
+* **deps:** Update aws-sdk-go-v2 monorepo ([#23730](https://github.com/cloudquery/cloudquery/issues/23730)) ([b319920](https://github.com/cloudquery/cloudquery/commit/b319920be3985b8b34b77a0113d19635e0cc50ec))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.100.1 ([#23725](https://github.com/cloudquery/cloudquery/issues/23725)) ([c90bb25](https://github.com/cloudquery/cloudquery/commit/c90bb25d6f4147365685e80c27a3699488174a6b))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.99.1 ([#23622](https://github.com/cloudquery/cloudquery/issues/23622)) ([2427faa](https://github.com/cloudquery/cloudquery/commit/2427faa717b7c5bc291e205de401d5f04dfc68d1))
+* **deps:** Update module github.com/databricks/databricks-sdk-go to v0.190.0 ([#23689](https://github.com/cloudquery/cloudquery/issues/23689)) ([c8ca22b](https://github.com/cloudquery/cloudquery/commit/c8ca22b320b9973ac806e8206a1aa330ffd51e5b))
+* **deps:** Update module github.com/goccy/go-json to v0.11.2 ([#23692](https://github.com/cloudquery/cloudquery/issues/23692)) ([749ef68](https://github.com/cloudquery/cloudquery/commit/749ef68bef47d20e68cdfb852558f4f813e0aa1d))
+* **deps:** Update module github.com/tmc/langchaingo to v0.1.15 ([#23678](https://github.com/cloudquery/cloudquery/issues/23678)) ([c437f06](https://github.com/cloudquery/cloudquery/commit/c437f06e454710502d91175847c02612ed220f76))
+* **deps:** Update module golang.org/x/sync to v0.24.0 ([#23600](https://github.com/cloudquery/cloudquery/issues/23600)) ([b87ce6e](https://github.com/cloudquery/cloudquery/commit/b87ce6ec86c2fcb5a4f58f07241516b6bd29afff))
+* Sanitize identifiers in postgresql destination DDL, guard nil tx rollback ([#23640](https://github.com/cloudquery/cloudquery/issues/23640)) ([400b98a](https://github.com/cloudquery/cloudquery/commit/400b98a513ac6931c2ed1456db1506a40060b15e))
+
 ## [8.19.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.18.0...plugins-destination-postgresql-v8.19.0) (2026-10-21)
 
 
