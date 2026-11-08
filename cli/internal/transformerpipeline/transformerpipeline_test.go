@@ -4,6 +4,7 @@ import (
 	"context"
 	"io"
 	"testing"
+	"time"
 
 	"github.com/cloudquery/plugin-pb-go/pb/plugin/v3"
 	"github.com/stretchr/testify/require"
@@ -196,4 +197,42 @@ func TestWaitDeliveredWithTransformers(t *testing.T) {
 	pipeline, _, err := New(context.Background(), []plugin.Plugin_TransformClient{newIdentityTransformer()})
 	require.NoError(t, err)
 	require.Error(t, pipeline.WaitDelivered(context.Background()))
+}
+
+type blockingSendTransformer struct {
+	reverserTransformer
+	unblock chan struct{}
+}
+
+func (b *blockingSendTransformer) Send(req *plugin.Transform_Request) error {
+	<-b.unblock
+	return nil
+}
+
+func TestSendOnClosedPipelineDoesNotBlockGoroutine(t *testing.T) {
+	unblockSend := make(chan struct{})
+	blockingClient := &blockingSendTransformer{
+		unblock: unblockSend,
+	}
+
+	pipeline, _, err := New(context.Background(), []plugin.Plugin_TransformClient{blockingClient})
+	require.NoError(t, err)
+	require.NoError(t, pipeline.OnOutput(func([]byte) error { return nil }))
+
+	sendErrCh := make(chan error, 1)
+	go func() {
+		sendErrCh <- pipeline.Send([]byte("data"))
+	}()
+
+	time.Sleep(100 * time.Millisecond)
+	pipeline.Close()
+
+	select {
+	case err := <-sendErrCh:
+		require.ErrorIs(t, err, ErrPipelineClosed)
+	case <-time.After(3 * time.Second):
+		t.Fatal("pipeline.Send did not return within expected duration")
+	}
+
+	close(unblockSend)
 }
