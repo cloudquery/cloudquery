@@ -1074,3 +1074,55 @@ func TestSpecReaderWithoutValidation_SourceOnly(t *testing.T) {
 	require.NoError(t, r.SetDestinationsAndValidate([]*Destination{dest}))
 	require.Equal(t, dest, r.GetDestinationByName("platform"))
 }
+
+func TestSpecReaderRejectsGitHubRegistry(t *testing.T) {
+	for _, tc := range []struct {
+		name    string
+		spec    string
+		wantErr string
+	}{
+		{
+			name: "source",
+			spec: `
+kind: source
+spec:
+  name: test
+  path: cloudquery/test
+  registry: github
+  version: v1.0.0
+  destinations: [test]
+  tables: ["*"]
+`,
+			wantErr: "failed to validate source test: registry: github is no longer supported, use registry: cloudquery for plugins on CloudQuery Hub (requires `cloudquery login` or CLOUDQUERY_API_KEY), or download the plugin binary and use registry: local",
+		},
+		{
+			name: "destination",
+			spec: `
+kind: destination
+spec:
+  name: test
+  path: cloudquery/test
+  registry: github
+  version: v1.0.0
+`,
+			wantErr: "failed to validate destination test: registry: github is no longer supported, use registry: cloudquery for plugins on CloudQuery Hub (requires `cloudquery login` or CLOUDQUERY_API_KEY), or download the plugin binary and use registry: local",
+		},
+		{
+			name: "transformer",
+			spec: `
+kind: transformer
+spec:
+  name: test
+  path: cloudquery/test
+  registry: github
+  version: v1.0.0
+`,
+			wantErr: "failed to validate transformer test: registry: github is no longer supported, use registry: cloudquery for plugins on CloudQuery Hub (requires `cloudquery login` or CLOUDQUERY_API_KEY), or download the plugin binary and use registry: local",
+		},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			_, err := NewSpecReader([]string{writeTempSpec(t, tc.spec)})
+			require.EqualError(t, err, tc.wantErr)
+		})
+	}
+}
