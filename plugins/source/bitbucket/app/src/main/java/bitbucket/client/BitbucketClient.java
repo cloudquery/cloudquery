@@ -2,8 +2,10 @@ package bitbucket.client;
 
 import bitbucket.client.model.Repository;
 import bitbucket.client.model.Workspace;
+import com.google.common.net.UrlEscapers;
 import io.cloudquery.messages.WriteMessage;
 import io.cloudquery.schema.ClientMeta;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import kong.unirest.GenericType;
@@ -15,41 +17,56 @@ public class BitbucketClient implements ClientMeta {
 
   private final String userName;
   private final String password;
+  private final String baseUrl;
+  private final String trustedUrlPrefix;
 
   public BitbucketClient(String userName, String password) {
+    this(userName, password, BASE_URL);
+  }
+
+  BitbucketClient(String userName, String password, String baseUrl) {
     this.userName = userName;
     this.password = password;
+    this.baseUrl = baseUrl;
+    this.trustedUrlPrefix = originOf(baseUrl) + "/";
   }
 
   public List<Workspace> listWorkspaces() {
-    List<Workspace> workspaces = new ArrayList<>();
-
-    String nextURL = BASE_URL + "/workspaces";
-    do {
-      HttpResponse<ResponseResult<Workspace>> response =
-          Unirest.get(nextURL).basicAuth(userName, password).asObject(new GenericType<>() {});
-      ResponseResult<Workspace> body = response.getBody();
-      workspaces.addAll(body.getValues());
-      nextURL = body.getNext();
-    } while (nextURL != null);
-
-    return workspaces;
+    return listAllPages(baseUrl + "/workspaces", new GenericType<>() {});
   }
 
-  public List<Repository> listRepositoriesForWorkspace(String workspace) {
-    List<Repository> repositories = new ArrayList<>();
+  public List<Repository> listRepositoriesForWorkspace(String workspaceSlug) {
+    String encodedSlug = UrlEscapers.urlPathSegmentEscaper().escape(workspaceSlug);
+    return listAllPages(baseUrl + "/repositories/" + encodedSlug, new GenericType<>() {});
+  }
 
-    String nextURL = BASE_URL + "/repositories/" + workspace;
+  private <T> List<T> listAllPages(String firstPageUrl, GenericType<ResponseResult<T>> pageType) {
+    List<T> items = new ArrayList<>();
+
+    String nextURL = firstPageUrl;
     do {
-      HttpResponse<ResponseResult<Repository>> response;
-      response =
-          Unirest.get(nextURL).basicAuth(userName, password).asObject(new GenericType<>() {});
-      ResponseResult<Repository> body = response.getBody();
-      repositories.addAll(body.getValues());
+      requireTrustedUrl(nextURL);
+      HttpResponse<ResponseResult<T>> response =
+          Unirest.get(nextURL).basicAuth(userName, password).asObject(pageType);
+      ResponseResult<T> body = response.getBody();
+      items.addAll(body.getValues());
       nextURL = body.getNext();
     } while (nextURL != null);
 
-    return repositories;
+    return items;
+  }
+
+  private void requireTrustedUrl(String url) {
+    if (!url.startsWith(trustedUrlPrefix)) {
+      throw new IllegalStateException(
+          "refusing to request a page outside " + trustedUrlPrefix + ": " + url);
+    }
+  }
+
+  private static String originOf(String url) {
+    URI uri = URI.create(url);
+    String origin = uri.getScheme() + "://" + uri.getHost();
+    return uri.getPort() == -1 ? origin : origin + ":" + uri.getPort();
   }
 
   @Override
