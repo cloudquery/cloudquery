@@ -67,6 +67,11 @@ var defaultPlugin = pluginCoordinates{
 	Version:  "v1.0.1",
 }
 
+func isStrictPluginVersion(version string) bool {
+	parsed, err := semver.NewVersion(version)
+	return err == nil && "v"+parsed.String() == version
+}
+
 func pluginCoords() pluginCoordinates {
 	p := defaultPlugin
 	if v := os.Getenv(envPluginRegistry); v != "" {
@@ -751,7 +756,11 @@ func injectPlatformDestination(logger zerolog.Logger, destinations []*specs.Dest
 	// pluginCoords() already applied the env override (or the default), so only
 	// let the platform's pin win when the env override isn't set.
 	if os.Getenv(envPluginVersion) == "" && recommendedVersion != "" {
-		plugin.Version = recommendedVersion
+		if isStrictPluginVersion(recommendedVersion) {
+			plugin.Version = recommendedVersion
+		} else {
+			logger.Warn().Str("plugin_version", recommendedVersion).Msg("platform destination: ignoring recommended plugin version that is not a valid semantic version; using default")
+		}
 	}
 	parsedRegistry, err := specs.RegistryFromString(plugin.Registry)
 	if err != nil {
