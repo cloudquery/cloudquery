@@ -22,9 +22,15 @@
 | github.com/cloudquery/cloudquery/plugins/destination/meilisearch/v2/client/index.go:182: | containsAll | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/meilisearch/v2/client/migrate.go:11: | MigrateTables | 69.2% |
 | github.com/cloudquery/cloudquery/plugins/destination/meilisearch/v2/client/migrate.go:69: | planIndexMigration | 100.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/meilisearch/v2/client/numbers.go:13: | toInt64 | 50.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/meilisearch/v2/client/numbers.go:24: | toUint64 | 50.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/meilisearch/v2/client/numbers.go:35: | toFloat64 | 50.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/meilisearch/v2/client/numbers.go:14: | toInt64 | 50.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/meilisearch/v2/client/numbers.go:25: | toUint64 | 75.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/meilisearch/v2/client/numbers.go:36: | toFloat64 | 50.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/meilisearch/v2/client/numbers.go:47: | toInt8 | 83.3% |
+| github.com/cloudquery/cloudquery/plugins/destination/meilisearch/v2/client/numbers.go:58: | toInt16 | 83.3% |
+| github.com/cloudquery/cloudquery/plugins/destination/meilisearch/v2/client/numbers.go:69: | toInt32 | 83.3% |
+| github.com/cloudquery/cloudquery/plugins/destination/meilisearch/v2/client/numbers.go:80: | toUint8 | 83.3% |
+| github.com/cloudquery/cloudquery/plugins/destination/meilisearch/v2/client/numbers.go:91: | toUint16 | 83.3% |
+| github.com/cloudquery/cloudquery/plugins/destination/meilisearch/v2/client/numbers.go:102: | toUint32 | 83.3% |
 | github.com/cloudquery/cloudquery/plugins/destination/meilisearch/v2/client/read.go:16: | Read | 83.3% |
 | github.com/cloudquery/cloudquery/plugins/destination/meilisearch/v2/client/read.go:58: | docToRecord | 80.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/meilisearch/v2/client/spec.go:50: | validate | 50.0% |
@@ -43,4 +49,4 @@
 | github.com/cloudquery/cloudquery/plugins/destination/meilisearch/v2/client/write.go:66: | toMap | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/meilisearch/v2/client/write.go:77: | transform | 88.9% |
 | github.com/cloudquery/cloudquery/plugins/destination/meilisearch/v2/main.go:17: | main | 0.0% |
-| total: | (statements) | 76.7% |
+| total: | (statements) | 77.5% |
