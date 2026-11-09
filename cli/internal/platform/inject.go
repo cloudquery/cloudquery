@@ -11,7 +11,6 @@ import (
 	"net/http"
 	neturl "net/url"
 	"os"
-	"regexp"
 	"slices"
 	"strconv"
 	"strings"
@@ -68,10 +67,9 @@ var defaultPlugin = pluginCoordinates{
 	Version:  "v1.0.1",
 }
 
-var strictPluginVersion = regexp.MustCompile(`^v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(-(0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(\.(0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*)?(\+[0-9a-zA-Z-]+(\.[0-9a-zA-Z-]+)*)?$`)
-
 func isStrictPluginVersion(version string) bool {
-	return strictPluginVersion.MatchString(version)
+	parsed, err := semver.NewVersion(version)
+	return err == nil && "v"+parsed.String() == version
 }
 
 func pluginCoords() pluginCoordinates {
