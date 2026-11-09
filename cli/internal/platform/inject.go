@@ -11,6 +11,7 @@ import (
 	"net/http"
 	neturl "net/url"
 	"os"
+	"regexp"
 	"slices"
 	"strconv"
 	"strings"
@@ -65,6 +66,12 @@ var defaultPlugin = pluginCoordinates{
 	Registry: "cloudquery",
 	Path:     "cloudquery/platform",
 	Version:  "v1.0.1",
+}
+
+var strictPluginVersion = regexp.MustCompile(`^v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(-(0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(\.(0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*)?(\+[0-9a-zA-Z-]+(\.[0-9a-zA-Z-]+)*)?$`)
+
+func isStrictPluginVersion(version string) bool {
+	return strictPluginVersion.MatchString(version)
 }
 
 func pluginCoords() pluginCoordinates {
@@ -751,7 +758,11 @@ func injectPlatformDestination(logger zerolog.Logger, destinations []*specs.Dest
 	// pluginCoords() already applied the env override (or the default), so only
 	// let the platform's pin win when the env override isn't set.
 	if os.Getenv(envPluginVersion) == "" && recommendedVersion != "" {
-		plugin.Version = recommendedVersion
+		if isStrictPluginVersion(recommendedVersion) {
+			plugin.Version = recommendedVersion
+		} else {
+			logger.Warn().Str("plugin_version", recommendedVersion).Msg("platform destination: ignoring recommended plugin version that is not a valid semantic version; using default")
+		}
 	}
 	parsedRegistry, err := specs.RegistryFromString(plugin.Registry)
 	if err != nil {
