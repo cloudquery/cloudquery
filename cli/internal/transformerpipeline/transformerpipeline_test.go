@@ -2,7 +2,9 @@ package transformerpipeline
 
 import (
 	"context"
+	"errors"
 	"io"
+	"runtime"
 	"testing"
 	"time"
 
@@ -219,6 +221,8 @@ func TestSendOnClosedPipelineDoesNotBlockGoroutine(t *testing.T) {
 	require.NoError(t, err)
 	require.NoError(t, pipeline.OnOutput(func([]byte) error { return nil }))
 
+	initialGoroutines := runtime.NumGoroutine()
+
 	sendErrCh := make(chan error, 1)
 	go func() {
 		sendErrCh <- pipeline.Send([]byte("data"))
@@ -235,4 +239,99 @@ func TestSendOnClosedPipelineDoesNotBlockGoroutine(t *testing.T) {
 	}
 
 	close(unblockSend)
+
+	var exited bool
+	for range 200 {
+		if runtime.NumGoroutine() <= initialGoroutines {
+			exited = true
+			break
+		}
+		time.Sleep(10 * time.Millisecond)
+	}
+	require.True(t, exited, "send goroutine leaked; initial goroutines: %d, current: %d", initialGoroutines, runtime.NumGoroutine())
+}
+
+type fixedRecordsTransformer struct {
+	reverserTransformer
+	records [][]byte
+	idx     int
+}
+
+func (m *fixedRecordsTransformer) Recv() (*plugin.Transform_Response, error) {
+	if m.idx >= len(m.records) {
+		return nil, io.EOF
+	}
+	rec := m.records[m.idx]
+	m.idx++
+	return &plugin.Transform_Response{Record: rec}, nil
+}
+
+func TestStartBlockingDeliversFinalRecordBeforeEOF(t *testing.T) {
+	// A client that returns 3 records then EOF, with a 1 ms nextSendFn.
+	// With buffered recvCh, the final record was dropped intermittently because
+	// errCh and recvCh raced in select.
+	for run := range 100 {
+		records := [][]byte{[]byte("rec1"), []byte("rec2"), []byte("rec3")}
+		client := &fixedRecordsTransformer{records: records}
+		var received [][]byte
+		wrapper := clientWrapper{
+			client: client,
+			nextSendFn: func(req *plugin.Transform_Request) error {
+				time.Sleep(1 * time.Millisecond)
+				received = append(received, req.Record)
+				return nil
+			},
+			nextClose: func() error { return nil },
+		}
+
+		err := wrapper.startBlocking()
+		require.NoError(t, err)
+		require.Equal(t, records, received, "failed on run %d", run)
+	}
+}
+
+type continuousRecordsTransformer struct {
+	reverserTransformer
+	closed chan struct{}
+}
+
+func (c *continuousRecordsTransformer) Recv() (*plugin.Transform_Response, error) {
+	select {
+	case <-c.closed:
+		return nil, io.EOF
+	default:
+		return &plugin.Transform_Response{Record: []byte("continuous")}, nil
+	}
+}
+
+func TestStartBlockingReaderExitsAfterNextSendFnError(t *testing.T) {
+	client := &continuousRecordsTransformer{
+		closed: make(chan struct{}),
+	}
+	defer close(client.closed)
+
+	initialGoroutines := runtime.NumGoroutine()
+
+	sendErr := errors.New("nextSendFn failed")
+	wrapper := clientWrapper{
+		client: client,
+		nextSendFn: func(req *plugin.Transform_Request) error {
+			return sendErr
+		},
+		nextClose: func() error { return nil },
+	}
+
+	err := wrapper.startBlocking()
+	require.ErrorIs(t, err, sendErr)
+
+	// Verify the reader goroutine spawned by startBlocking has exited
+	var exited bool
+	for range 200 {
+		if runtime.NumGoroutine() <= initialGoroutines {
+			exited = true
+			break
+		}
+		time.Sleep(10 * time.Millisecond)
+	}
+	require.True(t, exited, "reader goroutine leaked; initial goroutines: %d, current: %d", initialGoroutines, runtime.NumGoroutine())
 }
