@@ -17,15 +17,34 @@ func (c *Client) getPartitionKeyAndSortingKey(ctx context.Context, table *schema
 		return nil, nil, err
 	}
 
-	splitPartitionKey := []string{}
-	if partitionKey != "" {
-		splitPartitionKey = strings.Split(partitionKey, ", ")
+	return splitKeyExpression(partitionKey), splitKeyExpression(sortingKey), nil
+}
+
+func splitKeyExpression(key string) []string {
+	key = trimWrappingParentheses(strings.TrimSpace(key))
+	if key == "" {
+		return []string{}
 	}
-	splitSortingKey := []string{}
-	if sortingKey != "" {
-		splitSortingKey = strings.Split(sortingKey, ", ")
+	return strings.Split(key, ", ")
+}
+
+func trimWrappingParentheses(expression string) string {
+	if !strings.HasPrefix(expression, "(") || !strings.HasSuffix(expression, ")") {
+		return expression
 	}
-	return splitPartitionKey, splitSortingKey, nil
+	depth := 0
+	for i, r := range expression {
+		switch r {
+		case '(':
+			depth++
+		case ')':
+			depth--
+			if depth == 0 && i != len(expression)-1 {
+				return expression
+			}
+		}
+	}
+	return strings.TrimSpace(expression[1 : len(expression)-1])
 }
 
 func (c *Client) getTTL(ctx context.Context, table *schema.Table) (string, error) {

@@ -12,7 +12,8 @@ func SanitizedTableName(schemaName string, table *schema.Table) string {
 
 func sanitizeID(parts ...string) string {
 	for i, pt := range parts {
-		parts[i] = `[` + strings.ReplaceAll(pt, string([]byte{0}), ``) + `]`
+		withoutNUL := strings.ReplaceAll(pt, string([]byte{0}), ``)
+		parts[i] = `[` + strings.ReplaceAll(withoutNUL, `]`, `]]`) + `]`
 	}
 	return strings.Join(parts, ".")
 }
