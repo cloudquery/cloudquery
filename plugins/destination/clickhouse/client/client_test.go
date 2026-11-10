@@ -480,3 +480,31 @@ func getTTLSetting(t *testing.T, connection, tableName string) string {
 	}
 	return ttl
 }
+
+func TestMigrateSameTableWithSingleColumnSortingAndPartitionKeys(t *testing.T) {
+	ctx := context.Background()
+	p := plugin.NewPlugin("clickhouse",
+		internalPlugin.Version,
+		New,
+		plugin.WithJSONSchema(spec.JSONSchema),
+	)
+	s := &spec.Spec{
+		ConnectionString: getTestConnection(),
+		OrderBy:          []spec.OrderByStrategy{{OrderBy: []string{"`_cq_id`"}}},
+		Partition:        []spec.PartitionStrategy{{PartitionBy: "toYYYYMM(_cq_sync_time)"}},
+	}
+	b, err := json.Marshal(s)
+	require.NoError(t, err)
+	require.NoError(t, p.Init(ctx, b, plugin.NewClientOptions{}))
+
+	table := &schema.Table{
+		Name: fmt.Sprintf("cq_test_migrate_single_column_keys_%d", time.Now().UnixNano()),
+		Columns: []schema.Column{
+			schema.CqIDColumn,
+			schema.CqSourceNameColumn,
+			{Name: "_cq_sync_time", Type: arrow.FixedWidthTypes.Timestamp_us, NotNull: true},
+		},
+	}
+	require.NoError(t, p.WriteAll(ctx, []message.WriteMessage{&message.WriteMigrateTable{Table: table}}))
+	require.NoError(t, p.WriteAll(ctx, []message.WriteMessage{&message.WriteMigrateTable{Table: table}}))
+}
