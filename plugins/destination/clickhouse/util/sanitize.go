@@ -9,7 +9,10 @@ func UnquoteID(sanitizedID string) string {
 }
 
 func SanitizeID(id string) string {
-	return "`" + strings.ReplaceAll(id, string([]byte{0}), ``) + "`"
+	id = strings.ReplaceAll(id, string([]byte{0}), "")
+	id = strings.ReplaceAll(id, `\`, `\\`)
+	id = strings.ReplaceAll(id, "`", "``")
+	return "`" + id + "`"
 }
 
 func Sanitized(elems ...string) []string {

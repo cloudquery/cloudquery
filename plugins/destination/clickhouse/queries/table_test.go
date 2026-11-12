@@ -18,4 +18,8 @@ func TestGetTTLQueryEscapesIdentifiers(t *testing.T) {
 		"SHOW CREATE TABLE `db\"name`.`table\"name`",
 		GetTTLQuery(`db"name`, `table"name`),
 	)
+	require.Equal(t,
+		"SHOW CREATE TABLE `db``name`.`table\\name`",
+		GetTTLQuery("db`name", `table\name`),
+	)
 }
