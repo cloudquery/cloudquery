@@ -893,3 +893,17 @@ func TestUnknownTableFindingsUseTransformedTableNames(t *testing.T) {
 
 	require.Equal(t, []string{"renamed_test_kept", "renamed_test_added"}, []string{findings[0].TableName, findings[1].TableName})
 }
+
+func TestKnownUpgradeVersion(t *testing.T) {
+	require.Equal(t, "v2.0.0", knownUpgradeVersion("v2.0.0", "v1.0.0"))
+	require.Equal(t, "v1.0.0", knownUpgradeVersion(upgradeUnknownVersion, "v1.0.0"))
+	require.Equal(t, "v1.0.0", knownUpgradeVersion("", "v1.0.0"))
+}
+
+func TestUpgradeDestinationPaths(t *testing.T) {
+	destinations := []*specs.Destination{
+		{Metadata: specs.Metadata{Path: "cloudquery/postgresql"}},
+		{Metadata: specs.Metadata{Path: "cloudquery/file"}},
+	}
+	require.Equal(t, []string{"cloudquery/postgresql", "cloudquery/file"}, upgradeDestinationPaths(destinations))
+}

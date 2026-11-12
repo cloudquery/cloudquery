@@ -348,6 +348,48 @@ func TrackInitCompleted(ctx context.Context, invocationUUID uuid.UUID, event Ini
 	})
 }
 
+type UpgradeCheckEvent struct {
+	SourcePath       string
+	DestinationPaths []string
+	FromVersion      string
+	ToVersion        string
+}
+
+func getUpgradeCheckProps(invocationUUID uuid.UUID, event UpgradeCheckEvent, details *eventDetails) rudderstack.Properties {
+	props := rudderstack.NewProperties().
+		Set("invocation_uuid", invocationUUID).
+		Set("environment", getEnvironment()).
+		Set("source_path", event.SourcePath).
+		Set("destination_paths", event.DestinationPaths).
+		Set("from_version", event.FromVersion).
+		Set("to_version", event.ToVersion)
+
+	if details != nil {
+		props.Set("team", details.currentTeam).
+			Set("$groups", rudderstack.NewProperties().
+				Set("team", details.currentTeam))
+	}
+
+	return props
+}
+
+func TrackUpgradeCheckCompleted(ctx context.Context, invocationUUID uuid.UUID, event UpgradeCheckEvent) {
+	if client == nil {
+		return
+	}
+
+	details := getSyncEventDetails(ctx)
+	if details != nil && details.isCurrentTeamInternal {
+		return
+	}
+
+	_ = client.Enqueue(rudderstack.Track{
+		AnonymousId: invocationUUID.String(),
+		Event:       "upgrade_check_completed",
+		Properties:  getUpgradeCheckProps(invocationUUID, event, details),
+	})
+}
+
 func Close() {
 	if client == nil {
 		return

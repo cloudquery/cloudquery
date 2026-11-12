@@ -23,8 +23,7 @@ func main() {
 		plugin.WithTeam(internalPlugin.Team),
 		plugin.WithJSONSchema(spec.JSONSchema),
 	)
-	if err := serve.Plugin(p, serve.WithPluginSentryDSN(sentryDSN),
-		serve.WithDestinationV0V1Server()).Serve(context.Background()); err != nil {
+	if err := serve.Plugin(p, serve.WithPluginSentryDSN(sentryDSN)).Serve(context.Background()); err != nil {
 		log.Fatalf("failed to serve plugin: %v", err)
 	}
 }
