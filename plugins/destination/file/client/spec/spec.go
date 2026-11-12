@@ -119,7 +119,10 @@ func (s *Spec) Validate() error {
 	return s.FileSpec.Validate()
 }
 
-func (s *Spec) ReplacePathVariables(table string, fileIdentifier string, t time.Time) string {
+func (s *Spec) ReplacePathVariables(table string, fileIdentifier string, t time.Time) (string, error) {
+	if err := validateTableName(table); err != nil {
+		return "", err
+	}
 	name := strings.ReplaceAll(s.Path, varTable, table)
 	if strings.Contains(name, varFormat) {
 		e := string(s.Format) + s.Compression.Extension()
@@ -131,7 +134,11 @@ func (s *Spec) ReplacePathVariables(table string, fileIdentifier string, t time.
 	name = strings.ReplaceAll(name, varDay, t.Format("02"))
 	name = strings.ReplaceAll(name, varHour, t.Format("15"))
 	name = strings.ReplaceAll(name, varMinute, t.Format("04"))
-	return filepath.Clean(name)
+	name = filepath.Clean(name)
+	if err := validatePathPrefix(filepath.ToSlash(name), filepath.ToSlash(s.Path)); err != nil {
+		return "", err
+	}
+	return name, nil
 }
 
 func (s *Spec) PathContainsUUID() bool {

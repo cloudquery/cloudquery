@@ -94,8 +94,8 @@ func TestReplacePathVariables(t *testing.T) {
 		{
 			inputPath:    "test/test/{{TABLE}}/{{UUID}}",
 			uuid:         "",
-			tableName:    "",
-			expectedPath: "test/test",
+			tableName:    "test-table",
+			expectedPath: "test/test/test-table",
 		},
 		{
 			inputPath:    "test/test/{{TABLE}}/{{UUID}}.json",
@@ -110,16 +110,10 @@ func TestReplacePathVariables(t *testing.T) {
 			expectedPath: "test/test/test-table/FAKE-UUID.json",
 		},
 		{
-			inputPath:    "test/test/{{TABLE}}/{{UUID}}.json",
-			tableName:    "",
-			uuid:         "FAKE-UUID",
-			expectedPath: "test/test/FAKE-UUID.json",
-		},
-		{
 			inputPath:    "test/test/{{TABLE}}/{{UUID}}.{{FORMAT}}",
-			tableName:    "",
+			tableName:    "test-table",
 			uuid:         "FAKE-UUID",
-			expectedPath: "test/test/FAKE-UUID.json",
+			expectedPath: "test/test/test-table/FAKE-UUID.json",
 		},
 		{
 			inputPath:    "test/test/{{TABLE}}/year={{YEAR}}/month={{MONTH}}/day={{DAY}}/hour={{HOUR}}/minute={{MINUTE}}/{{UUID}}.json",
@@ -143,7 +137,9 @@ func TestReplacePathVariables(t *testing.T) {
 				FileSpec: filetypes.FileSpec{Format: filetypes.FormatTypeJSON},
 			},
 		}
-		if diff := cmp.Diff(tc.expectedPath, c.spec.ReplacePathVariables(tc.tableName, tc.uuid, tm, c.syncID)); diff != "" {
+		got, err := c.spec.ReplacePathVariables(tc.tableName, tc.uuid, tm, c.syncID)
+		require.NoError(t, err)
+		if diff := cmp.Diff(tc.expectedPath, got); diff != "" {
 			t.Errorf("unexpected Path Substitution (-want +got):\n%s", diff)
 		}
 	}

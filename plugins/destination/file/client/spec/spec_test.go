@@ -3,6 +3,7 @@ package spec
 import (
 	"encoding/json"
 	"fmt"
+	"path/filepath"
 	"testing"
 	"time"
 
@@ -85,4 +86,43 @@ func TestSpecUnmarshalJSON(t *testing.T) {
 		},
 		Path: "abc",
 	}, s)
+}
+
+func TestSpec_ReplacePathVariablesKeepsTableInsidePath(t *testing.T) {
+	cases := []struct {
+		Path  string
+		Table string
+		UUID  string
+		Want  string
+		Err   bool
+	}{
+		{Path: "base/{{TABLE}}.json", Table: "test_table", Want: "base/test_table.json"},
+		{Path: "base/{{TABLE}}.json", Table: "test.table", Want: "base/test.table.json"},
+		{Path: "{{TABLE}}.json", Table: "test_table", Want: "test_table.json"},
+		{Path: "./{{TABLE}}.json", Table: "test_table", Want: "test_table.json"},
+		{Path: "../out/{{TABLE}}.json", Table: "test_table", Want: "../out/test_table.json"},
+		{Path: "/abs/base/{{TABLE}}/{{UUID}}.json", Table: "test_table", UUID: "FAKE-UUID", Want: "/abs/base/test_table/FAKE-UUID.json"},
+		{Path: "base/{{TABLE}}.json", Table: "../outside/planted", Err: true},
+		{Path: "base/{{TABLE}}", Table: "../outside/existing", Err: true},
+		{Path: "base/{{TABLE}}/{{UUID}}.json", Table: "..", UUID: "FAKE-UUID", Err: true},
+		{Path: "base/{{TABLE}}.json", Table: ".", Err: true},
+		{Path: "base/{{TABLE}}.json", Table: "", Err: true},
+		{Path: "base/{{TABLE}}.json", Table: "a/b", Err: true},
+		{Path: "base/{{TABLE}}.json", Table: `a\b`, Err: true},
+		{Path: "base/{{TABLE}}.json", Table: "a\x00b", Err: true},
+		{Path: "base/{{UUID}}/{{TABLE}}.json", Table: "test_table", UUID: "../../outside", Err: true},
+		{Path: "{{UUID}}/{{TABLE}}.json", Table: "test_table", UUID: "..", Err: true},
+	}
+	tm := time.Date(2021, 3, 5, 4, 1, 2, 3, time.UTC)
+	for _, tc := range cases {
+		s := &Spec{Path: tc.Path, FileSpec: filetypes.FileSpec{Format: filetypes.FormatTypeJSON}}
+		got, err := s.ReplacePathVariables(tc.Table, tc.UUID, tm)
+		if tc.Err {
+			require.Error(t, err, "path %q table %q", tc.Path, tc.Table)
+			require.Empty(t, got)
+			continue
+		}
+		require.NoError(t, err, "path %q table %q", tc.Path, tc.Table)
+		require.Equal(t, filepath.FromSlash(tc.Want), got)
+	}
 }

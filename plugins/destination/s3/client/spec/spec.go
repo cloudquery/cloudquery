@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"path"
-	"path/filepath"
 	"slices"
 	"strings"
 	"time"
@@ -264,7 +263,10 @@ func (s *Spec) Validate() error {
 	return s.FileSpec.Validate()
 }
 
-func (s *Spec) ReplacePathVariables(table string, fileIdentifier string, t time.Time, syncID string) string {
+func (s *Spec) ReplacePathVariables(table string, fileIdentifier string, t time.Time, syncID string) (string, error) {
+	if err := validateTableName(table); err != nil {
+		return "", err
+	}
 	name := strings.ReplaceAll(s.Path, varTable, table)
 	if strings.Contains(name, varFormat) {
 		e := string(s.Format) + s.Compression.Extension()
@@ -278,7 +280,11 @@ func (s *Spec) ReplacePathVariables(table string, fileIdentifier string, t time.
 	name = strings.ReplaceAll(name, varMinute, t.Format("04"))
 	name = strings.ReplaceAll(name, varSyncID, syncID)
 	name = strings.ReplaceAll(name, varTableHyphen, strings.ReplaceAll(table, "_", "-"))
-	return filepath.Clean(name)
+	name = path.Clean(name)
+	if err := validatePathPrefix(name, s.Path); err != nil {
+		return "", err
+	}
+	return name, nil
 }
 
 func (s *Spec) PathContainsUUID() bool {

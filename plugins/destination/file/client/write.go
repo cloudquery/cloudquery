@@ -23,12 +23,14 @@ func (c *Client) WriteTable(_ context.Context, msgs <-chan *message.WriteInsert)
 	for msg := range msgs {
 		if f == nil {
 			table := msg.GetTable()
-			p := c.spec.ReplacePathVariables(table.Name, uuid.NewString(), time.Now().UTC())
+			p, err := c.spec.ReplacePathVariables(table.Name, uuid.NewString(), time.Now().UTC())
+			if err != nil {
+				return err
+			}
 			if err := os.MkdirAll(filepath.Dir(p), 0755); err != nil {
 				return fmt.Errorf("failed to create directory: %w", err)
 			}
 
-			var err error
 			f, err = os.OpenFile(p, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 			if err != nil {
 				return err
