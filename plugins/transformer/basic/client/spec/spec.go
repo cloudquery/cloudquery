@@ -170,7 +170,7 @@ func (s *Spec) Validate() error {
 
 		// Non-trivial validations
 		if t.Kind == KindChangeTableNames {
-			if _, tplErr := template.New("table_name").Parse(t.NewTableNameTemplate); err != nil {
+			if _, tplErr := template.New("table_name").Parse(t.NewTableNameTemplate); tplErr != nil {
 				err = errors.Join(err, fmt.Errorf("error parsing new_table_name_template: %v", tplErr))
 			}
 		}

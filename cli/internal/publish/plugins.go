@@ -9,7 +9,9 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"net"
 	"net/http"
+	"net/url"
 	"os"
 	"path"
 	"path/filepath"
@@ -448,8 +450,12 @@ func getDockerToken(ctx context.Context, ref reference.Named, version, team, use
 		return "", fmt.Errorf("client: could not parse challenge header %q", challengeHeader)
 	}
 
-	url := fmt.Sprintf("%[1]s?account=cli&service=%[2]s&scope=%[3]s", realm, service, scope)
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
+	if err := validateTokenRealm(realm, insecureSkipVerify); err != nil {
+		return "", fmt.Errorf("client: could not create request: %s", err)
+	}
+
+	tokenURL := fmt.Sprintf("%[1]s?account=cli&service=%[2]s&scope=%[3]s", realm, service, scope)
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, tokenURL, nil)
 	if err != nil {
 		return "", fmt.Errorf("client: could not create request: %s", err)
 	}
@@ -473,6 +479,25 @@ func getDockerToken(ctx context.Context, ref reference.Named, version, team, use
 		return "", fmt.Errorf("client: could not decode response: %s", err)
 	}
 	return tokenResponse["token"], nil
+}
+
+func validateTokenRealm(realm string, allowPlainHTTP bool) error {
+	realmURL, err := url.Parse(realm)
+	if err != nil {
+		return err
+	}
+	if realmURL.Scheme == "https" || (allowPlainHTTP && realmURL.Scheme == "http") {
+		return nil
+	}
+	return fmt.Errorf("token realm %q must use https", realm)
+}
+
+func isLocalhostRegistry(domain string) bool {
+	host, _, err := net.SplitHostPort(domain)
+	if err != nil {
+		host = domain
+	}
+	return host == "localhost"
 }
 
 func getManifestParams(target string) (imageName reference.Named, repository string, err error) {
@@ -551,10 +576,7 @@ func PublishToDockerRegistry(ctx context.Context, token, distDir string, pkgJSON
 		return fmt.Errorf("failed to parse Docker image tag: %v", err)
 	}
 
-	var insecureSkipVerify = false
-	if strings.HasPrefix(reference.Domain(ref), "localhost") {
-		insecureSkipVerify = true
-	}
+	insecureSkipVerify := isLocalhostRegistry(reference.Domain(ref))
 
 	dockerToken, err := getDockerToken(ctx, ref, pkgJSON.Version, pkgJSON.Team, username, password, insecureSkipVerify)
 	if err != nil {

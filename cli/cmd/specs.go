@@ -81,6 +81,7 @@ func parseJSONSchema(jsonSchema string) (*jsonschema.Schema, error) {
 	c := jsonschema.NewCompiler()
 	c.DefaultDraft(jsonschema.Draft2020)
 	c.AssertFormat()
+	c.UseLoader(jsonschema.SchemeURLLoader{})
 
 	s, err := jsonschema.UnmarshalJSON(strings.NewReader(jsonSchema))
 	if err != nil {

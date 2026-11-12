@@ -27,7 +27,7 @@ func initLogging(noLogFile bool, logLevel *enum.Enum, logFormat *enum.Enum, logC
 		} else {
 			flags |= os.O_APPEND
 		}
-		logFile, err = os.OpenFile(logFileName, flags, 0666)
+		logFile, err = os.OpenFile(logFileName, flags, 0600)
 		if err != nil {
 			return nil, err
 		}

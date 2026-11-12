@@ -4,9 +4,13 @@ import (
 	"encoding/json"
 	"net/http"
 	"strconv"
+	"time"
 )
 
-const defaultURL = "https://xkcd.com"
+const (
+	defaultURL     = "https://xkcd.com"
+	defaultTimeout = 30 * time.Second
+)
 
 type Comic struct {
 	Month      string `json:"month"`
@@ -44,7 +48,7 @@ func WithHTTPClient(client *http.Client) Option {
 func NewClient(opts ...Option) (*Client, error) {
 	c := &Client{
 		baseURL: defaultURL,
-		client:  http.DefaultClient,
+		client:  &http.Client{Timeout: defaultTimeout},
 	}
 	for _, opt := range opts {
 		opt(c)

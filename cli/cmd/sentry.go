@@ -2,6 +2,13 @@ package cmd
 
 import "github.com/getsentry/sentry-go"
 
+func RedactSecrets(msg string) string {
+	if secretAwareRedactor == nil {
+		return msg
+	}
+	return secretAwareRedactor.RedactStr(msg)
+}
+
 func initSentry(sentryDsn string, version string) error {
 	return sentry.Init(sentry.ClientOptions{
 		Debug:      false,

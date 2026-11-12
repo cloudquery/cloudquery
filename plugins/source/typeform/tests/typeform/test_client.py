@@ -2,11 +2,12 @@ import json
 import socket
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from threading import Thread
+from unittest.mock import Mock, patch
 from urllib.parse import parse_qs
 
 import requests
 
-from plugin.typeform.client import TypeformClient
+from plugin.typeform.client import REQUEST_TIMEOUT_SECONDS, TypeformClient
 
 
 # Modified version of example in https://realpython.com/testing-third-party-apis-with-mock-servers/
@@ -120,3 +121,15 @@ class TestMockServer(object):
         assert len(forms) == 2
         assert forms[0]["submitted_at"] == "2017-09-14T22:38:22Z"
         assert forms[1]["submitted_at"] == "2017-09-14T22:33:56Z"
+
+
+def test_requests_have_a_timeout():
+    response = Mock(status_code=200)
+    response.json.return_value = {"items": [], "page_count": 1}
+    with patch(
+        "plugin.typeform.client.requests.get", return_value=response
+    ) as mock_get:
+        client = TypeformClient(access_token="fake")
+        assert list(client.list_forms()) == []
+
+    assert mock_get.call_args.kwargs["timeout"] == REQUEST_TIMEOUT_SECONDS

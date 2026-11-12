@@ -96,6 +96,24 @@ func TestValidate(t *testing.T) {
 			wantErr: false,
 		},
 		{
+			name: "ValidChangeTableNames",
+			input: Spec{
+				TransformationSpecs: []TransformationSpec{
+					{Kind: KindChangeTableNames, NewTableNameTemplate: "prefix_{{.OldName}}"},
+				},
+			},
+			wantErr: false,
+		},
+		{
+			name: "InvalidChangeTableNamesTemplate",
+			input: Spec{
+				TransformationSpecs: []TransformationSpec{
+					{Kind: KindChangeTableNames, NewTableNameTemplate: "prefix_{{.OldName"},
+				},
+			},
+			wantErr: true,
+		},
+		{
 			name: "InvalidRemoveColumnsNoColumns",
 			input: Spec{
 				TransformationSpecs: []TransformationSpec{

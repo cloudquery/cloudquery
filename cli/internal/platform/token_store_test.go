@@ -2,8 +2,11 @@ package platform
 
 import (
 	"encoding/base64"
+	"os"
+	"runtime"
 	"testing"
 
+	"github.com/adrg/xdg"
 	cqapiauth "github.com/cloudquery/cloudquery-api-go/auth"
 	"github.com/cloudquery/cloudquery-api-go/config"
 	"github.com/stretchr/testify/require"
@@ -36,6 +39,28 @@ func TestPlatformTokenStoreRoundtrip(t *testing.T) {
 	require.NoError(t, RemovePlatformToken())
 	require.Empty(t, ReadPlatformToken())
 	require.NoError(t, RemovePlatformToken())
+}
+
+func TestSavePlatformTokenWritesOwnerOnlyFile(t *testing.T) {
+	if runtime.GOOS == "windows" {
+		t.Skip("file permission bits are not supported on Windows")
+	}
+	setupTokenStore(t)
+	filePath, err := xdg.DataFile(tokenStorePath)
+	require.NoError(t, err)
+
+	token := mintTestToken(t, "https://acme.mycloudquery.com", "team-x")
+	require.NoError(t, SavePlatformToken(token))
+	info, err := os.Stat(filePath)
+	require.NoError(t, err)
+	require.Equal(t, os.FileMode(0600), info.Mode().Perm())
+
+	require.NoError(t, os.Chmod(filePath, 0644))
+	require.NoError(t, SavePlatformToken(token))
+	info, err = os.Stat(filePath)
+	require.NoError(t, err)
+	require.Equal(t, os.FileMode(0600), info.Mode().Perm())
+	require.Equal(t, token, ReadPlatformToken())
 }
 
 func TestSavePlatformTokenRejectsNonPlatformToken(t *testing.T) {

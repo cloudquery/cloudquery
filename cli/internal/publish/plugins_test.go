@@ -35,6 +35,51 @@ func TestGetDockerTokenTokenRequestError(t *testing.T) {
 	}
 }
 
+func TestValidateTokenRealm(t *testing.T) {
+	tests := []struct {
+		name           string
+		realm          string
+		allowPlainHTTP bool
+		wantErr        bool
+	}{
+		{name: "https", realm: "https://auth.example.com/token"},
+		{name: "http rejected", realm: "http://auth.example.com/token", wantErr: true},
+		{name: "http allowed for local registry", realm: "http://localhost:5000/token", allowPlainHTTP: true},
+		{name: "other scheme rejected for local registry", realm: "ftp://localhost/token", allowPlainHTTP: true, wantErr: true},
+		{name: "missing scheme", realm: "auth.example.com/token", wantErr: true},
+		{name: "unparsable", realm: "://bad", wantErr: true},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			err := validateTokenRealm(tt.realm, tt.allowPlainHTTP)
+			if (err != nil) != tt.wantErr {
+				t.Fatalf("validateTokenRealm() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}
+
+func TestIsLocalhostRegistry(t *testing.T) {
+	tests := []struct {
+		domain string
+		want   bool
+	}{
+		{domain: "localhost", want: true},
+		{domain: "localhost:5000", want: true},
+		{domain: "localhost.example.com", want: false},
+		{domain: "localhost.example.com:5000", want: false},
+		{domain: "localhostx", want: false},
+		{domain: "docker.cloudquery.io", want: false},
+	}
+	for _, tt := range tests {
+		t.Run(tt.domain, func(t *testing.T) {
+			if got := isLocalhostRegistry(tt.domain); got != tt.want {
+				t.Fatalf("isLocalhostRegistry(%q) = %v, want %v", tt.domain, got, tt.want)
+			}
+		})
+	}
+}
+
 func TestGetSpecJsonScheme(t *testing.T) {
 	dir := t.TempDir()
 
