@@ -54,8 +54,12 @@ func tableNamePart(table, cluster string) string {
 	return util.SanitizeID(table)
 }
 
-func GetPartitionKeyAndSortingKeyQuery(database, table string) string {
-	return fmt.Sprintf(`SELECT partition_key, sorting_key FROM system.tables WHERE database = '%s' AND name = '%s'`, database, table)
+func GetPartitionKeyAndSortingKeyQuery(database, table string) (query string, params []any) {
+	const partitionKeyAndSortingKeyQuery = "SELECT partition_key, sorting_key FROM system.tables WHERE database = @databaseName AND name = @tableName"
+	return partitionKeyAndSortingKeyQuery, []any{
+		driver.NamedValue{Name: "databaseName", Value: database},
+		driver.NamedValue{Name: "tableName", Value: table},
+	}
 }
 
 func GetTTLQuery(database, table string) string {
