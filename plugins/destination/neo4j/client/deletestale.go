@@ -15,10 +15,14 @@ func (c *Client) DeleteStale(ctx context.Context, msgs message.WriteDeleteStales
 	session := c.Session(ctx, neo4j.SessionConfig{AccessMode: neo4j.AccessModeWrite})
 	defer session.Close(ctx)
 	for _, msg := range msgs {
-		stmt := fmt.Sprintf(deleteCypher, msg.TableName)
+		stmt := deleteStaleStatement(msg.TableName)
 		if _, err := session.Run(ctx, stmt, map[string]any{"cq_source_name": msg.SourceName, "cq_sync_time": msg.SyncTime.Truncate(time.Microsecond)}); err != nil {
 			return err
 		}
 	}
 	return session.Close(ctx)
+}
+
+func deleteStaleStatement(tableName string) string {
+	return fmt.Sprintf(deleteCypher, quoteIdentifier(tableName))
 }
