@@ -18,6 +18,9 @@ import (
 )
 
 func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow.RecordBatch) error {
+	if err := validateTableName(table.Name); err != nil {
+		return err
+	}
 	index := c.getIndexNamePattern(table)
 
 	// refresh index before read, to ensure all written data is available
