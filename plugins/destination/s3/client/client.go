@@ -160,9 +160,14 @@ func New(ctx context.Context, logger zerolog.Logger, s []byte, opts plugin.NewCl
 		// we want to run this test because we want it to fail early if the bucket is not accessible
 		timeNow := time.Now().UTC()
 
+		testKey, err := c.spec.ReplacePathVariables("TEST_TABLE", "TEST_UUID", timeNow, c.syncID)
+		if err != nil {
+			return nil, err
+		}
+
 		params := &transfermanager.UploadObjectInput{
 			Bucket: aws.String(c.spec.Bucket),
-			Key:    aws.String(c.spec.ReplacePathVariables("TEST_TABLE", "TEST_UUID", timeNow, c.syncID)),
+			Key:    aws.String(testKey),
 			Body:   bytes.NewReader([]byte("")),
 		}
 

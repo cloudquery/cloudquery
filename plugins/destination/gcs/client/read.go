@@ -20,7 +20,10 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow
 		return fmt.Errorf("reading is not supported when path contains uuid variable. Table: %q", table.Name)
 	}
 
-	name := c.spec.ReplacePathVariables(table.Name, uuid.NewString(), time.Time{}, c.syncID)
+	name, err := c.spec.ReplacePathVariables(table.Name, uuid.NewString(), time.Time{}, c.syncID)
+	if err != nil {
+		return err
+	}
 
 	r, err := c.bucket.Object(name).NewReader(ctx)
 	if err != nil {

@@ -18,7 +18,10 @@ func (c *Client) Read(_ context.Context, table *schema.Table, res chan<- arrow.R
 	if c.spec.PathContainsUUID() {
 		return fmt.Errorf("reading is not supported when `path` contains UUID variable. Table: %q", table.Name)
 	}
-	name := c.spec.ReplacePathVariables(table.Name, uuid.NewString(), time.Time{})
+	name, err := c.spec.ReplacePathVariables(table.Name, uuid.NewString(), time.Time{})
+	if err != nil {
+		return err
+	}
 
 	if syncAfterWrite {
 		time.Sleep(500 * time.Millisecond)

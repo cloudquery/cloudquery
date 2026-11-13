@@ -151,7 +151,9 @@ func testFlush(t *testing.T, s *spec.Spec) {
 			t.Fatal("flush did not complete")
 		}
 	}
-	prefix := path.Dir(client.spec.ReplacePathVariables(table.Name, "uuid", time.Now().UTC(), "")) + "/"
+	objKey, err := client.spec.ReplacePathVariables(table.Name, "uuid", time.Now().UTC(), "")
+	require.NoError(t, err)
+	prefix := path.Dir(objKey) + "/"
 	objects := func() int {
 		out, err := client.s3Client.ListObjectsV2(ctx, &s3.ListObjectsV2Input{Bucket: aws.String(s.Bucket), Prefix: aws.String(prefix)})
 		require.NoError(t, err)
