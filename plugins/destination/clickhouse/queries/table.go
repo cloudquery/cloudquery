@@ -63,7 +63,7 @@ func GetPartitionKeyAndSortingKeyQuery(database, table string) (query string, pa
 }
 
 func GetTTLQuery(database, table string) string {
-	return fmt.Sprintf(`SHOW CREATE TABLE "%s"."%s"`, database, table)
+	return "SHOW CREATE TABLE " + util.SanitizeID(database) + "." + util.SanitizeID(table)
 }
 
 func EqualTTLsQuery(table *schema.Table, ttl1, ttl2 string) string {

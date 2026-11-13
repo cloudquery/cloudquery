@@ -46,3 +46,8 @@ func TestIdentifiersAreEscaped(t *testing.T) {
 	require.Equal(t, "SELECT "+columns+" FROM `x\\`.\\`y`", Read(table))
 	require.Equal(t, "DROP TABLE IF EXISTS `x\\`.\\`y`", DropTable(table, ""))
 }
+
+func TestGetTTLQuery(t *testing.T) {
+	require.Equal(t, "SHOW CREATE TABLE `db`.`table`", GetTTLQuery("db", "table"))
+	require.Equal(t, "SHOW CREATE TABLE `d\\\\b`.`a\\`b\"c`", GetTTLQuery(`d\b`, "a`b\"c"))
+}
