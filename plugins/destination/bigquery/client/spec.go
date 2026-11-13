@@ -227,6 +227,9 @@ func (t *TextEmbeddingsSpec) Validate() error {
 		if len(table.EmbedColumns) == 0 {
 			return fmt.Errorf("table[%d]: at least one embed_column must be set", i)
 		}
+		if err := table.validateIdentifiers(); err != nil {
+			return fmt.Errorf("table[%d]: %w", i, err)
+		}
 	}
 
 	// Validate TextSplitter if set
