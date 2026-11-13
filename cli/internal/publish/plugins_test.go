@@ -13,9 +13,10 @@ import (
 	"github.com/distribution/reference"
 )
 
-func TestGetDockerTokenTokenRequestError(t *testing.T) {
+func getDockerTokenWithChallenge(t *testing.T, challenge string) error {
+	t.Helper()
 	ts := httptest.NewTLSServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("WWW-Authenticate", "Bearer realm=\"://bad\",service=\"registry\",scope=\"repository:test:pull\"")
+		w.Header().Set("WWW-Authenticate", challenge)
 		w.WriteHeader(http.StatusUnauthorized)
 	}))
 	defer ts.Close()
@@ -30,8 +31,20 @@ func TestGetDockerTokenTokenRequestError(t *testing.T) {
 	if err == nil {
 		t.Fatal("expected an error, got nil")
 	}
+	return err
+}
+
+func TestGetDockerTokenTokenRequestError(t *testing.T) {
+	err := getDockerTokenWithChallenge(t, "Bearer realm=\"https://auth.example.com/token#\",service=\"registry\",scope=\"repository:test:pull%zz\"")
 	if !strings.Contains(err.Error(), "could not create request") {
 		t.Fatalf("expected a %q error, got: %v", "could not create request", err)
+	}
+}
+
+func TestGetDockerTokenInvalidRealmError(t *testing.T) {
+	err := getDockerTokenWithChallenge(t, "Bearer realm=\"ftp://auth.example.com/token\",service=\"registry\",scope=\"repository:test:pull\"")
+	if !strings.Contains(err.Error(), "invalid token realm") {
+		t.Fatalf("expected a %q error, got: %v", "invalid token realm", err)
 	}
 }
 

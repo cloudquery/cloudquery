@@ -451,7 +451,7 @@ func getDockerToken(ctx context.Context, ref reference.Named, version, team, use
 	}
 
 	if err := validateTokenRealm(realm, insecureSkipVerify); err != nil {
-		return "", fmt.Errorf("client: could not create request: %s", err)
+		return "", fmt.Errorf("client: invalid token realm: %s", err)
 	}
 
 	tokenURL := fmt.Sprintf("%[1]s?account=cli&service=%[2]s&scope=%[3]s", realm, service, scope)
