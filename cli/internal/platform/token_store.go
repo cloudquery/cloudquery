@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/adrg/xdg"
@@ -31,19 +32,31 @@ func SavePlatformToken(token string) error {
 }
 
 func writeOwnerOnlyFile(filePath string, data string) error {
-	file, err := os.OpenFile(filePath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, tokenFileMode)
+	tempFile, err := os.CreateTemp(filepath.Dir(filePath), filepath.Base(filePath)+".tmp-*")
 	if err != nil {
-		return fmt.Errorf("failed to open file %q for writing: %w", filePath, err)
+		return fmt.Errorf("failed to create temporary file for %q: %w", filePath, err)
 	}
-	if err := file.Chmod(tokenFileMode); err != nil {
-		file.Close()
-		return fmt.Errorf("failed to set permissions on %q: %w", filePath, err)
-	}
-	if _, err := file.WriteString(data); err != nil {
-		file.Close()
+	tempPath := tempFile.Name()
+	if err := writeAndCloseOwnerOnly(tempFile, data); err != nil {
+		os.Remove(tempPath)
 		return fmt.Errorf("failed to write data to %q: %w", filePath, err)
 	}
-	return file.Close()
+	if err := os.Rename(tempPath, filePath); err != nil {
+		os.Remove(tempPath)
+		return fmt.Errorf("failed to replace %q: %w", filePath, err)
+	}
+	return nil
+}
+
+func writeAndCloseOwnerOnly(file *os.File, data string) error {
+	err := file.Chmod(tokenFileMode)
+	if err == nil {
+		_, err = file.WriteString(data)
+	}
+	if err == nil {
+		err = file.Sync()
+	}
+	return errors.Join(err, file.Close())
 }
 
 func ReadPlatformToken() string {

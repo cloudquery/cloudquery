@@ -3,6 +3,7 @@ package platform
 import (
 	"encoding/base64"
 	"os"
+	"path/filepath"
 	"runtime"
 	"testing"
 
@@ -61,6 +62,30 @@ func TestSavePlatformTokenWritesOwnerOnlyFile(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, os.FileMode(0600), info.Mode().Perm())
 	require.Equal(t, token, ReadPlatformToken())
+}
+
+func TestSavePlatformTokenKeepsExistingTokenOnFailure(t *testing.T) {
+	if runtime.GOOS == "windows" {
+		t.Skip("directory permission bits are not supported on Windows")
+	}
+	setupTokenStore(t)
+	filePath, err := xdg.DataFile(tokenStorePath)
+	require.NoError(t, err)
+
+	existing := mintTestToken(t, "https://acme.mycloudquery.com", "team-x")
+	require.NoError(t, SavePlatformToken(existing))
+
+	tokenDir := filepath.Dir(filePath)
+	require.NoError(t, os.Chmod(tokenDir, 0500))
+	t.Cleanup(func() {
+		require.NoError(t, os.Chmod(tokenDir, 0700))
+	})
+
+	require.Error(t, SavePlatformToken(mintTestToken(t, "https://other.mycloudquery.com", "team-y")))
+	require.Equal(t, existing, ReadPlatformToken())
+	entries, err := os.ReadDir(tokenDir)
+	require.NoError(t, err)
+	require.Len(t, entries, 1)
 }
 
 func TestSavePlatformTokenRejectsNonPlatformToken(t *testing.T) {
