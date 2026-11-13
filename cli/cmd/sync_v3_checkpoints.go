@@ -177,6 +177,23 @@ func (s *flushingWriteClient) failure() *flushFailedError {
 	return s.failed.clone()
 }
 
+func (s *flushingWriteClient) flushReportingFailedTables() error {
+	err := s.Flush()
+	if errors.As(err, new(*flushFailedError)) {
+		return nil
+	}
+	return err
+}
+
+func (s *flushingWriteClient) streamEndedAfterFailure() error {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	if !s.ended {
+		return nil
+	}
+	return fmt.Errorf("destination %s: %w", s.name, s.failed.clone())
+}
+
 func (s *flushingWriteClient) CloseAndRecv() (*plugin.Write_Response, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
@@ -395,19 +412,14 @@ func (t syncedTables) root(table string) string {
 // withoutFailedTables returns the tables of the relation trees the destination committed every record of, out of
 // tables, so that delete-stale neither deletes the rows of earlier syncs whose replacements failed to write, nor leaves
 // the rows of a tree inconsistent.
-func (c *checkpointer) withoutFailedTables(name string, tables map[string]bool, synced syncedTables) map[string]bool {
-	var failed *flushFailedError
-	for _, destination := range c.destinations {
-		if destination.name == name {
-			failed = destination.failure()
-		}
-	}
+func (s *flushingWriteClient) withoutFailedTables(tables map[string]bool, synced syncedTables) map[string]bool {
+	failed := s.failure()
 	if failed == nil {
 		return tables
 	}
 	// a table the source did not sync may stand for any table, as the destination may name it differently
 	if failed.anyTable || slices.ContainsFunc(failed.tables, func(table string) bool { return !synced.names[table] }) {
-		log.Warn().Str("destination", name).Msg("Skipping delete-stale, as the destination failed to write records")
+		log.Warn().Str("destination", s.name).Msg("Skipping delete-stale, as the destination failed to write records")
 		return nil
 	}
 	failedTrees := make(map[string]bool, len(failed.tables))
@@ -425,7 +437,7 @@ func (c *checkpointer) withoutFailedTables(name string, tables map[string]bool, 
 	}
 	if len(skipped) > 0 {
 		slices.Sort(skipped)
-		log.Warn().Str("destination", name).Strs("tables", skipped).Msg("Skipping delete-stale for the relation trees of tables the destination failed to write records to")
+		log.Warn().Str("destination", s.name).Strs("tables", skipped).Msg("Skipping delete-stale for the relation trees of tables the destination failed to write records to")
 	}
 	return kept
 }

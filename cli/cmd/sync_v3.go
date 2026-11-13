@@ -337,7 +337,7 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 	writeClientsByName := map[string]writeClient{}
 	flushingWriteClients := make([]*flushingWriteClient, 0, len(destinationsPbClients))
 	for i := range destinationsPbClients {
-		if checkpointsEnabled {
+		if destinationsSupportFlush {
 			stream, err := destinationsPbClients[i].WriteStream(ctx)
 			if err != nil {
 				return err
@@ -698,8 +698,13 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 		if destinationSpecs[i].WriteMode == specs.WriteModeOverwriteDeleteStale {
 			// Table names might have changed due to transformers
 			updatedTablesForDeleteStale := tableNameChanger.UpdateTableNames(destinationSpecs[i].Name, tablesForDeleteStale)
-			if checkpoints != nil {
-				updatedTablesForDeleteStale = checkpoints.withoutFailedTables(destinationSpecs[i].Name, updatedTablesForDeleteStale, syncedTables{names: sourceTables, parents: tableParents})
+			if destinationsSupportFlush {
+				if checkpoints == nil {
+					if err := flushingWriteClients[i].flushReportingFailedTables(); err != nil {
+						return fmt.Errorf("failed to flush destination %s: %w", destinationSpecs[i].Name, err)
+					}
+				}
+				updatedTablesForDeleteStale = flushingWriteClients[i].withoutFailedTables(updatedTablesForDeleteStale, syncedTables{names: sourceTables, parents: tableParents})
 			}
 			if err := deleteStale(writeClients[i], updatedTablesForDeleteStale, sourceName, syncTime); err != nil {
 				return err
@@ -791,6 +796,13 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 		return err
 	}
 
+	if checkpoints == nil {
+		for _, destination := range flushingWriteClients {
+			if err := destination.streamEndedAfterFailure(); err != nil {
+				return err
+			}
+		}
+	}
 	if checkpoints != nil {
 		if err := checkpoints.failure(); err != nil {
 			if !checkpoints.received {

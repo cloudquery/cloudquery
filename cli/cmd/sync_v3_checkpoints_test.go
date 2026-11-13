@@ -811,7 +811,7 @@ func TestCheckpointerStopsSavingStateAfterFailedFlush(t *testing.T) {
 
 	require.NoError(t, c.add(stateRecord(t, "cq_state", stateEntry{"cursor", "1", 1})))
 	require.NoError(t, c.commit(ctx), "the sync goes on after a failed flush")
-	require.Empty(t, c.withoutFailedTables("dest", map[string]bool{"items": true}, syncedTables{names: map[string]bool{"items": true}}), "delete-stale is skipped")
+	require.Empty(t, dest.withoutFailedTables(map[string]bool{"items": true}, syncedTables{names: map[string]bool{"items": true}}), "delete-stale is skipped")
 	require.EqualError(t, c.failure(), "destination dest: table items: disk full")
 
 	require.NoError(t, c.add(stateRecord(t, "cq_state", stateEntry{"cursor", "2", 2})))
@@ -935,7 +935,7 @@ func TestCheckpointerStopsSavingStateAfterBackendFlushFails(t *testing.T) {
 
 	require.NoError(t, c.add(stateRecord(t, "cq_state", stateEntry{"cursor", "1", 1})))
 	require.NoError(t, c.commit(ctx), "the sync goes on, as it does when a destination fails")
-	require.Equal(t, map[string]bool{"items": true}, c.withoutFailedTables("dest", map[string]bool{"items": true}, syncedTables{names: map[string]bool{"items": true}}), "delete-stale still runs on the destinations")
+	require.Equal(t, map[string]bool{"items": true}, dest.withoutFailedTables(map[string]bool{"items": true}, syncedTables{names: map[string]bool{"items": true}}), "delete-stale still runs on the destinations")
 	require.EqualError(t, c.failure(), "state backend: table cq_state: disk full")
 
 	require.NoError(t, c.add(stateRecord(t, "cq_state", stateEntry{"cursor", "2", 2})))
@@ -1126,6 +1126,46 @@ func TestSyncSkipsDeleteStaleOnlyForFailedTables(t *testing.T) {
 	events := log.get()
 	require.Contains(t, events, "dest: delete stale others", "the destination committed every record of this table")
 	require.NotContains(t, events, "dest: delete stale items")
+}
+
+func TestSyncWithoutStateBackendSkipsDeleteStaleOnlyForFailedTables(t *testing.T) {
+	others := &schema.Table{Name: "others", Columns: schema.ColumnList{{Name: "id", Type: arrow.PrimitiveTypes.Int64}}}
+	log := &eventLog{}
+	destination := &fakeWritePlugin{name: "dest", log: log, supportsFlush: true, flushFailure: "table items: disk full", failedTables: []string{"items"}}
+	opts := fakeSyncOptions(t, &fakeCheckpointSource{}, []*fakeWritePlugin{destination}, specs.WriteModeOverwriteDeleteStale,
+		migrateResponse(t, others),
+		itemsInsert(t, 1, 2),
+		insertResponse(t, others, 1),
+	)
+	opts.source.spec.BackendOptions = nil
+	require.NoError(t, syncConnectionV3(context.Background(), opts))
+
+	events := log.get()
+	require.Contains(t, events, "dest: flush 1")
+	require.Contains(t, events, "dest: delete stale others", "the destination committed every record of this table")
+	require.NotContains(t, events, "dest: delete stale items")
+}
+
+func TestSyncWithoutStateBackendFailsWhenADestinationEndsItsStreamAfterAFailure(t *testing.T) {
+	log := &eventLog{}
+	destination := &fakeWritePlugin{name: "dest", log: log, supportsFlush: true, flushFailure: "table items: disk full", failedTables: []string{"items"}, endAfterFailure: true}
+	opts := fakeSyncOptions(t, &fakeCheckpointSource{}, []*fakeWritePlugin{destination}, specs.WriteModeOverwriteDeleteStale, itemsInsert(t, 1, 2))
+	opts.source.spec.BackendOptions = nil
+	err := syncConnectionV3(context.Background(), opts)
+	require.ErrorContains(t, err, "destination dest: table items: disk full")
+	require.NotContains(t, log.get(), "dest: delete stale items")
+}
+
+func TestSyncWithoutFlushSupportDeletesStaleRowsOfEveryTable(t *testing.T) {
+	log := &eventLog{}
+	destination := &fakeWritePlugin{name: "dest", log: log}
+	opts := fakeSyncOptions(t, &fakeCheckpointSource{}, []*fakeWritePlugin{destination}, specs.WriteModeOverwriteDeleteStale, itemsInsert(t, 1, 2))
+	opts.source.spec.BackendOptions = nil
+	require.NoError(t, syncConnectionV3(context.Background(), opts))
+
+	events := log.get()
+	require.Contains(t, events, "dest: delete stale items")
+	require.NotContains(t, events, "dest: flush 1")
 }
 
 func TestSyncFinishesWhenADestinationEndsItsStreamAfterAFailure(t *testing.T) {
