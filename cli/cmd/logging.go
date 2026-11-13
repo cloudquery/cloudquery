@@ -31,6 +31,10 @@ func initLogging(noLogFile bool, logLevel *enum.Enum, logFormat *enum.Enum, logC
 		if err != nil {
 			return nil, err
 		}
+		if err := logFile.Chmod(0600); err != nil {
+			logFile.Close()
+			return nil, err
+		}
 		if logFormat.String() == "text" {
 			// for file logging we don't need color. we can add it as an option but don't think it is useful
 			writers = append(writers, zerolog.ConsoleWriter{

@@ -73,3 +73,27 @@ func TestInitLogging_CreatesOwnerOnlyFile(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, os.FileMode(0600), info.Mode().Perm())
 }
+
+func TestInitLogging_RestrictsExistingFileToOwner(t *testing.T) {
+	if runtime.GOOS == "windows" {
+		t.Skip("file permission bits are not supported on Windows")
+	}
+	logFileName := filepath.Join(t.TempDir(), "cloudquery.log")
+	require.NoError(t, os.WriteFile(logFileName, []byte("old content\n"), 0644))
+	require.NoError(t, os.Chmod(logFileName, 0644))
+
+	logLevel := enum.NewEnum([]string{"trace", "debug", "info", "warn", "error"}, "info")
+	logFormat := enum.NewEnum([]string{"text", "json"}, "json")
+
+	f, err := initLogging(false, logLevel, logFormat, false, logFileName, false)
+	require.NoError(t, err)
+	t.Cleanup(func() {
+		if f != nil {
+			f.Close()
+		}
+	})
+
+	info, err := os.Stat(logFileName)
+	require.NoError(t, err)
+	require.Equal(t, os.FileMode(0600), info.Mode().Perm())
+}
