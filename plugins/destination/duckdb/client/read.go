@@ -37,7 +37,7 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow
 			sb.WriteString(", ")
 		}
 	}
-	sb.WriteString(") to '" + f.Name() + "' (FORMAT PARQUET)")
+	sb.WriteString(") to " + sanitizeLiteral(fName) + " (FORMAT PARQUET)")
 
 	if err := c.exec(ctx, sb.String()); err != nil {
 		return err
