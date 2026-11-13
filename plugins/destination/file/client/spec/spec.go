@@ -135,7 +135,7 @@ func (s *Spec) ReplacePathVariables(table string, fileIdentifier string, t time.
 	name = strings.ReplaceAll(name, varHour, t.Format("15"))
 	name = strings.ReplaceAll(name, varMinute, t.Format("04"))
 	name = filepath.Clean(name)
-	if err := validatePathPrefix(filepath.ToSlash(name), filepath.ToSlash(s.Path)); err != nil {
+	if err := validatePathPrefix(path.Clean(filepath.ToSlash(name)), filepath.ToSlash(s.Path)); err != nil {
 		return "", err
 	}
 	return name, nil

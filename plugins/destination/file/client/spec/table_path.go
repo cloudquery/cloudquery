@@ -7,7 +7,7 @@ import (
 )
 
 func validateTableName(table string) error {
-	if table == "" || table == "." || table == ".." || strings.ContainsAny(table, "/\\\x00") {
+	if table == "" || table == "." || table == ".." || strings.ContainsAny(table, "/\\:\x00") {
 		return fmt.Errorf("table name %q cannot be used in a path", table)
 	}
 	return nil

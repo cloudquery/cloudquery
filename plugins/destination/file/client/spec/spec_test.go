@@ -3,6 +3,7 @@ package spec
 import (
 	"encoding/json"
 	"fmt"
+	"path"
 	"path/filepath"
 	"testing"
 	"time"
@@ -112,6 +113,8 @@ func TestSpec_ReplacePathVariablesKeepsTableInsidePath(t *testing.T) {
 		{Path: "base/{{TABLE}}.json", Table: "a\x00b", Err: true},
 		{Path: "base/{{UUID}}/{{TABLE}}.json", Table: "test_table", UUID: "../../outside", Err: true},
 		{Path: "{{UUID}}/{{TABLE}}.json", Table: "test_table", UUID: "..", Err: true},
+		{Path: "{{TABLE}}/{{UUID}}.json", Table: "C:", UUID: "FAKE-UUID", Err: true},
+		{Path: "{{TABLE}}.json", Table: "C:", Err: true},
 	}
 	tm := time.Date(2021, 3, 5, 4, 1, 2, 3, time.UTC)
 	for _, tc := range cases {
@@ -125,4 +128,9 @@ func TestSpec_ReplacePathVariablesKeepsTableInsidePath(t *testing.T) {
 		require.NoError(t, err, "path %q table %q", tc.Path, tc.Table)
 		require.Equal(t, filepath.FromSlash(tc.Want), got)
 	}
+}
+
+func TestValidatePathPrefixKeepsUNCPath(t *testing.T) {
+	require.NoError(t, validatePathPrefix(path.Clean("//server/share/cq/t.json"), "//server/share/cq/{{TABLE}}.json"))
+	require.Error(t, validatePathPrefix(path.Clean("//server/share/other/t.json"), "//server/share/cq/{{TABLE}}.json"))
 }
