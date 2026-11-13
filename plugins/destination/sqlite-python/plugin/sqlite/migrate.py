@@ -16,7 +16,9 @@ from plugin.sqlite.type_conversions import (
     sqlite_type_to_arrow_type,
 )
 
-SQL_TABLE_INFO = "PRAGMA table_info('{}');"
+SQL_TABLE_INFO = (
+    'SELECT cid, name, type, "notnull", dflt_value, pk FROM pragma_table_info(?)'
+)
 
 
 class ColumnInfo:
@@ -47,7 +49,8 @@ class MigrateSQLClient:
         self.db = db
 
     def identifier(self, string: str) -> str:
-        return f'"{string}"'
+        escaped = string.replace('"', '""')
+        return f'"{escaped}"'
 
     def sqlite_tables(self, tables: List[Table]) -> List[Table]:
         schema_tables = []
@@ -218,7 +221,7 @@ class MigrateSQLClient:
         info = TableInfo()
         cursor = self.db.cursor()
         try:
-            cursor.execute(SQL_TABLE_INFO.format(table_name))
+            cursor.execute(SQL_TABLE_INFO, (table_name,))
             for row in cursor.fetchall():
                 col_info = ColumnInfo(*row)
                 info.columns.append(col_info)
