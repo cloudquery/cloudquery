@@ -2,9 +2,14 @@ package client
 
 import "strings"
 
+const (
+	backslash               = `\`
+	unicodeEscapedBackslash = backslash + "u005C"
+)
+
 var identifierReplacer = strings.NewReplacer(
 	"\x00", "",
-	`\u0060`, "``",
+	backslash, unicodeEscapedBackslash,
 	"`", "``",
 )
 
