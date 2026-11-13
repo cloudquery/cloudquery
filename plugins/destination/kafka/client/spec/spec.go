@@ -18,7 +18,7 @@ type TlsDetails struct {
 	CertFile *string `json:"cert_file_path,omitempty"`
 	// Path to the key file for client authentication
 	KeyFile *string `json:"key_file_path,omitempty"`
-	// Path to the certificate authority file for TLS client authentication
+	// Path to the certificate authority file used to verify the TLS certificate of the Kafka broker
 	CaFile *string `json:"ca_file_path,omitempty"`
 }
 
@@ -41,8 +41,11 @@ type Spec struct {
 	// If connecting via SASL/PLAIN, the password to use.
 	SASLPassword string `json:"sasl_password,omitempty"`
 
-	// Enforce TLS Verification when configuring a username to connect to Kafka.
+	// Deprecated: this option has no effect. The plugin always verifies the TLS certificate of the Kafka broker, unless `insecure_skip_tls_verify` is `true`.
 	EnforceTLSVerification bool `json:"enforce_tls_verification,omitempty"`
+
+	// If `true`, the plugin will not verify the TLS certificate of the Kafka broker. This is insecure and should only be used for testing.
+	InsecureSkipTLSVerify bool `json:"insecure_skip_tls_verify,omitempty"`
 
 	// TLS details for client authentication.
 	TlsDetails *TlsDetails `json:"tls_details,omitempty"`

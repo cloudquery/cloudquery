@@ -2,7 +2,6 @@ package client
 
 import (
 	"context"
-	"fmt"
 	"strconv"
 	"strings"
 
@@ -10,7 +9,7 @@ import (
 )
 
 func identifier(name string) string {
-	return fmt.Sprintf("`%s`", name)
+	return "`" + strings.ReplaceAll(name, "`", "``") + "`"
 }
 
 const columnQuery = `SELECT 
@@ -113,6 +112,11 @@ func (c *Client) schemaTables(ctx context.Context, tables schema.Tables) (schema
 }
 
 func (c *Client) addColumn(ctx context.Context, table *schema.Table, column *schema.Column) error {
+	_, err := c.db.ExecContext(ctx, addColumnQuery(table, column))
+	return err
+}
+
+func addColumnQuery(table *schema.Table, column *schema.Column) string {
 	builder := strings.Builder{}
 	builder.WriteString("ALTER TABLE ")
 	builder.WriteString(identifier(table.Name))
@@ -127,22 +131,24 @@ func (c *Client) addColumn(ctx context.Context, table *schema.Table, column *sch
 		builder.WriteString(" UNIQUE")
 	}
 	builder.WriteString(";")
-	_, err := c.db.ExecContext(ctx, builder.String())
-	return err
+	return builder.String()
 }
 
 func (c *Client) dropIndex(ctx context.Context, table *schema.Table, column *schema.Column) error {
-	builder := strings.Builder{}
-	builder.WriteString("ALTER TABLE ")
-	builder.WriteString(identifier(table.Name))
-	builder.WriteString(" DROP INDEX ")
-	builder.WriteString(identifier(column.Name))
-	builder.WriteString(";")
-	_, err := c.db.ExecContext(ctx, builder.String())
+	_, err := c.db.ExecContext(ctx, dropIndexQuery(table, column))
 	return err
 }
 
+func dropIndexQuery(table *schema.Table, column *schema.Column) string {
+	return "ALTER TABLE " + identifier(table.Name) + " DROP INDEX " + identifier(column.Name) + ";"
+}
+
 func (c *Client) createTable(ctx context.Context, table *schema.Table) error {
+	_, err := c.db.ExecContext(ctx, c.createTableQuery(table))
+	return err
+}
+
+func (c *Client) createTableQuery(table *schema.Table) string {
 	totalColumns := len(table.Columns)
 	primaryKeysIndices := []int{}
 
@@ -191,13 +197,16 @@ func (c *Client) createTable(ctx context.Context, table *schema.Table) error {
 		builder.WriteString(")\n")
 	}
 	builder.WriteString(") CHARACTER SET utf8mb4;")
-	_, err := c.db.ExecContext(ctx, builder.String())
-	return err
+	return builder.String()
 }
 
 func (c *Client) dropTable(ctx context.Context, table *schema.Table) error {
-	_, err := c.db.ExecContext(ctx, "DROP TABLE "+identifier(table.Name))
+	_, err := c.db.ExecContext(ctx, dropTableQuery(table))
 	return err
+}
+
+func dropTableQuery(table *schema.Table) string {
+	return "DROP TABLE " + identifier(table.Name)
 }
 
 func (c *Client) recreateTable(ctx context.Context, table *schema.Table) error {
