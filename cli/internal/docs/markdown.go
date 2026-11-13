@@ -55,10 +55,10 @@ func (g *Generator) renderAllTables(dir string, t *schema.Table) error {
 	return nil
 }
 
-func tableOutputPath(dir string, tableName string) (string, error) {
-	fileName := tableName + ".md"
+func MarkdownFilePath(dir string, name string) (string, error) {
+	fileName := name + ".md"
 	if fileName != filepath.Base(fileName) || !filepath.IsLocal(fileName) {
-		return "", fmt.Errorf("invalid table name %q", tableName)
+		return "", fmt.Errorf("invalid name %q", name)
 	}
 	return filepath.Join(dir, fileName), nil
 }
@@ -70,7 +70,7 @@ func (*Generator) renderTable(dir string, table *schema.Table) error {
 		return fmt.Errorf("failed to parse template: %v", err)
 	}
 
-	outputPath, err := tableOutputPath(dir, table.Name)
+	outputPath, err := MarkdownFilePath(dir, table.Name)
 	if err != nil {
 		return err
 	}

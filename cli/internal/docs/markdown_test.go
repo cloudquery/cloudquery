@@ -9,16 +9,16 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestTableOutputPath(t *testing.T) {
+func TestMarkdownFilePath(t *testing.T) {
 	dir := t.TempDir()
 
-	got, err := tableOutputPath(dir, "aws_ec2_instances")
+	got, err := MarkdownFilePath(dir, "aws_ec2_instances")
 	require.NoError(t, err)
 	require.Equal(t, filepath.Join(dir, "aws_ec2_instances.md"), got)
 
 	for _, name := range []string{"../escaped", "nested/table", "/tmp/absolute"} {
 		t.Run(name, func(t *testing.T) {
-			_, err := tableOutputPath(dir, name)
+			_, err := MarkdownFilePath(dir, name)
 			require.Error(t, err)
 		})
 	}

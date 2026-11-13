@@ -14,6 +14,7 @@ import (
 	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
 	"github.com/cloudquery/cloudquery-api-go/auth"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/api"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/docs"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/hub"
 	"github.com/spf13/cobra"
 )
@@ -103,9 +104,11 @@ func runPluginDocsDownload(ctx context.Context, cmd *cobra.Command, args []strin
 		return errors.New("failed to read docs: nil response")
 	}
 	for _, item := range resp.JSON200.Items {
-		safeName := strings.ReplaceAll(item.Name, string(filepath.Separator), "_") + ".md"
-		fmt.Print("  ", safeName, " ")
-		fn := filepath.Join(docsDir, safeName)
+		fn, err := downloadedDocPath(docsDir, item.Name)
+		if err != nil {
+			return err
+		}
+		fmt.Print("  ", filepath.Base(fn), " ")
 		fp, err := os.OpenFile(fn, os.O_CREATE|os.O_WRONLY|os.O_EXCL, 0644)
 		if err != nil {
 			return err
@@ -124,4 +127,8 @@ func runPluginDocsDownload(ctx context.Context, cmd *cobra.Command, args []strin
 	fmt.Println("Success!")
 
 	return nil
+}
+
+func downloadedDocPath(docsDir string, name string) (string, error) {
+	return docs.MarkdownFilePath(docsDir, strings.ReplaceAll(name, string(filepath.Separator), "_"))
 }
