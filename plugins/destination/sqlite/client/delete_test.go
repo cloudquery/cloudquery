@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"math/rand"
+	"strings"
 	"testing"
 	"time"
 
@@ -167,4 +168,103 @@ func createTestTable() *schema.Table {
 		},
 	}
 	return table
+}
+
+func TestIdentifier(t *testing.T) {
+	testCases := map[string]string{
+		"plain":        `"plain"`,
+		`with"quote`:   `"with""quote"`,
+		`a"; drop; --`: `"a""; drop; --"`,
+		`""`:           `""""""`,
+		"":             `""`,
+	}
+	for input, expected := range testCases {
+		require.Equal(t, expected, identifier(input))
+	}
+}
+
+func TestIdentifiersWithQuotesAndSemicolons(t *testing.T) {
+	r := require.New(t)
+	ctx := context.Background()
+	client := withPluginClient(ctx, r)
+
+	const idColumn = `id"; --`
+	table := createTestTable()
+	table.Name = `quoted" (x); CREATE TABLE injected (y); --`
+	table.Columns[0].Name = idColumn
+	r.NoError(client.MigrateTables(ctx, message.WriteMigrateTables{{Table: table}}))
+	r.Equal([]string{table.Name}, tableNames(ctx, r, client))
+
+	r.NoError(client.WriteTableBatch(ctx, "", createInsertMessages([]string{"foo", "bar"}, table)))
+
+	table.Columns = append(table.Columns, schema.Column{Name: `added"; --`, Type: arrow.BinaryTypes.String})
+	r.NoError(client.MigrateTables(ctx, message.WriteMigrateTables{{Table: table}}))
+	count, err := countAllRows(ctx, client, table)
+	r.NoError(err)
+	r.EqualValues(2, count)
+
+	deletes := createDeleteMessages(false, table, []string{"foo"})
+	deletes[0].WhereClause[0].Predicates[0].Column = idColumn
+	r.NoError(client.DeleteRecord(ctx, deletes))
+	count, err = countAllRows(ctx, client, table)
+	r.NoError(err)
+	r.EqualValues(1, count)
+
+	r.NoError(client.DeleteStale(ctx, message.WriteDeleteStales{{
+		TableName:  table.Name,
+		SourceName: "source-test",
+		SyncTime:   time.Now().Add(time.Hour),
+	}}))
+	count, err = countAllRows(ctx, client, table)
+	r.NoError(err)
+	r.EqualValues(0, count)
+	r.Equal([]string{table.Name}, tableNames(ctx, r, client))
+}
+
+func TestDeleteRejectsUnknownGroupingType(t *testing.T) {
+	r := require.New(t)
+	ctx := context.Background()
+	client := withPluginClient(ctx, r)
+
+	table := createTestTable()
+	r.NoError(client.MigrateTables(ctx, message.WriteMigrateTables{{Table: table}}))
+	r.NoError(client.WriteTableBatch(ctx, "", createInsertMessages([]string{"foo", "bar"}, table)))
+
+	for _, groupingType := range []string{"OR 1 = 1 OR", "XOR", ""} {
+		deletes := createDeleteMessages(false, table, []string{"missing"})
+		group := &deletes[0].WhereClause[0]
+		group.GroupingType = groupingType
+		group.Predicates = append(group.Predicates, group.Predicates[0])
+		err := client.DeleteRecord(ctx, deletes)
+		r.ErrorContains(err, "unsupported grouping type")
+	}
+	count, err := countAllRows(ctx, client, table)
+	r.NoError(err)
+	r.EqualValues(2, count)
+
+	for _, groupingType := range []string{"AND", "OR", "or"} {
+		sql, err := generateDelete(message.DeleteRecord{
+			TableName: table.Name,
+			WhereClause: message.PredicateGroups{{
+				GroupingType: groupingType,
+				Predicates:   []message.Predicate{{Column: "a"}, {Column: "b"}},
+			}},
+		})
+		r.NoError(err)
+		r.Contains(sql, `("a" = ? `+strings.ToUpper(groupingType)+` "b" = ?)`)
+	}
+}
+
+func tableNames(ctx context.Context, r *require.Assertions, client *Client) []string {
+	rows, err := client.db.QueryContext(ctx, "SELECT name FROM sqlite_master WHERE type = 'table'")
+	r.NoError(err)
+	defer rows.Close()
+	var names []string
+	for rows.Next() {
+		var name string
+		r.NoError(rows.Scan(&name))
+		names = append(names, name)
+	}
+	r.NoError(rows.Err())
+	return names
 }
