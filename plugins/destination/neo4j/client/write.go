@@ -49,7 +49,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, tableName string, msgs mes
 		sb.WriteString("}) SET t = row")
 	}
 	stmt := sb.String()
-	c.logger.Debug().Str("stmt", stmt).Any("rows", rows).Msg("Executing statement")
+	c.logger.Debug().Str("stmt", stmt).Int("rows", len(rows)).Msg("Executing statement")
 	if _, err := session.ExecuteWrite(ctx, func(tx neo4j.ManagedTransaction) (any, error) {
 		_, err := tx.Run(ctx, stmt, map[string]any{"rows": rows})
 		return nil, err

@@ -27,8 +27,12 @@ func initLogging(noLogFile bool, logLevel *enum.Enum, logFormat *enum.Enum, logC
 		} else {
 			flags |= os.O_APPEND
 		}
-		logFile, err = os.OpenFile(logFileName, flags, 0666)
+		logFile, err = os.OpenFile(logFileName, flags, 0600)
 		if err != nil {
+			return nil, err
+		}
+		if err := logFile.Chmod(0600); err != nil {
+			logFile.Close()
 			return nil, err
 		}
 		if logFormat.String() == "text" {

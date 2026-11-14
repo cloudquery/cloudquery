@@ -4,6 +4,7 @@ go 1.27.3
 
 require (
 	github.com/Masterminds/semver v1.5.0
+	github.com/adrg/xdg v0.5.3
 	github.com/apache/arrow-go/v18 v18.8.0
 	github.com/bradleyjkemp/cupaloy/v2 v2.8.0
 	github.com/cenkalti/backoff/v7 v7.0.2
@@ -63,7 +64,6 @@ require (
 
 require (
 	github.com/Microsoft/go-winio v0.6.3 // indirect
-	github.com/adrg/xdg v0.5.3 // indirect
 	github.com/apapsch/go-jsonmerge/v2 v2.0.0 // indirect
 	github.com/avast/retry-go/v5 v5.0.0 // indirect
 	github.com/bahlo/generic-list-go v0.2.0 // indirect
