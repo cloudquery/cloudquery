@@ -1,5 +1,23 @@
 # Changelog
 
+## [3.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mongodb-v3.3.1...plugins-destination-mongodb-v3.4.0) (2026-11-14)
+
+
+### Features
+
+* Drop support for source plugins on protocol v1 and v2 (plugin-sdk v3 and older) ([#23705](https://github.com/cloudquery/cloudquery/issues/23705)) ([16e0c4d](https://github.com/cloudquery/cloudquery/commit/16e0c4d4e68843cdb3648dd281b7098b7a56e949))
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#23659](https://github.com/cloudquery/cloudquery/issues/23659)) ([1289a0f](https://github.com/cloudquery/cloudquery/commit/1289a0f539ca018c959bd36c7e2c121d2dc8da9b))
+* **deps:** Update aws-sdk-go-v2 monorepo ([#23729](https://github.com/cloudquery/cloudquery/issues/23729)) ([fb9a408](https://github.com/cloudquery/cloudquery/commit/fb9a4086c24cea6dbeb8fcdc17f265fb6483f8e3))
+* **deps:** Update aws-sdk-go-v2 monorepo ([#23766](https://github.com/cloudquery/cloudquery/issues/23766)) ([14e86f0](https://github.com/cloudquery/cloudquery/commit/14e86f02be3402441d04784e177dd6350f8c416e))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.100.1 ([#23725](https://github.com/cloudquery/cloudquery/issues/23725)) ([c90bb25](https://github.com/cloudquery/cloudquery/commit/c90bb25d6f4147365685e80c27a3699488174a6b))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.99.1 ([#23622](https://github.com/cloudquery/cloudquery/issues/23622)) ([2427faa](https://github.com/cloudquery/cloudquery/commit/2427faa717b7c5bc291e205de401d5f04dfc68d1))
+* **deps:** Update module github.com/goccy/go-json to v0.11.2 ([#23692](https://github.com/cloudquery/cloudquery/issues/23692)) ([749ef68](https://github.com/cloudquery/cloudquery/commit/749ef68bef47d20e68cdfb852558f4f813e0aa1d))
+* **deps:** Update module go.mongodb.org/mongo-driver/v2 to v2.9.2 ([#23680](https://github.com/cloudquery/cloudquery/issues/23680)) ([47c79e9](https://github.com/cloudquery/cloudquery/commit/47c79e9fb64bfb38b239b62c2038bd6c5e02b76a))
+
 ## [3.3.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mongodb-v3.3.0...plugins-destination-mongodb-v3.3.1) (2026-10-21)
 
 
