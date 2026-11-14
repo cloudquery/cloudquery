@@ -55,6 +55,9 @@ func (c *Client) serializeBatchForError(batch []*item) string {
 }
 
 func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.WriteInserts) error {
+	if err := validateTableName(name); err != nil {
+		return err
+	}
 	inserter := c.client.DatasetInProject(c.spec.ProjectID, c.spec.DatasetID).Table(name).Inserter()
 	inserter.IgnoreUnknownValues = true
 	inserter.SkipInvalidRows = false

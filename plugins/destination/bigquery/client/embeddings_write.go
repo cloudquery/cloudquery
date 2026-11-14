@@ -7,11 +7,13 @@ import (
 	"strings"
 	"text/template"
 
+	"cloud.google.com/go/bigquery"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 )
 
 const (
-	CQIDColumn = "_cq_id"
+	CQIDColumn         = "_cq_id"
+	cqIDsParameterName = "cq_ids"
 )
 
 func (c *ConcreteEmbeddingsClient) WriteTableBatch(ctx context.Context, name string, msgs message.WriteInserts) error {
@@ -32,12 +34,14 @@ func (c *ConcreteEmbeddingsClient) WriteTableBatch(ctx context.Context, name str
 		return fmt.Errorf("failed to extract CQ IDs: %w", err)
 	}
 
-	query, err := c.buildEmbeddingQuery(tableConfig, cqIDs)
+	sql, parameters, err := c.buildEmbeddingQuery(tableConfig, cqIDs)
 	if err != nil {
 		return fmt.Errorf("failed to build embedding query: %w", err)
 	}
 
-	job, err := c.client.client.Query(query).Run(ctx)
+	query := c.client.client.Query(sql)
+	query.Parameters = parameters
+	job, err := query.Run(ctx)
 	if err != nil {
 		return fmt.Errorf("failed to execute embedding query: %w", err)
 	}
@@ -54,7 +58,24 @@ func (c *ConcreteEmbeddingsClient) WriteTableBatch(ctx context.Context, name str
 	return nil
 }
 
-func (c *ConcreteEmbeddingsClient) buildEmbeddingQuery(tableConfig *TableConfig, cqIDs []string) (string, error) {
+func (c *ConcreteEmbeddingsClient) validateQueryIdentifiers(tableConfig *TableConfig) error {
+	if err := tableConfig.validateIdentifiers(); err != nil {
+		return err
+	}
+	if err := validateQuotedIdentifier("project_id", c.ProjectID); err != nil {
+		return err
+	}
+	if err := validateQuotedIdentifier("dataset_id", c.DatasetID); err != nil {
+		return err
+	}
+	return validateQuotedIdentifier("remote_model_name", c.spec.RemoteModelName)
+}
+
+func (c *ConcreteEmbeddingsClient) buildEmbeddingQuery(tableConfig *TableConfig, cqIDs []string) (string, []bigquery.QueryParameter, error) {
+	if err := c.validateQueryIdentifiers(tableConfig); err != nil {
+		return "", nil, err
+	}
+
 	// Build embed columns concatenated with newlines
 	embedColumnsExpr := strings.Join(tableConfig.EmbedColumns, " || '\\n' || ")
 
@@ -62,9 +83,6 @@ func (c *ConcreteEmbeddingsClient) buildEmbeddingQuery(tableConfig *TableConfig,
 	metadataColumns := make([]string, len(tableConfig.MetadataColumns))
 	copy(metadataColumns, tableConfig.MetadataColumns)
 	metadataColumnsStr := strings.Join(metadataColumns, ", ")
-
-	// Build WHERE clause for CQ IDs
-	cqIDList := "'" + strings.Join(cqIDs, "', '") + "'"
 
 	// Build the query template
 	queryTemplate := `
@@ -74,7 +92,7 @@ WITH docs AS (
     {{.MetadataColumns}},
     {{.EmbedColumnsExpr}} AS content
   FROM ` + "`{{.ProjectID}}.{{.DatasetID}}.{{.SourceTableName}}`" + `
-  WHERE _cq_id IN ({{.CqIDList}})
+  WHERE _cq_id IN UNNEST(@{{.CqIDsParameter}})
 ),
 params AS (
   SELECT 
@@ -129,7 +147,7 @@ FROM embeddings`
 		TargetTableName  string
 		MetadataColumns  string
 		EmbedColumnsExpr string
-		CqIDList         string
+		CqIDsParameter   string
 		ChunkSize        int
 		ChunkOverlap     int
 		RemoteModelName  string
@@ -140,7 +158,7 @@ FROM embeddings`
 		TargetTableName:  tableConfig.TargetTableName,
 		MetadataColumns:  metadataColumnsStr,
 		EmbedColumnsExpr: embedColumnsExpr,
-		CqIDList:         cqIDList,
+		CqIDsParameter:   cqIDsParameterName,
 		ChunkSize:        c.spec.TextSplitter.RecursiveText.ChunkSize,
 		ChunkOverlap:     c.spec.TextSplitter.RecursiveText.ChunkOverlap,
 		RemoteModelName:  c.spec.RemoteModelName,
@@ -149,13 +167,13 @@ FROM embeddings`
 	// Execute template
 	tmpl, err := template.New("embedding_query").Parse(queryTemplate)
 	if err != nil {
-		return "", fmt.Errorf("failed to parse query template: %w", err)
+		return "", nil, fmt.Errorf("failed to parse query template: %w", err)
 	}
 
 	var buf bytes.Buffer
 	if err := tmpl.Execute(&buf, tmplData); err != nil {
-		return "", fmt.Errorf("failed to execute query template: %w", err)
+		return "", nil, fmt.Errorf("failed to execute query template: %w", err)
 	}
 
-	return buf.String(), nil
+	return buf.String(), []bigquery.QueryParameter{{Name: cqIDsParameterName, Value: cqIDs}}, nil
 }

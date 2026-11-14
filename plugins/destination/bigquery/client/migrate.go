@@ -26,6 +26,11 @@ func trimDescription(description string) string {
 }
 
 func (c *Client) MigrateTables(ctx context.Context, msgs message.WriteMigrateTables) error {
+	for _, msg := range msgs {
+		if err := validateTableName(msg.Table.Name); err != nil {
+			return err
+		}
+	}
 	eg, gctx := errgroup.WithContext(ctx)
 	eg.SetLimit(concurrentMigrations)
 	for _, msg := range msgs {
