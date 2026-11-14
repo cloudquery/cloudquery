@@ -22,7 +22,7 @@ func (c *Client) DeleteStale(ctx context.Context, msgs message.WriteDeleteStales
 		sb.WriteString(" where ")
 		sb.WriteString(sanitizeID(schema.CqSourceNameColumn.Name))
 		sb.WriteString(" = $1 and ")
-		sb.WriteString(schema.CqSyncTimeColumn.Name)
+		sb.WriteString(sanitizeID(schema.CqSyncTimeColumn.Name))
 		sb.WriteString(" < make_timestamp($2)")
 		if err := c.exec(ctx, sb.String(), source, syncTime.UnixMicro()); err != nil {
 			return err
