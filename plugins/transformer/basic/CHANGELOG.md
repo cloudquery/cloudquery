@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.7.2](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v2.7.1...plugins-transformer-basic-v2.7.2) (2026-11-14)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/sjson digest to c6b9c45 ([#23759](https://github.com/cloudquery/cloudquery/issues/23759)) ([a38c433](https://github.com/cloudquery/cloudquery/commit/a38c433e5a94eeed61435aa92fbb009594bf0cb9))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.100.0 ([#23719](https://github.com/cloudquery/cloudquery/issues/23719)) ([d952904](https://github.com/cloudquery/cloudquery/commit/d95290441b4195038468a74128c5ea01d0c8ae98))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.100.1 ([#23725](https://github.com/cloudquery/cloudquery/issues/23725)) ([c90bb25](https://github.com/cloudquery/cloudquery/commit/c90bb25d6f4147365685e80c27a3699488174a6b))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.99.1 ([#23622](https://github.com/cloudquery/cloudquery/issues/23622)) ([2427faa](https://github.com/cloudquery/cloudquery/commit/2427faa717b7c5bc291e205de401d5f04dfc68d1))
+* **deps:** Update module github.com/tidwall/gjson to v1.20.0 ([#23695](https://github.com/cloudquery/cloudquery/issues/23695)) ([9d5478c](https://github.com/cloudquery/cloudquery/commit/9d5478cc148dac03c5cb3b31bc0d9f70ae74c056))
+* **deps:** Update module github.com/tidwall/pretty to v1.2.2 ([#23677](https://github.com/cloudquery/cloudquery/issues/23677)) ([7e0b757](https://github.com/cloudquery/cloudquery/commit/7e0b75718419d420b30b1bf587b44f08e1d343bc))
+
 ## [2.7.1](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v2.7.0...plugins-transformer-basic-v2.7.1) (2026-10-21)
 
 
