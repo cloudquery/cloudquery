@@ -60,7 +60,7 @@ func (c *Client) tryCreateIndex(ctx context.Context, sess neo4j.Session, migrate
 		Err(err).
 		Msg("failed to create index, recreating")
 
-	_, err = sess.Run(ctx, `DROP INDEX `+index+` IF EXISTS;`, map[string]any{})
+	_, err = sess.Run(ctx, dropIndexQuery(migrate.Table), map[string]any{})
 	if err != nil {
 		c.logger.Err(err).
 			Str("table", migrate.Table.Name).
@@ -82,20 +82,24 @@ func createIndexQuery(table *schema.Table) string {
 
 	var sb strings.Builder
 	sb.WriteString(`CREATE INDEX `)
-	sb.WriteString(indexName(table))
+	sb.WriteString(quoteIdentifier(indexName(table)))
 	sb.WriteString(` IF NOT EXISTS FOR (n:`)
-	sb.WriteString(table.Name)
+	sb.WriteString(quoteIdentifier(table.Name))
 	sb.WriteString(`) ON (`)
 	for i, name := range pks {
 		if i != 0 {
 			sb.WriteString(`, `)
 		}
 		sb.WriteString(`n.`)
-		sb.WriteString(name)
+		sb.WriteString(quoteIdentifier(name))
 	}
 	sb.WriteString(`);`)
 
 	return sb.String()
+}
+
+func dropIndexQuery(table *schema.Table) string {
+	return `DROP INDEX ` + quoteIdentifier(indexName(table)) + ` IF EXISTS;`
 }
 
 func indexName(table *schema.Table) string {
