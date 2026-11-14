@@ -1,5 +1,22 @@
 # Changelog
 
+## [2.10.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-firehose-v2.9.1...plugins-destination-firehose-v2.10.0) (2026-11-14)
+
+
+### Features
+
+* Drop support for source plugins on protocol v1 and v2 (plugin-sdk v3 and older) ([#23705](https://github.com/cloudquery/cloudquery/issues/23705)) ([16e0c4d](https://github.com/cloudquery/cloudquery/commit/16e0c4d4e68843cdb3648dd281b7098b7a56e949))
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#23657](https://github.com/cloudquery/cloudquery/issues/23657)) ([d49da36](https://github.com/cloudquery/cloudquery/commit/d49da3624868fba07b233b5b57afb40983e93164))
+* **deps:** Update aws-sdk-go-v2 monorepo ([#23727](https://github.com/cloudquery/cloudquery/issues/23727)) ([cc76b79](https://github.com/cloudquery/cloudquery/commit/cc76b79ca5df178df83e890b140aa7b49b2bbf08))
+* **deps:** Update aws-sdk-go-v2 monorepo ([#23764](https://github.com/cloudquery/cloudquery/issues/23764)) ([6fee861](https://github.com/cloudquery/cloudquery/commit/6fee8616f520b6fcdffd2791363972c6fdc3b8b4))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.100.1 ([#23725](https://github.com/cloudquery/cloudquery/issues/23725)) ([c90bb25](https://github.com/cloudquery/cloudquery/commit/c90bb25d6f4147365685e80c27a3699488174a6b))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.99.1 ([#23622](https://github.com/cloudquery/cloudquery/issues/23622)) ([2427faa](https://github.com/cloudquery/cloudquery/commit/2427faa717b7c5bc291e205de401d5f04dfc68d1))
+* **deps:** Update module github.com/goccy/go-json to v0.11.2 ([#23692](https://github.com/cloudquery/cloudquery/issues/23692)) ([749ef68](https://github.com/cloudquery/cloudquery/commit/749ef68bef47d20e68cdfb852558f4f813e0aa1d))
+
 ## [2.9.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-firehose-v2.9.0...plugins-destination-firehose-v2.9.1) (2026-10-21)
 
 
