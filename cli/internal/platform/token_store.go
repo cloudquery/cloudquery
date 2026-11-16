@@ -11,10 +11,7 @@ import (
 	"github.com/cloudquery/cloudquery-api-go/config"
 )
 
-const (
-	tokenStorePath = "cloudquery/platform_token"
-	tokenFileMode  = 0600
-)
+const tokenStorePath = "cloudquery/platform_token"
 
 func IsPlatformToken(token string) bool {
 	return strings.HasPrefix(token, cqpdPrefix)
@@ -37,7 +34,11 @@ func writeOwnerOnlyFile(filePath string, data string) error {
 		return fmt.Errorf("failed to create temporary file for %q: %w", filePath, err)
 	}
 	tempPath := tempFile.Name()
-	if err := writeAndCloseOwnerOnly(tempFile, data); err != nil {
+	_, err = tempFile.WriteString(data)
+	if err == nil {
+		err = tempFile.Sync()
+	}
+	if err = errors.Join(err, tempFile.Close()); err != nil {
 		os.Remove(tempPath)
 		return fmt.Errorf("failed to write data to %q: %w", filePath, err)
 	}
@@ -46,17 +47,6 @@ func writeOwnerOnlyFile(filePath string, data string) error {
 		return fmt.Errorf("failed to replace %q: %w", filePath, err)
 	}
 	return nil
-}
-
-func writeAndCloseOwnerOnly(file *os.File, data string) error {
-	err := file.Chmod(tokenFileMode)
-	if err == nil {
-		_, err = file.WriteString(data)
-	}
-	if err == nil {
-		err = file.Sync()
-	}
-	return errors.Join(err, file.Close())
 }
 
 func ReadPlatformToken() string {
