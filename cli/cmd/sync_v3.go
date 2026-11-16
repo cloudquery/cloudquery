@@ -812,8 +812,7 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 				return err
 			}
 		}
-	}
-	if checkpoints != nil {
+	} else {
 		if err := checkpoints.failure(); err != nil {
 			if !checkpoints.received {
 				log.Warn().Msg("The sync requested state checkpoints, but the source sent none: it has no state, or saves it itself")
