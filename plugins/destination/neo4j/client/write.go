@@ -20,6 +20,11 @@ func (c *Client) WriteTableBatch(ctx context.Context, tableName string, msgs mes
 		return err
 	}
 
+	stmt, err := writeStatement(tableName, table.PrimaryKeys())
+	if err != nil {
+		return err
+	}
+
 	session := c.Session(ctx, neo4j.SessionConfig{AccessMode: neo4j.AccessModeWrite})
 	defer session.Close(ctx)
 
@@ -28,7 +33,6 @@ func (c *Client) WriteTableBatch(ctx context.Context, tableName string, msgs mes
 		rows = append(rows, transformValues(msgs[i].Record)...)
 	}
 
-	stmt := writeStatement(tableName, table.PrimaryKeys())
 	c.logger.Debug().Str("stmt", stmt).Any("rows", rows).Msg("Executing statement")
 	if _, err := session.ExecuteWrite(ctx, func(tx neo4j.ManagedTransaction) (any, error) {
 		_, err := tx.Run(ctx, stmt, map[string]any{"rows": rows})
@@ -40,17 +44,23 @@ func (c *Client) WriteTableBatch(ctx context.Context, tableName string, msgs mes
 	return session.Close(ctx)
 }
 
-func writeStatement(tableName string, primaryKeys []string) string {
-	label := quoteIdentifier(tableName)
+func writeStatement(tableName string, primaryKeys []string) (string, error) {
+	label, err := quoteIdentifier(tableName)
+	if err != nil {
+		return "", err
+	}
 	if len(primaryKeys) == 0 {
-		return "UNWIND $rows AS row CREATE (t:" + label + ") SET t = row"
+		return "UNWIND $rows AS row CREATE (t:" + label + ") SET t = row", nil
 	}
 	keys := make([]string, len(primaryKeys))
 	for i, column := range primaryKeys {
-		key := quoteIdentifier(column)
+		key, err := quoteIdentifier(column)
+		if err != nil {
+			return "", err
+		}
 		keys[i] = key + ": row." + key
 	}
-	return "UNWIND $rows AS row MERGE (t:" + label + " {" + strings.Join(keys, ", ") + "}) SET t = row"
+	return "UNWIND $rows AS row MERGE (t:" + label + " {" + strings.Join(keys, ", ") + "}) SET t = row", nil
 }
 
 func (c *Client) Write(ctx context.Context, msgs <-chan message.WriteMessage) error {

@@ -20,19 +20,27 @@ func (c *Client) MigrateTables(ctx context.Context, messages message.WriteMigrat
 		return nil
 	}
 
+	createQueries := make([]string, len(messages))
+	for i, m := range messages {
+		createQuery, err := createIndexQuery(m.Table)
+		if err != nil {
+			return err
+		}
+		createQueries[i] = createQuery
+	}
+
 	sess := c.Session(ctx, neo4j.SessionConfig{AccessMode: neo4j.AccessModeWrite})
 	defer sess.Close(ctx)
 
-	for _, m := range messages {
-		if err := c.tryCreateIndex(ctx, sess, m); err != nil {
+	for i, m := range messages {
+		if err := c.tryCreateIndex(ctx, sess, m, createQueries[i]); err != nil {
 			return err
 		}
 	}
 	return nil
 }
 
-func (c *Client) tryCreateIndex(ctx context.Context, sess neo4j.Session, migrate *message.WriteMigrateTable) error {
-	createQuery := createIndexQuery(migrate.Table)
+func (c *Client) tryCreateIndex(ctx context.Context, sess neo4j.Session, migrate *message.WriteMigrateTable, createQuery string) error {
 	if len(createQuery) == 0 {
 		c.logger.Debug().Str("table", migrate.Table.Name).Msg("table has no primary keys, skipping")
 		// nothing to be done here, table has no primary keys
@@ -60,7 +68,11 @@ func (c *Client) tryCreateIndex(ctx context.Context, sess neo4j.Session, migrate
 		Err(err).
 		Msg("failed to create index, recreating")
 
-	_, err = sess.Run(ctx, dropIndexQuery(migrate.Table), map[string]any{})
+	dropQuery, err := dropIndexQuery(migrate.Table)
+	if err != nil {
+		return err
+	}
+	_, err = sess.Run(ctx, dropQuery, map[string]any{})
 	if err != nil {
 		c.logger.Err(err).
 			Str("table", migrate.Table.Name).
@@ -73,33 +85,49 @@ func (c *Client) tryCreateIndex(ctx context.Context, sess neo4j.Session, migrate
 	return err
 }
 
-func createIndexQuery(table *schema.Table) string {
+func createIndexQuery(table *schema.Table) (string, error) {
+	label, err := quoteIdentifier(table.Name)
+	if err != nil {
+		return "", err
+	}
+	index, err := quoteIdentifier(indexName(table))
+	if err != nil {
+		return "", err
+	}
 	pks := table.PrimaryKeys()
 	if len(pks) == 0 {
 		// empty query = no need to do anything
-		return ""
+		return "", nil
 	}
 
 	var sb strings.Builder
 	sb.WriteString(`CREATE INDEX `)
-	sb.WriteString(quoteIdentifier(indexName(table)))
+	sb.WriteString(index)
 	sb.WriteString(` IF NOT EXISTS FOR (n:`)
-	sb.WriteString(quoteIdentifier(table.Name))
+	sb.WriteString(label)
 	sb.WriteString(`) ON (`)
 	for i, name := range pks {
+		key, err := quoteIdentifier(name)
+		if err != nil {
+			return "", err
+		}
 		if i != 0 {
 			sb.WriteString(`, `)
 		}
 		sb.WriteString(`n.`)
-		sb.WriteString(quoteIdentifier(name))
+		sb.WriteString(key)
 	}
 	sb.WriteString(`);`)
 
-	return sb.String()
+	return sb.String(), nil
 }
 
-func dropIndexQuery(table *schema.Table) string {
-	return `DROP INDEX ` + quoteIdentifier(indexName(table)) + ` IF EXISTS;`
+func dropIndexQuery(table *schema.Table) (string, error) {
+	index, err := quoteIdentifier(indexName(table))
+	if err != nil {
+		return "", err
+	}
+	return `DROP INDEX ` + index + ` IF EXISTS;`, nil
 }
 
 func indexName(table *schema.Table) string {
