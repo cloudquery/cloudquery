@@ -694,13 +694,20 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 		}, durationsPerTable)
 	}
 	syncTimeTook = time.Since(syncTime)
+	sourceTablesWithRecords := map[string]bool{}
+	for tableName, rows := range resourcesPerTable {
+		if rows > 0 {
+			sourceTablesWithRecords[tableName] = true
+		}
+	}
 	for i := range destinationsClients {
 		if destinationSpecs[i].WriteMode == specs.WriteModeOverwriteDeleteStale {
 			// Table names might have changed due to transformers
 			updatedTablesForDeleteStale := tableNameChanger.UpdateTableNames(destinationSpecs[i].Name, tablesForDeleteStale)
 			if destinationsSupportFlush {
 				if checkpoints == nil {
-					if err := flushingWriteClients[i].flushReportingFailedTables(); err != nil {
+					tablesWithRecords := tableNameChanger.UpdateTableNames(destinationSpecs[i].Name, sourceTablesWithRecords)
+					if err := flushingWriteClients[i].flushReportingFailedTables(tablesWithRecords); err != nil {
 						return fmt.Errorf("failed to flush destination %s: %w", destinationSpecs[i].Name, err)
 					}
 				}

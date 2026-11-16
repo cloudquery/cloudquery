@@ -177,12 +177,16 @@ func (s *flushingWriteClient) failure() *flushFailedError {
 	return s.failed.clone()
 }
 
-func (s *flushingWriteClient) flushReportingFailedTables() error {
+func (s *flushingWriteClient) flushReportingFailedTables(tablesWithRecords map[string]bool) error {
 	err := s.Flush()
-	if errors.As(err, new(*flushFailedError)) {
-		return nil
+	var failed *flushFailedError
+	if !errors.As(err, &failed) {
+		return err
 	}
-	return err
+	if failed.anyTable || slices.ContainsFunc(failed.tables, func(table string) bool { return !tablesWithRecords[table] }) {
+		return err
+	}
+	return nil
 }
 
 func (s *flushingWriteClient) streamEndedAfterFailure() error {
