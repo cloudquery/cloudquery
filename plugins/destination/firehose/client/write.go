@@ -58,7 +58,7 @@ func (c *Client) Write(ctx context.Context, messages <-chan message.WriteMessage
 				return err
 			}
 			if len(data) > c.spec.MaxRecordSizeBytes {
-				c.logger.Warn().Msgf("skipping record because it is too large: %s", string(data))
+				c.logger.Warn().Str("table", table.Name).Int("size_bytes", len(data)).Int("max_record_size_bytes", c.spec.MaxRecordSizeBytes).Msg("skipping record because it is too large")
 				continue
 			}
 

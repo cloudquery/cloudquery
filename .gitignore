@@ -15,6 +15,10 @@ bin/
 *.log
 .cq
 .env
+.env.*
+*.pem
+!cli/internal/specs/v0/testdata/*.pem
+*.key
 database-data/*
 dest/*
 outfile
