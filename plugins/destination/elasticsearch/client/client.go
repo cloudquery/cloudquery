@@ -110,7 +110,7 @@ func (*Client) getIndexNamePattern(table *schema.Table) string {
 	if hasPrimaryKeys {
 		return table.Name
 	}
-	return table.Name + "-*"
+	return table.Name + partitionSeparator + "*"
 }
 
 func (*Client) getIndexName(table *schema.Table, t time.Time) string {
@@ -118,5 +118,5 @@ func (*Client) getIndexName(table *schema.Table, t time.Time) string {
 	if hasPrimaryKeys {
 		return table.Name
 	}
-	return table.Name + "-" + t.Format(time.DateOnly)
+	return table.Name + partitionSeparator + t.Format(partitionSuffixLayout)
 }
