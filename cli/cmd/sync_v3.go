@@ -700,6 +700,7 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 			sourceTablesWithRecords[tableName] = true
 		}
 	}
+	var flushErrs []error
 	for i := range destinationsClients {
 		if destinationSpecs[i].WriteMode == specs.WriteModeOverwriteDeleteStale {
 			// Table names might have changed due to transformers
@@ -708,7 +709,8 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 				if checkpoints == nil {
 					tablesWithRecords := tableNameChanger.UpdateTableNames(destinationSpecs[i].Name, sourceTablesWithRecords)
 					if err := flushingWriteClients[i].flushReportingFailedTables(tablesWithRecords); err != nil {
-						return fmt.Errorf("failed to flush destination %s: %w", destinationSpecs[i].Name, err)
+						flushErrs = append(flushErrs, fmt.Errorf("failed to flush destination %s: %w", destinationSpecs[i].Name, err))
+						continue
 					}
 				}
 				synced := syncedTables{names: sourceTables, parents: tableParents}.renamed(func(tableName string) string {
@@ -802,7 +804,7 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 	if metadataDataErrors != nil {
 		return metadataDataErrors
 	}
-	if err := errors.Join(closeErrs...); err != nil {
+	if err := errors.Join(append(flushErrs, closeErrs...)...); err != nil {
 		return err
 	}
 

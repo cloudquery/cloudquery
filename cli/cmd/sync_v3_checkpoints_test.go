@@ -1166,6 +1166,23 @@ func TestSyncWithoutStateBackendFailsWhenADestinationFailsToMigrateATableWithout
 	require.NotContains(t, log.get(), "dest: delete stale items")
 }
 
+func TestSyncWithoutStateBackendClosesEveryDestinationWhenAFlushFails(t *testing.T) {
+	log := &eventLog{}
+	failing := &fakeWritePlugin{name: "dest", log: log, supportsFlush: true, flushFailure: "create table items: permission denied", failedTables: []string{"items"}}
+	healthy := &fakeWritePlugin{name: "dest2", log: log, supportsFlush: true}
+	opts := fakeSyncOptions(t, &fakeCheckpointSource{}, []*fakeWritePlugin{failing, healthy}, specs.WriteModeOverwriteDeleteStale)
+	opts.source.spec.BackendOptions = nil
+	opts.summaryLocation = path.Join(t.TempDir(), "summary.json")
+	err := syncConnectionV3(context.Background(), opts)
+	require.ErrorContains(t, err, "destination dest: create table items: permission denied")
+
+	events := log.get()
+	require.NotContains(t, events, "dest: delete stale items")
+	require.Contains(t, events, "dest2: delete stale items")
+	require.Contains(t, events, "dest2: close")
+	require.FileExists(t, opts.summaryLocation)
+}
+
 func TestSyncWithoutFlushSupportDeletesStaleRowsOfEveryTable(t *testing.T) {
 	log := &eventLog{}
 	destination := &fakeWritePlugin{name: "dest", log: log}
