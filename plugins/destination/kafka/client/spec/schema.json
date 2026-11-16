@@ -235,7 +235,11 @@
         },
         "enforce_tls_verification": {
           "type": "boolean",
-          "description": "Enforce TLS Verification when configuring a username to connect to Kafka."
+          "description": "Deprecated: this option has no effect. The plugin always verifies the TLS certificate of the Kafka broker, unless `insecure_skip_tls_verify` is `true`."
+        },
+        "insecure_skip_tls_verify": {
+          "type": "boolean",
+          "description": "If `true`, the plugin will not verify the TLS certificate of the Kafka broker. This is insecure and should only be used for testing."
         },
         "tls_details": {
           "$ref": "#/$defs/TlsDetails",
@@ -271,7 +275,7 @@
         },
         "ca_file_path": {
           "type": "string",
-          "description": "Path to the certificate authority file for TLS client authentication"
+          "description": "Path to the certificate authority file used to verify the TLS certificate of the Kafka broker"
         }
       },
       "additionalProperties": false,
