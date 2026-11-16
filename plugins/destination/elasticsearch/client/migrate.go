@@ -19,6 +19,9 @@ import (
 func (c *Client) MigrateTables(ctx context.Context, msgs message.WriteMigrateTables) error {
 	for _, msg := range msgs {
 		table := msg.Table
+		if err := validateTableName(table.Name); err != nil {
+			return err
+		}
 		tmpl, err := c.getIndexTemplate(table)
 		if err != nil {
 			return fmt.Errorf("failed to generate index template: %w", err)
@@ -46,7 +49,7 @@ func (c *Client) MigrateTables(ctx context.Context, msgs message.WriteMigrateTab
 				}
 				_ = resp.Body.Close()
 
-				indicesToDelete = maps.Keys(indices)
+				indicesToDelete = tableIndices(table.Name, maps.Keys(indices))
 			} else {
 				indicesToDelete = []string{table.Name}
 			}

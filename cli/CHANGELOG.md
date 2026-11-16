@@ -5,6 +5,27 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.51.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.50.0...cli-v6.51.0) (2026-11-13)
+
+
+### Features
+
+* Track upgrade check in telemetry ([#23726](https://github.com/cloudquery/cloudquery/issues/23726)) ([82993c2](https://github.com/cloudquery/cloudquery/commit/82993c2fa8173d9620c30c8b2cb6e49a27c5f714))
+
+
+### Bug Fixes
+
+* Bind the login callback server to loopback and require a state value ([#23724](https://github.com/cloudquery/cloudquery/issues/23724)) ([f5be686](https://github.com/cloudquery/cloudquery/commit/f5be6868132311b3dc2cc42be3ef8aa4cd7ae30c))
+* **deps:** Fix open Dependabot alerts in the CLI and Python plugins ([#23710](https://github.com/cloudquery/cloudquery/issues/23710)) ([7837903](https://github.com/cloudquery/cloudquery/commit/783790341d37f6031f837f0cb1abdec1cbe1e13f))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.29.0 ([#23718](https://github.com/cloudquery/cloudquery/issues/23718)) ([dd2f918](https://github.com/cloudquery/cloudquery/commit/dd2f91852100fded272033af185c27e53e6524d0))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.100.0 ([#23719](https://github.com/cloudquery/cloudquery/issues/23719)) ([d952904](https://github.com/cloudquery/cloudquery/commit/d95290441b4195038468a74128c5ea01d0c8ae98))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.100.1 ([#23725](https://github.com/cloudquery/cloudquery/issues/23725)) ([c90bb25](https://github.com/cloudquery/cloudquery/commit/c90bb25d6f4147365685e80c27a3699488174a6b))
+* **deps:** Update module google.golang.org/grpc to v1.85.0 ([#23736](https://github.com/cloudquery/cloudquery/issues/23736)) ([bc56dc1](https://github.com/cloudquery/cloudquery/commit/bc56dc15d65c5cb5672c1fadf90619b3766dc7b2))
+* **deps:** Update opentelemetry-collector monorepo ([#23696](https://github.com/cloudquery/cloudquery/issues/23696)) ([14b69f6](https://github.com/cloudquery/cloudquery/commit/14b69f673f52824ea09a87625b87fc46d13d3092))
+* Restrict CLI login success redirects to trusted hosts ([#23649](https://github.com/cloudquery/cloudquery/issues/23649)) ([5cc907b](https://github.com/cloudquery/cloudquery/commit/5cc907b34d8517a071cf1c45fe2caca14a79f478))
+* Validate CLI login redirect origin with a redirect guard ([#23723](https://github.com/cloudquery/cloudquery/issues/23723)) ([f0f5989](https://github.com/cloudquery/cloudquery/commit/f0f5989965cd205c18ab750095e5280009420997))
+* Validate platform destination plugin version format in the CLI ([#23743](https://github.com/cloudquery/cloudquery/issues/23743)) ([24f531e](https://github.com/cloudquery/cloudquery/commit/24f531e8966cff026ab230734fe8252dc3dda7e7))
+
 ## [6.50.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.49.2...cli-v6.50.0) (2026-11-02)
 
 

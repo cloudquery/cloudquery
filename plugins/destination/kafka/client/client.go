@@ -32,7 +32,7 @@ type Client struct {
 
 func createTLSConfiguration(userSpec *spec.Spec) (*tls.Config, error) {
 	t := &tls.Config{
-		InsecureSkipVerify: !userSpec.EnforceTLSVerification,
+		InsecureSkipVerify: userSpec.InsecureSkipTLSVerify,
 	}
 	if userSpec.TlsDetails.IsEnabled() {
 		cert, err := tls.LoadX509KeyPair(*userSpec.TlsDetails.CertFile, *userSpec.TlsDetails.KeyFile)
@@ -46,7 +46,9 @@ func createTLSConfiguration(userSpec *spec.Spec) (*tls.Config, error) {
 		}
 
 		caCertPool := x509.NewCertPool()
-		caCertPool.AppendCertsFromPEM(caCert)
+		if !caCertPool.AppendCertsFromPEM(caCert) {
+			return nil, fmt.Errorf("failed to parse CA file %q: no valid PEM certificates found", *userSpec.TlsDetails.CaFile)
+		}
 		t.Certificates = []tls.Certificate{cert}
 		t.RootCAs = caCertPool
 	}
@@ -94,6 +96,9 @@ func New(_ context.Context, logger zerolog.Logger, s []byte, opts plugin.NewClie
 	c.conf.ClientID = `cwc|1c04a227-aef8-47a9-9353-e20bbb6a9616|cq-destination-kafka|` + internalPlugin.Version
 	var tlsConfig *tls.Config
 	if c.spec.TlsDetails.IsEnabled() {
+		if c.spec.InsecureSkipTLSVerify {
+			c.logger.Warn().Msg("insecure_skip_tls_verify is set: the Kafka broker certificate will not be verified")
+		}
 		tlsConfig, err = createTLSConfiguration(c.spec)
 		if err != nil {
 			return nil, fmt.Errorf("failed to create TLS configuration: %w", err)

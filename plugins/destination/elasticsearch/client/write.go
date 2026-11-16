@@ -39,6 +39,9 @@ func (c *Client) WriteTableBatch(ctx context.Context, _ string, msgs message.Wri
 
 	// all messages correspond to the same table
 	table := msgs[0].GetTable()
+	if err := validateTableName(table.Name); err != nil {
+		return err
+	}
 	data := new(bytes.Buffer)
 	for _, msg := range msgs {
 		if err := c.appendToWriteBuffer(table, msg.Record, data); err != nil {
