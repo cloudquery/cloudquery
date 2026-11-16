@@ -16,6 +16,17 @@
       depNameTemplate: "ghcr.io/gythialy/golang-cross",
       datasourceTemplate: "docker",
       versioningTemplate: "semver"
+    },
+    {
+      customType: "regex",
+      fileMatch: [
+        "(^|/)Dockerfile$"
+      ],
+      matchStrings: [
+        'npm install --global corepack@(?<currentValue>\\d+\\.\\d+\\.\\d+)'
+      ],
+      depNameTemplate: "corepack",
+      datasourceTemplate: "npm"
     }
   ],
   packageRules: [

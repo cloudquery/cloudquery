@@ -2,7 +2,9 @@ package secrets
 
 import (
 	"bytes"
+	"fmt"
 	"io"
+	"sync"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -85,4 +87,19 @@ func TestRedaction(t *testing.T) {
 			assert.Equal(t, tt.want, string(got))
 		})
 	}
+}
+
+func TestRedactionConcurrentAddAndRedact(t *testing.T) {
+	redactor := NewSecretAwareRedactor()
+	var wg sync.WaitGroup
+	for i := range 10 {
+		wg.Go(func() {
+			redactor.AddSecretEnv([]string{fmt.Sprintf("SECRET_%d=value%d", i, i)})
+		})
+		wg.Go(func() {
+			_ = redactor.RedactStr("log line")
+		})
+	}
+	wg.Wait()
+	assert.Equal(t, "SECRET_3 leaked", redactor.RedactStr("value3 leaked"))
 }

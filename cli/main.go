@@ -51,7 +51,7 @@ func main() {
 		err := recover()
 		if err != nil {
 			originalMessage := fmt.Sprintf("panic: %v\n\n%s", err, string(debug.Stack()))
-			sentry.CurrentHub().CaptureMessage(originalMessage)
+			sentry.CurrentHub().CaptureMessage(cmd.RedactSecrets(originalMessage))
 			panic(err)
 		}
 

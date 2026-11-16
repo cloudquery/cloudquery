@@ -72,3 +72,33 @@ func TestSpec_Validate(t *testing.T) {
 func int64Ptr(i int64) *int64 {
 	return &i
 }
+
+func TestSpec_BlobName(t *testing.T) {
+	cases := []struct {
+		Table string
+		Want  string
+		Err   bool
+	}{
+		{Table: "test_table", Want: "cq/data/test_table.json"},
+		{Table: "test.table", Want: "cq/data/test.table.json"},
+		{Table: "../x", Err: true},
+		{Table: "../../other-team/reports", Err: true},
+		{Table: "..", Err: true},
+		{Table: ".", Err: true},
+		{Table: "", Err: true},
+		{Table: "a/b", Err: true},
+		{Table: `a\b`, Err: true},
+		{Table: "a\x00b", Err: true},
+	}
+	for _, tc := range cases {
+		s := &Spec{Path: "cq/data", FileSpec: filetypes.FileSpec{Format: filetypes.FormatTypeJSON}}
+		got, err := s.BlobName(tc.Table)
+		if tc.Err {
+			require.Error(t, err, "table %q", tc.Table)
+			require.Empty(t, got)
+			continue
+		}
+		require.NoError(t, err, "table %q", tc.Table)
+		require.Equal(t, tc.Want, got)
+	}
+}

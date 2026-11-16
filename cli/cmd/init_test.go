@@ -145,7 +145,7 @@ func TestInit(t *testing.T) {
 				initArgs = append(initArgs, "--yes")
 			}
 			// Add --disable-ai flag to prevent AI command from being triggered
-			initArgs = append(initArgs, "--disable-ai")
+			initArgs = append(initArgs, "--disable-ai", "--disable-platform")
 			cmd.SetArgs(append(initArgs, baseArgs...))
 
 			if !tc.yes && (tc.source == "" || tc.destination == "") {

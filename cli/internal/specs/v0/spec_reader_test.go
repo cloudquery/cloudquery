@@ -1067,10 +1067,34 @@ func TestSpecReaderWithoutValidation_SourceOnly(t *testing.T) {
 	// Simulate platform auto-injection: wire a destination into the source and
 	// register it with the reader. The injected destination carries a
 	// sync_group_id, so it must use a write mode the validator accepts.
-	dest := &Destination{Metadata: Metadata{Name: "platform"}, SyncGroupId: "123", WriteMode: WriteModeAppend}
+	dest := &Destination{Metadata: Metadata{Name: "platform", Path: "cloudquery/platform", Version: "v1.0.1"}, SyncGroupId: "123", WriteMode: WriteModeAppend}
 	dest.SetDefaults()
 	r.Sources[0].Destinations = append(r.Sources[0].Destinations, dest.Name)
 
 	require.NoError(t, r.SetDestinationsAndValidate([]*Destination{dest}))
 	require.Equal(t, dest, r.GetDestinationByName("platform"))
+}
+
+func TestSetDestinationsAndValidate_ValidatesDestinations(t *testing.T) {
+	p := writeTempSpec(t, sourceOnlySpec)
+	r, err := NewSpecReaderWithoutValidation([]string{p})
+	require.NoError(t, err)
+	r.Sources[0].Destinations = append(r.Sources[0].Destinations, "platform")
+
+	cases := []struct {
+		name    string
+		meta    Metadata
+		wantErr string
+	}{
+		{name: "missing path", meta: Metadata{Name: "platform", Version: "v1.0.1"}, wantErr: "path is required"},
+		{name: "missing version", meta: Metadata{Name: "platform", Path: "cloudquery/platform"}, wantErr: "version is required"},
+		{name: "version without v prefix", meta: Metadata{Name: "platform", Path: "cloudquery/platform", Version: "1.0.1"}, wantErr: "version must start with v"},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			dest := &Destination{Metadata: tc.meta, SyncGroupId: "123", WriteMode: WriteModeAppend}
+			dest.SetDefaults()
+			require.ErrorContains(t, r.SetDestinationsAndValidate([]*Destination{dest}), tc.wantErr)
+		})
+	}
 }

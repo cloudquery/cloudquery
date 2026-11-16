@@ -34,7 +34,6 @@ Find more information at:
 
 	disableSentry       = false
 	logConsole          = false
-	oldAnalyticsClient  *AnalyticsClient
 	logFile             *os.File
 	invocationUUID      uuid.UUID
 	secretAwareRedactor *secrets.SecretAwareRedactor
@@ -110,12 +109,7 @@ func NewCmdRoot() *cobra.Command {
 			log.Info().Str("version", Version).Msg("CloudQuery CLI")
 
 			sendStats := funk.ContainsString([]string{"all", "stats"}, telemetryLevel.String())
-			_, customAnalyticsHost := os.LookupEnv("CQ_ANALYTICS_HOST")
-			if (Version != "development" || customAnalyticsHost) && sendStats {
-				oldAnalyticsClient, err = initAnalytics()
-				if err != nil {
-					log.Warn().Err(err).Msg("failed to initialize analytics client")
-				}
+			if Version != "development" && sendStats {
 				analytics.InitClient()
 			}
 
@@ -223,9 +217,6 @@ func NewCmdRoot() *cobra.Command {
 	cmd.CompletionOptions.HiddenDefaultCmd = true
 	cmd.DisableAutoGenTag = true
 	cobra.OnFinalize(func() {
-		if oldAnalyticsClient != nil {
-			oldAnalyticsClient.Close()
-		}
 		analytics.Close()
 		if loggingShutdownFn != nil {
 			loggingShutdownFn()

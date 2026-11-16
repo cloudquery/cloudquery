@@ -3,7 +3,7 @@ spec:
   name: cloudflare
   path: cloudquery/cloudflare
   registry: cloudquery
-  version: "v12.3.7" # latest version of source cloudflare plugin
+  version: "v13.0.0" # latest version of source cloudflare plugin
   destinations: ["postgresql"]
   tables: ["*"]
   spec:

@@ -21,12 +21,10 @@ import type { Logger } from 'winston';
 import type { APIField, APITable, APIBase, APIFieldFormula } from './airtable.js';
 import { APIFieldType } from './airtable.js';
 
-/* eslint-disable unicorn/no-top-level-side-effects */
 dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.extend(customParseFormat);
 dayjs.extend(localizedFormat);
-/* eslint-enable unicorn/no-top-level-side-effects */
 
 const timeout = {
   request: 10_000,
@@ -105,13 +103,8 @@ const normalizeDateFormat = (format: string) => {
   return format === 'l' || format === 'LL' ? 'YYYY-MM-DD' : format;
 };
 
-const normalizeTimeZone = (timeZone: string) => {
-  if (timeZone === 'client') {
-    // 'client' means Airtable uses the local timezone of the user to display the date, and stores it in UTC
-    return 'utc';
-  }
-  return timeZone;
-};
+// 'client' means Airtable uses the local timezone of the user to display the date, and stores it in UTC
+const normalizeTimeZone = (timeZone: string) => (timeZone === 'client' ? 'utc' : timeZone);
 
 const getColumnResolver = (field: APIField): ColumnResolver => {
   switch (field.type) {

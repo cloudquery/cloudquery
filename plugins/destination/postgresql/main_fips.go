@@ -28,7 +28,7 @@ func main() {
 		plugin.WithJSONSchema(spec.JSONSchema),
 		plugin.WithConnectionTester(client.ConnectionTester),
 	)
-	if err := serve.Plugin(p, serve.WithDestinationV0V1Server()).Serve(context.Background()); err != nil {
+	if err := serve.Plugin(p).Serve(context.Background()); err != nil {
 		log.Fatal(err)
 	}
 }

@@ -70,12 +70,12 @@ func New(_ context.Context, logger zerolog.Logger, spec []byte, opts plugin.NewC
 
 	db, err := sql.Open("snowflake", dsn+"&BINARY_INPUT_FORMAT=BASE64&BINARY_OUTPUT_FORMAT=BASE64&timezone=UTC")
 	if err != nil {
-		return nil, errors.Join(errInvalidSpec, err, fmt.Errorf("dsn is %s", dsn))
+		return nil, errors.Join(errInvalidSpec, err)
 	}
 
 	err = db.Ping()
 	if err != nil {
-		return nil, errors.Join(errors.New("ping failed"), err, fmt.Errorf("dsn is %s", dsn))
+		return nil, errors.Join(errors.New("ping failed"), err)
 	}
 
 	c.db = db

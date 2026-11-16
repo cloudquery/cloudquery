@@ -12,13 +12,16 @@ permissions:
 jobs:
   release-scaffold:
     timeout-minutes: 30
+    outputs:
+      version: ${{ steps.split.outputs.version }}
+      published: ${{ steps.published.outputs.published }}
     permissions:
       contents: write
     runs-on: ubuntu-latest
     steps:
       - name: Generate GitHub App token for release
         id: app-token
-        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3
         with:
           app-id: ${{ secrets.CQ_APP_ID }}
           private-key: ${{ secrets.CQ_APP_PRIVATE_KEY }}
@@ -57,7 +60,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-go-${{ steps.setup-go.outputs.go-version }}-release-cache-scaffold-
       - name: Install GoReleaser
-        uses: goreleaser/goreleaser-action@f06c13b6b1a9625abc9e6e439d9c05a8f2190e94 # v7
+        uses: goreleaser/goreleaser-action@a4f02ab5355a589de60d917a659ce617ed19b3de # v7
         with:
           distribution: goreleaser-pro
           version: "v2.14.3"
@@ -88,14 +91,14 @@ jobs:
           # A custom token is required for publishing to Homebrew
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
 
-      - name: Push Tag prefixed with `scaffold/`
+      - name: Mark release published
+        id: published
         if: steps.semver_parser.outputs.prerelease == ''
-        run: |
-          git tag scaffold/${{ steps.split.outputs.version }} && git push origin scaffold/${{ steps.split.outputs.version }}
+        run: echo "published=true" >> "$GITHUB_OUTPUT"
 
       - name: Generate GitHub App token for frontend
         id: frontend-app-token
-        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3
         with:
           app-id: ${{ secrets.CQ_APP_ID }}
           private-key: ${{ secrets.CQ_APP_PRIVATE_KEY }}
@@ -138,3 +141,16 @@ jobs:
           footer: "<{repo_url}|{repo}>"
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.ALERTS_INTEGRATIONS_SLACK_WEBHOOK_URL }}
+
+  push-tags:
+    permissions: {}
+    needs: release-scaffold
+    if: always() && needs.release-scaffold.outputs.published == 'true'
+    uses: ./.github/workflows/push_tags.yml
+    with:
+      tags: scaffold/${{ needs.release-scaffold.outputs.version }}
+      notification_title: "Failed to push tag scaffold/${{ needs.release-scaffold.outputs.version }}"
+    secrets:
+      CQ_APP_ID: ${{ secrets.CQ_APP_ID }}
+      CQ_APP_PRIVATE_KEY: ${{ secrets.CQ_APP_PRIVATE_KEY }}
+      ALERTS_INTEGRATIONS_SLACK_WEBHOOK_URL: ${{ secrets.ALERTS_INTEGRATIONS_SLACK_WEBHOOK_URL }}

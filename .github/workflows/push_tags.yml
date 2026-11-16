@@ -1,0 +1,61 @@
+name: Push tags
+
+on:
+  workflow_call:
+    inputs:
+      tags:
+        description: "Space-separated tags to create on the commit that triggered the caller"
+        required: true
+        type: string
+      notification_title:
+        required: true
+        type: string
+    secrets:
+      CQ_APP_ID:
+        required: true
+      CQ_APP_PRIVATE_KEY:
+        required: true
+      ALERTS_INTEGRATIONS_SLACK_WEBHOOK_URL:
+        required: true
+
+permissions: {}
+
+jobs:
+  push-tags:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3
+        with:
+          app-id: ${{ secrets.CQ_APP_ID }}
+          private-key: ${{ secrets.CQ_APP_PRIVATE_KEY }}
+          permission-contents: write
+          permission-workflows: write
+      - name: Create tags
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          TAGS: ${{ inputs.tags }}
+        run: |
+          for tag in $TAGS; do
+            if ! gh api "repos/$GITHUB_REPOSITORY/git/refs" -f "ref=refs/tags/$tag" -f "sha=$GITHUB_SHA" --silent; then
+              existing=$(gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/$tag" --jq .object.sha)
+              [ "$existing" = "$GITHUB_SHA" ] || exit 1
+            fi
+          done
+
+  notify-failure:
+    needs: push-tags
+    if: failure()
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    steps:
+      - name: Slack Notify
+        uses: ravsamhq/notify-slack-action@0670a0482d2a919531ba3b219e0c535fe4fcc791
+        with:
+          status: failure
+          notification_title: ${{ inputs.notification_title }}
+          footer: "<{run_url}|View run>"
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.ALERTS_INTEGRATIONS_SLACK_WEBHOOK_URL }}

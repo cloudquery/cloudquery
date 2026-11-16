@@ -239,11 +239,19 @@ func (*Client) nonAutoMigratableTables(tables schema.Tables, pgTables schema.Tab
 
 func (c *Client) dropTable(ctx context.Context, tableName string) error {
 	c.logger.Info().Str("table", tableName).Msg("Dropping table")
-	sql := "drop table " + tableName
+	sql := "drop table " + pgx.Identifier{tableName}.Sanitize()
 	if _, err := c.conn.Exec(ctx, sql); err != nil {
 		return fmt.Errorf("failed to drop table %s: %w", tableName, err)
 	}
 	return nil
+}
+
+func cqIDConstraintSQLs(sanitizedTableName, pkName string) (dropStmt, addStmt string) {
+	sanitizedPKName := pgx.Identifier{pkName}.Sanitize()
+	dropStmt = "ALTER TABLE " + sanitizedTableName + " DROP CONSTRAINT " + sanitizedPKName
+	addStmt = "ALTER TABLE " + sanitizedTableName + " ADD CONSTRAINT " + sanitizedPKName +
+		" PRIMARY KEY (" + pgx.Identifier{schema.CqIDColumn.Name}.Sanitize() + ")"
+	return dropStmt, addStmt
 }
 
 func (c *Client) migrateToCQID(ctx context.Context, table *schema.Table, _ schema.Column) (err error) {
@@ -257,7 +265,7 @@ func (c *Client) migrateToCQID(ctx context.Context, table *schema.Table, _ schem
 	defer conn.Release()
 	tableName := table.Name
 	sanitizedTableName := pgx.Identifier{tableName}.Sanitize()
-	sanitizedPKName, err := c.getPKName(ctx, tableName)
+	pkName, err := c.getPKName(ctx, tableName)
 	if err != nil {
 		return fmt.Errorf("failed to get primary key name: %w", err)
 	}
@@ -269,28 +277,17 @@ func (c *Client) migrateToCQID(ctx context.Context, table *schema.Table, _ schem
 		return fmt.Errorf("failed to begin transaction: %w", err)
 	}
 
-	defer func() {
-		if err == nil {
-			err = tx.Commit(ctx)
-			if err != nil {
-				c.logger.Error().Err(err).Msg("failed to commit transaction")
-			}
-		}
-		if err != nil {
-			if rollbackErr := tx.Rollback(ctx); rollbackErr != nil {
-				c.logger.Error().Err(rollbackErr).Str("table", tableName).Msg("Failed to rollback transaction")
-			}
-		}
-	}()
+	defer func() { err = c.finalizeTx(ctx, tx, tableName, err) }()
 
+	dropPKStmt, addPKStmt := cqIDConstraintSQLs(sanitizedTableName, pkName)
 	// Drop existing primary key
-	_, err = tx.Exec(ctx, "ALTER TABLE "+sanitizedTableName+" DROP CONSTRAINT "+sanitizedPKName)
+	_, err = tx.Exec(ctx, dropPKStmt)
 	if err != nil {
 		c.logger.Error().Err(err).Str("table", tableName).Msg("Failed to drop primary key")
 		return err
 	}
 	// Create new Primary Key with CQID
-	_, err = tx.Exec(ctx, "ALTER TABLE "+sanitizedTableName+" ADD CONSTRAINT "+sanitizedPKName+" PRIMARY KEY ("+pgx.Identifier{schema.CqIDColumn.Name}.Sanitize()+")")
+	_, err = tx.Exec(ctx, addPKStmt)
 	if err != nil {
 		c.logger.Error().Err(err).Str("table", tableName).Msg("Failed to create new primary key on _cq_id")
 		return err
@@ -299,16 +296,13 @@ func (c *Client) migrateToCQID(ctx context.Context, table *schema.Table, _ schem
 	// CockroachDB doesn't support dropping NOT NULL constraints in the same transaction as the primary key is changed
 	// So we have to alter the PK in one transaction and then drop the old NOT NULL constraints in another transaction
 	if c.pgType == pgTypeCockroachDB {
-		if err == nil {
-			err = tx.Commit(ctx)
-			if err != nil {
-				c.logger.Error().Err(err).Msg("failed to commit transaction")
-			}
-		}
-		if err != nil {
-			if rollbackErr := tx.Rollback(ctx); rollbackErr != nil {
-				c.logger.Error().Err(rollbackErr).Str("table", tableName).Msg("Failed to rollback transaction")
-			}
+		// CockroachDB often reports DDL failures at COMMIT. Surface that error
+		// instead of overwriting it with the next BeginTx, and clear tx so the
+		// deferred finalizeTx doesn't roll back the already-closed transaction.
+		commitErr := c.finalizeTx(ctx, tx, tableName, nil)
+		tx = nil
+		if commitErr != nil {
+			return commitErr
 		}
 		tx, err = conn.BeginTx(ctx, pgx.TxOptions{
 			IsoLevel: pgx.Serializable,
@@ -337,11 +331,27 @@ func (c *Client) migrateToCQID(ctx context.Context, table *schema.Table, _ schem
 	return nil
 }
 
+func (c *Client) finalizeTx(ctx context.Context, tx pgx.Tx, tableName string, err error) error {
+	if tx == nil {
+		return err
+	}
+	if err == nil {
+		if err = tx.Commit(ctx); err != nil {
+			c.logger.Error().Err(err).Str("table", tableName).Msg("failed to commit transaction")
+		}
+		return err
+	}
+	if rollbackErr := tx.Rollback(ctx); rollbackErr != nil {
+		c.logger.Error().Err(rollbackErr).Str("table", tableName).Msg("Failed to rollback transaction")
+	}
+	return err
+}
+
 func (c *Client) addColumn(ctx context.Context, tableName string, column schema.Column) error {
 	c.logger.Info().Str("table", tableName).Str("column", column.Name).Msg("Column doesn't exist, creating")
 	columnName := pgx.Identifier{column.Name}.Sanitize()
 	columnType := c.SchemaTypeToPg(column.Type)
-	sql := "alter table " + tableName + " add column " + columnName + " " + columnType
+	sql := "alter table " + pgx.Identifier{tableName}.Sanitize() + " add column " + columnName + " " + columnType
 	if _, err := c.conn.Exec(ctx, sql); err != nil {
 		return fmt.Errorf("failed to add column %s on table %s: %w", column.Name, tableName, err)
 	}

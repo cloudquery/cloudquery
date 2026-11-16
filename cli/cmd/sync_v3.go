@@ -17,7 +17,6 @@ import (
 	"github.com/cloudquery/cloudquery-api-go/config"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/platform"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
-	"github.com/cloudquery/plugin-pb-go/metrics"
 	"github.com/cloudquery/plugin-pb-go/pb/plugin/v3"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/ghodss/yaml"
@@ -149,8 +148,6 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 		cqColumnsNotNull          = syncOptions.cqColumnsNotNull
 	)
 
-	var mt metrics.Metrics
-	var exitReason = ExitReasonStopped
 	skippedFromDeleteStale := make(map[string]bool)
 	tablesForDeleteStale := make(map[string]bool)
 	// the parent of each relation, so that delete-stale can skip the relation tree of a table that failed to write
@@ -199,14 +196,6 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 		})
 	}()
 
-	defer func() {
-		if oldAnalyticsClient != nil {
-			log.Info().Msg("Sending sync summary to " + oldAnalyticsClient.Host())
-			if err := oldAnalyticsClient.SendSyncMetrics(context.Background(), sourceSpec, destinationSpecs, uid, &mt, exitReason); err != nil {
-				log.Warn().Err(err).Msg("Failed to send sync summary")
-			}
-		}
-	}()
 	// https://github.com/golang/go/issues/41087
 	syncTime := time.Now().UTC().Truncate(time.Microsecond)
 	sourceName := sourceSpec.Name
@@ -348,7 +337,7 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 	writeClientsByName := map[string]writeClient{}
 	flushingWriteClients := make([]*flushingWriteClient, 0, len(destinationsPbClients))
 	for i := range destinationsPbClients {
-		if checkpointsEnabled {
+		if destinationsSupportFlush {
 			stream, err := destinationsPbClients[i].WriteStream(ctx)
 			if err != nil {
 				return err
@@ -705,12 +694,29 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 		}, durationsPerTable)
 	}
 	syncTimeTook = time.Since(syncTime)
+	sourceTablesWithRecords := map[string]bool{}
+	for tableName, rows := range resourcesPerTable {
+		if rows > 0 {
+			sourceTablesWithRecords[tableName] = true
+		}
+	}
+	var flushErrs []error
 	for i := range destinationsClients {
 		if destinationSpecs[i].WriteMode == specs.WriteModeOverwriteDeleteStale {
 			// Table names might have changed due to transformers
 			updatedTablesForDeleteStale := tableNameChanger.UpdateTableNames(destinationSpecs[i].Name, tablesForDeleteStale)
-			if checkpoints != nil {
-				updatedTablesForDeleteStale = checkpoints.withoutFailedTables(destinationSpecs[i].Name, updatedTablesForDeleteStale, syncedTables{names: sourceTables, parents: tableParents})
+			if destinationsSupportFlush {
+				if checkpoints == nil {
+					tablesWithRecords := tableNameChanger.UpdateTableNames(destinationSpecs[i].Name, sourceTablesWithRecords)
+					if err := flushingWriteClients[i].flushReportingFailedTables(tablesWithRecords); err != nil {
+						flushErrs = append(flushErrs, fmt.Errorf("failed to flush destination %s: %w", destinationSpecs[i].Name, err))
+						continue
+					}
+				}
+				synced := syncedTables{names: sourceTables, parents: tableParents}.renamed(func(tableName string) string {
+					return tableNameChanger.UpdateTableName(destinationSpecs[i].Name, tableName)
+				})
+				updatedTablesForDeleteStale = flushingWriteClients[i].withoutFailedTables(updatedTablesForDeleteStale, synced)
 			}
 			if err := deleteStale(writeClients[i], updatedTablesForDeleteStale, sourceName, syncTime); err != nil {
 				return err
@@ -798,11 +804,17 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 	if metadataDataErrors != nil {
 		return metadataDataErrors
 	}
-	if err := errors.Join(closeErrs...); err != nil {
+	if err := errors.Join(append(flushErrs, closeErrs...)...); err != nil {
 		return err
 	}
 
-	if checkpoints != nil {
+	if checkpoints == nil {
+		for _, destination := range flushingWriteClients {
+			if err := destination.streamEndedAfterFailure(); err != nil {
+				return err
+			}
+		}
+	} else {
 		if err := checkpoints.failure(); err != nil {
 			if !checkpoints.received {
 				log.Warn().Msg("The sync requested state checkpoints, but the source sent none: it has no state, or saves it itself")
@@ -818,8 +830,6 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 	}
 
 	atomic.StoreInt64(&isComplete, 1)
-
-	exitReason = ExitReasonCompleted
 
 	msg := "Sync completed successfully"
 	if sourceErrors > 0 {

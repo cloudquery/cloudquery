@@ -199,7 +199,11 @@ func splitParams(params string) []string {
 }
 
 func sanitizeID(id string) string {
-	return `"` + id + `"`
+	return `"` + strings.ReplaceAll(id, `"`, `""`) + `"`
+}
+
+func sanitizeLiteral(value string) string {
+	return "'" + strings.ReplaceAll(value, "'", "''") + "'"
 }
 
 func sanitized(ids []string) []string {

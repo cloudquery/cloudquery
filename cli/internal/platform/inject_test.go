@@ -973,3 +973,55 @@ func TestOnlyPlatformDestinations(t *testing.T) {
 	require.False(t, OnlyPlatformDestinations([]specs.Destination{platformDest, pgDest}), "mixed destinations keep the CLI event")
 	require.True(t, OnlyPlatformDestinations([]specs.Destination{platformDest}))
 }
+
+var malformedPluginVersions = []string{
+	"v1.0.1/../../../tmp/planted",
+	"../v1.0.1",
+	"v1.0.1/..",
+	"v1.0.1\\..\\x",
+	"1.0.1",
+	"v1.0",
+	"v01.0.1",
+	"v1.0.1 ",
+	"latest",
+}
+
+func TestIsStrictPluginVersion(t *testing.T) {
+	for _, v := range []string{"v1.0.1", "v0.0.0", "v2.5.0-rc.1", "v1.2.3-beta+build.5", "v10.20.30"} {
+		require.True(t, isStrictPluginVersion(v), v)
+	}
+	for _, v := range malformedPluginVersions {
+		require.False(t, isStrictPluginVersion(v), v)
+	}
+}
+
+func TestInject_DirectToken_IgnoresMalformedWhoamiVersion(t *testing.T) {
+	for _, version := range malformedPluginVersions {
+		t.Run(version, func(t *testing.T) {
+			whoami := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+				w.Header().Set("Content-Type", "application/json")
+				_ = json.NewEncoder(w).Encode(map[string]any{"plugin_version": version})
+			}))
+			defer whoami.Close()
+			t.Setenv(EnvPlatformToken, cqpdTokenWithClaims(t, map[string]any{"u": whoami.URL, "tm": "acme"}))
+
+			got, err := MaybeInjectDestination(context.Background(), zerolog.Nop(), "", "", testSources(), testDestinations())
+			require.NoError(t, err)
+			require.Len(t, got, 2)
+			require.Equal(t, defaultPlugin.Version, got[1].Version)
+		})
+	}
+}
+
+func TestInject_IgnoresMalformedSessionVersion(t *testing.T) {
+	for _, version := range malformedPluginVersions {
+		t.Run(version, func(t *testing.T) {
+			srv := fakeCloud(t, nil, sessionWithPluginVersion(version))
+			t.Setenv(envAPIURL, srv.URL)
+
+			got := mustInject(t, "tok", "team-x", testSources(), testDestinations())
+			require.Len(t, got, 2)
+			require.Equal(t, defaultPlugin.Version, got[1].Version)
+		})
+	}
+}

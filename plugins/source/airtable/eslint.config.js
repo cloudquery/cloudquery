@@ -29,7 +29,7 @@ export default tseslint.config(
     },
   },
   prettierConfig,
-  unicornPlugin.configs["flat/recommended"],
+  unicornPlugin.configs.recommended,
   promisePlugin.configs["flat/recommended"],
   ...avaPlugin.configs.recommended,
   ...compat.extends("plugin:you-dont-need-lodash-underscore/all"),
@@ -46,6 +46,8 @@ export default tseslint.config(
     },
     rules: {
       "unicorn/no-null": "off",
+      "unicorn/prefer-smaller-scope": "off",
+      "unicorn/consistent-boolean-name": "off",
       "unused-imports/no-unused-imports": "error",
       "no-console": "error",
       "require-await": "off",

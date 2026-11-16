@@ -45,9 +45,13 @@ This is the (nested) plugin spec
 
   If connecting via SASL/PLAIN, the password to use.
 
+- `insecure_skip_tls_verify` (`boolean`) (optional) (default: `false`)
+
+  If `true`, the plugin will not verify the TLS certificate of the Kafka broker. This is insecure and should only be used for testing.
+
 - `enforce_tls_verification` (`boolean`) (optional) (default: `false`)
 
-  If `true`, the plugin will verify the TLS certificate of the Kafka broker.
+  Deprecated: this option has no effect. The plugin always verifies the TLS certificate of the Kafka broker, unless `insecure_skip_tls_verify` is `true`.
 
 - `verbose` (`boolean`) (optional) (default: `false`)
 
@@ -116,7 +120,7 @@ Reserved for future use.
 ### tls_details
 - `ca_file_path` (`string`) (optional) (default: empty)
 
-   Path to the certificate authority file for TLS client authentication
+   Path to the certificate authority file used to verify the TLS certificate of the Kafka broker
 
 - `cert_file_path` (`string`) (optional) (default: empty)
 

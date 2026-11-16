@@ -3,6 +3,7 @@ package queries
 import (
 	"database/sql"
 	"reflect"
+	"strconv"
 
 	"github.com/apache/arrow-go/v18/arrow"
 	"github.com/apache/arrow-go/v18/arrow/array"
@@ -91,7 +92,7 @@ func tableTransformer(table *schema.Table) transformer {
 	fields := make([]reflect.StructField, len(table.Columns))
 	for i, col := range table.Columns {
 		fields[i] = reflect.StructField{
-			Name: "Fld_" + col.Name,
+			Name: "Fld_" + strconv.Itoa(i),
 			Type: reflect.PointerTo(columnGoType(col.Type)), // to account for nullability
 		}
 	}

@@ -322,6 +322,11 @@ func NewSpecReaderWithoutValidation(paths []string) (*SpecReader, error) {
 // least one destination is configured. Setting and validating are coupled so
 // destinations cannot be swapped in after reading without being validated.
 func (r *SpecReader) SetDestinationsAndValidate(destinations []*Destination) error {
+	for _, d := range destinations {
+		if err := d.Validate(); err != nil {
+			return fmt.Errorf("failed to validate destination %s: %w", d.Name, err)
+		}
+	}
 	r.Destinations = destinations
 	r.destinationsMap = make(map[string]*Destination, len(destinations))
 	for _, d := range destinations {
