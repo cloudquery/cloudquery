@@ -24,8 +24,8 @@ func unescapeBacktickIdentifier(s string) string {
 			}
 			b.WriteByte('`')
 		case '\\':
-			if i+1 < len(s) && s[i+1] == '\\' {
-				b.WriteByte('\\')
+			if i+1 < len(s) && (s[i+1] == '\\' || s[i+1] == '`') {
+				b.WriteByte(s[i+1])
 				i++
 				continue
 			}
