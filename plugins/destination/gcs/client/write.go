@@ -20,11 +20,13 @@ func (c *Client) WriteTable(ctx context.Context, msgs <-chan *message.WriteInser
 	for msg := range msgs {
 		if w == nil {
 			table := msg.GetTable()
-			name := c.spec.ReplacePathVariables(table.Name, uuid.NewString(), time.Now().UTC(), c.syncID)
+			name, err := c.spec.ReplacePathVariables(table.Name, uuid.NewString(), time.Now().UTC(), c.syncID)
+			if err != nil {
+				return err
+			}
 
 			w = c.gcsClient.Bucket(c.spec.Bucket).Object(name).NewWriter(ctx)
 
-			var err error
 			h, err = c.Client.WriteHeader(w, table)
 			if err != nil {
 				return err
