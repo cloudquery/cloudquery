@@ -24,7 +24,7 @@ class SQLiteColumn:
         self.unique = unique
 
     def to_create_sql(self):
-        sql = f"{self.name} {self.type}"
+        sql = f"{_identifier(self.name)} {self.type}"
         if self.primary_key:
             sql += " PRIMARY KEY"
         if self.not_null:
@@ -33,7 +33,8 @@ class SQLiteColumn:
 
 
 def _identifier(name):
-    return f'"{name}"'
+    escaped = name.replace('"', '""')
+    return f'"{escaped}"'
 
 
 class SQLClient:
@@ -51,7 +52,7 @@ class SQLClient:
         self, table_name: str, cols: list[SQLiteColumn], migrate_force: bool
     ):
         self.conn.execute(
-            f"CREATE TABLE IF NOT EXISTS {table_name} ({', '.join(col.to_create_sql() for col in cols)})"
+            f"CREATE TABLE IF NOT EXISTS {_identifier(table_name)} ({', '.join(col.to_create_sql() for col in cols)})"
         )
 
     def insert(
@@ -78,11 +79,11 @@ class SQLClient:
     def read(
         self, *, table_name: str, col_names: list[str]
     ) -> Generator[tuple, None, None]:
-        cols = ", ".join(col_names)
+        cols = ", ".join(_identifier(col) for col in col_names)
         cursor = self.conn.cursor()
         rows = []
         try:
-            cursor.execute("SELECT {} FROM {}".format(cols, table_name))
+            cursor.execute("SELECT {} FROM {}".format(cols, _identifier(table_name)))
             while True:
                 row = cursor.fetchone()
                 if row is None:
@@ -104,9 +105,9 @@ class SQLClient:
     ):
         cursor = self.conn.cursor()
         sql = f"""
-        DELETE FROM "{table_name}"
-        WHERE "{cq_source_name_column}" = ?
-        AND datetime("{cq_sync_time_column}") < datetime(?)
+        DELETE FROM {_identifier(table_name)}
+        WHERE {_identifier(cq_source_name_column)} = ?
+        AND datetime({_identifier(cq_sync_time_column)}) < datetime(?)
         """
         cursor.execute(sql, (source_name, sync_time))
         cursor.close()
