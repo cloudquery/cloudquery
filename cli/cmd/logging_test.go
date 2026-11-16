@@ -97,3 +97,27 @@ func TestInitLogging_RestrictsExistingFileToOwner(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, os.FileMode(0600), info.Mode().Perm())
 }
+
+func TestInitLogging_KeepsNonRegularFileMode(t *testing.T) {
+	if runtime.GOOS == "windows" {
+		t.Skip("file permission bits are not supported on Windows")
+	}
+	const logFileName = "/dev/null"
+	before, err := os.Stat(logFileName)
+	require.NoError(t, err)
+
+	logLevel := enum.NewEnum([]string{"trace", "debug", "info", "warn", "error"}, "info")
+	logFormat := enum.NewEnum([]string{"text", "json"}, "json")
+
+	f, err := initLogging(false, logLevel, logFormat, false, logFileName, false)
+	require.NoError(t, err)
+	t.Cleanup(func() {
+		if f != nil {
+			f.Close()
+		}
+	})
+
+	after, err := os.Stat(logFileName)
+	require.NoError(t, err)
+	require.Equal(t, before.Mode(), after.Mode())
+}
