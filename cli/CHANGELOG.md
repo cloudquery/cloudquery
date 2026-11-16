@@ -5,6 +5,15 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.51.1](https://github.com/cloudquery/cloudquery/compare/cli-v6.51.0...cli-v6.51.1) (2026-11-16)
+
+
+### Bug Fixes
+
+* Apply hardening notes from the monorepo security audit ([#23748](https://github.com/cloudquery/cloudquery/issues/23748)) ([2d26af2](https://github.com/cloudquery/cloudquery/commit/2d26af257e85b46447b1da7fd0e58bca3128aef5))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.29.1 ([#23762](https://github.com/cloudquery/cloudquery/issues/23762)) ([2c5d4a3](https://github.com/cloudquery/cloudquery/commit/2c5d4a3bf8caee96f2ea25aec783798ec63e5b72))
+* Skip delete-stale for tables with failed writes in syncs without state checkpoints ([#23756](https://github.com/cloudquery/cloudquery/issues/23756)) ([b9472a9](https://github.com/cloudquery/cloudquery/commit/b9472a98f427734cfb9751695f455e24a66490d1))
+
 ## [6.51.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.50.0...cli-v6.51.0) (2026-11-13)
 
 
