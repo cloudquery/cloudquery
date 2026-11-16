@@ -14,7 +14,10 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow
 	if !c.spec.NoRotate {
 		return fmt.Errorf("reading is not supported when `no_rotate` is false. Table: %q", table.Name)
 	}
-	name := fmt.Sprintf("%s/%s.%s%s", c.spec.Path, table.Name, c.spec.Format, c.spec.FileSpec.Compression.Extension())
+	name, err := c.spec.BlobName(table.Name)
+	if err != nil {
+		return err
+	}
 
 	response, err := c.storageClient.DownloadStream(ctx, c.spec.Container, name, nil)
 	if err != nil {

@@ -11,7 +11,7 @@ import (
 )
 
 const (
-	sqlTableInfo = "PRAGMA table_info('%s');"
+	sqlTableInfo = `SELECT cid, name, type, "notnull", dflt_value, pk FROM pragma_table_info(?)`
 )
 
 type columnInfo struct {
@@ -28,7 +28,7 @@ type tableInfo struct {
 }
 
 func identifier(str string) string {
-	return `"` + str + `"`
+	return `"` + strings.ReplaceAll(str, `"`, `""`) + `"`
 }
 
 func (c *Client) sqliteTables(tables schema.Tables) (schema.Tables, error) {
@@ -246,7 +246,7 @@ func (c *Client) createTableIfNotExist(table *schema.Table) error {
 
 func (c *Client) getTableInfo(tableName string) (*tableInfo, error) {
 	info := tableInfo{}
-	rows, err := c.db.Query(fmt.Sprintf(sqlTableInfo, tableName))
+	rows, err := c.db.Query(sqlTableInfo, tableName)
 	if err != nil {
 		return nil, err
 	}

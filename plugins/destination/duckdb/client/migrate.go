@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	sqlTableInfo      = "PRAGMA table_info('%s');"
+	sqlTableInfo      = "PRAGMA table_info(%s);"
 	isColumnUniqueSQL = "select count(*) from duckdb_constraints where table_name = $1 and constraint_type = 'UNIQUE' and constraint_column_names=[$2]"
 )
 
@@ -246,7 +246,7 @@ func (c *Client) isColumnUnique(ctx context.Context, tableName string, columName
 
 func (c *Client) getTableInfo(ctx context.Context, tableName string) (*schema.Table, error) {
 	info := tableInfo{}
-	rows, err := c.db.QueryContext(ctx, fmt.Sprintf(sqlTableInfo, tableName))
+	rows, err := c.db.QueryContext(ctx, fmt.Sprintf(sqlTableInfo, sanitizeLiteral(sanitizeID(tableName))))
 	if err != nil {
 		if strings.Contains(err.Error(), fmt.Sprintf("Table with name %s does not exist!", tableName)) {
 			// Table doesn't exist
