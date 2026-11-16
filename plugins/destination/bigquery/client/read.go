@@ -26,6 +26,14 @@ const (
 )
 
 func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow.RecordBatch) error {
+	if err := validateTableName(table.Name); err != nil {
+		return err
+	}
+	for _, column := range table.Columns.Names() {
+		if err := validateQuotedIdentifier("column name", column); err != nil {
+			return err
+		}
+	}
 	colSQL := "`" + strings.Join(table.Columns.Names(), "`, `") + "`"
 	stmt := fmt.Sprintf(readSQL, colSQL, c.spec.ProjectID, c.spec.DatasetID, table.Name)
 	q := c.client.Query(stmt)

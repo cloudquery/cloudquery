@@ -10,10 +10,9 @@ import (
 
 func (c *Client) DeleteStale(ctx context.Context, msgs message.WriteDeleteStales) error {
 	for _, msg := range msgs {
-		tableName := msg.TableName
 		var sb strings.Builder
 		sb.WriteString("delete from ")
-		sb.WriteString(tableName)
+		sb.WriteString(sanitizeTable(msg.TableName))
 		sb.WriteString(" where ")
 		sb.WriteString(`"` + strings.ToUpper(schema.CqSourceNameColumn.Name) + `"`)
 		sb.WriteString(" = ? and \"")

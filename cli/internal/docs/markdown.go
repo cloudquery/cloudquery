@@ -55,6 +55,14 @@ func (g *Generator) renderAllTables(dir string, t *schema.Table) error {
 	return nil
 }
 
+func MarkdownFilePath(dir string, name string) (string, error) {
+	fileName := name + ".md"
+	if fileName != filepath.Base(fileName) || !filepath.IsLocal(fileName) {
+		return "", fmt.Errorf("invalid name %q", name)
+	}
+	return filepath.Join(dir, fileName), nil
+}
+
 func (*Generator) renderTable(dir string, table *schema.Table) error {
 	t := template.New("")
 	t, err := t.New("table.md.go.tpl").ParseFS(templatesFS, "templates/table.md.go.tpl")
@@ -62,7 +70,10 @@ func (*Generator) renderTable(dir string, table *schema.Table) error {
 		return fmt.Errorf("failed to parse template: %v", err)
 	}
 
-	outputPath := filepath.Join(dir, table.Name+".md")
+	outputPath, err := MarkdownFilePath(dir, table.Name)
+	if err != nil {
+		return err
+	}
 
 	var b bytes.Buffer
 	if err := t.Execute(&b, table); err != nil {

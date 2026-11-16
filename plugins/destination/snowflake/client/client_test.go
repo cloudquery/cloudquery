@@ -90,6 +90,7 @@ func parseSnowflakePrivateKey(t *testing.T, pemStr string) *rsa.PrivateKey {
 }
 
 func TestPlugin(t *testing.T) {
+	t.Parallel()
 	dsn := snowflakeTestDSN(t)
 	ctx := context.Background()
 	p := plugin.NewPlugin("snowflake", "development", New, plugin.WithFlushSupport())
@@ -131,6 +132,7 @@ func TestPlugin(t *testing.T) {
 // TestConcurrentSyncsSameSchema reproduces the concurrent-write data loss: with `create or replace stage`,
 // one sync's setup empties the shared stage and drops files another sync has PUT but not yet COPY'd.
 func TestConcurrentSyncsSameSchema(t *testing.T) {
+	t.Parallel()
 	dsn := snowflakeTestDSN(t)
 
 	const (
@@ -220,6 +222,7 @@ func TestConcurrentSyncsSameSchema(t *testing.T) {
 // TestMigrateMultipleTablesAddColumn covers a batch of tables all needing the same schema change:
 // when getTableInfo saw only the first of them, the rest were treated as new and never altered.
 func TestMigrateMultipleTablesAddColumn(t *testing.T) {
+	t.Parallel()
 	dsn := snowflakeTestDSN(t)
 	ctx := context.Background()
 
