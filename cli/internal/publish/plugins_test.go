@@ -13,9 +13,10 @@ import (
 	"github.com/distribution/reference"
 )
 
-func TestGetDockerTokenTokenRequestError(t *testing.T) {
+func getDockerTokenWithChallenge(t *testing.T, challenge string) error {
+	t.Helper()
 	ts := httptest.NewTLSServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("WWW-Authenticate", "Bearer realm=\"://bad\",service=\"registry\",scope=\"repository:test:pull\"")
+		w.Header().Set("WWW-Authenticate", challenge)
 		w.WriteHeader(http.StatusUnauthorized)
 	}))
 	defer ts.Close()
@@ -30,8 +31,65 @@ func TestGetDockerTokenTokenRequestError(t *testing.T) {
 	if err == nil {
 		t.Fatal("expected an error, got nil")
 	}
+	return err
+}
+
+func TestGetDockerTokenTokenRequestError(t *testing.T) {
+	err := getDockerTokenWithChallenge(t, "Bearer realm=\"https://auth.example.com/token#\",service=\"registry\",scope=\"repository:test:pull%zz\"")
 	if !strings.Contains(err.Error(), "could not create request") {
 		t.Fatalf("expected a %q error, got: %v", "could not create request", err)
+	}
+}
+
+func TestGetDockerTokenInvalidRealmError(t *testing.T) {
+	err := getDockerTokenWithChallenge(t, "Bearer realm=\"ftp://auth.example.com/token\",service=\"registry\",scope=\"repository:test:pull\"")
+	if !strings.Contains(err.Error(), "invalid token realm") {
+		t.Fatalf("expected a %q error, got: %v", "invalid token realm", err)
+	}
+}
+
+func TestValidateTokenRealm(t *testing.T) {
+	tests := []struct {
+		name           string
+		realm          string
+		allowPlainHTTP bool
+		wantErr        bool
+	}{
+		{name: "https", realm: "https://auth.example.com/token"},
+		{name: "http rejected", realm: "http://auth.example.com/token", wantErr: true},
+		{name: "http allowed for local registry", realm: "http://localhost:5000/token", allowPlainHTTP: true},
+		{name: "other scheme rejected for local registry", realm: "ftp://localhost/token", allowPlainHTTP: true, wantErr: true},
+		{name: "missing scheme", realm: "auth.example.com/token", wantErr: true},
+		{name: "unparsable", realm: "://bad", wantErr: true},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			err := validateTokenRealm(tt.realm, tt.allowPlainHTTP)
+			if (err != nil) != tt.wantErr {
+				t.Fatalf("validateTokenRealm() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}
+
+func TestIsLocalhostRegistry(t *testing.T) {
+	tests := []struct {
+		domain string
+		want   bool
+	}{
+		{domain: "localhost", want: true},
+		{domain: "localhost:5000", want: true},
+		{domain: "localhost.example.com", want: false},
+		{domain: "localhost.example.com:5000", want: false},
+		{domain: "localhostx", want: false},
+		{domain: "docker.cloudquery.io", want: false},
+	}
+	for _, tt := range tests {
+		t.Run(tt.domain, func(t *testing.T) {
+			if got := isLocalhostRegistry(tt.domain); got != tt.want {
+				t.Fatalf("isLocalhostRegistry(%q) = %v, want %v", tt.domain, got, tt.want)
+			}
+		})
 	}
 }
 

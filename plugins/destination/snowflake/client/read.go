@@ -182,10 +182,10 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow
 	tableName := table.Name
 	colNames := make([]string, 0, len(table.Columns))
 	for _, col := range table.Columns {
-		colNames = append(colNames, `"`+strings.ToUpper(col.Name)+`"`)
+		colNames = append(colNames, sanitizeColumn(col.Name))
 	}
 	cols := strings.Join(colNames, ", ")
-	stmt := fmt.Sprintf(readSQL, cols, tableName)
+	stmt := fmt.Sprintf(readSQL, cols, sanitizeTable(tableName))
 	rows, err := c.db.QueryContext(ctx, stmt)
 	if err != nil {
 		return err
