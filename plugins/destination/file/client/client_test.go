@@ -21,6 +21,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func testFormats() []filetypes.FileSpec {
@@ -237,4 +238,35 @@ func readAll(ctx context.Context, client plugin.Client, table *schema.Table) ([]
 		records = append(records, record)
 	}
 	return records, err
+}
+
+func TestWriteTableRejectsTableNameOutsidePath(t *testing.T) {
+	ctx := context.Background()
+	root := t.TempDir()
+	s := spec.Spec{
+		Path:     filepath.Join(root, "base", "{{TABLE}}.json"),
+		NoRotate: true,
+		FileSpec: filetypes.FileSpec{Format: filetypes.FormatTypeJSON},
+	}
+	b, err := json.Marshal(s)
+	assert.NoError(t, err)
+	c, err := New(ctx, zerolog.Nop(), b, plugin.NewClientOptions{})
+	assert.NoError(t, err)
+
+	write := func(name string) error {
+		table := &schema.Table{Name: name, Columns: schema.ColumnList{{Name: "id", Type: arrow.BinaryTypes.String}}}
+		bldr := array.NewRecordBuilder(memory.DefaultAllocator, table.ToArrowSchema())
+		bldr.Field(0).(*array.StringBuilder).Append("value")
+		msgs := make(chan *message.WriteInsert, 1)
+		msgs <- &message.WriteInsert{Record: bldr.NewRecordBatch()}
+		close(msgs)
+		return c.(*Client).WriteTable(ctx, msgs)
+	}
+
+	require.Error(t, write("../outside/planted"))
+	assert.NoFileExists(t, filepath.Join(root, "outside", "planted.json"))
+	assert.Error(t, c.(*Client).Read(ctx, &schema.Table{Name: "../outside/planted"}, nil))
+
+	assert.NoError(t, write("inside"))
+	assert.FileExists(t, filepath.Join(root, "base", "inside.json"))
 }

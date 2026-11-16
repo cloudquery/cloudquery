@@ -190,7 +190,7 @@ func (*Client) buildDeleteCQIDsSQL(embTable string, cqIDs []uuid.UUID) string {
 	for i, id := range cqIDs {
 		ids[i] = fmt.Sprintf("'%s'", id.String())
 	}
-	return fmt.Sprintf("delete from %s where %s in (%s)", embTable, pgx.Identifier{CQIDColumn}.Sanitize(), strings.Join(ids, ","))
+	return fmt.Sprintf("delete from %s where %s in (%s)", pgx.Identifier{embTable}.Sanitize(), pgx.Identifier{CQIDColumn}.Sanitize(), strings.Join(ids, ","))
 }
 
 func (*Client) buildEmbeddingsInsertSQL(embTable string, cfg *spec.PgVectorTableConfig) string {

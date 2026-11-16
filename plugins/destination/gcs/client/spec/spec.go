@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"path/filepath"
+	"path"
 	"strings"
 	"time"
 
@@ -141,7 +141,10 @@ func int64ptr(i int64) *int64 {
 	return &i
 }
 
-func (s *Spec) ReplacePathVariables(table string, fileIdentifier string, t time.Time, syncID string) string {
+func (s *Spec) ReplacePathVariables(table string, fileIdentifier string, t time.Time, syncID string) (string, error) {
+	if err := validateTableName(table); err != nil {
+		return "", err
+	}
 	name := strings.ReplaceAll(s.Path, varTable, table)
 	if strings.Contains(name, varFormat) {
 		e := string(s.Format) + s.Compression.Extension()
@@ -163,5 +166,9 @@ func (s *Spec) ReplacePathVariables(table string, fileIdentifier string, t time.
 			name = fmt.Sprintf("%s/%s.%s%s", s.Path, table, s.Format, s.FileSpec.Compression.Extension())
 		}
 	}
-	return filepath.Clean(name)
+	name = path.Clean(name)
+	if err := validatePathPrefix(name, s.Path); err != nil {
+		return "", err
+	}
+	return name, nil
 }
