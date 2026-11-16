@@ -1,9 +1,12 @@
 package client
 
 import (
+	"context"
 	"strings"
 	"testing"
 
+	"github.com/cloudquery/plugin-sdk/v4/message"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/stretchr/testify/require"
 )
 
@@ -72,4 +75,14 @@ func TestValidateQuotedIdentifier(t *testing.T) {
 	for _, value := range []string{"", "a`b", `a\b`, "a\nb"} {
 		require.ErrorContains(t, validateQuotedIdentifier("project_id", value), "invalid project_id", value)
 	}
+}
+
+func TestEntryPointsRejectUnsafeTableNames(t *testing.T) {
+	ctx := context.Background()
+	const name = "../../datasets/other/tables/secret"
+	c := &Client{}
+
+	require.ErrorContains(t, c.WriteTableBatch(ctx, name, nil), "invalid table name")
+	require.ErrorContains(t, c.MigrateTables(ctx, message.WriteMigrateTables{{Table: &schema.Table{Name: name}}}), "invalid table name")
+	require.ErrorContains(t, c.Read(ctx, &schema.Table{Name: name}, nil), "invalid table name")
 }
