@@ -83,6 +83,14 @@ func TestSpecJSONSchema(t *testing.T) {
 			Name: "verbose:false",
 			Spec: `{"format": "csv", "brokers": ["abc"], "verbose": false}`,
 		},
+		{
+			Name: "insecure_skip_tls_verify:true",
+			Spec: `{"format": "csv", "brokers": ["abc"], "insecure_skip_tls_verify": true}`,
+		},
+		{
+			Name: "deprecated enforce_tls_verification:true",
+			Spec: `{"format": "csv", "brokers": ["abc"], "enforce_tls_verification": true}`,
+		},
 		// sasl_username & sasl_password have to go together
 		{
 			Name: "empty sasl_username with empty sasl_password",
