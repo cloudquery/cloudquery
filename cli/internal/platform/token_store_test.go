@@ -68,6 +68,9 @@ func TestSavePlatformTokenKeepsExistingTokenOnFailure(t *testing.T) {
 	if runtime.GOOS == "windows" {
 		t.Skip("directory permission bits are not supported on Windows")
 	}
+	if os.Geteuid() == 0 {
+		t.Skip("root ignores directory permission bits")
+	}
 	setupTokenStore(t)
 	filePath, err := xdg.DataFile(tokenStorePath)
 	require.NoError(t, err)
