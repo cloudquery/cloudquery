@@ -2,6 +2,7 @@ package values
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/ClickHouse/clickhouse-go/v2/lib/driver"
 	"github.com/apache/arrow-go/v18/arrow"
@@ -10,10 +11,14 @@ import (
 )
 
 func BatchAddRecords(ctx context.Context, batch driver.Batch, sc *arrow.Schema, records []arrow.RecordBatch) error {
+	fieldIndices, err := schemaFieldIndices(batch, sc)
+	if err != nil {
+		return err
+	}
 	table := array.NewTableFromRecords(sc, records)
 	eg, _ := errgroup.WithContext(ctx)
-	for n := 0; n < int(table.NumCols()); n++ {
-		column, chunks := batch.Column(n), table.Column(n).Data().Chunks()
+	for n, fieldIndex := range fieldIndices {
+		column, chunks := batch.Column(n), table.Column(fieldIndex).Data().Chunks()
 		eg.Go(func() error {
 			for _, chunk := range chunks {
 				data, err := FromArray(chunk)
@@ -28,4 +33,17 @@ func BatchAddRecords(ctx context.Context, batch driver.Batch, sc *arrow.Schema, 
 		})
 	}
 	return eg.Wait()
+}
+
+func schemaFieldIndices(batch driver.Batch, sc *arrow.Schema) ([]int, error) {
+	columns := batch.Columns()
+	fieldIndices := make([]int, len(columns))
+	for n, column := range columns {
+		indices := sc.FieldIndices(column.Name())
+		if len(indices) == 0 {
+			return nil, fmt.Errorf("column %q is not in the table schema", column.Name())
+		}
+		fieldIndices[n] = indices[0]
+	}
+	return fieldIndices, nil
 }

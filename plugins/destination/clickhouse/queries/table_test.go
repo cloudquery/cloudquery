@@ -42,9 +42,21 @@ func TestIdentifiersAreEscaped(t *testing.T) {
 		},
 	}
 	const columns = "`a'b`, `c\"d`, `e\\`f`, `g\\\\`, `h.i`"
-	require.Equal(t, "INSERT INTO `x\\`.\\`y` ("+columns+")", Insert(table))
+	require.Equal(t, "INSERT INTO `x\\`.\\`y`", Insert(table))
 	require.Equal(t, "SELECT "+columns+" FROM `x\\`.\\`y`", Read(table))
 	require.Equal(t, "DROP TABLE IF EXISTS `x\\`.\\`y`", DropTable(table, ""))
+}
+
+func TestInsertListsColumnsTheDriverCanParse(t *testing.T) {
+	table := &schema.Table{
+		Name: "t",
+		Columns: schema.ColumnList{
+			schema.Column{Name: "a'b"},
+			schema.Column{Name: `c"d`},
+			schema.Column{Name: "h.i"},
+		},
+	}
+	require.Equal(t, "INSERT INTO `t` (`a'b`, `c\"d`, `h.i`)", Insert(table))
 }
 
 func TestGetTTLQuery(t *testing.T) {
