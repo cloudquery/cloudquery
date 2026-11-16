@@ -59,6 +59,16 @@ func TestInsertListsColumnsTheDriverCanParse(t *testing.T) {
 	require.Equal(t, "INSERT INTO `t` (`a'b`, `c\"d`, `h.i`)", Insert(table))
 }
 
+func TestInsertOmitsColumnsWithParentheses(t *testing.T) {
+	for _, name := range []string{"a)b", "x (y)", "a(b"} {
+		table := &schema.Table{
+			Name:    "t",
+			Columns: schema.ColumnList{schema.Column{Name: "_cq_id"}, schema.Column{Name: name}},
+		}
+		require.Equal(t, "INSERT INTO `t`", Insert(table), name)
+	}
+}
+
 func TestGetTTLQuery(t *testing.T) {
 	require.Equal(t, "SHOW CREATE TABLE `db`.`table`", GetTTLQuery("db", "table"))
 	require.Equal(t, "SHOW CREATE TABLE `d\\\\b`.`a\\`b\"c`", GetTTLQuery(`d\b`, "a`b\"c"))

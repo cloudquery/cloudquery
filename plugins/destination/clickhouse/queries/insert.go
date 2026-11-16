@@ -18,5 +18,5 @@ func Insert(table *schema.Table) string {
 }
 
 func driverCannotParseColumnName(name string) bool {
-	return strings.ContainsAny(name, "\\`")
+	return strings.ContainsAny(name, "\\`()")
 }
