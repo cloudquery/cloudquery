@@ -711,7 +711,10 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 						return fmt.Errorf("failed to flush destination %s: %w", destinationSpecs[i].Name, err)
 					}
 				}
-				updatedTablesForDeleteStale = flushingWriteClients[i].withoutFailedTables(updatedTablesForDeleteStale, syncedTables{names: sourceTables, parents: tableParents})
+				synced := syncedTables{names: sourceTables, parents: tableParents}.renamed(func(tableName string) string {
+					return tableNameChanger.UpdateTableName(destinationSpecs[i].Name, tableName)
+				})
+				updatedTablesForDeleteStale = flushingWriteClients[i].withoutFailedTables(updatedTablesForDeleteStale, synced)
 			}
 			if err := deleteStale(writeClients[i], updatedTablesForDeleteStale, sourceName, syncTime); err != nil {
 				return err

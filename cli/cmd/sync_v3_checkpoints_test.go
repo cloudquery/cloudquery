@@ -1626,6 +1626,20 @@ func TestSyncedTablesRoot(t *testing.T) {
 	require.Contains(t, []string{"a", "b"}, tables.root("a"), "a cycle of parents ends the walk")
 }
 
+func TestSyncedTablesRenamed(t *testing.T) {
+	tables := syncedTables{
+		names:   map[string]bool{"items": true, "items_children": true},
+		parents: map[string]string{"items_children": "items"},
+	}.renamed(func(table string) string {
+		if table == "items_children" {
+			return "kids"
+		}
+		return table
+	})
+	require.Equal(t, map[string]bool{"items": true, "kids": true}, tables.names)
+	require.Equal(t, "items", tables.root("kids"), "a renamed child stays in the relation tree of its parent")
+}
+
 func TestSyncSummaryTellsWhyNoStateWasSaved(t *testing.T) {
 	for _, tc := range []struct {
 		name         string

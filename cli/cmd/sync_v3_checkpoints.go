@@ -413,6 +413,18 @@ func (t syncedTables) root(table string) string {
 	return table
 }
 
+func (t syncedTables) renamed(rename func(string) string) syncedTables {
+	names := make(map[string]bool, len(t.names))
+	for name := range t.names {
+		names[rename(name)] = true
+	}
+	parents := make(map[string]string, len(t.parents))
+	for child, parent := range t.parents {
+		parents[rename(child)] = rename(parent)
+	}
+	return syncedTables{names: names, parents: parents}
+}
+
 // withoutFailedTables returns the tables of the relation trees the destination committed every record of, out of
 // tables, so that delete-stale neither deletes the rows of earlier syncs whose replacements failed to write, nor leaves
 // the rows of a tree inconsistent.
