@@ -48,8 +48,10 @@
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/client/spec/spec.go:203: | Validate | 80.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/client/spec/spec.go:226: | JSONSchemaExtend | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/client/table.go:11: | getPartitionKeyAndSortingKey | 0.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/client/table.go:31: | getTTL | 0.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/client/table.go:54: | equalTTLs | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/client/table.go:23: | splitKeyExpression | 100.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/client/table.go:31: | trimWrappingParentheses | 100.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/client/table.go:50: | getTTL | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/client/table.go:73: | equalTTLs | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/client/test_connection.go:25: | NewConnectionTester | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/client/write.go:10: | Write | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/client/write.go:17: | WriteTableBatch | 0.0% |
@@ -149,4 +151,4 @@
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/util/sanitize.go:7: | UnquoteID | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/util/sanitize.go:11: | SanitizeID | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/util/sanitize.go:15: | Sanitized | 0.0% |
-| total: | (statements) | 53.3% |
+| total: | (statements) | 54.0% |
