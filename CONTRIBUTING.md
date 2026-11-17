@@ -1,9 +1,7 @@
 
 # Contributing to CloudQuery
 
-:+1::tada: First off, thanks for taking the time to contribute! :tada::+1:
-
-The following is a set of guidelines for contributing to this repository.
+Thank you for your interest in CloudQuery. This document tells you how to contribute to this repository.
 
 ## Code of Conduct
 
@@ -13,32 +11,56 @@ This project and everyone participating in it is governed by the [CloudQuery Cod
 
 > **Note:** Please don't file an issue to ask a question. You'll get faster results by reaching out to the [community](https://community.cloudquery.io)
 
-## What To Know Before Getting Started
+## We do not accept pull requests from outside the CloudQuery team
 
-### Open-core vs Open-source
+Contribute with an issue that has a reproduction. Do not open a pull request.
 
-The CloudQuery framework, SDK and CLI are open source while plugins available under `plugins` are **open core**, hence not all contributions to plugins directory will be accepted if they are part of the commercial plugin offering - please [file an issue](https://github.com/cloudquery/cloudquery/issues/new/choose) before opening a PR.
+We changed this policy because:
 
-### CloudQuery Architecture
+- External pull requests are a supply chain risk.
+- When an issue has a good reproduction, our team can make a fix that is tested and released faster than a review of an external pull request.
+- The most valuable contribution is a clear report and a reproduction, not the code change.
+
+Pull requests from outside the CloudQuery team are closed without review.
+
+## How Can I Contribute?
+
+### Report a bug with a reproduction
+
+Use the [bug report template](https://github.com/cloudquery/cloudquery/issues/new?template=bug_report.yml). A good reproduction has:
+
+- The CloudQuery version (`cloudquery --version`) and the plugin versions.
+- A minimal configuration, with sensitive information removed.
+- The exact commands that you ran, and the logs.
+- The current behavior and the expected behavior.
+- If possible, a failing test or a small script that shows the problem.
+
+We add the `needs-reproduction` label to issues that we cannot reproduce. When you add the missing information, we triage the issue again.
+
+### Request a feature
+
+Use the [feature request template](https://github.com/cloudquery/cloudquery/issues/new?template=feature_request.yml). Tell us the problem that you want to solve, not only the solution.
+
+## CloudQuery Architecture
 
 CloudQuery has a pluggable architecture and is using [gRPC](https://grpc.io/) to communicate between source plugins, CLI and destination plugins. To develop a new plugin for CloudQuery, you don’t need to understand the inner workings of gRPC as those are abstracted away via the [plugin-sdk](#cloudquery-plugin-sdk-repository).
 
 ### Breakdown of Responsibilities and Repositories
 
-#### CloudQuery CLI [Directory](./cli)
+### CloudQuery CLI [Directory](./cli)
 
 * Main entry point and CLI for the user
 * Reading CloudQuery configuration
 * Downloading, verifying, and running plugins
 
-#### CloudQuery Plugin SDK [Repository](https://github.com/cloudquery/plugin-sdk)
+### CloudQuery Plugin SDK [Repository](https://github.com/cloudquery/plugin-sdk)
 
 * Interacting with CloudQuery CLI for initialization and configuration
 * Helper functions for defining table schemas
 * Methods for testing the resource
 * Framework for running and building a plugin locally
 
-#### CloudQuery Plugins
+### CloudQuery Plugins
 
 * [Officially-supported Plugins](./plugins) and [Community plugins](https://github.com/search?p=1&q=cq-plugin-&type=Repositories)
 * Previously known as Providers
@@ -49,18 +71,9 @@ CloudQuery has a pluggable architecture and is using [gRPC](https://grpc.io/) to
   * Fetching of configuration information
 * More information about developing your own plugin can be found [here](https://cloudquery.io/docs/developers/developing-new-provider)
 
-## How Can I Contribute?
+## Develop Locally
 
-### Reporting Bugs and Requesting Feature Requests
-
-Follow our [bug reporting template](https://github.com/cloudquery/cloudquery/issues/new?assignees=&labels=bug&template=bug_report.md) or [feature request template](https://github.com/cloudquery/cloudquery/issues/new?assignees=&labels=enhancement&template=feature_request.md) to ensure you provide all the necessary information for us to either reproduce and fix the bug or implement the feature.
-
-### Your First Code Contribution
-
-Unsure where to begin contributing to CloudQuery? You can start by looking through these [`good first issue` issues](https://github.com/cloudquery/cloudquery/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22).
-If you don't see any issues that you think you can help with, reach out to the [Community](https://community.cloudquery.io) and we would be happy to work with you!
-
-#### Local Development
+Use a local environment to make a reproduction or a failing test.
 
 CloudQuery has the ability to be run locally with a corresponding local Postgres database. To get it up and running follow the following instructions:
 
@@ -69,18 +82,9 @@ CloudQuery has the ability to be run locally with a corresponding local Postgres
 * [Running plugins locally](https://www.cloudquery.io/docs/developers/running-locally)
 * [Developing a new plugin](https://www.cloudquery.io/docs/developers/developing-new-provider)
 
-#### Further guides
+### Further guides
 
 * [Creating a new plugin](./contributing/creating_a_new_integration.md)
 * [Adding a new resource](./contributing/adding_a_new_resource.md)
 * [Adding New Plugin To CQ Monorepo](./contributing/adding_a_new_integration_to_cq_monorepo.md)
 
-#### Commit Messages
-
-We make use of the [Conventional Commits specification](https://www.conventionalcommits.org/en/v1.0.0/) for pull request titles. This allows us to categorize contributions and automate versioning for releases. Pull request titles should start with one of the following prefixes `fix`, `feat`, `chore`, `refactor`, `test` or `doc` followed by a colon and a short description of the change. For example: `feat: Add support for AWS S3 buckets`.
-
-- `fix` PRs result in a patch version bump (e.g. 1.0.0 -> 1.0.1). 
-- `feat` PRs result in a minor version bump (e.g. 1.0.0 -> 1.1.0). 
-- `chore`, `refactor`, `test` and `doc` do not result in a version bump.
-
-To create a major version bump, add `!` after the prefix (e.g. `feat!: Drop support for PostgreSQL versions lower than 11`).
