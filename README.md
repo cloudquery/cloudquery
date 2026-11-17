@@ -46,11 +46,11 @@ By contributing to CloudQuery, you agree that your contributions will be license
 
 ## Contribution
 
-Feel free to open a pull request for small fixes and changes. For bigger changes and new integrations, please open an issue first to prevent duplicated work and to have the relevant discussions first.
+Only the CloudQuery team and the external contributors that we invite can open pull requests. To contribute, open an issue with a reproduction. See [CONTRIBUTING.md](./CONTRIBUTING.md).
 
 ## Open source
 
-The CloudQuery framework, SDK, CLI, and some integrations are open source - please [file an issue](https://github.com/cloudquery/cloudquery/issues/new/choose) before opening a PR.
+The CloudQuery framework, SDK, CLI, and some integrations are open source.
 Any code that was open source and moved to closed source can be found in the `git` history of this repo, or via the following links:
 
 - [Closed source files under MPL 2.0 license (zip file)](https://mozilla-public-license-assets.cloudquery.io/MPL%202.0%20Assets/cloudquery-private-2025-10-15.zip)
