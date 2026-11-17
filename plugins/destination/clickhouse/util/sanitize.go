@@ -5,7 +5,7 @@ import (
 )
 
 var (
-	idEscaper   = strings.NewReplacer(string([]byte{0}), ``, `\`, `\\`, "`", "\\`")
+	idEscaper   = strings.NewReplacer(`\`, `\\`, "`", "\\`")
 	idUnescaper = strings.NewReplacer(`\\`, `\`, "\\`", "`")
 )
 
@@ -17,7 +17,11 @@ func UnquoteID(sanitizedID string) string {
 }
 
 func SanitizeID(id string) string {
-	return "`" + idEscaper.Replace(id) + "`"
+	return "`" + idEscaper.Replace(StoredName(id)) + "`"
+}
+
+func StoredName(id string) string {
+	return strings.ReplaceAll(id, "\x00", "")
 }
 
 func Sanitized(elems ...string) []string {

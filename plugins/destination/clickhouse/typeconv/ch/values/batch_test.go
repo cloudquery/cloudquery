@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"testing"
+	"time"
 
 	"github.com/ClickHouse/clickhouse-go/v2/lib/column"
 	"github.com/ClickHouse/clickhouse-go/v2/lib/driver"
@@ -15,8 +16,8 @@ import (
 
 type headerBatch struct {
 	driver.Batch
-	columns       []column.Interface
-	rejectedNulls error
+	columns      []column.Interface
+	rejectedRows error
 }
 
 func (b *headerBatch) Columns() []column.Interface {
@@ -24,35 +25,44 @@ func (b *headerBatch) Columns() []column.Interface {
 }
 
 func (b *headerBatch) Column(n int) driver.BatchColumn {
-	return headerColumn{column: b.columns[n], rejectedNulls: b.rejectedNulls}
+	return &headerColumn{column: b.columns[n], err: b.rejectedRows}
 }
 
 type headerColumn struct {
-	column        column.Interface
-	rejectedNulls error
+	column column.Interface
+	err    error
 }
 
-func (c headerColumn) Append(v any) error {
-	_, err := c.column.Append(v)
-	return err
-}
-
-func (c headerColumn) AppendRow(v any) error {
-	if v == nil && c.rejectedNulls != nil {
-		return c.rejectedNulls
+func (c *headerColumn) Append(v any) error {
+	if c.err != nil {
+		return c.err
 	}
-	return c.column.AppendRow(v)
+	_, c.err = c.column.Append(v)
+	return c.err
+}
+
+func (c *headerColumn) AppendRow(v any) error {
+	if c.err != nil {
+		return c.err
+	}
+	c.err = c.column.AppendRow(v)
+	return c.err
 }
 
 func newHeaderBatch(t *testing.T, names ...string) *headerBatch {
 	t.Helper()
 	batch := &headerBatch{}
 	for _, name := range names {
-		col, err := column.Type("Nullable(String)").Column(name, nil)
-		require.NoError(t, err)
-		batch.columns = append(batch.columns, col)
+		batch.addColumn(t, name, "Nullable(String)")
 	}
 	return batch
+}
+
+func (b *headerBatch) addColumn(t *testing.T, name string, chType column.Type) {
+	t.Helper()
+	col, err := chType.Column(name, nil)
+	require.NoError(t, err)
+	b.columns = append(b.columns, col)
 }
 
 func stringSchema(names ...string) *arrow.Schema {
@@ -107,12 +117,57 @@ func TestBatchAddRecordsFillsExtraColumnsWithNulls(t *testing.T) {
 	require.Equal(t, "y", *a.Row(1, true).(*string))
 }
 
-func TestBatchAddRecordsFailsWhenExtraColumnRejectsNull(t *testing.T) {
+func TestBatchAddRecordsFillsExtraColumnsThatRejectNullWithEmptyValues(t *testing.T) {
+	batch := newHeaderBatch(t)
+	batch.addColumn(t, "extra", "Array(String)")
+	batch.addColumn(t, "pair", "Tuple(s String, n Int64)")
+	batch.addColumn(t, "a", "Nullable(String)")
+	sc := stringSchema("a")
+	records := []arrow.RecordBatch{stringRecord(sc, "x"), stringRecord(sc, "y")}
+
+	require.NoError(t, BatchAddRecords(context.Background(), batch, sc, records))
+
+	extra, pair := batch.columns[0], batch.columns[1]
+	for row := range 2 {
+		require.Equal(t, []string{}, extra.Row(row, false))
+		require.Equal(t, map[string]any{"s": "", "n": int64(0)}, pair.Row(row, false))
+	}
+}
+
+func TestAppendEmptyRowsFillsEveryColumnType(t *testing.T) {
+	for _, chType := range []column.Type{
+		"String",
+		"Int64",
+		"DateTime",
+		"DateTime64(3)",
+		"UUID",
+		"FixedString(4)",
+		"Nullable(String)",
+		"LowCardinality(String)",
+		"Array(String)",
+		"Array(Array(Int64))",
+		"Map(String, String)",
+		"Tuple(s String, n Int64)",
+		"Tuple(s String, tags Array(String))",
+		"Tuple(at DateTime64(3), n Int64)",
+	} {
+		t.Run(string(chType), func(t *testing.T) {
+			header, err := chType.Column("extra", &column.ServerContext{Timezone: time.UTC})
+			require.NoError(t, err)
+
+			require.NoError(t, appendEmptyRows(&headerColumn{column: header}, header, 2))
+
+			require.Equal(t, 2, header.Rows())
+		})
+	}
+}
+
+func TestBatchAddRecordsFailsWhenExtraColumnRejectsEmptyValue(t *testing.T) {
 	batch := newHeaderBatch(t, "old", "a")
-	batch.rejectedNulls = errors.New("not nullable")
+	batch.rejectedRows = errors.New("rejected")
 	sc := stringSchema("a")
 
 	err := BatchAddRecords(context.Background(), batch, sc, []arrow.RecordBatch{stringRecord(sc, "x")})
 
-	require.EqualError(t, err, `column "old" is not in the table schema: not nullable`)
+	require.ErrorContains(t, err, "rejected")
 }

@@ -11,6 +11,8 @@ import (
 	"github.com/apache/arrow-go/v18/arrow"
 	"github.com/apache/arrow-go/v18/arrow/array"
 	"github.com/apache/arrow-go/v18/arrow/memory"
+	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/client/spec"
+	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/util"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
@@ -61,6 +63,30 @@ func TestWriteToTableThatKeepsDroppedColumn(t *testing.T) {
 			require.Equal(t, []string{"first|value"}, readRows(t, p, table))
 		})
 	}
+}
+
+func TestWriteToTableWithHandAddedNestedColumns(t *testing.T) {
+	ctx := context.Background()
+	p := initPlugin(t)
+	c := newClient(t, spec.Spec{ConnectionString: getTestConnection()}, plugin.NewClientOptions{})
+	table := &schema.Table{
+		Name: fmt.Sprintf("cq_test_hand_added_columns_%d", time.Now().UnixNano()),
+		Columns: schema.ColumnList{
+			{Name: "_cq_id", Type: arrow.BinaryTypes.String, NotNull: true, PrimaryKey: true},
+			{Name: `a\q`, Type: arrow.BinaryTypes.String},
+		},
+	}
+	require.NoError(t, migrateTable(c, table, false))
+	t.Cleanup(func() { require.NoError(t, c.dropTable(ctx, table)) })
+	for _, column := range []string{"extra Array(String)", "pair Tuple(s String, n Int64)"} {
+		require.NoError(t, c.conn.Exec(ctx, fmt.Sprintf("ALTER TABLE %s ADD COLUMN %s", util.SanitizeID(table.Name), column)))
+	}
+
+	require.NoError(t, c.WriteTableBatch(ctx, table.Name, message.WriteInserts{
+		&message.WriteInsert{Record: stringRecord(table, "first", "value")},
+	}))
+
+	require.Equal(t, []string{"first|value"}, readRows(t, p, table))
 }
 
 func TestWriteColumnNamesWithParentheses(t *testing.T) {
