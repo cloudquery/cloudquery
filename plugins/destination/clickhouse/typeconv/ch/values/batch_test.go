@@ -16,8 +16,8 @@ import (
 
 type headerBatch struct {
 	driver.Batch
-	columns      []column.Interface
-	rejectedRows error
+	columns  []column.Interface
+	rejected map[string]error
 }
 
 func (b *headerBatch) Columns() []column.Interface {
@@ -25,7 +25,7 @@ func (b *headerBatch) Columns() []column.Interface {
 }
 
 func (b *headerBatch) Column(n int) driver.BatchColumn {
-	return &headerColumn{column: b.columns[n], err: b.rejectedRows}
+	return &headerColumn{column: b.columns[n], err: b.rejected[b.columns[n].Name()]}
 }
 
 type headerColumn struct {
@@ -134,7 +134,7 @@ func TestBatchAddRecordsFillsExtraColumnsThatRejectNullWithEmptyValues(t *testin
 	}
 }
 
-func TestAppendEmptyRowsFillsEveryColumnType(t *testing.T) {
+func TestAppendEmptyRowsFillsSupportedColumnTypes(t *testing.T) {
 	for _, chType := range []column.Type{
 		"String",
 		"Int64",
@@ -146,6 +146,8 @@ func TestAppendEmptyRowsFillsEveryColumnType(t *testing.T) {
 		"LowCardinality(String)",
 		"Array(String)",
 		"Array(Array(Int64))",
+		"Array(Dynamic)",
+		"Array(JSON)",
 		"Map(String, String)",
 		"Tuple(s String, n Int64)",
 		"Tuple(s String, tags Array(String))",
@@ -162,12 +164,28 @@ func TestAppendEmptyRowsFillsEveryColumnType(t *testing.T) {
 	}
 }
 
+func TestAppendEmptyRowsFailsForUnsupportedNestedTupleShapes(t *testing.T) {
+	for _, chType := range []column.Type{
+		"Tuple(s LowCardinality(String), n Int64)",
+		"Tuple(e Enum8('a' = 1))",
+		"Tuple(Tuple(Int64, String), Int64)",
+		"Tuple(d Dynamic)",
+	} {
+		t.Run(string(chType), func(t *testing.T) {
+			header, err := chType.Column("extra", &column.ServerContext{Timezone: time.UTC})
+			require.NoError(t, err)
+
+			require.Error(t, appendEmptyRows(&headerColumn{column: header}, header, 2))
+		})
+	}
+}
+
 func TestBatchAddRecordsFailsWhenExtraColumnRejectsEmptyValue(t *testing.T) {
 	batch := newHeaderBatch(t, "old", "a")
-	batch.rejectedRows = errors.New("rejected")
+	batch.rejected = map[string]error{"old": errors.New("rejected")}
 	sc := stringSchema("a")
 
 	err := BatchAddRecords(context.Background(), batch, sc, []arrow.RecordBatch{stringRecord(sc, "x")})
 
-	require.ErrorContains(t, err, "rejected")
+	require.EqualError(t, err, `column "old" is not in the table schema: rejected`)
 }

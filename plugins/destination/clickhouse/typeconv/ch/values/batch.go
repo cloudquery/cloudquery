@@ -3,6 +3,7 @@ package values
 import (
 	"context"
 	"fmt"
+	"reflect"
 	"time"
 
 	"github.com/ClickHouse/ch-go/proto"
@@ -68,6 +69,9 @@ func emptyRowValue(header chcolumn.Interface) (any, error) {
 	}
 	if scratch.AppendRow(nil) == nil {
 		return nil, nil
+	}
+	if arr, ok := header.(*chcolumn.Array); ok {
+		return reflect.MakeSlice(arr.ScanType(), 0, 0).Interface(), nil
 	}
 	if scratch, err = scratchColumn(header); err != nil {
 		return nil, err
