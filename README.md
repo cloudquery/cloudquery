@@ -46,7 +46,7 @@ By contributing to CloudQuery, you agree that your contributions will be license
 
 ## Contribution
 
-We do not accept pull requests from outside the CloudQuery team. To contribute, open an issue with a reproduction. See [CONTRIBUTING.md](./CONTRIBUTING.md).
+Only the CloudQuery team and the external contributors that we invite can open pull requests. To contribute, open an issue with a reproduction. See [CONTRIBUTING.md](./CONTRIBUTING.md).
 
 ## Open source
 

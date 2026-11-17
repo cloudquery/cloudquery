@@ -11,9 +11,9 @@ This project and everyone participating in it is governed by the [CloudQuery Cod
 
 > **Note:** Please don't file an issue to ask a question. You'll get faster results by reaching out to the [community](https://community.cloudquery.io)
 
-## We do not accept pull requests from outside the CloudQuery team
+## Only collaborators can open pull requests
 
-Contribute with an issue that has a reproduction. Do not open a pull request.
+Collaborators are the CloudQuery team and the external contributors that we invite. If you are not a collaborator, contribute with an issue that has a reproduction. Do not open a pull request.
 
 We changed this policy because:
 
@@ -21,7 +21,7 @@ We changed this policy because:
 - When an issue has a good reproduction, our team can make a fix that is tested and released faster than a review of an external pull request.
 - The most valuable contribution is a clear report and a reproduction, not the code change.
 
-Pull requests from outside the CloudQuery team are closed without review.
+Only collaborators can open pull requests in this repository.
 
 ## How Can I Contribute?
 

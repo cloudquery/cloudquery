@@ -79,7 +79,7 @@ body:
     attributes:
       label: Reproduction
       description: |
-        We do not accept pull requests from outside the CloudQuery team. A minimal reproduction is the best way to help us fix this bug. See CONTRIBUTING.md.
+        Only the CloudQuery team and the external contributors that we invite can open pull requests. A minimal reproduction is the best way to help us fix this bug. See CONTRIBUTING.md.
       options:
         - label: I can provide a minimal reproduction (configuration and commands, or a failing test)
           required: false
