@@ -65,6 +65,8 @@ spec:
         include_keys: true
 ```
 
+`include_keys` applies only to whole JSON columns, not to JSON paths. Changing the case of keys can make two keys identical: `{"a":1,"A":2}` becomes `{"A":1,"A":2}`, and destinations that store JSON as `jsonb` keep only the last one.
+
 To obfuscate nested JSON arrays like: column `example_column` with value: `{"top_foo":[{"foo": "baz0"},{"foo": "baz1"},{"foo": "baz2"}]}` you can use the following syntax:
 
 ```yaml copy
