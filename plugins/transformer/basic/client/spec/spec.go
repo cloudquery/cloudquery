@@ -3,6 +3,8 @@ package spec
 import (
 	"errors"
 	"fmt"
+	"slices"
+	"strings"
 	"text/template"
 )
 
@@ -164,8 +166,12 @@ func (s *Spec) Validate() error {
 			err = errors.Join(err, fmt.Errorf("include_sha field must not be specified for %s transformation", t.Kind))
 		}
 
-		if t.IncludeKeys && t.Kind != KindUppercase && t.Kind != KindLowercase {
-			err = errors.Join(err, fmt.Errorf("include_keys field must not be specified for %s transformation", t.Kind))
+		if t.IncludeKeys {
+			if t.Kind != KindUppercase && t.Kind != KindLowercase {
+				err = errors.Join(err, fmt.Errorf("include_keys field must not be specified for %s transformation", t.Kind))
+			} else if len(t.Columns) > 0 && !slices.ContainsFunc(t.Columns, func(c string) bool { return !strings.Contains(c, ".") }) {
+				err = errors.Join(err, fmt.Errorf("include_keys only applies to whole JSON columns, but every column listed for %s transformation is a JSON path", t.Kind))
+			}
 		}
 
 		if t.Unmatched != "" {
