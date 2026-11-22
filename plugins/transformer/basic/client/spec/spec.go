@@ -45,6 +45,10 @@ type TransformationSpec struct {
 	// leaf value with a marker. Only meaningful for the obfuscate_columns_except kind.
 	Unmatched string `json:"unmatched"`
 
+	// IncludeKeys makes uppercase/lowercase also change object keys when a whole JSON column
+	// is listed. Defaults to false: only string values change case.
+	IncludeKeys bool `json:"include_keys"`
+
 	// For change_table_names transformation
 	NewTableNameTemplate string `json:"new_table_name_template"`
 }
@@ -158,6 +162,10 @@ func (s *Spec) Validate() error {
 
 		if t.IncludeSHA != nil && !isObfuscateKind(t.Kind) {
 			err = errors.Join(err, fmt.Errorf("include_sha field must not be specified for %s transformation", t.Kind))
+		}
+
+		if t.IncludeKeys && t.Kind != KindUppercase && t.Kind != KindLowercase {
+			err = errors.Join(err, fmt.Errorf("include_keys field must not be specified for %s transformation", t.Kind))
 		}
 
 		if t.Unmatched != "" {

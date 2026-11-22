@@ -85,8 +85,13 @@ func (r *RecordUpdater) RemoveColumns(columnNames []string) (arrow.RecordBatch, 
 	if len(jsonCols) > 0 {
 		for i, jcs := range r.jsonColIndicesByNames(jsonCols) {
 			bld := types.NewJSONBuilder(memory.NewGoAllocator())
-			for j := 0; j < r.record.Column(i).Len(); j++ {
-				valStr := r.record.Column(i).ValueStr(j)
+			col := r.record.Column(i)
+			for j := 0; j < col.Len(); j++ {
+				if !col.IsValid(j) {
+					bld.AppendNull()
+					continue
+				}
+				valStr := col.ValueStr(j)
 				if gjson.Valid(valStr) {
 					for _, jc := range jcs {
 						if val, err := sjson.Delete(valStr, jc.columnPath); err == nil {
@@ -642,7 +647,7 @@ func (r *RecordUpdater) RenameColumn(oldName, newName string) (arrow.RecordBatch
 	return r.record, nil
 }
 
-func (r *RecordUpdater) ChangeCase(caseType string, columnNames []string) (arrow.RecordBatch, error) {
+func (r *RecordUpdater) ChangeCase(caseType string, columnNames []string, includeKeys bool) (arrow.RecordBatch, error) {
 	plainCols, jsonCols := r.splitJSONColumns(columnNames)
 
 	plainColIndex, err := r.colIndicesByNames(plainCols)
@@ -665,7 +670,7 @@ func (r *RecordUpdater) ChangeCase(caseType string, columnNames []string) (arrow
 				continue
 			}
 			if _, ok := column.DataType().(*types.JSONType); ok {
-				newColumns = append(newColumns, r.changeCaseEntireJSONColumn(column, caser))
+				newColumns = append(newColumns, r.changeCaseEntireJSONColumn(column, caser, includeKeys))
 				continue
 			}
 			return nil, fmt.Errorf("column %v is not a string or JSON column", r.record.ColumnName(i))
@@ -903,7 +908,7 @@ func (*RecordUpdater) chanceCaseJSONColumns(column arrow.Array, jcs []jsonColumn
 	return bld.NewJSONArray()
 }
 
-func (*RecordUpdater) changeCaseEntireJSONColumn(column arrow.Array, caser func(string) string) arrow.Array {
+func (*RecordUpdater) changeCaseEntireJSONColumn(column arrow.Array, caser func(string) string, includeKeys bool) arrow.Array {
 	bld := types.NewJSONBuilder(memory.NewGoAllocator())
 	for i := 0; i < column.Len(); i++ {
 		if !column.IsValid(i) {
@@ -912,7 +917,59 @@ func (*RecordUpdater) changeCaseEntireJSONColumn(column arrow.Array, caser func(
 		}
 
 		str := column.ValueStr(i)
-		bld.AppendBytes([]byte(caser(str)))
+		if !gjson.Valid(str) {
+			bld.AppendBytes([]byte(str))
+			continue
+		}
+		bld.AppendBytes(appendCasedJSON(nil, gjson.Parse(str), caser, includeKeys))
 	}
 	return bld.NewJSONArray()
+}
+
+// appendCasedJSON re-encodes v in order, casing string values (and keys if includeKeys) and copying everything else raw.
+func appendCasedJSON(dst []byte, v gjson.Result, caser func(string) string, includeKeys bool) []byte {
+	switch {
+	case v.IsObject():
+		dst = append(dst, '{')
+		first := true
+		v.ForEach(func(k, val gjson.Result) bool {
+			if !first {
+				dst = append(dst, ',')
+			}
+			first = false
+			if includeKeys {
+				dst = appendJSONString(dst, caser(k.Str))
+			} else {
+				dst = append(dst, k.Raw...)
+			}
+			dst = append(dst, ':')
+			dst = appendCasedJSON(dst, val, caser, includeKeys)
+			return true
+		})
+		return append(dst, '}')
+	case v.IsArray():
+		dst = append(dst, '[')
+		first := true
+		v.ForEach(func(_, val gjson.Result) bool {
+			if !first {
+				dst = append(dst, ',')
+			}
+			first = false
+			dst = appendCasedJSON(dst, val, caser, includeKeys)
+			return true
+		})
+		return append(dst, ']')
+	case v.Type == gjson.String:
+		return appendJSONString(dst, caser(v.Str))
+	default:
+		return append(dst, v.Raw...)
+	}
+}
+
+func appendJSONString(dst []byte, s string) []byte {
+	buf := &bytes.Buffer{}
+	enc := json.NewEncoder(buf)
+	enc.SetEscapeHTML(false)
+	_ = enc.Encode(s)
+	return append(dst, bytes.TrimRight(buf.Bytes(), "\n")...)
 }

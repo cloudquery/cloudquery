@@ -231,6 +231,33 @@ func TestValidate(t *testing.T) {
 			wantErr: true,
 		},
 		{
+			name: "ValidIncludeKeysOnUppercase",
+			input: Spec{
+				TransformationSpecs: []TransformationSpec{
+					{Kind: KindUppercase, Columns: []string{"col1"}, IncludeKeys: true},
+				},
+			},
+			wantErr: false,
+		},
+		{
+			name: "ValidIncludeKeysOnLowercase",
+			input: Spec{
+				TransformationSpecs: []TransformationSpec{
+					{Kind: KindLowercase, Columns: []string{"col1"}, IncludeKeys: true},
+				},
+			},
+			wantErr: false,
+		},
+		{
+			name: "InvalidIncludeKeysOnOtherKind",
+			input: Spec{
+				TransformationSpecs: []TransformationSpec{
+					{Kind: KindRemoveColumns, Columns: []string{"col1"}, IncludeKeys: true},
+				},
+			},
+			wantErr: true,
+		},
+		{
 			name: "ValidUnmatchedOnObfuscateColumnsExcept",
 			input: Spec{
 				TransformationSpecs: []TransformationSpec{
