@@ -57,7 +57,7 @@ spec:
         columns: ["tags.hello", "tags.foo.bar.1", "tags.kubectl\\.kubernetes\\.io\\/last-applied-configuration"]
 ```
 
-`uppercase` and `lowercase` change only string values inside a JSON column: object keys, numbers, booleans and `null` are left as they are, and the output is always valid JSON. To also change object keys when a whole JSON column is listed, set `include_keys: true` on the transformation:
+`uppercase` and `lowercase` change only string values inside a JSON column: object keys, numbers, booleans and `null` are left as they are. Valid JSON stays valid; invalid JSON is left as is. To also change object keys when a whole JSON column is listed, set `include_keys: true` on the transformation:
 ```yaml copy
       - kind: lowercase
         tables: ["example"]
