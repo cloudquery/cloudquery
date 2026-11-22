@@ -85,8 +85,13 @@ func (r *RecordUpdater) RemoveColumns(columnNames []string) (arrow.RecordBatch, 
 	if len(jsonCols) > 0 {
 		for i, jcs := range r.jsonColIndicesByNames(jsonCols) {
 			bld := types.NewJSONBuilder(memory.NewGoAllocator())
-			for j := 0; j < r.record.Column(i).Len(); j++ {
-				valStr := r.record.Column(i).ValueStr(j)
+			col := r.record.Column(i)
+			for j := 0; j < col.Len(); j++ {
+				if !col.IsValid(j) {
+					bld.AppendNull()
+					continue
+				}
+				valStr := col.ValueStr(j)
 				if gjson.Valid(valStr) {
 					for _, jc := range jcs {
 						if val, err := sjson.Delete(valStr, jc.columnPath); err == nil {
@@ -642,7 +647,7 @@ func (r *RecordUpdater) RenameColumn(oldName, newName string) (arrow.RecordBatch
 	return r.record, nil
 }
 
-func (r *RecordUpdater) ChangeCase(caseType string, columnNames []string) (arrow.RecordBatch, error) {
+func (r *RecordUpdater) ChangeCase(caseType string, columnNames []string, includeKeys bool) (arrow.RecordBatch, error) {
 	plainCols, jsonCols := r.splitJSONColumns(columnNames)
 
 	plainColIndex, err := r.colIndicesByNames(plainCols)
@@ -665,7 +670,7 @@ func (r *RecordUpdater) ChangeCase(caseType string, columnNames []string) (arrow
 				continue
 			}
 			if _, ok := column.DataType().(*types.JSONType); ok {
-				newColumns = append(newColumns, r.changeCaseEntireJSONColumn(column, caser))
+				newColumns = append(newColumns, r.changeCaseEntireJSONColumn(column, caser, includeKeys))
 				continue
 			}
 			return nil, fmt.Errorf("column %v is not a string or JSON column", r.record.ColumnName(i))
@@ -903,8 +908,10 @@ func (*RecordUpdater) chanceCaseJSONColumns(column arrow.Array, jcs []jsonColumn
 	return bld.NewJSONArray()
 }
 
-func (*RecordUpdater) changeCaseEntireJSONColumn(column arrow.Array, caser func(string) string) arrow.Array {
+func (*RecordUpdater) changeCaseEntireJSONColumn(column arrow.Array, caser func(string) string, includeKeys bool) arrow.Array {
 	bld := types.NewJSONBuilder(memory.NewGoAllocator())
+	jc := newJSONCaser(caser, includeKeys)
+	var dst []byte
 	for i := 0; i < column.Len(); i++ {
 		if !column.IsValid(i) {
 			bld.AppendNull()
@@ -912,7 +919,77 @@ func (*RecordUpdater) changeCaseEntireJSONColumn(column arrow.Array, caser func(
 		}
 
 		str := column.ValueStr(i)
-		bld.AppendBytes([]byte(caser(str)))
+		if !gjson.Valid(str) {
+			bld.AppendBytes([]byte(str))
+			continue
+		}
+		dst = jc.append(dst[:0], gjson.Parse(str))
+		bld.AppendBytes(dst)
 	}
 	return bld.NewJSONArray()
+}
+
+// jsonCaser re-encodes JSON in order, casing string values (and keys if includeKeys) and copying everything else raw.
+// Strings the caser leaves unchanged are copied raw too, so their original escapes are kept.
+type jsonCaser struct {
+	caser       func(string) string
+	includeKeys bool
+	buf         bytes.Buffer
+	enc         *json.Encoder
+}
+
+func newJSONCaser(caser func(string) string, includeKeys bool) *jsonCaser {
+	jc := &jsonCaser{caser: caser, includeKeys: includeKeys}
+	jc.enc = json.NewEncoder(&jc.buf)
+	jc.enc.SetEscapeHTML(false)
+	return jc
+}
+
+func (jc *jsonCaser) append(dst []byte, v gjson.Result) []byte {
+	switch {
+	case v.IsObject():
+		dst = append(dst, '{')
+		first := true
+		v.ForEach(func(k, val gjson.Result) bool {
+			if !first {
+				dst = append(dst, ',')
+			}
+			first = false
+			if jc.includeKeys {
+				dst = jc.appendString(dst, k)
+			} else {
+				dst = append(dst, k.Raw...)
+			}
+			dst = append(dst, ':')
+			dst = jc.append(dst, val)
+			return true
+		})
+		return append(dst, '}')
+	case v.IsArray():
+		dst = append(dst, '[')
+		first := true
+		v.ForEach(func(_, val gjson.Result) bool {
+			if !first {
+				dst = append(dst, ',')
+			}
+			first = false
+			dst = jc.append(dst, val)
+			return true
+		})
+		return append(dst, ']')
+	case v.Type == gjson.String:
+		return jc.appendString(dst, v)
+	default:
+		return append(dst, v.Raw...)
+	}
+}
+
+func (jc *jsonCaser) appendString(dst []byte, v gjson.Result) []byte {
+	cased := jc.caser(v.Str)
+	if cased == v.Str {
+		return append(dst, v.Raw...)
+	}
+	jc.buf.Reset()
+	_ = jc.enc.Encode(cased)
+	return append(dst, bytes.TrimRight(jc.buf.Bytes(), "\n")...)
 }

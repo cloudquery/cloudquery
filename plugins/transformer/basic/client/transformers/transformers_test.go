@@ -8,6 +8,7 @@ import (
 	"github.com/apache/arrow-go/v18/arrow/memory"
 	"github.com/cloudquery/cloudquery/plugins/transformer/basic/client/spec"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/types"
 	"github.com/stretchr/testify/require"
 )
 
@@ -173,6 +174,32 @@ func TestTransform(t *testing.T) {
 			},
 		},
 		{
+			name: "UppercaseEntireJSONColumn",
+			spec: spec.TransformationSpec{
+				Kind:    spec.KindUppercase,
+				Columns: []string{"col2"},
+				Tables:  []string{"*"},
+			},
+			record: createJSONTestRecord(),
+			validate: func(t *testing.T, record arrow.RecordBatch) {
+				require.Equal(t, `{"Foo":"BAR","ok":true}`, record.Column(1).ValueStr(0), "Expected only string values to be uppercased")
+				require.Equal(t, "val1", record.Column(0).(*array.String).Value(0), "Expected col1 to be unchanged")
+			},
+		},
+		{
+			name: "UppercaseEntireJSONColumnIncludeKeys",
+			spec: spec.TransformationSpec{
+				Kind:        spec.KindUppercase,
+				Columns:     []string{"col2"},
+				Tables:      []string{"*"},
+				IncludeKeys: true,
+			},
+			record: createJSONTestRecord(),
+			validate: func(t *testing.T, record arrow.RecordBatch) {
+				require.Equal(t, `{"FOO":"BAR","OK":true}`, record.Column(1).ValueStr(0), "Expected keys and string values to be uppercased")
+			},
+		},
+		{
 			name: "ChangeTableName",
 			spec: spec.TransformationSpec{
 				Kind:                 spec.KindChangeTableNames,
@@ -282,6 +309,23 @@ func createUppercaseTestRecord() arrow.RecordBatch {
 
 	bld.Field(0).(*array.StringBuilder).AppendValues([]string{"VAL1", "VAL2"}, nil)
 	bld.Field(1).(*array.StringBuilder).AppendValues([]string{"val3", "val4"}, nil)
+
+	return bld.NewRecordBatch()
+}
+
+func createJSONTestRecord() arrow.RecordBatch {
+	md := arrow.NewMetadata([]string{schema.MetadataTableName}, []string{"table1"})
+	bld := array.NewRecordBuilder(memory.DefaultAllocator, arrow.NewSchema(
+		[]arrow.Field{
+			{Name: "col1", Type: arrow.BinaryTypes.String},
+			{Name: "col2", Type: types.NewJSONType()},
+		},
+		&md,
+	))
+	defer bld.Release()
+
+	bld.Field(0).(*array.StringBuilder).Append("val1")
+	bld.Field(1).(*types.JSONBuilder).AppendBytes([]byte(`{"Foo":"bar","ok":true}`))
 
 	return bld.NewRecordBatch()
 }

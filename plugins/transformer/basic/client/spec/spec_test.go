@@ -231,6 +231,51 @@ func TestValidate(t *testing.T) {
 			wantErr: true,
 		},
 		{
+			name: "ValidIncludeKeysOnUppercase",
+			input: Spec{
+				TransformationSpecs: []TransformationSpec{
+					{Kind: KindUppercase, Columns: []string{"col1"}, IncludeKeys: true},
+				},
+			},
+			wantErr: false,
+		},
+		{
+			name: "ValidIncludeKeysOnLowercase",
+			input: Spec{
+				TransformationSpecs: []TransformationSpec{
+					{Kind: KindLowercase, Columns: []string{"col1"}, IncludeKeys: true},
+				},
+			},
+			wantErr: false,
+		},
+		{
+			name: "InvalidIncludeKeysOnOtherKind",
+			input: Spec{
+				TransformationSpecs: []TransformationSpec{
+					{Kind: KindRemoveColumns, Columns: []string{"col1"}, IncludeKeys: true},
+				},
+			},
+			wantErr: true,
+		},
+		{
+			name: "InvalidIncludeKeysOnOnlyJSONPaths",
+			input: Spec{
+				TransformationSpecs: []TransformationSpec{
+					{Kind: KindLowercase, Columns: []string{"col1.a", "col2.b.c"}, IncludeKeys: true},
+				},
+			},
+			wantErr: true,
+		},
+		{
+			name: "ValidIncludeKeysOnJSONColumnAndPath",
+			input: Spec{
+				TransformationSpecs: []TransformationSpec{
+					{Kind: KindLowercase, Columns: []string{"col1", "col2.b"}, IncludeKeys: true},
+				},
+			},
+			wantErr: false,
+		},
+		{
 			name: "ValidUnmatchedOnObfuscateColumnsExcept",
 			input: Spec{
 				TransformationSpecs: []TransformationSpec{
