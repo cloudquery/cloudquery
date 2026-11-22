@@ -35,10 +35,3 @@ body:
         Add any other context the resource, such as links to related PRs or issues
     validations:
       required: false
-
-  - type: checkboxes
-    attributes:
-      label: Pull request (optional)
-      options:
-        - label: I can submit a pull request
-          required: false

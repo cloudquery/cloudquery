@@ -16,12 +16,3 @@ body:
       placeholder: This could be resolved by [...]
     validations:
       required: true
-
-  - type: checkboxes
-    attributes:
-      label: Pull request (optional)
-      description:
-        Pull requests are welcome for CLI and SDK features as they are both open source
-      options:
-        - label: I can submit a pull request
-          required: false

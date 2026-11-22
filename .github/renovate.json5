@@ -97,6 +97,7 @@
       matchDatasources: ["golang-version"],
       rangeStrategy: "bump",
       addLabels: ["no automerge"],
+      automerge: false,
       schedule: ["before 3am on Saturday"],
     },
     {
@@ -104,6 +105,7 @@
       matchPackageNames: ["ghcr.io/gythialy/golang-cross"],
       rangeStrategy: "bump",
       addLabels: ["no automerge"],
+      automerge: false,
       schedule: ["before 3am on Saturday"],
     },
     {
