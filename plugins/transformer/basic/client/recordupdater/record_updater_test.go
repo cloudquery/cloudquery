@@ -545,6 +545,14 @@ func TestChangeCaseEntireJSONIncludeKeys(t *testing.T) {
 	assert.Equal(t, `{"foo":{"bar":[true,"x"]},"ünï":"v"}`, updatedRecord.Column(0).ValueStr(0))
 }
 
+func TestChangeCaseEntireJSONKeepsEscapesOfUnchangedStrings(t *testing.T) {
+	input := `{"K\u00e9y":"\u00e9t\u00e9","Mixed":"Caf\u00e9"}`
+
+	updatedRecord, err := New(createJSONColumnRecord([]*string{strPtr(input)})).ChangeCase(spec.KindLowercase, []string{"col1"}, true)
+	require.NoError(t, err)
+	assert.Equal(t, `{"kéy":"\u00e9t\u00e9","mixed":"café"}`, updatedRecord.Column(0).ValueStr(0))
+}
+
 func TestObfuscateNestedColumnsWithGjsonSyntax(t *testing.T) {
 	// Create test record with nested JSON structure
 	md := arrow.NewMetadata([]string{schema.MetadataTableName}, []string{"testTable"})

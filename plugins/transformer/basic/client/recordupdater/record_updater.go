@@ -910,6 +910,8 @@ func (*RecordUpdater) chanceCaseJSONColumns(column arrow.Array, jcs []jsonColumn
 
 func (*RecordUpdater) changeCaseEntireJSONColumn(column arrow.Array, caser func(string) string, includeKeys bool) arrow.Array {
 	bld := types.NewJSONBuilder(memory.NewGoAllocator())
+	jc := newJSONCaser(caser, includeKeys)
+	var dst []byte
 	for i := 0; i < column.Len(); i++ {
 		if !column.IsValid(i) {
 			bld.AppendNull()
@@ -921,13 +923,29 @@ func (*RecordUpdater) changeCaseEntireJSONColumn(column arrow.Array, caser func(
 			bld.AppendBytes([]byte(str))
 			continue
 		}
-		bld.AppendBytes(appendCasedJSON(nil, gjson.Parse(str), caser, includeKeys))
+		dst = jc.append(dst[:0], gjson.Parse(str))
+		bld.AppendBytes(dst)
 	}
 	return bld.NewJSONArray()
 }
 
-// appendCasedJSON re-encodes v in order, casing string values (and keys if includeKeys) and copying everything else raw.
-func appendCasedJSON(dst []byte, v gjson.Result, caser func(string) string, includeKeys bool) []byte {
+// jsonCaser re-encodes JSON in order, casing string values (and keys if includeKeys) and copying everything else raw.
+// Strings the caser leaves unchanged are copied raw too, so their original escapes are kept.
+type jsonCaser struct {
+	caser       func(string) string
+	includeKeys bool
+	buf         bytes.Buffer
+	enc         *json.Encoder
+}
+
+func newJSONCaser(caser func(string) string, includeKeys bool) *jsonCaser {
+	jc := &jsonCaser{caser: caser, includeKeys: includeKeys}
+	jc.enc = json.NewEncoder(&jc.buf)
+	jc.enc.SetEscapeHTML(false)
+	return jc
+}
+
+func (jc *jsonCaser) append(dst []byte, v gjson.Result) []byte {
 	switch {
 	case v.IsObject():
 		dst = append(dst, '{')
@@ -937,13 +955,13 @@ func appendCasedJSON(dst []byte, v gjson.Result, caser func(string) string, incl
 				dst = append(dst, ',')
 			}
 			first = false
-			if includeKeys {
-				dst = appendJSONString(dst, caser(k.Str))
+			if jc.includeKeys {
+				dst = jc.appendString(dst, k)
 			} else {
 				dst = append(dst, k.Raw...)
 			}
 			dst = append(dst, ':')
-			dst = appendCasedJSON(dst, val, caser, includeKeys)
+			dst = jc.append(dst, val)
 			return true
 		})
 		return append(dst, '}')
@@ -955,21 +973,23 @@ func appendCasedJSON(dst []byte, v gjson.Result, caser func(string) string, incl
 				dst = append(dst, ',')
 			}
 			first = false
-			dst = appendCasedJSON(dst, val, caser, includeKeys)
+			dst = jc.append(dst, val)
 			return true
 		})
 		return append(dst, ']')
 	case v.Type == gjson.String:
-		return appendJSONString(dst, caser(v.Str))
+		return jc.appendString(dst, v)
 	default:
 		return append(dst, v.Raw...)
 	}
 }
 
-func appendJSONString(dst []byte, s string) []byte {
-	buf := &bytes.Buffer{}
-	enc := json.NewEncoder(buf)
-	enc.SetEscapeHTML(false)
-	_ = enc.Encode(s)
-	return append(dst, bytes.TrimRight(buf.Bytes(), "\n")...)
+func (jc *jsonCaser) appendString(dst []byte, v gjson.Result) []byte {
+	cased := jc.caser(v.Str)
+	if cased == v.Str {
+		return append(dst, v.Raw...)
+	}
+	jc.buf.Reset()
+	_ = jc.enc.Encode(cased)
+	return append(dst, bytes.TrimRight(jc.buf.Bytes(), "\n")...)
 }
