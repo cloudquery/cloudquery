@@ -41,7 +41,6 @@ spec:
       - kind: lowercase
         tables: ["xkcd_comics"]
         columns: ["title"]
-        include_keys: false
       - kind: drop_rows
         tables: ["xkcd_comics"]
         columns: ["year"]
