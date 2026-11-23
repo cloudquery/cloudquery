@@ -62,7 +62,7 @@
 | github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/insert_embeddings.go:76: | insertEmbeddingsBatch | 5.7% |
 | github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/insert_embeddings.go:141: | ensureConfigColumnsMatchBatchSchema | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/insert_embeddings.go:172: | columnIndexes | 0.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/insert_embeddings.go:188: | buildDeleteCQIDsSQL | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/insert_embeddings.go:188: | buildDeleteCQIDsSQL | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/insert_embeddings.go:196: | buildEmbeddingsInsertSQL | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/insert_embeddings.go:205: | buildEmbeddingsRowValues | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/insert_embeddings.go:236: | buildInputs | 0.0% |
@@ -140,4 +140,4 @@
 | github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/pgarrow/to_pg.go:10: | ArrowToPg10 | 60.7% |
 | github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/pgarrow/to_pg.go:72: | ArrowToCockroach | 57.1% |
 | github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/pgarrow/to_pg.go:131: | ArrowToCrateDB | 0.0% |
-| total: | (statements) | 70.0% |
+| total: | (statements) | 70.2% |
