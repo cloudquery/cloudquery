@@ -1,0 +1,8 @@
+{
+  "name": "sort-files",
+  "private": true,
+  "dependencies": {
+    "json-sort-cli": "3.0.9",
+    "yaml-sort": "2.0.0"
+  }
+}
