@@ -89,7 +89,7 @@ jobs:
       pull-requests: write
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/gythialy/golang-cross:1.26.4
+      image: ghcr.io/gythialy/golang-cross:1.26.4@sha256:e578845034bc75be56d5838093de70935f81e1b6de29793f7966eee7d5450246
       env:
         GOAMD64: v1
     needs:
