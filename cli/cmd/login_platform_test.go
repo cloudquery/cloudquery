@@ -183,6 +183,25 @@ func TestCallbackHandlerRejectsMissingOrWrongState(t *testing.T) {
 	}
 }
 
+func TestCallbackHandlerRejectsEmptyToken(t *testing.T) {
+	for _, query := range []string{
+		"state=STATE",
+		"state=STATE&token=",
+	} {
+		called := false
+		h := callbackHandler("https://accounts.cloudquery.io", "", "STATE", func(string) { called = true })
+		w := httptest.NewRecorder()
+		stderr := captureStderr(t, func() {
+			h(w, httptest.NewRequest(http.MethodGet, "/callback?"+query, nil))
+		})
+
+		require.Equal(t, http.StatusBadRequest, w.Code, "query %q", query)
+		require.Empty(t, w.Header().Get("Location"), "query %q", query)
+		require.False(t, called, "query %q", query)
+		require.Contains(t, stderr, "rejected a login callback with an empty token", "query %q", query)
+	}
+}
+
 func captureStderr(t *testing.T, fn func()) string {
 	t.Helper()
 	r, w, err := os.Pipe()
