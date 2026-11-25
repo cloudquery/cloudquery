@@ -5,16 +5,16 @@ go 1.27.3
 require (
 	github.com/apache/arrow-go/v18 v18.9.0
 	github.com/aws/aws-sdk-go-v2 v1.48.0
-	github.com/aws/aws-sdk-go-v2/config v1.33.18
-	github.com/aws/aws-sdk-go-v2/credentials v1.21.0
+	github.com/aws/aws-sdk-go-v2/config v1.33.19
+	github.com/aws/aws-sdk-go-v2/credentials v1.21.1
 	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.23.24
 	github.com/aws/aws-sdk-go-v2/feature/s3/transfermanager v0.5.7
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.114.10
 	github.com/aws/aws-sdk-go-v2/service/sts v1.52.0
 	github.com/aws/smithy-go v1.28.9
 	github.com/cloudquery/codegen v0.4.1
-	github.com/cloudquery/filetypes/v4 v4.9.1
-	github.com/cloudquery/plugin-sdk/v4 v4.100.1
+	github.com/cloudquery/filetypes/v4 v4.9.3
+	github.com/cloudquery/plugin-sdk/v4 v4.100.2
 	github.com/google/go-cmp v0.7.0
 	github.com/google/uuid v1.6.0
 	github.com/invopop/jsonschema v0.14.0
@@ -37,8 +37,8 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.11.13 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.14.12 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.20.12 // indirect
-	github.com/aws/aws-sdk-go-v2/service/licensemanager v1.47.6 // indirect
-	github.com/aws/aws-sdk-go-v2/service/marketplacemetering v1.46.4 // indirect
+	github.com/aws/aws-sdk-go-v2/service/licensemanager v1.48.5 // indirect
+	github.com/aws/aws-sdk-go-v2/service/marketplacemetering v1.47.0 // indirect
 	github.com/aws/aws-sdk-go-v2/service/signin v1.13.1 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sso v1.39.5 // indirect
 	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.44.5 // indirect
@@ -47,7 +47,7 @@ require (
 	github.com/cenkalti/backoff/v5 v5.0.3 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/cloudquery/cloudquery-api-go v1.14.13 // indirect
-	github.com/cloudquery/plugin-pb-go v1.29.0 // indirect
+	github.com/cloudquery/plugin-pb-go v1.29.1 // indirect
 	github.com/getsentry/sentry-go v0.50.0 // indirect
 	github.com/go-logr/logr v1.4.4 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect

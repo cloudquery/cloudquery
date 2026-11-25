@@ -11,7 +11,7 @@
         ".github/workflows/.*\\.ya?ml$"
       ],
       matchStrings: [
-        'image:\\s*ghcr\\.io/gythialy/golang-cross:(?<currentValue>\\d+\\.\\d+\\.\\d+)'
+        'image:\\s*ghcr\\.io/gythialy/golang-cross:(?<currentValue>\\d+\\.\\d+\\.\\d+)(@(?<currentDigest>sha256:[a-f0-9]{64}))?'
       ],
       depNameTemplate: "ghcr.io/gythialy/golang-cross",
       datasourceTemplate: "docker",

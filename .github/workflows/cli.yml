@@ -16,8 +16,6 @@ on:
       - "cli/**"
       - ".github/workflows/cli.yml"
 
-env:
-  CLOUDQUERY_API_KEY: ${{ secrets.CLOUDQUERY_API_KEY }}
 permissions:
   contents: read
 
@@ -61,6 +59,8 @@ jobs:
         run: go build .
       - name: Test
         run: make test
+        env:
+          CLOUDQUERY_API_KEY: ${{ secrets.CLOUDQUERY_API_KEY }}
       - name: gen
         if: matrix.os == 'ubicloud-standard-2'
         run: make gen

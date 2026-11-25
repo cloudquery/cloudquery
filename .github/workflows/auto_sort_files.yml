@@ -27,19 +27,20 @@ jobs:
         with:
           node-version: "lts/*"
       - name: Install tools
-        run: |
-          npm i -g yaml-sort@2.0.0
-          npm i -g json-sort-cli@3.0.9
+        run: npm ci --ignore-scripts --prefix .github/tools/sort-files
       - name: Sort files
         run: |
-          jsonsort release-please-config.json
-          yaml-sort -i .github/pr_labeler.yml
+          .github/tools/sort-files/node_modules/.bin/jsonsort release-please-config.json
+          .github/tools/sort-files/node_modules/.bin/yaml-sort -i .github/pr_labeler.yml
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8
         with:
           # required so the PR triggers workflow runs
           token: ${{ steps.app-token.outputs.token }}
           branch: chore/sort-files
+          add-paths: |
+            release-please-config.json
+            .github/pr_labeler.yml
           base: main
           title: "chore: Sort files"
           commit-message: "chore: Sort files"
