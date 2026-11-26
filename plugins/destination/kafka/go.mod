@@ -6,7 +6,7 @@ require (
 	github.com/IBM/sarama v1.61.1
 	github.com/apache/arrow-go/v18 v18.9.0
 	github.com/cloudquery/codegen v0.4.1
-	github.com/cloudquery/filetypes/v4 v4.9.3
+	github.com/cloudquery/filetypes/v4 v4.9.4
 	github.com/cloudquery/plugin-sdk/v4 v4.100.2
 	github.com/invopop/jsonschema v0.14.0
 	github.com/pb33f/ordered-map/v2 v2.3.2
