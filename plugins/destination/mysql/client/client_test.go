@@ -24,7 +24,7 @@ func getConnectionString() string {
 
 func TestPlugin(t *testing.T) {
 	ctx := context.Background()
-	p := plugin.NewPlugin("mysql", "development", New)
+	p := plugin.NewPlugin("mysql", "development", New, plugin.WithFlushSupport())
 	s := &Spec{
 		ConnectionString: getConnectionString(),
 	}
