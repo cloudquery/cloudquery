@@ -587,6 +587,9 @@ func (s *v3Sync) refreshBatch(ctx context.Context, sourceSpec specs.Source, shar
 	if err := syncClient.CloseSend(); err != nil {
 		return counts, err
 	}
+	for _, failure := range totals.Failures {
+		log.Error().Str("table", failure.Table).Str("error", failure.Error).Msg("Refresh failed for a resource, skipping it until the next full sync")
+	}
 	counts.deleted = uint64(totals.Deletes)
 	counts.refreshErrors = uint64(totals.Errors)
 	counts.resources = uint64(totals.Rows)

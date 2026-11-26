@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"net"
+	"slices"
 	gosync "sync"
 	"testing"
 	"time"
@@ -101,6 +102,9 @@ type testSourcePlugin struct {
 	fullSyncErr error
 	// refreshErrorTable, when set, makes every refresh emit an Error for it.
 	refreshErrorTable string
+	// refreshFailIDs makes a refresh of these resource ids emit an Error for the
+	// table and no row, while the other resources of the request still succeed.
+	refreshFailIDs map[string]bool
 
 	mu        gosync.Mutex
 	starts    []*plugin.Watch_Start
@@ -194,6 +198,14 @@ func (s *testSourcePlugin) Sync(req *plugin.Sync_Request, stream grpc.ServerStre
 		if err != nil {
 			return err
 		}
+		if s.refreshFailIDs[schema.KeysString(keys)] {
+			if err := stream.Send(&plugin.Sync_Response{Message: &plugin.Sync_Response_Error{
+				Error: &plugin.Sync_MessageError{TableName: resource.GetTable(), Error: "refresh denied"},
+			}}); err != nil {
+				return err
+			}
+			continue
+		}
 		recordBytes, err := testRecordBytes(schema.KeysString(keys))
 		if err != nil {
 			return err
@@ -278,10 +290,17 @@ func (s *testSourcePlugin) Watch(stream grpc.BidiStreamingServer[plugin.Watch_Re
 		// Stay on the stream until the client has acknowledged the last batch, so
 		// that the acknowledgement is recorded before the handler returns.
 		if len(s.changes) > 0 {
-			select {
-			case <-s.acked:
-			case <-stream.Context().Done():
-			case <-time.After(30 * time.Second):
+			last := s.changes[len(s.changes)-1].GetEventId()
+			deadline := time.After(30 * time.Second)
+		wait:
+			for !slices.Contains(s.ackedEventIDs(), last) {
+				select {
+				case <-s.acked:
+				case <-stream.Context().Done():
+					break wait
+				case <-deadline:
+					break wait
+				}
 			}
 		}
 		return nil

@@ -463,6 +463,32 @@ func TestSyncEventsV3_RefreshErrorsAreCounted(t *testing.T) {
 	require.Equal(t, uint64(1), summaries[0].SourceErrors)
 }
 
+func TestSyncEventsV3_FailedResourceIsAckedAndTheLoopContinues(t *testing.T) {
+	src := &testSourcePlugin{
+		ready:          &plugin.Watch_Ready{HasCheckpoint: true, CheckpointTime: timestamppb.Now()},
+		refreshFailIDs: map[string]bool{"id=bad": true},
+		changes: []*plugin.Watch_Change{
+			testChangeFor(t, "good-1", plugin.Op_OP_UPSERT, "1"),
+			testChangeFor(t, "bad", plugin.Op_OP_UPSERT, "2"),
+			testChangeFor(t, "good-2", plugin.Op_OP_UPSERT, "3"),
+		},
+	}
+	events := fastEvents(specs.FullSyncNever)
+	events.BatchMaxChanges = 2
+	res := runEventsSync(t.Context(), t, src, events)
+	require.NoError(t, res.err)
+
+	require.Equal(t, []string{"2", "3"}, res.source.ackedEventIDs(), "the batch holding the failed resource is acked and the next one is processed")
+	require.Equal(t, 1, res.log.count("sync:refresh:2"))
+	require.Equal(t, 1, res.log.count("sync:refresh:1"))
+
+	summaries := res.summaries(t)
+	require.Len(t, summaries, 1)
+	require.Equal(t, uint64(1), summaries[0].RefreshErrors)
+	require.Equal(t, uint64(1), summaries[0].ErrorsPerTable[testTable.Name])
+	require.Equal(t, uint64(3), summaries[0].EventsReceived)
+}
+
 func TestSyncEventsV3_BatchRecordsCarryTheBatchSyncTime(t *testing.T) {
 	src := &testSourcePlugin{
 		ready:        &plugin.Watch_Ready{},

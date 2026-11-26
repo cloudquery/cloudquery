@@ -864,6 +864,13 @@ type relayTotals struct {
 	Deletes int64
 	// Errors is the number of Error messages received from the source.
 	Errors int64
+	// Failures are the Error messages themselves, in the order they arrived.
+	Failures []relayFailure
+}
+
+type relayFailure struct {
+	Table string
+	Error string
 }
 
 // relay reads a source Sync stream to its end and writes every message it
@@ -1010,6 +1017,7 @@ func (s *v3Sync) relay(ctx context.Context, syncClient plugin.Plugin_SyncClient,
 			}
 		case *plugin.Sync_Response_Error:
 			totals.Errors++
+			totals.Failures = append(totals.Failures, relayFailure{Table: m.Error.TableName, Error: m.Error.Error})
 			stats, _ := s.statsPerTable.Get(m.Error.TableName)
 			stats.Errors++
 			s.statsPerTable.Add(m.Error.TableName, stats)
