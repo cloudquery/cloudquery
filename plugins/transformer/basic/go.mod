@@ -94,4 +94,4 @@ require (
 // github.com/cloudquery/jsonschema @ cqmain
 replace github.com/invopop/jsonschema => github.com/cloudquery/jsonschema v0.0.0-20261126170215-3835a01020fb
 
-replace github.com/tidwall/sjson => github.com/cloudquery/sjson v0.0.0-20261113150718-c6b9c458556e
+replace github.com/tidwall/sjson => github.com/cloudquery/sjson v0.0.0-20261126165018-965b029f6f04
