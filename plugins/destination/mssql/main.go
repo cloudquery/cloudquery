@@ -15,13 +15,17 @@ const (
 )
 
 func main() {
-	p := plugin.NewPlugin(internalPlugin.Name, internalPlugin.Version, client.New,
+	if err := serve.Plugin(newPlugin(), serve.WithPluginSentryDSN(sentryDSN)).Serve(context.Background()); err != nil {
+		log.Fatalf("failed to serve plugin: %v", err)
+	}
+}
+
+func newPlugin() *plugin.Plugin {
+	return plugin.NewPlugin(internalPlugin.Name, internalPlugin.Version, client.New,
 		plugin.WithKind(internalPlugin.Kind),
+		plugin.WithFlushSupport(),
 		plugin.WithTeam(internalPlugin.Team),
 		plugin.WithJSONSchema(client.JSONSchema),
 		plugin.WithConnectionTester(client.NewConnectionTester(client.New)),
 	)
-	if err := serve.Plugin(p, serve.WithPluginSentryDSN(sentryDSN)).Serve(context.Background()); err != nil {
-		log.Fatalf("failed to serve plugin: %v", err)
-	}
 }
