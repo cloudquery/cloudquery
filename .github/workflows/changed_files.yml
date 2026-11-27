@@ -13,6 +13,11 @@ on:
         required: false
         type: boolean
         default: false
+      trigger_paths:
+        description: "Match the calling workflow's pull_request paths filter instead of files"
+        required: false
+        type: boolean
+        default: false
     outputs:
       any_changed:
         description: "Whether any files changed"
@@ -34,6 +39,10 @@ jobs:
       changed_files: ${{ fromJson(steps.changed-files.outputs.result).changed_files }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          sparse-checkout: |
+            .github
+            scripts/workflows
       - name: Install micromatch
         run: npm i -D micromatch@4.0.8
       - uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
@@ -42,30 +51,23 @@ jobs:
           files: ${{ inputs.files }}
           files_ignore: ${{ inputs.files_ignore }}
           dir_names: ${{ inputs.dir_names }}
+          trigger_paths: ${{ inputs.trigger_paths }}
+          WORKFLOW_REF: ${{ github.workflow_ref }}
         with:
           script: |
             const path = require('path')
             const micromatch = require('micromatch')
-            let base, head
-            if (context.eventName === 'pull_request') {
-              base = context.payload.pull_request.base.sha
-              head = context.payload.pull_request.head.sha
-            } else if (context.eventName === 'push') {
-              base = context.payload.before
-              head = context.payload.after
-            } else {
-              throw new Error('Unsupported event type: ' + context.eventName)
+            const { listChangedFiles, triggerPaths, workflowFileOf } = require('./scripts/workflows/changed_files.js')
+            const files = await listChangedFiles({ github, context })
+            if (!files) {
+              console.log(`Changed files unknown for ${context.eventName} ${context.ref}, treating everything as changed`)
+              return { any_changed: true, changed_files: '' }
             }
-            const patternsToMatch = process.env.files.split('\n').filter(Boolean)
+            const patternsToMatch = process.env.trigger_paths == 'true'
+              ? triggerPaths(workflowFileOf(process.env.WORKFLOW_REF))
+              : process.env.files.split('\n').filter(Boolean)
             const patternsToIgnore = process.env.files_ignore.split('\n').filter(Boolean)
-            console.log(`Getting changed files between ${base} and ${head}`)
-            const { data: { files } } = await github.rest.repos.compareCommits({
-              owner: context.payload.repository.owner.login,
-              repo: context.payload.repository.name,
-              base,
-              head,
-            })
-            const onlyNames = [...new Set(files.map(file => process.env.dir_names == 'true' ? path.dirname(file.filename) : file.filename))]
+            const onlyNames = [...new Set(files.map(file => process.env.dir_names == 'true' ? path.dirname(file) : file))]
             console.log('All changed files:', onlyNames)
             const allPatterns = [...patternsToMatch, ...patternsToIgnore.map(pattern => `!${pattern}`)]
             console.log('All patterns:', allPatterns)

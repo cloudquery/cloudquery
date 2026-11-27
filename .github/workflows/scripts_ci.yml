@@ -46,4 +46,13 @@ jobs:
           args: "--config ../../plugins/.golangci.yml"
       - name: Test
         run: go test ./...
-  
+  workflow-scripts:
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version: 24
+      - name: Test
+        run: node --test scripts/workflows/*.test.js

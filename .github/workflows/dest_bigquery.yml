@@ -15,12 +15,21 @@ on:
     paths:
       - 'plugins/destination/bigquery/**'
       - '.github/workflows/dest_bigquery.yml'
+  merge_group:
 
 permissions:
   contents: read
 
 jobs:
+  changes:
+    if: github.event_name == 'merge_group'
+    uses: ./.github/workflows/changed_files.yml
+    with:
+      trigger_paths: true
+
   plugins-destination-bigquery:
+    needs: changes
+    if: ${{ !cancelled() && needs.changes.outputs.any_changed != 'false' }}
     timeout-minutes: 10
     name: 'plugins/destination/bigquery'
     runs-on: ubuntu-latest
@@ -78,6 +87,8 @@ jobs:
           BIGQUERY_DATASET_LOCATION: us-west1
 
   validate-fips:
+    needs: changes
+    if: ${{ !cancelled() && needs.changes.outputs.any_changed != 'false' }}
     timeout-minutes: 30
     runs-on: ubuntu-latest
     defaults:

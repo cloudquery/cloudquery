@@ -16,12 +16,21 @@ on:
     paths:
       - "plugins/source/test/**"
       - ".github/workflows/source_test.yml"
+  merge_group:
 
 permissions:
   contents: read
 
 jobs:
+  changes:
+    if: github.event_name == 'merge_group'
+    uses: ./.github/workflows/changed_files.yml
+    with:
+      trigger_paths: true
+
   plugins-source-test:
+    needs: changes
+    if: ${{ !cancelled() && needs.changes.outputs.any_changed != 'false' }}
     timeout-minutes: 30
     name: "plugins/source/test"
     runs-on: ubuntu-latest
@@ -72,6 +81,8 @@ jobs:
       - name: Test
         run: make test
   validate-fips:
+    needs: changes
+    if: ${{ !cancelled() && needs.changes.outputs.any_changed != 'false' }}
     timeout-minutes: 30
     runs-on: ubuntu-latest
     defaults:

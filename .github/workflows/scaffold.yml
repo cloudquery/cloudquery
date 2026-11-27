@@ -15,12 +15,21 @@ on:
     paths:
       - "scaffold/**"
       - ".github/workflows/scaffold.yml"
+  merge_group:
 
 permissions:
   contents: read
 
 jobs:
+  changes:
+    if: github.event_name == 'merge_group'
+    uses: ./.github/workflows/changed_files.yml
+    with:
+      trigger_paths: true
+
   scaffold:
+    needs: changes
+    if: ${{ !cancelled() && needs.changes.outputs.any_changed != 'false' }}
     timeout-minutes: 30
     name: "scaffold"
     runs-on: ubuntu-latest
@@ -55,6 +64,8 @@ jobs:
       - name: Test
         run: make test
   validate-release:
+    needs: changes
+    if: ${{ !cancelled() && needs.changes.outputs.any_changed != 'false' }}
     timeout-minutes: 30
     runs-on: ubuntu-latest
     env:

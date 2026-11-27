@@ -17,12 +17,21 @@ on:
       - "plugins/destination/filetypes/**"
       - "plugins/destination/s3/**"
       - ".github/workflows/dest_s3.yml"
+  merge_group:
 
 permissions:
   contents: read
 
 jobs:
+  changes:
+    if: github.event_name == 'merge_group'
+    uses: ./.github/workflows/changed_files.yml
+    with:
+      trigger_paths: true
+
   plugins-destination-s3:
+    needs: changes
+    if: ${{ !cancelled() && needs.changes.outputs.any_changed != 'false' }}
     timeout-minutes: 30
     name: "plugins/destination/s3"
     runs-on: ubuntu-latest

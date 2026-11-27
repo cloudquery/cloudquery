@@ -15,12 +15,21 @@ on:
     paths:
       - plugins/destination/meilisearch/**
       - .github/workflows/dest_meilisearch.yml
+  merge_group:
 
 permissions:
   contents: read
 
 jobs:
+  changes:
+    if: github.event_name == 'merge_group'
+    uses: ./.github/workflows/changed_files.yml
+    with:
+      trigger_paths: true
+
   plugins-destination-meilisearch:
+    needs: changes
+    if: ${{ !cancelled() && needs.changes.outputs.any_changed != 'false' }}
     name: "plugins/destination/meilisearch"
     runs-on: ubuntu-latest
     timeout-minutes: 30
