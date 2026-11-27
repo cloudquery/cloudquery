@@ -1141,6 +1141,7 @@ func TestSetDestinationsAndValidate_ValidatesDestinations(t *testing.T) {
 		{name: "missing path", meta: Metadata{Name: "platform", Version: "v1.0.1"}, wantErr: "path is required"},
 		{name: "missing version", meta: Metadata{Name: "platform", Path: "cloudquery/platform"}, wantErr: "version is required"},
 		{name: "version without v prefix", meta: Metadata{Name: "platform", Path: "cloudquery/platform", Version: "1.0.1"}, wantErr: "version must start with v"},
+		{name: "github registry", meta: Metadata{Name: "platform", Path: "cloudquery/platform", Registry: RegistryGitHub, Version: "v1.0.1"}, wantErr: "registry: github is no longer supported"},
 	}
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
