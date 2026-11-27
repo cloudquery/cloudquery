@@ -3,7 +3,9 @@ package analytics
 import (
 	"context"
 	"reflect"
+	"sync"
 	"testing"
+	"time"
 
 	cqapi "github.com/cloudquery/cloudquery-api-go"
 	"github.com/google/uuid"
@@ -11,10 +13,13 @@ import (
 )
 
 type fakeClient struct {
+	mu       sync.Mutex
 	messages []rudderstack.Message
 }
 
 func (c *fakeClient) Enqueue(message rudderstack.Message) error {
+	c.mu.Lock()
+	defer c.mu.Unlock()
 	c.messages = append(c.messages, message)
 	return nil
 }
@@ -209,4 +214,94 @@ func TestTrackUpgradeCheckCompletedWithoutTelemetry(t *testing.T) {
 	client = nil
 
 	TrackUpgradeCheckCompleted(context.Background(), uuid.New(), UpgradeCheckEvent{})
+}
+
+// The CLI tracks from worker goroutines while the root command's finalizer
+// calls Close; exercise that interleaving here. Run with -race.
+func TestConcurrentTrackingDuringClose(t *testing.T) {
+	withFakeClient(t)
+	ctx := context.Background()
+
+	var wg sync.WaitGroup
+	stop := make(chan struct{})
+
+	for i := 0; i < 4; i++ {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			for {
+				select {
+				case <-stop:
+					return
+				default:
+				}
+				TrackSyncStarted(ctx, uuid.New(), SyncStartedEvent{})
+				TrackSyncCompleted(ctx, uuid.New(), SyncFinishedEvent{})
+				TrackInitStarted(ctx, uuid.New(), InitEvent{})
+				TrackInitCompleted(ctx, uuid.New(), InitEvent{})
+				TrackUpgradeCheckCompleted(ctx, uuid.New(), UpgradeCheckEvent{})
+				Identity(ctx)
+			}
+		}()
+	}
+
+	// Rewrite the cached details while readers hit the fast path.
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		for {
+			select {
+			case <-stop:
+				return
+			default:
+			}
+			storeSyncEventDetails(&eventDetails{currentTeam: "other", environment: "cli"})
+		}
+	}()
+
+	// Shut the client down and bring it back while tracks are in flight.
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		for {
+			select {
+			case <-stop:
+				return
+			default:
+			}
+			Close()
+			setClient(&fakeClient{})
+		}
+	}()
+
+	time.Sleep(300 * time.Millisecond)
+	close(stop)
+	wg.Wait()
+}
+
+func TestTrackAfterCloseIsANoOp(t *testing.T) {
+	fake := withFakeClient(t)
+
+	Close()
+	TrackSyncCompleted(context.Background(), uuid.New(), SyncFinishedEvent{ResourceCount: 1})
+
+	if got := len(fake.messages); got != 0 {
+		t.Errorf("got %d messages after Close, want 0", got)
+	}
+
+	// Double Close must be safe.
+	Close()
+}
+
+func TestSyncEventDetailsCache(t *testing.T) {
+	withFakeClient(t)
+
+	if got := getSyncEventDetails(context.Background()); got == nil || got.currentTeam != "acme" {
+		t.Errorf("got %+v, want the seeded acme details", got)
+	}
+
+	storeSyncEventDetails(nil)
+	if got := loadSyncEventDetails(); got != nil {
+		t.Errorf("got %+v, want nil after clearing", got)
+	}
 }
