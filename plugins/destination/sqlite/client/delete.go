@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+	"fmt"
 	"reflect"
 	"strings"
 
@@ -11,7 +12,10 @@ import (
 
 func (c *Client) DeleteRecord(ctx context.Context, messages message.WriteDeleteRecords) error {
 	for _, msg := range messages {
-		sql := generateDelete(msg.DeleteRecord)
+		sql, err := generateDelete(msg.DeleteRecord)
+		if err != nil {
+			return err
+		}
 
 		params, err := extractPredicateValues(msg.DeleteRecord.WhereClause)
 		if err != nil {
@@ -25,11 +29,24 @@ func (c *Client) DeleteRecord(ctx context.Context, messages message.WriteDeleteR
 	return nil
 }
 
-func generateDelete(msg message.DeleteRecord) string {
+var groupingOperators = map[string]string{
+	"AND": "AND",
+	"OR":  "OR",
+}
+
+func groupingOperator(groupingType string) (string, error) {
+	operator, ok := groupingOperators[strings.ToUpper(groupingType)]
+	if !ok {
+		return "", fmt.Errorf("unsupported grouping type %q", groupingType)
+	}
+	return operator, nil
+}
+
+func generateDelete(msg message.DeleteRecord) (string, error) {
 	var sb strings.Builder
 
 	sb.WriteString("DELETE FROM ")
-	sb.WriteString("\"" + msg.TableName + "\"")
+	sb.WriteString(identifier(msg.TableName))
 	sb.WriteString(" WHERE ")
 	if len(msg.WhereClause) == 0 {
 		sb.WriteString("1")
@@ -41,11 +58,15 @@ func generateDelete(msg message.DeleteRecord) string {
 			sb.WriteString("(")
 			for j, predicate := range predicateGroup.Predicates {
 				if j > 0 {
+					operator, err := groupingOperator(predicateGroup.GroupingType)
+					if err != nil {
+						return "", err
+					}
 					sb.WriteString(" ")
-					sb.WriteString(predicateGroup.GroupingType)
+					sb.WriteString(operator)
 					sb.WriteString(" ")
 				}
-				sb.WriteString("\"" + predicate.Column + "\"")
+				sb.WriteString(identifier(predicate.Column))
 				sb.WriteString(" = ?")
 			}
 			sb.WriteString(")")
@@ -55,7 +76,7 @@ func generateDelete(msg message.DeleteRecord) string {
 		}
 	}
 
-	return sb.String()
+	return sb.String(), nil
 }
 
 func extractPredicateValues(where message.PredicateGroups) ([]any, error) {

@@ -169,6 +169,25 @@ func TestTextEmbeddingsValidation(t *testing.T) {
 			},
 			wantErr: true,
 		},
+		{
+			name: "text embeddings with unsafe source table name",
+			spec: Spec{
+				ProjectID:        "test-project",
+				DatasetID:        "test-dataset",
+				TimePartitioning: TimePartitioningOptionNone,
+				TextEmbeddings: &TextEmbeddingsSpec{
+					RemoteModelName: "textembedding-gecko@001",
+					Tables: []TableConfig{
+						{
+							SourceTableName: "../other/tables/secret",
+							TargetTableName: "target_table",
+							EmbedColumns:    []string{"content"},
+						},
+					},
+				},
+			},
+			wantErr: true,
+		},
 	}
 
 	for _, tt := range tests {

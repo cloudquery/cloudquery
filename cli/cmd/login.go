@@ -119,6 +119,11 @@ func callbackHandler(accountsURL, tenantHost, state string, onToken func(string)
 			return
 		}
 		token := query.Get("token")
+		if token == "" {
+			fmt.Fprintln(os.Stderr, "warning: rejected a login callback with an empty token, still waiting for the browser login to finish")
+			http.Error(w, "missing login token", http.StatusBadRequest)
+			return
+		}
 		onToken(token)
 
 		if platform.IsPlatformToken(token) {

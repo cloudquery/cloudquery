@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strings"
 
 	"github.com/apache/arrow-go/v18/arrow/array"
@@ -19,6 +20,11 @@ const (
 	putFileIntoStage            = `put 'file://%v' @cq_plugin_stage auto_compress=true`
 	copyIntoTable               = `copy into %s from '@cq_plugin_stage' files=('%s.gz') on_error = ABORT_STATEMENT file_format = (format_name = cq_plugin_json_format) match_by_column_name = case_insensitive`
 	mergeIntoTable              = `MERGE INTO %s AS dest USING (SELECT %s FROM @cq_plugin_stage/%s.gz t) AS source ON %s WHEN MATCHED THEN %s WHEN NOT MATCHED THEN %s`
+)
+
+var (
+	unsafeFileNameChars  = regexp.MustCompile(`[^A-Za-z0-9_]`)
+	stringLiteralEscaper = strings.NewReplacer(`\`, `\\`, `'`, `\'`)
 )
 
 func (c *Client) Write(ctx context.Context, msgs <-chan message.WriteMessage) error {
@@ -42,8 +48,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.
 		return err
 	}
 
-	tableName := name
-	f, err := os.CreateTemp(os.TempDir(), tableName+".json.*")
+	f, err := os.CreateTemp(os.TempDir(), stageFilePattern(name))
 	if err != nil {
 		return err
 	}
@@ -90,7 +95,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.
 }
 
 func (c *Client) copyIntoTable(ctx context.Context, table *schema.Table, f *os.File) error {
-	sql := fmt.Sprintf(copyIntoTable, table.Name, escapePath(filepath.Base(f.Name())))
+	sql := fmt.Sprintf(copyIntoTable, sanitizeTable(table.Name), escapePath(filepath.Base(f.Name())))
 
 	if _, err := c.db.ExecContext(ctx, sql); err != nil {
 		return fmt.Errorf("failed to copy file into table with last resource %s: %w", sql, err)
@@ -101,7 +106,7 @@ func (c *Client) copyIntoTable(ctx context.Context, table *schema.Table, f *os.F
 
 func (c *Client) mergeIntoTable(ctx context.Context, table *schema.Table, f *os.File) error {
 	// https://docs.snowflake.com/en/sql-reference/sql/merge#syntax
-	sql := fmt.Sprintf(mergeIntoTable, table.Name, createColumnsList(table), escapePath(filepath.Base(f.Name())), createPrimaryKeyList(table), updateColumnsList(table), insertColumnsList(table))
+	sql := fmt.Sprintf(mergeIntoTable, sanitizeTable(table.Name), createColumnsList(table), escapePath(filepath.Base(f.Name())), createPrimaryKeyList(table), updateColumnsList(table), insertColumnsList(table))
 
 	if _, err := c.db.ExecContext(ctx, sql); err != nil {
 		return fmt.Errorf("failed to merge file into table: %s: %w", sql, err)
@@ -112,44 +117,52 @@ func (c *Client) mergeIntoTable(ctx context.Context, table *schema.Table, f *os.
 
 func createColumnsList(table *schema.Table) string {
 	// creates a string like:
-	// $1:COL1::TEXT as COL1, $1:COL2::NUMBER as COL2, $1:COL3::TIMESTAMP_TZ as COL3
+	// $1['col1']::TEXT as "COL1", $1['col2']::NUMBER as "COL2", $1['col3']::TIMESTAMP_TZ as "COL3"
 	columns := make([]string, 0, len(table.Columns))
 	for _, col := range table.Columns {
-		columns = append(columns, fmt.Sprintf("$1:%s::%s as %s", col.Name, SchemaTypeToSnowflake(col.Type), col.Name))
+		columns = append(columns, fmt.Sprintf("$1[%s]::%s as %s", quoteStringLiteral(col.Name), SchemaTypeToSnowflake(col.Type), sanitizeColumn(col.Name)))
 	}
 	return strings.Join(columns, ",")
 }
 
 func createPrimaryKeyList(table *schema.Table) string {
 	// creates a string like:
-	// source.COL1=dest.COL1 AND source.COL2=dest.COL2 AND source.COL3=dest.COL3
+	// source."COL1"=dest."COL1" AND source."COL2"=dest."COL2" AND source."COL3"=dest."COL3"
 	columns := make([]string, 0, len(table.PrimaryKeys()))
 	for _, col := range table.PrimaryKeys() {
-		columns = append(columns, fmt.Sprintf("source.%s=dest.%s", col, col))
+		columns = append(columns, fmt.Sprintf("source.%s=dest.%s", sanitizeColumn(col), sanitizeColumn(col)))
 	}
 	return strings.Join(columns, " AND ")
 }
 
 func updateColumnsList(table *schema.Table) string {
 	// creates an update string like:
-	// UPDATE SET COL1=source.COL1, COL2=source.COL2, COL3=source.COL3
+	// UPDATE SET "COL1"=source."COL1", "COL2"=source."COL2", "COL3"=source."COL3"
 	columns := make([]string, 0, len(table.Columns))
 	for _, col := range table.Columns {
-		columns = append(columns, fmt.Sprintf("%s=source.%s", strings.ToUpper(col.Name), strings.ToUpper(col.Name)))
+		columns = append(columns, fmt.Sprintf("%s=source.%s", sanitizeColumn(col.Name), sanitizeColumn(col.Name)))
 	}
 	return fmt.Sprintf(" UPDATE SET %s ", strings.Join(columns, ","))
 }
 
 func insertColumnsList(table *schema.Table) string {
 	// creates a string like:
-	// INSERT (COL1, COL2, COL3) VALUES (source.COL1, source.COL2, source.COL3)
+	// INSERT ("COL1", "COL2", "COL3") VALUES (source."COL1", source."COL2", source."COL3")
 	names, values := make([]string, 0, len(table.Columns)), make([]string, 0, len(table.Columns))
 	for _, col := range table.Columns {
-		names = append(names, strings.ToUpper(col.Name))
-		values = append(values, "source."+strings.ToUpper(col.Name))
+		names = append(names, sanitizeColumn(col.Name))
+		values = append(values, "source."+sanitizeColumn(col.Name))
 	}
 
 	return fmt.Sprintf("INSERT (%s) VALUES (%s)", strings.Join(names, ", "), strings.Join(values, ", "))
+}
+
+func stageFilePattern(tableName string) string {
+	return unsafeFileNameChars.ReplaceAllString(tableName, "_") + ".json.*"
+}
+
+func quoteStringLiteral(value string) string {
+	return "'" + stringLiteralEscaper.Replace(value) + "'"
 }
 
 func (c *Client) setupWrite(ctx context.Context) error {

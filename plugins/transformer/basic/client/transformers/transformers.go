@@ -43,7 +43,7 @@ func NewFromSpec(sp spec.TransformationSpec) (*Transformer, error) {
 	case spec.KindObfuscateSensitiveColumns:
 		tr.fn = ObfuscateSensitiveColumns(sp.ShouldIncludeSHA())
 	case spec.KindUppercase, spec.KindLowercase:
-		tr.fn = ChangeCase(sp.Kind, sp.Columns)
+		tr.fn = ChangeCase(sp.Kind, sp.Columns, sp.IncludeKeys)
 	case spec.KindDropRows:
 		tr.fn = DropRows(sp.Columns, sp.Value)
 	default:
@@ -144,9 +144,9 @@ func RenameColumn(oldName, newName string) TransformationFn {
 	}
 }
 
-func ChangeCase(caseType string, columnNames []string) TransformationFn {
+func ChangeCase(caseType string, columnNames []string, includeKeys bool) TransformationFn {
 	return func(record arrow.RecordBatch) (arrow.RecordBatch, error) {
-		return recordupdater.New(record).ChangeCase(caseType, columnNames)
+		return recordupdater.New(record).ChangeCase(caseType, columnNames, includeKeys)
 	}
 }
 

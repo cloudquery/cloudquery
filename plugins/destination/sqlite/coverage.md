@@ -11,10 +11,11 @@
 | github.com/cloudquery/cloudquery/plugins/destination/sqlite/v2/client/assess.go:135: | autoMigrationBehavior | 75.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/sqlite/v2/client/client.go:27: | New | 80.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/sqlite/v2/client/client.go:53: | Close | 83.3% |
-| github.com/cloudquery/cloudquery/plugins/destination/sqlite/v2/client/delete.go:12: | DeleteRecord | 75.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/sqlite/v2/client/delete.go:28: | generateDelete | 76.2% |
-| github.com/cloudquery/cloudquery/plugins/destination/sqlite/v2/client/delete.go:61: | extractPredicateValues | 93.3% |
-| github.com/cloudquery/cloudquery/plugins/destination/sqlite/v2/client/delete.go:83: | unpackArray | 100.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/sqlite/v2/client/delete.go:13: | DeleteRecord | 80.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/sqlite/v2/client/delete.go:37: | groupingOperator | 100.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/sqlite/v2/client/delete.go:45: | generateDelete | 91.7% |
+| github.com/cloudquery/cloudquery/plugins/destination/sqlite/v2/client/delete.go:82: | extractPredicateValues | 93.3% |
+| github.com/cloudquery/cloudquery/plugins/destination/sqlite/v2/client/delete.go:104: | unpackArray | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/sqlite/v2/client/deletestale.go:11: | DeleteStale | 92.3% |
 | github.com/cloudquery/cloudquery/plugins/destination/sqlite/v2/client/migrate.go:30: | identifier | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/sqlite/v2/client/migrate.go:34: | sqliteTables | 91.7% |
@@ -52,4 +53,4 @@
 | github.com/cloudquery/cloudquery/plugins/destination/sqlite/v2/typeconv/special.go:18: | float16Value | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/sqlite/v2/typeconv/special.go:28: | byteArrValue | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/sqlite/v2/typeconv/values.go:8: | FromArray | 11.1% |
-| total: | (statements) | 83.2% |
+| total: | (statements) | 84.1% |

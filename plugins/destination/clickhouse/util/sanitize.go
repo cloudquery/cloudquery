@@ -4,44 +4,24 @@ import (
 	"strings"
 )
 
-func UnquoteID(sanitizedID string) string {
-	if len(sanitizedID) >= 2 && sanitizedID[0] == '`' && sanitizedID[len(sanitizedID)-1] == '`' {
-		return unescapeBacktickIdentifier(sanitizedID[1 : len(sanitizedID)-1])
-	}
-	return strings.Trim(sanitizedID, "`")
-}
+var (
+	idEscaper   = strings.NewReplacer(`\`, `\\`, "`", "\\`")
+	idUnescaper = strings.NewReplacer(`\\`, `\`, "\\`", "`")
+)
 
-func unescapeBacktickIdentifier(s string) string {
-	var b strings.Builder
-	b.Grow(len(s))
-	for i := 0; i < len(s); i++ {
-		switch s[i] {
-		case '`':
-			if i+1 < len(s) && s[i+1] == '`' {
-				b.WriteByte('`')
-				i++
-				continue
-			}
-			b.WriteByte('`')
-		case '\\':
-			if i+1 < len(s) && (s[i+1] == '\\' || s[i+1] == '`') {
-				b.WriteByte(s[i+1])
-				i++
-				continue
-			}
-			b.WriteByte('\\')
-		default:
-			b.WriteByte(s[i])
-		}
+func UnquoteID(sanitizedID string) string {
+	if len(sanitizedID) < 2 || !strings.HasPrefix(sanitizedID, "`") || !strings.HasSuffix(sanitizedID, "`") {
+		return strings.Trim(sanitizedID, "`")
 	}
-	return b.String()
+	return idUnescaper.Replace(sanitizedID[1 : len(sanitizedID)-1])
 }
 
 func SanitizeID(id string) string {
-	id = strings.ReplaceAll(id, string([]byte{0}), "")
-	id = strings.ReplaceAll(id, `\`, `\\`)
-	id = strings.ReplaceAll(id, "`", "``")
-	return "`" + id + "`"
+	return "`" + idEscaper.Replace(StoredName(id)) + "`"
+}
+
+func StoredName(id string) string {
+	return strings.ReplaceAll(id, "\x00", "")
 }
 
 func Sanitized(elems ...string) []string {

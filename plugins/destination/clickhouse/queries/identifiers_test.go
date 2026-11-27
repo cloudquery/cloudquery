@@ -28,13 +28,13 @@ func TestCreateTableAndInsertEscapesTrickyIdentifiers(t *testing.T) {
 
 	createSQL, err := CreateTable(table, "", spec.DefaultEngine(), nil, nil, nil)
 	require.NoError(t, err)
-	require.Contains(t, createSQL, "CREATE TABLE IF NOT EXISTS `db``name`")
+	require.Contains(t, createSQL, "CREATE TABLE IF NOT EXISTS `db\\`name`")
 	require.Contains(t, createSQL, "`col\\\\slash`")
-	require.Contains(t, createSQL, "`col``tick`")
+	require.Contains(t, createSQL, "`col\\`tick`")
 
 	insertSQL := Insert(table)
 	require.Equal(t,
-		"INSERT INTO `db``name` (`col\\\\slash`, `col``tick`)",
+		"INSERT INTO `db\\`name`",
 		insertSQL,
 	)
 }

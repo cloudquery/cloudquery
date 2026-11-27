@@ -54,7 +54,10 @@ func (c *Client) WriteTable(ctx context.Context, msgs <-chan *message.WriteInser
 	for msg := range msgs {
 		if s == nil {
 			table := msg.GetTable()
-			objKey := c.spec.ReplacePathVariables(table.Name, uuid.NewString(), time.Now().UTC(), c.syncID)
+			objKey, err := c.spec.ReplacePathVariables(table.Name, uuid.NewString(), time.Now().UTC(), c.syncID)
+			if err != nil {
+				return err
+			}
 			// if object was already initialized, use the same key
 			c.initializedTablesLock.Lock()
 			if val, ok := c.initializedTables[table.Name]; ok {
@@ -63,7 +66,6 @@ func (c *Client) WriteTable(ctx context.Context, msgs <-chan *message.WriteInser
 			}
 			c.initializedTablesLock.Unlock()
 
-			var err error
 			s, err = c.createObject(ctx, table, objKey)
 			if err != nil {
 				return err
@@ -101,7 +103,11 @@ func (c *Client) MigrateTable(ctx context.Context, ch <-chan *message.WriteMigra
 			continue
 		}
 		table := msg.GetTable()
-		objKey := c.spec.ReplacePathVariables(table.Name, uuid.NewString(), time.Now().UTC(), c.syncID)
+		objKey, err := c.spec.ReplacePathVariables(table.Name, uuid.NewString(), time.Now().UTC(), c.syncID)
+		if err != nil {
+			errs = append(errs, err)
+			continue
+		}
 		// We don't need any locking here because all messages for the same table are processed sequentially
 		c.initializedTables[table.Name] = objKey
 		s, err := c.createObject(ctx, table, objKey)

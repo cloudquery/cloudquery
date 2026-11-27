@@ -24,7 +24,7 @@ func getTestConnection() string {
 
 func TestPlugin(t *testing.T) {
 	ctx := context.Background()
-	p := plugin.NewPlugin("mssql", "development", New)
+	p := plugin.NewPlugin("mssql", "development", New, plugin.WithFlushSupport())
 	s := &Spec{ConnectionString: getTestConnection()}
 	b, err := json.Marshal(s)
 	require.NoError(t, err)
