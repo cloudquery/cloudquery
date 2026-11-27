@@ -15,12 +15,21 @@ on:
     paths:
       - "plugins/destination/postgresql/**"
       - ".github/workflows/dest_postgresql.yml"
+  merge_group:
 
 permissions:
   contents: read
 
 jobs:
+  changes:
+    if: github.event_name == 'merge_group'
+    uses: ./.github/workflows/changed_files.yml
+    with:
+      trigger_paths: true
+
   plugins-destination-postgresql:
+    needs: changes
+    if: ${{ !cancelled() && needs.changes.outputs.any_changed != 'false' }}
     timeout-minutes: 30
     name: "plugins/destination/postgresql"
     runs-on: ubuntu-latest
@@ -65,6 +74,8 @@ jobs:
         run: make test-cockroachdb
 
   validate-fips:
+    needs: changes
+    if: ${{ !cancelled() && needs.changes.outputs.any_changed != 'false' }}
     timeout-minutes: 30
     runs-on: ubuntu-latest
     defaults:

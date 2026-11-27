@@ -6,6 +6,7 @@ on:
       - opened
       - edited
       - synchronize
+  merge_group:
 
 permissions:
   pull-requests: read
@@ -15,7 +16,7 @@ jobs:
     timeout-minutes: 5
     name: validate-pr-title
     runs-on: ubuntu-latest
-    if: github.event.pull_request.user.login != 'cloudquery-ci[bot]'
+    if: github.event_name == 'pull_request' && github.event.pull_request.user.login != 'cloudquery-ci[bot]'
     steps:
       # Please look up the latest version from
       # https://github.com/amannn/action-semantic-pull-request/releases

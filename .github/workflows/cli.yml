@@ -15,12 +15,21 @@ on:
     paths:
       - "cli/**"
       - ".github/workflows/cli.yml"
+  merge_group:
 
 permissions:
   contents: read
 
 jobs:
+  changes:
+    if: github.event_name == 'merge_group'
+    uses: ./.github/workflows/changed_files.yml
+    with:
+      trigger_paths: true
+
   cli:
+    needs: changes
+    if: ${{ !cancelled() && needs.changes.outputs.any_changed != 'false' }}
     timeout-minutes: 30
     name: "cli"
     runs-on: ${{ matrix.os }}

@@ -15,12 +15,21 @@ on:
     paths:
       - "plugins/transformer/test/**"
       - ".github/workflows/transf_test.yml"
+  merge_group:
 
 permissions:
   contents: read
 
 jobs:
+  changes:
+    if: github.event_name == 'merge_group'
+    uses: ./.github/workflows/changed_files.yml
+    with:
+      trigger_paths: true
+
   plugins-transformer-test:
+    needs: changes
+    if: ${{ !cancelled() && needs.changes.outputs.any_changed != 'false' }}
     timeout-minutes: 30
     name: "plugins/transformer/test"
     runs-on: ubuntu-latest

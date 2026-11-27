@@ -15,12 +15,21 @@ on:
     paths:
       - "plugins/destination/mongodb/**"
       - ".github/workflows/dest_mongodb.yml"
+  merge_group:
 
 permissions:
   contents: read
 
 jobs:
+  changes:
+    if: github.event_name == 'merge_group'
+    uses: ./.github/workflows/changed_files.yml
+    with:
+      trigger_paths: true
+
   prepare:
+    needs: changes
+    if: ${{ !cancelled() && needs.changes.outputs.any_changed != 'false' }}
     timeout-minutes: 15
     name: "plugins/destination/mongodb/prepare"
     runs-on: ubuntu-latest
@@ -61,6 +70,8 @@ jobs:
         run: go build .
 
   test:
+    needs: changes
+    if: ${{ !cancelled() && needs.changes.outputs.any_changed != 'false' }}
     timeout-minutes: 20
     name: "plugins/destination/mongodb/${{ matrix.topology }}"
     runs-on: ubuntu-latest
@@ -97,8 +108,8 @@ jobs:
         run: make test
 
   plugins-destination-mongodb:
-    if: always()
-    needs: [prepare, test]
+    if: ${{ always() && needs.changes.outputs.any_changed != 'false' }}
+    needs: [changes, prepare, test]
     name: "plugins/destination/mongodb"
     runs-on: ubuntu-latest
     steps:

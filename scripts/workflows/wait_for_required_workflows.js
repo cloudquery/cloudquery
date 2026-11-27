@@ -1,10 +1,14 @@
+const { eventCommits, listChangedFiles } = require('./changed_files.js')
+
 module.exports = async ({github, context}) => {
-    const files = process.env.FILES.split(' ')
-    console.log(files)
-    if (files.length >= 300) {
+    const changedFiles = await listChangedFiles({github, context, withPreviousNames: context.eventName === 'merge_group'})
+    console.log(changedFiles)
+    const filesCapped = !changedFiles
+    if (filesCapped && context.eventName !== 'merge_group') {
         // This is a GitHub limitation https://github.com/cloudquery/cloudquery/issues/2688
         throw new Error('Too many files changed. Skipping check. Please split your PR into multiple ones.')
     }
+    const files = changedFiles ?? []
 
     const fs = require("fs");
     let now = new Date().getTime()
@@ -15,7 +19,7 @@ module.exports = async ({github, context}) => {
         }
         try {
             const contents = fs.readFileSync(file, 'utf8');
-            return contents.includes(`name: "${action}"`)
+            return [`name: "${action}"`, `name: '${action}'`].some(name => contents.includes(name))
         } catch {
             return false
         }
@@ -45,7 +49,11 @@ module.exports = async ({github, context}) => {
     const transformers = fs.readdirSync("plugins/transformer", {withFileTypes: true}).filter(dirent => dirent.isDirectory()).map(dirent => `plugins/transformer/${dirent.name}`)
     const allComponents = ["cli", "scaffold", ...sources, ...destinations, ...transformers]
     console.log(`All components: ${allComponents.join(", ")}`)
-    let actions = allComponents.filter(action => matchesFile(action))
+    const hasWorkflow = (action) => fs.readdirSync(".github/workflows").some(file => matchesWorkflow(`.github/workflows/${file}`, action))
+    const componentsWithWorkflow = allComponents.filter(hasWorkflow)
+    let actions = filesCapped
+        ? componentsWithWorkflow
+        : componentsWithWorkflow.filter(action => matchesFile(action))
     if (actions.length === 0) {
         console.log("No actions to wait for")
         return
@@ -79,13 +87,12 @@ module.exports = async ({github, context}) => {
     }
 
     actions = [...new Set(actions)]
-    pendingActions = [...actions]
+    let pendingActions = [...actions]
     console.log(`Waiting for ${pendingActions.join(", ")}`)
     while (now <= deadline) {
         const checkRuns = await github.paginate(github.rest.checks.listForRef, {
-            owner: 'cloudquery',
-            repo: context.repo.repo,
-            ref: context.payload.pull_request.head.sha,
+            ...context.repo,
+            ref: eventCommits(context).head,
             status: 'completed',
             per_page: 100
         })
@@ -100,11 +107,11 @@ module.exports = async ({github, context}) => {
         }
         console.log(`Matching runs: ${matchingRuns.map(({name}) => name).join(", ")}`)
         console.log(`Actions: ${actions.join(", ")}`)
-        if (matchingRuns.length === actions.length) {
+        pendingActions = actions.filter(action => !matchingRuns.some(({name}) => name === action))
+        if (pendingActions.length === 0) {
             console.log("All required workflows have passed")
             return
         }
-        pendingActions = actions.filter(action => !runs.some(({name}) => name === action))
         console.log(`Waiting for ${pendingActions.join(", ")}`)
         await new Promise(r => setTimeout(r, 60000));
         now = new Date().getTime()

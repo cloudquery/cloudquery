@@ -10,11 +10,13 @@ on:
       - edited
       - synchronize
       - reopened
+  merge_group:
 permissions:
   contents: read
 
 jobs:
   doc-changes:
+    if: github.event_name == 'pull_request_target'
     permissions:
       contents: read
       pull-requests: write
@@ -114,6 +116,7 @@ jobs:
   ensure-breaking-changes-released-as-major-bump:
     runs-on: ubuntu-latest
     needs: [doc-changes]
+    if: github.event_name == 'pull_request_target'
     steps:
       - name: Should enforce check
         id: enforce

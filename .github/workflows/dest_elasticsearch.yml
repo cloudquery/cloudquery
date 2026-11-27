@@ -15,12 +15,21 @@ on:
     paths:
       - "plugins/destination/elasticsearch/**"
       - ".github/workflows/dest_elasticsearch.yml"
+  merge_group:
 
 permissions:
   contents: read
 
 jobs:
+  changes:
+    if: github.event_name == 'merge_group'
+    uses: ./.github/workflows/changed_files.yml
+    with:
+      trigger_paths: true
+
   plugins-destination-elasticsearch:
+    needs: changes
+    if: ${{ !cancelled() && needs.changes.outputs.any_changed != 'false' }}
     timeout-minutes: 10
     name: "plugins/destination/elasticsearch"
     runs-on: ubuntu-latest
