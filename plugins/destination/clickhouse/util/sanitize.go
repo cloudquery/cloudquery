@@ -4,12 +4,24 @@ import (
 	"strings"
 )
 
+var (
+	idEscaper   = strings.NewReplacer(`\`, `\\`, "`", "\\`")
+	idUnescaper = strings.NewReplacer(`\\`, `\`, "\\`", "`")
+)
+
 func UnquoteID(sanitizedID string) string {
-	return strings.Trim(sanitizedID, "`")
+	if len(sanitizedID) < 2 || !strings.HasPrefix(sanitizedID, "`") || !strings.HasSuffix(sanitizedID, "`") {
+		return strings.Trim(sanitizedID, "`")
+	}
+	return idUnescaper.Replace(sanitizedID[1 : len(sanitizedID)-1])
 }
 
 func SanitizeID(id string) string {
-	return "`" + strings.ReplaceAll(id, string([]byte{0}), ``) + "`"
+	return "`" + idEscaper.Replace(StoredName(id)) + "`"
+}
+
+func StoredName(id string) string {
+	return strings.ReplaceAll(id, "\x00", "")
 }
 
 func Sanitized(elems ...string) []string {

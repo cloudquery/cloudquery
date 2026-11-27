@@ -4,11 +4,11 @@
 | github.com/cloudquery/cloudquery/plugins/source/xkcd/client/spec.go:7: | Validate | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/source/xkcd/client/spec.go:11: | SetDefaults | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/source/xkcd/client/testing.go:18: | TestHelper | 0.0% |
-| github.com/cloudquery/cloudquery/plugins/source/xkcd/internal/xkcd/xkcd.go:32: | WithBaseURL | 0.0% |
-| github.com/cloudquery/cloudquery/plugins/source/xkcd/internal/xkcd/xkcd.go:38: | WithHTTPClient | 0.0% |
-| github.com/cloudquery/cloudquery/plugins/source/xkcd/internal/xkcd/xkcd.go:44: | NewClient | 0.0% |
-| github.com/cloudquery/cloudquery/plugins/source/xkcd/internal/xkcd/xkcd.go:55: | GetComic | 0.0% |
-| github.com/cloudquery/cloudquery/plugins/source/xkcd/internal/xkcd/xkcd.go:68: | GetLatestComic | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/source/xkcd/internal/xkcd/xkcd.go:36: | WithBaseURL | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/source/xkcd/internal/xkcd/xkcd.go:42: | WithHTTPClient | 100.0% |
+| github.com/cloudquery/cloudquery/plugins/source/xkcd/internal/xkcd/xkcd.go:48: | NewClient | 100.0% |
+| github.com/cloudquery/cloudquery/plugins/source/xkcd/internal/xkcd/xkcd.go:59: | GetComic | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/source/xkcd/internal/xkcd/xkcd.go:72: | GetLatestComic | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/source/xkcd/main.go:11: | main | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/source/xkcd/resources/plugin/client.go:34: | Logger | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/source/xkcd/resources/plugin/client.go:38: | Sync | 0.0% |
@@ -22,4 +22,4 @@
 | github.com/cloudquery/cloudquery/plugins/source/xkcd/resources/plugin/plugin.go:8: | Plugin | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/source/xkcd/resources/services/comic.go:13: | ComicsTable | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/source/xkcd/resources/services/comic.go:21: | fetchComics | 78.9% |
-| total: | (statements) | 20.1% |
+| total: | (statements) | 24.6% |

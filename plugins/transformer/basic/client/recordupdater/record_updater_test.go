@@ -386,7 +386,7 @@ func TestChangeCaseStringTransformations(t *testing.T) {
 	record := createTestRecord()
 	updater := New(record)
 
-	updatedRecord, err := updater.ChangeCase(spec.KindUppercase, []string{"col1", "col2"})
+	updatedRecord, err := updater.ChangeCase(spec.KindUppercase, []string{"col1", "col2"}, false)
 	require.NoError(t, err)
 
 	require.Equal(t, int64(3), updatedRecord.NumCols())
@@ -399,7 +399,7 @@ func TestChangeCaseStringTransformations(t *testing.T) {
 	require.Equal(t, "VAL3", updatedRecord.Column(1).(*array.String).Value(0))
 	require.Equal(t, "VAL4", updatedRecord.Column(1).(*array.String).Value(1))
 
-	updatedRecord, err = updater.ChangeCase(spec.KindLowercase, []string{"col1", "col2"})
+	updatedRecord, err = updater.ChangeCase(spec.KindLowercase, []string{"col1", "col2"}, false)
 	require.NoError(t, err)
 	require.Equal(t, int64(3), updatedRecord.NumCols())
 	require.Equal(t, int64(2), updatedRecord.NumRows())
@@ -416,7 +416,7 @@ func TestChangeCaseJsonPath(t *testing.T) {
 	record := createTestRecord()
 	updater := New(record)
 
-	updatedRecord, err := updater.ChangeCase(spec.KindUppercase, []string{"col3.foo.bar.0", "col3.foo.bar.1", "col3.hello"})
+	updatedRecord, err := updater.ChangeCase(spec.KindUppercase, []string{"col3.foo.bar.0", "col3.foo.bar.1", "col3.hello"}, false)
 	require.NoError(t, err)
 
 	require.Equal(t, int64(3), updatedRecord.NumCols())
@@ -431,7 +431,7 @@ func TestChangeCaseJsonPath(t *testing.T) {
 	require.Equal(t, "val3", updatedRecord.Column(1).(*array.String).Value(0))
 	require.Equal(t, "val4", updatedRecord.Column(1).(*array.String).Value(1))
 
-	updatedRecord, err = updater.ChangeCase(spec.KindLowercase, []string{"col3.foo.bar.0", "col3.foo.bar.1", "col3.hello"})
+	updatedRecord, err = updater.ChangeCase(spec.KindLowercase, []string{"col3.foo.bar.0", "col3.foo.bar.1", "col3.hello"}, false)
 	require.NoError(t, err)
 	require.Equal(t, int64(3), updatedRecord.NumCols())
 	require.Equal(t, int64(2), updatedRecord.NumRows())
@@ -449,21 +449,21 @@ func TestChangeCaseJsonPath(t *testing.T) {
 func TestChangeCaseEntireJson(t *testing.T) {
 	record := createTestRecord()
 	updater := New(record)
-	updatedRecord, err := updater.ChangeCase(spec.KindUppercase, []string{"col3"})
+	updatedRecord, err := updater.ChangeCase(spec.KindUppercase, []string{"col3"}, false)
 	require.NoError(t, err)
 	require.Equal(t, int64(3), updatedRecord.NumCols())
 	require.Equal(t, int64(2), updatedRecord.NumRows())
 	requireAllColsLenMatchRecordsLen(t, updatedRecord)
 	require.Equal(t, "col1", updatedRecord.ColumnName(0))
 	require.Equal(t, "col2", updatedRecord.ColumnName(1))
-	assert.Equal(t, `{"FOO":{"BAR":["A","B","C"]},"HELLO":"WORLD"}`, updatedRecord.Column(2).ValueStr(0))
-	assert.Equal(t, `{"FOO":{"BAR":["D","E","F"]}}`, updatedRecord.Column(2).ValueStr(1))
+	assert.Equal(t, `{"foo":{"bar":["A","B","C"]},"hello":"WORLD"}`, updatedRecord.Column(2).ValueStr(0))
+	assert.Equal(t, `{"foo":{"bar":["D","E","F"]}}`, updatedRecord.Column(2).ValueStr(1))
 	require.Equal(t, "val1", updatedRecord.Column(0).(*array.String).Value(0))
 	require.Equal(t, "val2", updatedRecord.Column(0).(*array.String).Value(1))
 	require.Equal(t, "val3", updatedRecord.Column(1).(*array.String).Value(0))
 	require.Equal(t, "val4", updatedRecord.Column(1).(*array.String).Value(1))
 
-	updatedRecord, err = updater.ChangeCase(spec.KindLowercase, []string{"col3"})
+	updatedRecord, err = updater.ChangeCase(spec.KindLowercase, []string{"col3"}, false)
 	require.NoError(t, err)
 	require.Equal(t, int64(3), updatedRecord.NumCols())
 	require.Equal(t, int64(2), updatedRecord.NumRows())
@@ -476,6 +476,81 @@ func TestChangeCaseEntireJson(t *testing.T) {
 	require.Equal(t, "val2", updatedRecord.Column(0).(*array.String).Value(1))
 	require.Equal(t, "val3", updatedRecord.Column(1).(*array.String).Value(0))
 	require.Equal(t, "val4", updatedRecord.Column(1).(*array.String).Value(1))
+}
+
+func createJSONColumnRecord(rows []*string) arrow.RecordBatch {
+	md := arrow.NewMetadata([]string{schema.MetadataTableName}, []string{"testTable"})
+	bld := array.NewRecordBuilder(memory.DefaultAllocator, arrow.NewSchema(
+		[]arrow.Field{{Name: "col1", Type: types.NewJSONType(), Nullable: true}},
+		&md,
+	))
+	defer bld.Release()
+	jb := bld.Field(0).(*types.JSONBuilder)
+	for _, row := range rows {
+		if row == nil {
+			jb.AppendNull()
+			continue
+		}
+		jb.AppendBytes([]byte(*row))
+	}
+	return bld.NewRecordBatch()
+}
+
+func strPtr(s string) *string { return &s }
+
+func TestRemoveColumnsJSONPathKeepsNullCells(t *testing.T) {
+	record := createJSONColumnRecord([]*string{strPtr(`{"hello":"world","keep":1}`), nil})
+	updatedRecord, err := New(record).RemoveColumns([]string{"col1.hello"})
+	require.NoError(t, err)
+	require.Equal(t, int64(2), updatedRecord.NumRows())
+	requireAllColsLenMatchRecordsLen(t, updatedRecord)
+	assert.Equal(t, `{"keep":1}`, updatedRecord.Column(0).ValueStr(0))
+	assert.True(t, updatedRecord.Column(0).IsNull(1))
+}
+
+func TestChangeCaseEntireJSONKeepsKeysAndLiterals(t *testing.T) {
+	record := createJSONColumnRecord([]*string{
+		strPtr(`{"Key":"a\nb\u00e9","t":true,"f":false,"n":null,"num":1.50,"big":12345678901234567890,"arr":[{"x":"y"},["z",1,null]],"html":"<a&b>"}`),
+		nil,
+		strPtr(`"abc"`),
+		strPtr(`true`),
+		strPtr(`null`),
+		strPtr(`not json`),
+	})
+	updatedRecord, err := New(record).ChangeCase(spec.KindUppercase, []string{"col1"}, false)
+	require.NoError(t, err)
+	require.Equal(t, int64(6), updatedRecord.NumRows())
+	requireAllColsLenMatchRecordsLen(t, updatedRecord)
+	col := updatedRecord.Column(0)
+	assert.Equal(t, `{"Key":"A\nBÉ","t":true,"f":false,"n":null,"num":1.50,"big":12345678901234567890,"arr":[{"x":"Y"},["Z",1,null]],"html":"<A&B>"}`, col.ValueStr(0))
+	assert.True(t, col.IsNull(1))
+	assert.Equal(t, `"ABC"`, col.ValueStr(2))
+	assert.Equal(t, `true`, col.ValueStr(3))
+	assert.Equal(t, `null`, col.ValueStr(4))
+	assert.Equal(t, `not json`, col.ValueStr(5))
+	for _, i := range []int{0, 2, 3, 4} {
+		assert.True(t, gjson.Valid(col.ValueStr(i)), "row %d is not valid JSON: %s", i, col.ValueStr(i))
+	}
+}
+
+func TestChangeCaseEntireJSONIncludeKeys(t *testing.T) {
+	input := `{"Foo":{"bar":[true,"x"]},"Ünï":"v"}`
+
+	updatedRecord, err := New(createJSONColumnRecord([]*string{strPtr(input)})).ChangeCase(spec.KindUppercase, []string{"col1"}, true)
+	require.NoError(t, err)
+	assert.Equal(t, `{"FOO":{"BAR":[true,"X"]},"ÜNÏ":"V"}`, updatedRecord.Column(0).ValueStr(0))
+
+	updatedRecord, err = New(createJSONColumnRecord([]*string{strPtr(input)})).ChangeCase(spec.KindLowercase, []string{"col1"}, true)
+	require.NoError(t, err)
+	assert.Equal(t, `{"foo":{"bar":[true,"x"]},"ünï":"v"}`, updatedRecord.Column(0).ValueStr(0))
+}
+
+func TestChangeCaseEntireJSONKeepsEscapesOfUnchangedStrings(t *testing.T) {
+	input := `{"K\u00e9y":"\u00e9t\u00e9","Mixed":"Caf\u00e9"}`
+
+	updatedRecord, err := New(createJSONColumnRecord([]*string{strPtr(input)})).ChangeCase(spec.KindLowercase, []string{"col1"}, true)
+	require.NoError(t, err)
+	assert.Equal(t, `{"kéy":"\u00e9t\u00e9","mixed":"café"}`, updatedRecord.Column(0).ValueStr(0))
 }
 
 func TestObfuscateNestedColumnsWithGjsonSyntax(t *testing.T) {

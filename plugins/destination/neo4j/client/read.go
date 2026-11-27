@@ -97,12 +97,23 @@ func (c *Client) reverseTransformer(table *schema.Table, node *neo4j.Node) (arro
 	return rec, nil
 }
 
+func readStatement(tableName string) (string, error) {
+	label, err := quoteIdentifier(tableName)
+	if err != nil {
+		return "", err
+	}
+	return fmt.Sprintf(readCypher, label), nil
+}
+
 func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow.RecordBatch) error {
-	stmt := fmt.Sprintf(readCypher, table.Name)
+	stmt, err := readStatement(table.Name)
+	if err != nil {
+		return err
+	}
 
 	session := c.Session(ctx, neo4j.SessionConfig{AccessMode: neo4j.AccessModeRead})
 	defer session.Close(ctx)
-	_, err := session.ExecuteRead(ctx, func(tx neo4j.ManagedTransaction) (any, error) {
+	_, err = session.ExecuteRead(ctx, func(tx neo4j.ManagedTransaction) (any, error) {
 		r, err := tx.Run(ctx, stmt, map[string]any{})
 		if err != nil {
 			return nil, err

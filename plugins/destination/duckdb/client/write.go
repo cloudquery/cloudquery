@@ -62,13 +62,13 @@ func duckDBType(c schema.Column) string {
 func (c *Client) upsert(ctx context.Context, tmpTableName string, table *schema.Table) error {
 	var sb strings.Builder
 	sb.WriteString("INSERT INTO ")
-	sb.WriteString(table.Name)
+	sb.WriteString(sanitizeID(table.Name))
 	sb.WriteString("(" + strings.Join(sanitized(table.Columns.Names()), ", ") + ")")
 	sb.WriteString(" SELECT ")
 	sb.WriteString(strings.Join(sanitized(table.Columns.Names()), ", "))
 	sb.WriteString(" FROM ")
-	sb.WriteString(tmpTableName)
-	sb.WriteString(" ON CONFLICT (" + strings.Join(table.PrimaryKeys(), ", ") + ")")
+	sb.WriteString(sanitizeID(tmpTableName))
+	sb.WriteString(" ON CONFLICT (" + strings.Join(sanitized(table.PrimaryKeys()), ", ") + ")")
 	indices := nonPkIndices(table)
 	if len(indices) == 0 {
 		sb.WriteString(" DO NOTHING")
@@ -105,23 +105,24 @@ func (c *Client) upsert(ctx context.Context, tmpTableName string, table *schema.
 
 func (c *Client) deleteByPK(ctx context.Context, tmpTableName string, table *schema.Table) error {
 	var sb strings.Builder
-	sb.WriteString("delete from " + table.Name + " using " + tmpTableName + " where ")
+	target, tmp := sanitizeID(table.Name), sanitizeID(tmpTableName)
+	sb.WriteString("delete from " + target + " using " + tmp + " where ")
 	for i, col := range table.PrimaryKeys() {
 		if i > 0 {
 			sb.WriteString(" and ")
 		}
-		sb.WriteString(table.Name + "." + sanitizeID(col))
+		sb.WriteString(target + "." + sanitizeID(col))
 		sb.WriteString(" = ")
-		sb.WriteString(tmpTableName + "." + sanitizeID(col))
+		sb.WriteString(tmp + "." + sanitizeID(col))
 	}
 
 	return c.exec(ctx, sb.String())
 }
 
 func (c *Client) copyFromFile(ctx context.Context, tableName string, fileName string, table *schema.Table) error {
-	return c.exec(ctx, "copy "+tableName+
+	return c.exec(ctx, "copy "+sanitizeID(tableName)+
 		"("+strings.Join(sanitized(table.Columns.Names()), ", ")+
-		") from '"+fileName+"' (FORMAT PARQUET)")
+		") from "+sanitizeLiteral(fileName)+" (FORMAT PARQUET)")
 }
 
 func (c *Client) Write(ctx context.Context, msgs <-chan message.WriteMessage) error {
@@ -163,7 +164,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.
 		return fmt.Errorf("failed to create table %s: %w", tmpTableName, err)
 	}
 	defer func() {
-		e := c.exec(ctx, "drop table "+tmpTableName)
+		e := c.exec(ctx, "drop table "+sanitizeID(tmpTableName))
 		if err == nil {
 			// we preserve original error, so update only on nil err
 			err = e
@@ -228,12 +229,12 @@ func (c *Client) deleteInsert(ctx context.Context, tmpTableName string, table *s
 
 	sb := new(strings.Builder)
 	sb.WriteString("INSERT INTO ")
-	sb.WriteString(table.Name)
+	sb.WriteString(sanitizeID(table.Name))
 	sb.WriteString("(" + strings.Join(sanitized(table.Columns.Names()), ", ") + ")")
 	sb.WriteString(" SELECT ")
 	sb.WriteString(strings.Join(sanitized(table.Columns.Names()), ", "))
 	sb.WriteString(" FROM ")
-	sb.WriteString(tmpTableName)
+	sb.WriteString(sanitizeID(tmpTableName))
 	sb.WriteString(" ON CONFLICT DO NOTHING")
 	query := sb.String()
 

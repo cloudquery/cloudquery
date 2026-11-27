@@ -17,27 +17,22 @@ jobs:
       - name: Check if was manually approved
         id: manually_approved
         run: |
-          manually_approved=${{ github.event_name == 'repository_dispatch' && github.event.client_payload.slash_command.args.named.sha != '' && contains(github.event.client_payload.pull_request.head.sha, github.event.client_payload.slash_command.args.named.sha) }}
+          manually_approved=${{ github.event_name == 'repository_dispatch' && github.event.client_payload.pull_request.head.sha != '' && github.event.client_payload.slash_command.args.named.sha == github.event.client_payload.pull_request.head.sha }}
           echo "result=${manually_approved}" >> $GITHUB_OUTPUT
   gen:
     timeout-minutes: 30
     needs: [ok-to-run]
     if: github.event_name == 'repository_dispatch' && github.event.action == 'gen-command' && needs.ok-to-run.outputs.status == 'true'
     runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.diff.outputs.changed }}
     steps:
-      - name: Generate GitHub App token
-        id: app-token
-        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3
-        with:
-          app-id: ${{ secrets.CQ_APP_ID }}
-          private-key: ${{ secrets.CQ_APP_PRIVATE_KEY }}
-          permission-contents: write
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
-          ref: ${{ github.event.client_payload.slash_command.args.named.sha }}
+          ref: ${{ github.event.client_payload.pull_request.head.sha }}
           repository: ${{ github.event.client_payload.pull_request.head.repo.full_name }}
-          token: ${{ steps.app-token.outputs.token }}
+          persist-credentials: false
 
       - name: Read CloudQuery CLI version
         id: cloudquery-cli-version
@@ -57,19 +52,53 @@ jobs:
         with:
           go-version-file: ${{ github.event.client_payload.slash_command.args.named.dir }}/go.mod
           cache: false
-      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
-        with:
-          path: |
-            ~/.cache/go-build
-            ~/go/pkg/mod
-          key: ${{ runner.os }}-go-${{ steps.setup-go.outputs.go-version }}-gen-${{ github.event.client_payload.slash_command.args.named.dir }}-${{ hashFiles(format('{0}/go.sum', github.event.client_payload.slash_command.args.named.dir)) }}
-          restore-keys: |
-            ${{ runner.os }}-go-${{ steps.setup-go.outputs.go-version }}-gen-${{ github.event.client_payload.slash_command.args.named.dir }}-
 
       - name: Generate code
         run: make gen
         working-directory: ${{ github.event.client_payload.slash_command.args.named.dir }}
 
+      - name: Create patch
+        id: diff
+        run: |
+          git add --all
+          git diff --cached --binary > "$RUNNER_TEMP/gen.patch"
+          if [ -s "$RUNNER_TEMP/gen.patch" ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        if: steps.diff.outputs.changed == 'true'
+        with:
+          name: gen-patch
+          path: ${{ runner.temp }}/gen.patch
+          retention-days: 1
+
+  push:
+    timeout-minutes: 10
+    needs: [gen]
+    if: needs.gen.outputs.changed == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3
+        with:
+          app-id: ${{ secrets.CQ_APP_ID }}
+          private-key: ${{ secrets.CQ_APP_PRIVATE_KEY }}
+          permission-contents: write
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ github.event.client_payload.pull_request.head.sha }}
+          repository: ${{ github.event.client_payload.pull_request.head.repo.full_name }}
+          token: ${{ steps.app-token.outputs.token }}
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
+        with:
+          name: gen-patch
+          path: ${{ runner.temp }}
+      - name: Apply patch
+        run: git apply --index "$RUNNER_TEMP/gen.patch"
       - uses: stefanzweifel/git-auto-commit-action@d0b01107b5db882071f96de5dd4b54961ea93f4c # v7
         with:
           commit_message: "chore: Update code and docs"

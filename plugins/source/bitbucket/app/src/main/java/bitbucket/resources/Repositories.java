@@ -22,9 +22,9 @@ public class Repositories {
     return (clientMeta, parent, stream) -> {
       BitbucketClient bitbucketClient = (BitbucketClient) clientMeta;
 
-      String workspaceName = ((Workspace) parent.getItem()).getName();
+      String workspaceSlug = ((Workspace) parent.getItem()).getSlug();
 
-      bitbucketClient.listRepositoriesForWorkspace(workspaceName).forEach(stream::write);
+      bitbucketClient.listRepositoriesForWorkspace(workspaceSlug).forEach(stream::write);
     };
   }
 }

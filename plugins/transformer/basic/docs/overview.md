@@ -56,6 +56,19 @@ spec:
         tables: ["example"]
         columns: ["tags.hello", "tags.foo.bar.1", "tags.kubectl\\.kubernetes\\.io\\/last-applied-configuration"]
 ```
+
+`uppercase` and `lowercase` change only string values inside a JSON column: object keys, numbers, booleans and `null` are left as they are. Valid JSON stays valid; invalid JSON is left as is. To also change object keys when a whole JSON column is listed, set `include_keys: true` on the transformation:
+```yaml copy
+      - kind: lowercase
+        tables: ["example"]
+        columns: ["tags"]
+        include_keys: true
+```
+
+`include_keys` applies only to whole JSON columns, not to JSON paths. Changing the case of keys can make two keys identical: `{"a":1,"A":2}` becomes `{"A":1,"A":2}`, and destinations that store JSON as `jsonb` keep only the last one.
+
+Upgrade note: before this version, `uppercase` and `lowercase` also changed object keys in whole JSON columns. Keys now keep their case by default. Set `include_keys: true` to keep the old output.
+
 To obfuscate nested JSON arrays like: column `example_column` with value: `{"top_foo":[{"foo": "baz0"},{"foo": "baz1"},{"foo": "baz2"}]}` you can use the following syntax:
 
 ```yaml copy

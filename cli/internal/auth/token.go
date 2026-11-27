@@ -8,8 +8,15 @@ import (
 	"github.com/rs/zerolog"
 )
 
+const cloudQueryDockerRegistryHost = "docker.cloudquery.io"
+
+func isCloudQueryDockerRegistryPath(path string) bool {
+	host, _, _ := strings.Cut(path, "/")
+	return host == cloudQueryDockerRegistryHost
+}
+
 func tokenNeeded(registry specs.Registry, path string) bool {
-	return registry == specs.RegistryCloudQuery || (registry == specs.RegistryDocker && strings.HasPrefix(path, "docker.cloudquery.io"))
+	return registry == specs.RegistryCloudQuery || (registry == specs.RegistryDocker && isCloudQueryDockerRegistryPath(path))
 }
 
 func transformerNeedsToken(transformers []*specs.Transformer) bool {

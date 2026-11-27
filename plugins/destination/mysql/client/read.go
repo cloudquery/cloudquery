@@ -223,14 +223,16 @@ func reverseTransform(table *arrow.Schema, values []any) (arrow.RecordBatch, err
 	return rec, nil
 }
 
-func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow.RecordBatch) error {
+func readQuery(table *schema.Table) string {
 	colNames := make([]string, len(table.Columns))
 	for i, col := range table.Columns {
 		colNames[i] = identifier(col.Name)
 	}
-	cols := strings.Join(colNames, ", ")
-	read := fmt.Sprintf(readSQL, cols, table.Name)
-	rows, err := c.db.QueryContext(ctx, read)
+	return fmt.Sprintf(readSQL, strings.Join(colNames, ", "), identifier(table.Name))
+}
+
+func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow.RecordBatch) error {
+	rows, err := c.db.QueryContext(ctx, readQuery(table))
 	if err != nil {
 		return err
 	}

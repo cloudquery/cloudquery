@@ -20,6 +20,11 @@ func (c *Client) WriteTableBatch(ctx context.Context, tableName string, msgs mes
 		return err
 	}
 
+	stmt, err := writeStatement(tableName, table.PrimaryKeys())
+	if err != nil {
+		return err
+	}
+
 	session := c.Session(ctx, neo4j.SessionConfig{AccessMode: neo4j.AccessModeWrite})
 	defer session.Close(ctx)
 
@@ -28,28 +33,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, tableName string, msgs mes
 		rows = append(rows, transformValues(msgs[i].Record)...)
 	}
 
-	var sb strings.Builder
-	pks := table.PrimaryKeys()
-	if len(pks) == 0 {
-		sb.WriteString("UNWIND $rows AS row CREATE (t:")
-		sb.WriteString(tableName)
-		sb.WriteString(") SET t = row")
-	} else {
-		sb.WriteString("UNWIND $rows AS row MERGE (t:")
-		sb.WriteString(tableName)
-		sb.WriteString(" {")
-		for i, column := range pks {
-			if i != 0 {
-				sb.WriteString(", ")
-			}
-			sb.WriteString(column)
-			sb.WriteString(": row.")
-			sb.WriteString(column)
-		}
-		sb.WriteString("}) SET t = row")
-	}
-	stmt := sb.String()
-	c.logger.Debug().Str("stmt", stmt).Any("rows", rows).Msg("Executing statement")
+	c.logger.Debug().Str("stmt", stmt).Int("rows", len(rows)).Msg("Executing statement")
 	if _, err := session.ExecuteWrite(ctx, func(tx neo4j.ManagedTransaction) (any, error) {
 		_, err := tx.Run(ctx, stmt, map[string]any{"rows": rows})
 		return nil, err
@@ -58,6 +42,25 @@ func (c *Client) WriteTableBatch(ctx context.Context, tableName string, msgs mes
 	}
 
 	return session.Close(ctx)
+}
+
+func writeStatement(tableName string, primaryKeys []string) (string, error) {
+	label, err := quoteIdentifier(tableName)
+	if err != nil {
+		return "", err
+	}
+	if len(primaryKeys) == 0 {
+		return "UNWIND $rows AS row CREATE (t:" + label + ") SET t = row", nil
+	}
+	keys := make([]string, len(primaryKeys))
+	for i, column := range primaryKeys {
+		key, err := quoteIdentifier(column)
+		if err != nil {
+			return "", err
+		}
+		keys[i] = key + ": row." + key
+	}
+	return "UNWIND $rows AS row MERGE (t:" + label + " {" + strings.Join(keys, ", ") + "}) SET t = row", nil
 }
 
 func (c *Client) Write(ctx context.Context, msgs <-chan message.WriteMessage) error {

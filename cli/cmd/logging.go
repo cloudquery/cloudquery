@@ -20,6 +20,7 @@ func initLogging(noLogFile bool, logLevel *enum.Enum, logFormat *enum.Enum, logC
 		return nil, err
 	}
 	var writers []io.Writer
+	var restrictErr error
 	if !noLogFile {
 		flags := os.O_CREATE | os.O_WRONLY
 		if logFileOverwrite {
@@ -27,10 +28,11 @@ func initLogging(noLogFile bool, logLevel *enum.Enum, logFormat *enum.Enum, logC
 		} else {
 			flags |= os.O_APPEND
 		}
-		logFile, err = os.OpenFile(logFileName, flags, 0666)
+		logFile, err = os.OpenFile(logFileName, flags, 0600)
 		if err != nil {
 			return nil, err
 		}
+		restrictErr = restrictToOwner(logFile)
 		if logFormat.String() == "text" {
 			// for file logging we don't need color. we can add it as an option but don't think it is useful
 			writers = append(writers, zerolog.ConsoleWriter{
@@ -62,5 +64,19 @@ func initLogging(noLogFile bool, logLevel *enum.Enum, logFormat *enum.Enum, logC
 	if env.TenantID() != "" {
 		log.Logger = log.Logger.With().Str("tenant_id", env.TenantID()).Logger()
 	}
+	if restrictErr != nil {
+		log.Warn().Err(restrictErr).Str("path", logFileName).Msg("failed to restrict log file permissions to owner")
+	}
 	return logFile, nil
+}
+
+func restrictToOwner(file *os.File) error {
+	info, err := file.Stat()
+	if err != nil {
+		return err
+	}
+	if !info.Mode().IsRegular() || info.Mode().Perm()&0o077 == 0 {
+		return nil
+	}
+	return file.Chmod(0600)
 }

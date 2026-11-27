@@ -4,13 +4,14 @@ go 1.27.3
 
 require (
 	github.com/Masterminds/semver v1.5.0
-	github.com/apache/arrow-go/v18 v18.8.0
+	github.com/adrg/xdg v0.5.3
+	github.com/apache/arrow-go/v18 v18.9.0
 	github.com/bradleyjkemp/cupaloy/v2 v2.8.0
 	github.com/cenkalti/backoff/v7 v7.0.2
 	github.com/cloudquery/cloudquery-api-go v1.14.13
 	github.com/cloudquery/codegen v0.4.1
-	github.com/cloudquery/plugin-pb-go v1.29.0
-	github.com/cloudquery/plugin-sdk/v4 v4.100.0
+	github.com/cloudquery/plugin-pb-go v1.29.2
+	github.com/cloudquery/plugin-sdk/v4 v4.100.2
 	github.com/distribution/reference v0.6.0
 	github.com/fatih/color v1.19.0
 	github.com/getsentry/sentry-go v0.50.0
@@ -54,16 +55,15 @@ require (
 	go.uber.org/zap v1.28.0
 	golang.org/x/exp v0.0.0-20261014143641-f0251eb4aa3e
 	golang.org/x/net v0.61.0
-	golang.org/x/sync v0.24.0
+	golang.org/x/sync v0.25.0
 	golang.org/x/term v0.47.0
-	google.golang.org/grpc v1.84.0
+	google.golang.org/grpc v1.85.0
 	google.golang.org/protobuf v1.36.12
 	gopkg.in/yaml.v3 v3.0.1
 )
 
 require (
 	github.com/Microsoft/go-winio v0.6.3 // indirect
-	github.com/adrg/xdg v0.5.3 // indirect
 	github.com/apapsch/go-jsonmerge/v2 v2.0.0 // indirect
 	github.com/avast/retry-go/v5 v5.0.0 // indirect
 	github.com/bahlo/generic-list-go v0.2.0 // indirect
@@ -84,7 +84,7 @@ require (
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-viper/mapstructure/v2 v2.5.0 // indirect
 	github.com/gobwas/glob v0.2.3 // indirect
-	github.com/goccy/go-json v0.11.2 // indirect
+	github.com/goccy/go-json v0.12.0 // indirect
 	github.com/golang/snappy v1.0.0 // indirect
 	github.com/google/flatbuffers v25.12.19+incompatible // indirect
 	github.com/google/go-tpm v0.9.8 // indirect
@@ -96,13 +96,13 @@ require (
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/klauspost/compress v1.20.3 // indirect
-	github.com/klauspost/cpuid/v2 v2.4.0 // indirect
+	github.com/klauspost/cpuid/v2 v2.4.2 // indirect
 	github.com/knadh/koanf/maps v0.1.3 // indirect
 	github.com/knadh/koanf/providers/confmap v1.0.1 // indirect
 	github.com/knadh/koanf/v2 v2.3.8 // indirect
 	github.com/mattn/go-colorable v0.1.14 // indirect
 	github.com/mattn/go-isatty v0.0.24 // indirect
-	github.com/mattn/go-runewidth v0.0.20 // indirect
+	github.com/mattn/go-runewidth v0.0.24 // indirect
 	github.com/mitchellh/colorstring v0.0.0-20190213212951-d06e56a500db // indirect
 	github.com/mitchellh/copystructure v1.2.0 // indirect
 	github.com/mitchellh/reflectwalk v1.0.2 // indirect
@@ -156,7 +156,4 @@ require (
 )
 
 // github.com/cloudquery/jsonschema @ cqmain
-replace github.com/invopop/jsonschema => github.com/cloudquery/jsonschema v0.0.0-20260703174721-45e7e20e0ed8
-
-// github.com/cloudquery/godebouncer @ fix-race
-replace github.com/vnteamopen/godebouncer => github.com/cloudquery/godebouncer v0.0.0-20260327151220-46b2aff37a9f
+replace github.com/invopop/jsonschema => github.com/cloudquery/jsonschema v0.0.0-20261126170215-3835a01020fb

@@ -38,14 +38,14 @@ body:
   - type: textarea
     attributes:
       label: Steps To Reproduce
-      description: Steps to reproduce the behavior
+      description: Minimal steps to reproduce the behavior. Include the exact commands, and a failing test or script if you have one.
       placeholder: |
         1. In this environment...
         2. With this config...
         3. Run '...'
         4. See error...
     validations:
-      required: false
+      required: true
 
   - type: textarea
     attributes:
@@ -77,9 +77,9 @@ body:
   
   - type: checkboxes
     attributes:
-      label: Pull request (optional)
+      label: Reproduction
       description: |
-        Pull requests are welcome for CLI and SDK features as they are both open source
+        Only the CloudQuery team and the external contributors that we invite can open pull requests. A minimal reproduction is the best way to help us fix this bug. See CONTRIBUTING.md.
       options:
-        - label: I can submit a pull request
+        - label: I can provide a minimal reproduction (configuration and commands, or a failing test)
           required: false
