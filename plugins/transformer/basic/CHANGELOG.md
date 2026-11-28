@@ -1,5 +1,27 @@
 # Changelog
 
+## [3.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v2.7.1...plugins-transformer-basic-v3.0.0) (2026-11-28)
+
+
+### ⚠ BREAKING CHANGES
+
+* `uppercase`/`lowercase` on a whole JSON column no longer change object keys. Set `include_keys: true` to keep the old output.
+
+### Bug Fixes
+
+* Apply hardening notes from the monorepo security audit ([#23748](https://github.com/cloudquery/cloudquery/issues/23748)) ([2d26af2](https://github.com/cloudquery/cloudquery/commit/2d26af257e85b46447b1da7fd0e58bca3128aef5))
+* **deps:** Update github.com/cloudquery/jsonschema digest to 3835a01 ([#23803](https://github.com/cloudquery/cloudquery/issues/23803)) ([f338333](https://github.com/cloudquery/cloudquery/commit/f338333cd47ca7384020827c3f91fbbdf7ff1ba8))
+* **deps:** Update github.com/cloudquery/sjson digest to 965b029 ([#23804](https://github.com/cloudquery/cloudquery/issues/23804)) ([f2c211a](https://github.com/cloudquery/cloudquery/commit/f2c211ad9aec923d405f04c04485b0e2f5825bd9))
+* **deps:** Update github.com/cloudquery/sjson digest to c6b9c45 ([#23759](https://github.com/cloudquery/cloudquery/issues/23759)) ([a38c433](https://github.com/cloudquery/cloudquery/commit/a38c433e5a94eeed61435aa92fbb009594bf0cb9))
+* **deps:** Update module github.com/apache/arrow-go/v18 to v18.9.0 ([#23789](https://github.com/cloudquery/cloudquery/issues/23789)) ([49c5dd6](https://github.com/cloudquery/cloudquery/commit/49c5dd6bb80af2cbb871025038e564387e2c5411))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.100.0 ([#23719](https://github.com/cloudquery/cloudquery/issues/23719)) ([d952904](https://github.com/cloudquery/cloudquery/commit/d95290441b4195038468a74128c5ea01d0c8ae98))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.100.1 ([#23725](https://github.com/cloudquery/cloudquery/issues/23725)) ([c90bb25](https://github.com/cloudquery/cloudquery/commit/c90bb25d6f4147365685e80c27a3699488174a6b))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.100.2 ([#23798](https://github.com/cloudquery/cloudquery/issues/23798)) ([190260b](https://github.com/cloudquery/cloudquery/commit/190260bb1916dc79a70ec1f31d349ce7027f223c))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.99.1 ([#23622](https://github.com/cloudquery/cloudquery/issues/23622)) ([2427faa](https://github.com/cloudquery/cloudquery/commit/2427faa717b7c5bc291e205de401d5f04dfc68d1))
+* **deps:** Update module github.com/tidwall/gjson to v1.20.0 ([#23695](https://github.com/cloudquery/cloudquery/issues/23695)) ([9d5478c](https://github.com/cloudquery/cloudquery/commit/9d5478cc148dac03c5cb3b31bc0d9f70ae74c056))
+* **deps:** Update module github.com/tidwall/pretty to v1.2.2 ([#23677](https://github.com/cloudquery/cloudquery/issues/23677)) ([7e0b757](https://github.com/cloudquery/cloudquery/commit/7e0b75718419d420b30b1bf587b44f08e1d343bc))
+* Write valid JSON when removing or changing case of JSON columns in basic transformer ([#23788](https://github.com/cloudquery/cloudquery/issues/23788)) ([1a8386e](https://github.com/cloudquery/cloudquery/commit/1a8386e3579ee888a7870b547c26079daf8a29c6))
+
 ## [2.7.1](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v2.7.0...plugins-transformer-basic-v2.7.1) (2026-10-21)
 
 
