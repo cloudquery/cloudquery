@@ -1,5 +1,18 @@
 # Changelog
 
+## [4.8.23](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v4.8.22...plugins-source-test-v4.8.23) (2026-11-28)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/jsonschema digest to 3835a01 ([#23803](https://github.com/cloudquery/cloudquery/issues/23803)) ([f338333](https://github.com/cloudquery/cloudquery/commit/f338333cd47ca7384020827c3f91fbbdf7ff1ba8))
+* **deps:** Update golang.org/x/exp digest to f0251eb ([#23598](https://github.com/cloudquery/cloudquery/issues/23598)) ([94a6e34](https://github.com/cloudquery/cloudquery/commit/94a6e3436577fd2d855f6f89fe60c4f7ce2ee67c))
+* **deps:** Update module github.com/apache/arrow-go/v18 to v18.9.0 ([#23789](https://github.com/cloudquery/cloudquery/issues/23789)) ([49c5dd6](https://github.com/cloudquery/cloudquery/commit/49c5dd6bb80af2cbb871025038e564387e2c5411))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.100.0 ([#23719](https://github.com/cloudquery/cloudquery/issues/23719)) ([d952904](https://github.com/cloudquery/cloudquery/commit/d95290441b4195038468a74128c5ea01d0c8ae98))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.100.1 ([#23725](https://github.com/cloudquery/cloudquery/issues/23725)) ([c90bb25](https://github.com/cloudquery/cloudquery/commit/c90bb25d6f4147365685e80c27a3699488174a6b))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.100.2 ([#23798](https://github.com/cloudquery/cloudquery/issues/23798)) ([190260b](https://github.com/cloudquery/cloudquery/commit/190260bb1916dc79a70ec1f31d349ce7027f223c))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.99.1 ([#23622](https://github.com/cloudquery/cloudquery/issues/23622)) ([2427faa](https://github.com/cloudquery/cloudquery/commit/2427faa717b7c5bc291e205de401d5f04dfc68d1))
+
 ## [4.8.22](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v4.8.21...plugins-source-test-v4.8.22) (2026-10-21)
 
 
