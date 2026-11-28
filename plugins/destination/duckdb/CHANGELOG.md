@@ -1,5 +1,24 @@
 # Changelog
 
+## [6.5.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v6.4.2...plugins-destination-duckdb-v6.5.0) (2026-11-28)
+
+
+### Features
+
+* Drop support for source plugins on protocol v1 and v2 (plugin-sdk v3 and older) ([#23705](https://github.com/cloudquery/cloudquery/issues/23705)) ([16e0c4d](https://github.com/cloudquery/cloudquery/commit/16e0c4d4e68843cdb3648dd281b7098b7a56e949))
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/jsonschema digest to 3835a01 ([#23803](https://github.com/cloudquery/cloudquery/issues/23803)) ([f338333](https://github.com/cloudquery/cloudquery/commit/f338333cd47ca7384020827c3f91fbbdf7ff1ba8))
+* **deps:** Update module github.com/apache/arrow-go/v18 to v18.9.0 ([#23789](https://github.com/cloudquery/cloudquery/issues/23789)) ([49c5dd6](https://github.com/cloudquery/cloudquery/commit/49c5dd6bb80af2cbb871025038e564387e2c5411))
+* **deps:** Update module github.com/cenkalti/backoff/v7 to v7.0.2 ([#23674](https://github.com/cloudquery/cloudquery/issues/23674)) ([92218f0](https://github.com/cloudquery/cloudquery/commit/92218f0f478e0cc7200981905af58fc8cfd454c1))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.100.1 ([#23725](https://github.com/cloudquery/cloudquery/issues/23725)) ([c90bb25](https://github.com/cloudquery/cloudquery/commit/c90bb25d6f4147365685e80c27a3699488174a6b))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.100.2 ([#23798](https://github.com/cloudquery/cloudquery/issues/23798)) ([190260b](https://github.com/cloudquery/cloudquery/commit/190260bb1916dc79a70ec1f31d349ce7027f223c))
+* **deps:** Update module github.com/duckdb/duckdb-go/v2 to v2.20000.0 ([#23690](https://github.com/cloudquery/cloudquery/issues/23690)) ([2cfb790](https://github.com/cloudquery/cloudquery/commit/2cfb790567c1a8d0be2d65ee7ef1f6887d4d7898))
+* **deps:** Update module github.com/goccy/go-json to v0.11.2 ([#23692](https://github.com/cloudquery/cloudquery/issues/23692)) ([749ef68](https://github.com/cloudquery/cloudquery/commit/749ef68bef47d20e68cdfb852558f4f813e0aa1d))
+* Quote identifiers in DuckDB destination statements ([#23753](https://github.com/cloudquery/cloudquery/issues/23753)) ([002be05](https://github.com/cloudquery/cloudquery/commit/002be059876de55d005cf0407ba5950d4cd60742))
+
 ## [6.4.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v6.4.1...plugins-destination-duckdb-v6.4.2) (2026-10-28)
 
 
