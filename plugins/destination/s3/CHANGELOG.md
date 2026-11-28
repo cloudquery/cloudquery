@@ -1,5 +1,32 @@
 # Changelog
 
+## [7.13.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.12.1...plugins-destination-s3-v7.13.0) (2026-11-28)
+
+
+### Features
+
+* Drop support for source plugins on protocol v1 and v2 (plugin-sdk v3 and older) ([#23705](https://github.com/cloudquery/cloudquery/issues/23705)) ([16e0c4d](https://github.com/cloudquery/cloudquery/commit/16e0c4d4e68843cdb3648dd281b7098b7a56e949))
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#23661](https://github.com/cloudquery/cloudquery/issues/23661)) ([40b7a90](https://github.com/cloudquery/cloudquery/commit/40b7a90e94e866cba414db7261219ee9d70b66c0))
+* **deps:** Update aws-sdk-go-v2 monorepo ([#23731](https://github.com/cloudquery/cloudquery/issues/23731)) ([4f8f065](https://github.com/cloudquery/cloudquery/commit/4f8f065b1947134894c83ac7b583cbe24e8cfdd0))
+* **deps:** Update aws-sdk-go-v2 monorepo ([#23768](https://github.com/cloudquery/cloudquery/issues/23768)) ([a85adfa](https://github.com/cloudquery/cloudquery/commit/a85adfa0a580f7fc4af7b1cf966518f2712d030a))
+* **deps:** Update aws-sdk-go-v2 monorepo ([#23785](https://github.com/cloudquery/cloudquery/issues/23785)) ([bd2e610](https://github.com/cloudquery/cloudquery/commit/bd2e610fcf44944931c03965ff78cb1d8fa0fda0))
+* **deps:** Update aws-sdk-go-v2 monorepo ([#23811](https://github.com/cloudquery/cloudquery/issues/23811)) ([c89727b](https://github.com/cloudquery/cloudquery/commit/c89727b798fa8a6f5d76b18270d6f4cd817e8456))
+* **deps:** Update github.com/cloudquery/jsonschema digest to 3835a01 ([#23803](https://github.com/cloudquery/cloudquery/issues/23803)) ([f338333](https://github.com/cloudquery/cloudquery/commit/f338333cd47ca7384020827c3f91fbbdf7ff1ba8))
+* **deps:** Update module github.com/apache/arrow-go/v18 to v18.9.0 ([#23789](https://github.com/cloudquery/cloudquery/issues/23789)) ([49c5dd6](https://github.com/cloudquery/cloudquery/commit/49c5dd6bb80af2cbb871025038e564387e2c5411))
+* **deps:** Update module github.com/aws/smithy-go to v1.28.8 ([#23733](https://github.com/cloudquery/cloudquery/issues/23733)) ([73da1e6](https://github.com/cloudquery/cloudquery/commit/73da1e6c18809bacab18a1e7305d36e6602dddf3))
+* **deps:** Update module github.com/aws/smithy-go to v1.28.9 ([#23780](https://github.com/cloudquery/cloudquery/issues/23780)) ([72b0335](https://github.com/cloudquery/cloudquery/commit/72b03358eb2415a9c1d76978d1a3dddd7c82d3c9))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.9.2 ([#23795](https://github.com/cloudquery/cloudquery/issues/23795)) ([5590b5c](https://github.com/cloudquery/cloudquery/commit/5590b5c06a5574f1c49d6c7a94500dcbb468e199))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.9.3 ([#23797](https://github.com/cloudquery/cloudquery/issues/23797)) ([ae113dd](https://github.com/cloudquery/cloudquery/commit/ae113dd2e0deb04d46a7d6ae4fc888477aa419a9))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.9.4 ([#23805](https://github.com/cloudquery/cloudquery/issues/23805)) ([20c23e7](https://github.com/cloudquery/cloudquery/commit/20c23e70fd65227ebda4e6320ad1f92474104316))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.100.1 ([#23725](https://github.com/cloudquery/cloudquery/issues/23725)) ([c90bb25](https://github.com/cloudquery/cloudquery/commit/c90bb25d6f4147365685e80c27a3699488174a6b))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.99.1 ([#23622](https://github.com/cloudquery/cloudquery/issues/23622)) ([2427faa](https://github.com/cloudquery/cloudquery/commit/2427faa717b7c5bc291e205de401d5f04dfc68d1))
+* **deps:** Update module github.com/pb33f/ordered-map/v2 to v2.3.2 ([#23676](https://github.com/cloudquery/cloudquery/issues/23676)) ([62e3584](https://github.com/cloudquery/cloudquery/commit/62e3584c4c84857e558f2227eb276f1e3c9aaed3))
+* Keep table-name paths inside the configured prefix in file and object-store destinations ([#23747](https://github.com/cloudquery/cloudquery/issues/23747)) ([565cc9a](https://github.com/cloudquery/cloudquery/commit/565cc9a6ae76a1d4f1b43ea41a3f91b7d80f6fc8))
+
 ## [7.12.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.12.0...plugins-destination-s3-v7.12.1) (2026-10-22)
 
 
