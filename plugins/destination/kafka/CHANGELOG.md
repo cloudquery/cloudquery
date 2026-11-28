@@ -1,5 +1,31 @@
 # Changelog
 
+## [6.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-kafka-v5.8.3...plugins-destination-kafka-v6.0.0) (2026-11-28)
+
+
+### ⚠ BREAKING CHANGES
+
+* Verify Kafka broker TLS certificates by default ([#23752](https://github.com/cloudquery/cloudquery/issues/23752))
+
+### Features
+
+* Drop support for source plugins on protocol v1 and v2 (plugin-sdk v3 and older) ([#23705](https://github.com/cloudquery/cloudquery/issues/23705)) ([16e0c4d](https://github.com/cloudquery/cloudquery/commit/16e0c4d4e68843cdb3648dd281b7098b7a56e949))
+
+
+### Bug Fixes
+
+* **deps:** Update confluentinc/cp-kafka Docker tag to v8.4.0 ([#23684](https://github.com/cloudquery/cloudquery/issues/23684)) ([c681760](https://github.com/cloudquery/cloudquery/commit/c68176066a4aa681a3dba85d8f4b16d1cc0ccc1c))
+* **deps:** Update github.com/cloudquery/jsonschema digest to 3835a01 ([#23803](https://github.com/cloudquery/cloudquery/issues/23803)) ([f338333](https://github.com/cloudquery/cloudquery/commit/f338333cd47ca7384020827c3f91fbbdf7ff1ba8))
+* **deps:** Update module github.com/apache/arrow-go/v18 to v18.9.0 ([#23789](https://github.com/cloudquery/cloudquery/issues/23789)) ([49c5dd6](https://github.com/cloudquery/cloudquery/commit/49c5dd6bb80af2cbb871025038e564387e2c5411))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.9.2 ([#23795](https://github.com/cloudquery/cloudquery/issues/23795)) ([5590b5c](https://github.com/cloudquery/cloudquery/commit/5590b5c06a5574f1c49d6c7a94500dcbb468e199))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.9.3 ([#23797](https://github.com/cloudquery/cloudquery/issues/23797)) ([ae113dd](https://github.com/cloudquery/cloudquery/commit/ae113dd2e0deb04d46a7d6ae4fc888477aa419a9))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.9.4 ([#23805](https://github.com/cloudquery/cloudquery/issues/23805)) ([20c23e7](https://github.com/cloudquery/cloudquery/commit/20c23e70fd65227ebda4e6320ad1f92474104316))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.100.1 ([#23725](https://github.com/cloudquery/cloudquery/issues/23725)) ([c90bb25](https://github.com/cloudquery/cloudquery/commit/c90bb25d6f4147365685e80c27a3699488174a6b))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.99.1 ([#23622](https://github.com/cloudquery/cloudquery/issues/23622)) ([2427faa](https://github.com/cloudquery/cloudquery/commit/2427faa717b7c5bc291e205de401d5f04dfc68d1))
+* **deps:** Update module github.com/IBM/sarama to v1.61.1 ([#23675](https://github.com/cloudquery/cloudquery/issues/23675)) ([73186a0](https://github.com/cloudquery/cloudquery/commit/73186a040c5dacac647854940d9aae491699cb23))
+* **deps:** Update module github.com/pb33f/ordered-map/v2 to v2.3.2 ([#23676](https://github.com/cloudquery/cloudquery/issues/23676)) ([62e3584](https://github.com/cloudquery/cloudquery/commit/62e3584c4c84857e558f2227eb276f1e3c9aaed3))
+* Verify Kafka broker TLS certificates by default ([#23752](https://github.com/cloudquery/cloudquery/issues/23752)) ([78916db](https://github.com/cloudquery/cloudquery/commit/78916db5ce6d189b94aec04e8f6a5b858fad98a3))
+
 ## [5.8.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-kafka-v5.8.2...plugins-destination-kafka-v5.8.3) (2026-10-22)
 
 
