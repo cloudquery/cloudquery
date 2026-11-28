@@ -31,6 +31,12 @@ func Test_structType(t *testing.T) {
 			),
 		},
 		{
+			columnType: "Tuple(`field\\\\name` Bool)",
+			expected: arrow.StructOf(
+				arrow.Field{Name: `field\name`, Type: new(arrow.BooleanType)},
+			),
+		},
+		{
 			columnType: "Tuple(`uuid_list` Array(Nullable(UUID)), `struct` Tuple(`bool_list` Array(Bool), `bool_list_nullable` Array(Nullable(Bool))))",
 			expected: arrow.StructOf(
 				arrow.Field{Name: "uuid_list", Type: arrow.ListOf(types.NewUUIDType())},
