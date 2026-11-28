@@ -1,5 +1,19 @@
 # Changelog
 
+## [9.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v8.4.0...plugins-destination-clickhouse-v9.0.0) (2026-11-28)
+
+
+### ⚠ BREAKING CHANGES
+
+* Escape identifiers and bind table names in ClickHouse destination queries ([#23746](https://github.com/cloudquery/cloudquery/issues/23746))
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/jsonschema digest to 3835a01 ([#23803](https://github.com/cloudquery/cloudquery/issues/23803)) ([f338333](https://github.com/cloudquery/cloudquery/commit/f338333cd47ca7384020827c3f91fbbdf7ff1ba8))
+* **deps:** Update module github.com/apache/arrow-go/v18 to v18.9.0 ([#23789](https://github.com/cloudquery/cloudquery/issues/23789)) ([49c5dd6](https://github.com/cloudquery/cloudquery/commit/49c5dd6bb80af2cbb871025038e564387e2c5411))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.100.2 ([#23798](https://github.com/cloudquery/cloudquery/issues/23798)) ([190260b](https://github.com/cloudquery/cloudquery/commit/190260bb1916dc79a70ec1f31d349ce7027f223c))
+* Escape identifiers and bind table names in ClickHouse destination queries ([#23746](https://github.com/cloudquery/cloudquery/issues/23746)) ([9a78afa](https://github.com/cloudquery/cloudquery/commit/9a78afa79a02602c3b2645ff7fa76f10f93fc774))
+
 ## [8.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v8.3.1...plugins-destination-clickhouse-v8.4.0) (2026-11-10)
 
 
