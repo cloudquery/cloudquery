@@ -27,16 +27,6 @@ func TestPluginPublish(t *testing.T) {
 
 	var testCases = []testCase{
 		{
-			name:    "old package json with old command line args format",
-			distDir: "testdata/dist-v1-no-team-package-json",
-			args:    []string{"plugin", "publish", "cloudquery/test", "--dist-dir", "testdata/dist-v1-no-team-package-json"},
-		},
-		{
-			name:    "new package json with old command line args format",
-			distDir: "testdata/dist-v1-with-team-package-json",
-			args:    []string{"plugin", "publish", "cloudquery/test", "--dist-dir", "testdata/dist-v1-with-team-package-json"},
-		},
-		{
 			name:    "new package json with new command line args format (no args)",
 			distDir: "testdata/dist-v1-with-team-package-json",
 			args:    []string{"plugin", "publish", "--dist-dir", "testdata/dist-v1-with-team-package-json"},
@@ -553,6 +543,23 @@ func TestPluginPublishMissingPluginName(t *testing.T) {
 			cmd.SetArgs(args)
 			err := cmd.Execute()
 			require.ErrorIs(t, err, errInvalidPluginName)
+		})
+	}
+}
+
+func TestPluginPublishRejectsPluginNameArgument(t *testing.T) {
+	for _, distDir := range []string{"testdata/dist-v1-no-team-package-json", "testdata/dist-v1-with-team-package-json"} {
+		t.Run(distDir, func(t *testing.T) {
+			t.Setenv("CLOUDQUERY_API_KEY", "testkey")
+			ts := httptest.NewServer(http.HandlerFunc(func(_ http.ResponseWriter, r *http.Request) {
+				t.Errorf("unexpected request %s %s", r.Method, r.URL.Path)
+			}))
+			defer ts.Close()
+			t.Setenv(envAPIURL, ts.URL)
+
+			cmd := NewCmdRoot()
+			cmd.SetArgs(append([]string{"plugin", "publish", "cloudquery/test", "--dist-dir", distDir}, testCommandArgs(t)...))
+			require.EqualError(t, cmd.Execute(), `passing the team and plugin name as an argument ("cloudquery/test") is no longer supported, set the team and name in the plugin (for example with plugin.WithTeam in the Go SDK) and re-run its package command so they are written to package.json`)
 		})
 	}
 }

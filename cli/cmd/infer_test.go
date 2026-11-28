@@ -82,7 +82,7 @@ spec:
 			wantErrNotContains: "Hint",
 		},
 		{
-			name: "no infer registry fail: don't recommend github for github",
+			name: "github registry is rejected",
 			config: `
 kind: source
 spec:
@@ -99,7 +99,7 @@ spec:
   path: localhost:7777
   registry: grpc
 `,
-			wantErrContains:    "",
+			wantErrContains:    "failed to validate source gcp: registry: github is no longer supported, use registry: cloudquery for plugins on CloudQuery Hub (requires `cloudquery login` or CLOUDQUERY_API_KEY), or download the plugin binary and use registry: local",
 			wantErrNotContains: "Hint",
 		},
 	}

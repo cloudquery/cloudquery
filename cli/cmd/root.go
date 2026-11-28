@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"os"
 	"strconv"
@@ -55,14 +56,7 @@ func NewCmdRoot() *cobra.Command {
 	}
 	secretAwareRedactor = secrets.NewSecretAwareRedactor()
 
-	// support legacy telemetry environment variable,
-	// but the newer CQ_TELEMETRY_LEVEL environment variable takes precedence
-	defaultTelemetryValue := telemetryLevel.Value
-	legacyTelemetry := os.Getenv("CQ_NO_TELEMETRY")
-	if legacyTelemetry != "" {
-		defaultTelemetryValue = "none"
-	}
-	err = telemetryLevel.Set(env.GetEnvOrDefault("CQ_TELEMETRY_LEVEL", defaultTelemetryValue))
+	err = telemetryLevel.Set(env.GetEnvOrDefault("CQ_TELEMETRY_LEVEL", telemetryLevel.Value))
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "failed to set telemetry level: %v", err)
 		os.Exit(1)
@@ -87,6 +81,10 @@ func NewCmdRoot() *cobra.Command {
 				return err
 			}
 
+			if os.Getenv("CQ_NO_TELEMETRY") != "" {
+				return errors.New("the CQ_NO_TELEMETRY environment variable is no longer supported, unset it and set CQ_TELEMETRY_LEVEL=none instead")
+			}
+
 			oc, err := otelConfig()
 			if err != nil {
 				return err
@@ -98,11 +96,6 @@ func NewCmdRoot() *cobra.Command {
 				}
 				log.Logger = log.Logger.Hook(otel.NewOTELLoggerHook(invocationUUID.String()))
 				log.Info().Str("otel_logs_endpoint", oc.Endpoint).Msg("otel logs endpoint set")
-			}
-
-			// log warnings now that the logger is initialized
-			if legacyTelemetry != "" {
-				log.Warn().Msg("The CQ_NO_TELEMETRY environment variable will be deprecated, please use CQ_TELEMETRY_LEVEL=none instead.")
 			}
 
 			// log version of the CLI that is running
@@ -131,17 +124,6 @@ func NewCmdRoot() *cobra.Command {
 	cmd.SetOut(secrets.NewSecretAwareWriter(os.Stdout, secretAwareRedactor))
 
 	cmd.PersistentFlags().String("cq-dir", ".cq", "directory to store cloudquery files, such as downloaded plugins")
-	cmd.PersistentFlags().String("data-dir", "", "set persistent data directory")
-	err = cmd.PersistentFlags().MarkDeprecated("data-dir", "use cq-dir instead")
-	if err != nil {
-		panic(err)
-	}
-
-	cmd.PersistentFlags().String("color", "auto", "Enable colorized output when log-console is set (on, off, auto)")
-	err = cmd.PersistentFlags().MarkDeprecated("color", "console logs are always colorless")
-	if err != nil {
-		panic(err)
-	}
 
 	// Logging Flags
 	cmd.PersistentFlags().BoolVar(&logConsole, "log-console", false, "enable console logging")
@@ -160,8 +142,9 @@ func NewCmdRoot() *cobra.Command {
 	cmd.SetHelpCommand(&cobra.Command{Hidden: true})
 
 	pluginCmd := &cobra.Command{
-		Use:   "plugin",
-		Short: "Plugin commands",
+		Use:        "plugin",
+		Short:      "Plugin commands",
+		SuggestFor: []string{"install"},
 	}
 	pluginDocCmd := &cobra.Command{
 		Use:    "docs",
@@ -182,7 +165,7 @@ func NewCmdRoot() *cobra.Command {
 	)
 
 	pluginCmd.AddCommand(
-		newCmdPluginInstall(false),
+		newCmdPluginInstall(),
 		newCmdPluginPublish(),
 		pluginDocCmd,
 		pluginUIAssetsCmd,
@@ -207,7 +190,6 @@ func NewCmdRoot() *cobra.Command {
 		newCmdSwitch(),
 		newCmdTestConnection(),
 		newCmdValidateConfig(),
-		newCmdPluginInstall(true), // legacy
 		pluginCmd,
 		addonCmd,
 		newCmdInit(),

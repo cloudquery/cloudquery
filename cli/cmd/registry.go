@@ -9,8 +9,6 @@ import (
 
 func SpecRegistryToPlugin(registry specs.Registry) managedplugin.Registry {
 	switch registry {
-	case specs.RegistryGitHub:
-		return managedplugin.RegistryGithub
 	case specs.RegistryLocal:
 		return managedplugin.RegistryLocal
 	case specs.RegistryGRPC:

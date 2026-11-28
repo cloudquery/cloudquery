@@ -20,13 +20,12 @@ type Metadata struct {
 
 	// Path is the canonical path to the plugin in a given registry
 	// For example:
-	// * for `registry: github` the `path` will be: `org/repo`
 	// * for `registry: local` the `path` will be the path to the binary: `./path/to/binary`
 	// * for `registry: grpc` the `path` will be the address of the gRPC server: `host:port`
 	// * for `registry: cloudquery` the `path` will be: `team/name`
 	Path string `json:"path" jsonschema:"required,minLength=1"`
 
-	// Registry can be "", "github", "local", "grpc", "docker", "cloudquery"
+	// Registry can be "", "local", "grpc", "docker", "cloudquery"
 	Registry Registry `json:"registry,omitempty" jsonschema:"default=cloudquery"`
 
 	// DockerRegistryAuthToken is the token to use to authenticate with the docker registry
@@ -44,8 +43,6 @@ func (m Metadata) VersionString() string {
 		return fmt.Sprintf("%s (%s@%s)", m.Name, m.Registry, m.Path)
 	case RegistryDocker:
 		return fmt.Sprintf("%s@%s (%s)", m.Name, m.Registry, m.Path)
-	case RegistryGitHub:
-		return fmt.Sprintf("%s@%s (%s@%s)", m.Name, m.Registry, m.Path, m.Version)
 	default:
 		return fmt.Sprintf("%s@%s (%s)", m.Name, m.Registry, m.Path)
 	}
@@ -80,6 +77,10 @@ func (m *Metadata) Validate() error {
 		return errors.New(msg)
 	}
 
+	if m.Registry == RegistryGitHub {
+		return errors.New("registry: github is no longer supported, use registry: cloudquery for plugins on CloudQuery Hub (requires `cloudquery login` or CLOUDQUERY_API_KEY), or download the plugin binary and use registry: local")
+	}
+
 	if m.Registry.NeedVersion() {
 		if m.Version == "" {
 			return errors.New("version is required")
@@ -97,10 +98,10 @@ func (m *Metadata) Validate() error {
 // JSONSchemaExtend has to be in sync with Registry.NeedVersion
 func (Metadata) JSONSchemaExtend(sc *jsonschema.Schema) {
 	sc.If = &jsonschema.Schema{
-		Title: "if registry is unset or is either `github` or `cloudquery`",
+		Title: "if registry is unset or is `cloudquery`",
 		Properties: func() *orderedmap.OrderedMap[string, *jsonschema.Schema] {
 			properties := orderedmap.New[string, *jsonschema.Schema]()
-			properties.Set("registry", &jsonschema.Schema{Enum: []any{RegistryUnset.String(), RegistryGitHub.String(), RegistryCloudQuery.String()}})
+			properties.Set("registry", &jsonschema.Schema{Enum: []any{RegistryUnset.String(), RegistryCloudQuery.String()}})
 			return properties
 		}(),
 	}

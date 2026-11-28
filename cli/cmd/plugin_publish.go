@@ -7,7 +7,6 @@ import (
 	"os"
 	"os/signal"
 	"path/filepath"
-	"strings"
 	"syscall"
 
 	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
@@ -15,7 +14,6 @@ import (
 	"github.com/cloudquery/cloudquery/cli/v6/internal/api"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/hub"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/publish"
-	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 )
 
@@ -30,7 +28,7 @@ This publishes a plugin version to CloudQuery Hub from a local dist directory.
 cloudquery plugin publish`
 )
 
-var errInvalidPluginName = errors.New("invalid plugin name. Must be in format <team_name>/<plugin_name>, set via the \"team\" and \"name\" fields in package.json or passed as an argument")
+var errInvalidPluginName = errors.New("invalid plugin name. Must be in format <team_name>/<plugin_name>, set via the \"team\" and \"name\" fields in package.json")
 
 func newCmdPluginPublish() *cobra.Command {
 	cmd := &cobra.Command{
@@ -38,8 +36,14 @@ func newCmdPluginPublish() *cobra.Command {
 		Short:   pluginPublishShort,
 		Long:    pluginPublishLong,
 		Example: pluginPublishExample,
-		Args:    cobra.MaximumNArgs(1),
-		RunE: func(cmd *cobra.Command, args []string) error {
+		Args: func(cmd *cobra.Command, args []string) error {
+			if len(args) > 0 {
+				cmd.SilenceUsage = true
+				return fmt.Errorf("passing the team and plugin name as an argument (%q) is no longer supported, set the team and name in the plugin (for example with plugin.WithTeam in the Go SDK) and re-run its package command so they are written to package.json", args[0])
+			}
+			return nil
+		},
+		RunE: func(cmd *cobra.Command, _ []string) error {
 			// Set up a channel to listen for OS signals for graceful shutdown.
 			ctx, cancel := context.WithCancel(cmd.Context())
 
@@ -51,7 +55,7 @@ func newCmdPluginPublish() *cobra.Command {
 				cancel()
 			}()
 
-			return runPluginPublish(ctx, cmd, args)
+			return runPluginPublish(ctx, cmd)
 		},
 	}
 	cmd.Flags().StringP("dist-dir", "D", "dist", "Path to the dist directory")
@@ -61,7 +65,7 @@ func newCmdPluginPublish() *cobra.Command {
 	return cmd
 }
 
-func runPluginPublish(ctx context.Context, cmd *cobra.Command, args []string) error {
+func runPluginPublish(ctx context.Context, cmd *cobra.Command) error {
 	tc := auth.NewTokenClient()
 	token, err := tc.GetToken()
 	if err != nil {
@@ -85,21 +89,9 @@ func runPluginPublish(ctx context.Context, cmd *cobra.Command, args []string) er
 		return fmt.Errorf("failed to read package.json: %w", err)
 	}
 
-	if pkgJSON.Team != "" && pkgJSON.Name != "" && len(args) > 0 {
-		log.Warn().Msgf("Passing team and plugin name as an argument is deprecated and no longer needed. Argument %q will be ignored", args[0])
-	}
-
 	teamName, pluginName := pkgJSON.Team, pkgJSON.Name
 	if teamName == "" || pluginName == "" {
-		if len(args) == 0 {
-			return errInvalidPluginName
-		}
-		parts := strings.Split(args[0], "/")
-		if len(parts) != 2 {
-			return errInvalidPluginName
-		}
-		teamName, pluginName = parts[0], parts[1]
-		pkgJSON.Team, pkgJSON.Name = teamName, pluginName
+		return errInvalidPluginName
 	}
 
 	name := fmt.Sprintf("%s/%s@%s", teamName, pluginName, pkgJSON.Version)

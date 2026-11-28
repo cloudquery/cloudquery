@@ -1075,6 +1075,58 @@ func TestSpecReaderWithoutValidation_SourceOnly(t *testing.T) {
 	require.Equal(t, dest, r.GetDestinationByName("platform"))
 }
 
+func TestSpecReaderRejectsGitHubRegistry(t *testing.T) {
+	for _, tc := range []struct {
+		name    string
+		spec    string
+		wantErr string
+	}{
+		{
+			name: "source",
+			spec: `
+kind: source
+spec:
+  name: test
+  path: cloudquery/test
+  registry: github
+  version: v1.0.0
+  destinations: [test]
+  tables: ["*"]
+`,
+			wantErr: "failed to validate source test: registry: github is no longer supported, use registry: cloudquery for plugins on CloudQuery Hub (requires `cloudquery login` or CLOUDQUERY_API_KEY), or download the plugin binary and use registry: local",
+		},
+		{
+			name: "destination",
+			spec: `
+kind: destination
+spec:
+  name: test
+  path: cloudquery/test
+  registry: github
+  version: v1.0.0
+`,
+			wantErr: "failed to validate destination test: registry: github is no longer supported, use registry: cloudquery for plugins on CloudQuery Hub (requires `cloudquery login` or CLOUDQUERY_API_KEY), or download the plugin binary and use registry: local",
+		},
+		{
+			name: "transformer",
+			spec: `
+kind: transformer
+spec:
+  name: test
+  path: cloudquery/test
+  registry: github
+  version: v1.0.0
+`,
+			wantErr: "failed to validate transformer test: registry: github is no longer supported, use registry: cloudquery for plugins on CloudQuery Hub (requires `cloudquery login` or CLOUDQUERY_API_KEY), or download the plugin binary and use registry: local",
+		},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			_, err := NewSpecReader([]string{writeTempSpec(t, tc.spec)})
+			require.EqualError(t, err, tc.wantErr)
+		})
+	}
+}
+
 func TestSetDestinationsAndValidate_ValidatesDestinations(t *testing.T) {
 	p := writeTempSpec(t, sourceOnlySpec)
 	r, err := NewSpecReaderWithoutValidation([]string{p})
@@ -1089,6 +1141,7 @@ func TestSetDestinationsAndValidate_ValidatesDestinations(t *testing.T) {
 		{name: "missing path", meta: Metadata{Name: "platform", Version: "v1.0.1"}, wantErr: "path is required"},
 		{name: "missing version", meta: Metadata{Name: "platform", Path: "cloudquery/platform"}, wantErr: "version is required"},
 		{name: "version without v prefix", meta: Metadata{Name: "platform", Path: "cloudquery/platform", Version: "1.0.1"}, wantErr: "version must start with v"},
+		{name: "github registry", meta: Metadata{Name: "platform", Path: "cloudquery/platform", Registry: RegistryGitHub, Version: "v1.0.1"}, wantErr: "registry: github is no longer supported"},
 	}
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
