@@ -1,5 +1,29 @@
 # Changelog
 
+## [2.10.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gremlin-v2.9.1...plugins-destination-gremlin-v2.10.0) (2026-11-28)
+
+
+### Features
+
+* Drop support for source plugins on protocol v1 and v2 (plugin-sdk v3 and older) ([#23705](https://github.com/cloudquery/cloudquery/issues/23705)) ([16e0c4d](https://github.com/cloudquery/cloudquery/commit/16e0c4d4e68843cdb3648dd281b7098b7a56e949))
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#23658](https://github.com/cloudquery/cloudquery/issues/23658)) ([69adcde](https://github.com/cloudquery/cloudquery/commit/69adcdef4d54b5a6665d5af6e68e3560212a8e04))
+* **deps:** Update aws-sdk-go-v2 monorepo ([#23728](https://github.com/cloudquery/cloudquery/issues/23728)) ([30f3c3b](https://github.com/cloudquery/cloudquery/commit/30f3c3bc2d8cd0394e53147834f8771e141c5693))
+* **deps:** Update aws-sdk-go-v2 monorepo ([#23765](https://github.com/cloudquery/cloudquery/issues/23765)) ([6b81580](https://github.com/cloudquery/cloudquery/commit/6b81580c92fbae78a2896f244ac9c6414823eda6))
+* **deps:** Update aws-sdk-go-v2 monorepo ([#23782](https://github.com/cloudquery/cloudquery/issues/23782)) ([94990c8](https://github.com/cloudquery/cloudquery/commit/94990c8e0c06ab27de9706fd9b19bae6a3c74284))
+* **deps:** Update github.com/cloudquery/jsonschema digest to 3835a01 ([#23803](https://github.com/cloudquery/cloudquery/issues/23803)) ([f338333](https://github.com/cloudquery/cloudquery/commit/f338333cd47ca7384020827c3f91fbbdf7ff1ba8))
+* **deps:** Update module github.com/apache/arrow-go/v18 to v18.9.0 ([#23789](https://github.com/cloudquery/cloudquery/issues/23789)) ([49c5dd6](https://github.com/cloudquery/cloudquery/commit/49c5dd6bb80af2cbb871025038e564387e2c5411))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/config to v1.33.21 ([#23813](https://github.com/cloudquery/cloudquery/issues/23813)) ([d90a2fd](https://github.com/cloudquery/cloudquery/commit/d90a2fddc09a5e0c0f523f47a127dde22f3e7afc))
+* **deps:** Update module github.com/cenkalti/backoff/v7 to v7.0.2 ([#23674](https://github.com/cloudquery/cloudquery/issues/23674)) ([92218f0](https://github.com/cloudquery/cloudquery/commit/92218f0f478e0cc7200981905af58fc8cfd454c1))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.100.1 ([#23725](https://github.com/cloudquery/cloudquery/issues/23725)) ([c90bb25](https://github.com/cloudquery/cloudquery/commit/c90bb25d6f4147365685e80c27a3699488174a6b))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.100.2 ([#23798](https://github.com/cloudquery/cloudquery/issues/23798)) ([190260b](https://github.com/cloudquery/cloudquery/commit/190260bb1916dc79a70ec1f31d349ce7027f223c))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.99.1 ([#23622](https://github.com/cloudquery/cloudquery/issues/23622)) ([2427faa](https://github.com/cloudquery/cloudquery/commit/2427faa717b7c5bc291e205de401d5f04dfc68d1))
+* **deps:** Update module github.com/goccy/go-json to v0.11.2 ([#23692](https://github.com/cloudquery/cloudquery/issues/23692)) ([749ef68](https://github.com/cloudquery/cloudquery/commit/749ef68bef47d20e68cdfb852558f4f813e0aa1d))
+* **deps:** Update module github.com/pb33f/ordered-map/v2 to v2.3.2 ([#23676](https://github.com/cloudquery/cloudquery/issues/23676)) ([62e3584](https://github.com/cloudquery/cloudquery/commit/62e3584c4c84857e558f2227eb276f1e3c9aaed3))
+
 ## [2.9.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gremlin-v2.9.0...plugins-destination-gremlin-v2.9.1) (2026-10-21)
 
 
