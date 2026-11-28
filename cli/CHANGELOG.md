@@ -5,6 +5,17 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.51.2](https://github.com/cloudquery/cloudquery/compare/cli-v6.51.1...cli-v6.51.2) (2026-11-28)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/jsonschema digest to 3835a01 ([#23803](https://github.com/cloudquery/cloudquery/issues/23803)) ([f338333](https://github.com/cloudquery/cloudquery/commit/f338333cd47ca7384020827c3f91fbbdf7ff1ba8))
+* **deps:** Update module github.com/apache/arrow-go/v18 to v18.9.0 ([#23789](https://github.com/cloudquery/cloudquery/issues/23789)) ([49c5dd6](https://github.com/cloudquery/cloudquery/commit/49c5dd6bb80af2cbb871025038e564387e2c5411))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.29.2 ([#23796](https://github.com/cloudquery/cloudquery/issues/23796)) ([d5f9114](https://github.com/cloudquery/cloudquery/commit/d5f91143a73b03c48183c5b3cb61a667ffb30cda))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.100.2 ([#23798](https://github.com/cloudquery/cloudquery/issues/23798)) ([190260b](https://github.com/cloudquery/cloudquery/commit/190260bb1916dc79a70ec1f31d349ce7027f223c))
+* Reject an empty token in the CLI login callback ([#23794](https://github.com/cloudquery/cloudquery/issues/23794)) ([a8bd4d9](https://github.com/cloudquery/cloudquery/commit/a8bd4d999f53dcf677bb8ceb908fe9183797b275))
+
 ## [6.51.1](https://github.com/cloudquery/cloudquery/compare/cli-v6.51.0...cli-v6.51.1) (2026-11-16)
 
 
